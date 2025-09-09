@@ -1,0 +1,258 @@
+.pageHeader {
+  background: #f8f9fa;
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.pageHeader h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.pageHeader p {
+  font-size: 1.125rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.professionalsContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 20px;
+}
+
+.resourcesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.resourceCard {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.resourceCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.resourceIcon {
+  width: 60px;
+  height: 60px;
+  background: #f8f9fa;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.resourceTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.resourceDescription {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.resourceButton {
+  background: #333;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.resourceButton:hover {
+  background: #555;
+}
+
+.toolsSection {
+  background: #f8f9fa;
+  padding: 4rem 0;
+  margin: 4rem 0;
+}
+
+.toolsContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.sectionTitle {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.sectionTitle h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle p {
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.toolsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.toolCard {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.toolCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.toolIcon {
+  width: 80px;
+  height: 80px;
+  background: #333;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: #fff;
+}
+
+.toolTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.toolDescription {
+  color: #666;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.toolButton {
+  background: transparent;
+  color: #333;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #333;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.toolButton:hover {
+  background: #333;
+  color: #fff;
+}
+
+.cta {
+  background: #333;
+  color: #fff;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.ctaContent {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.cta h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.cta p {
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.ctaButton {
+  background: #fff;
+  color: #333;
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.ctaButton:hover {
+  background: #f5f5f5;
+  transform: translateY(-2px);
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .pageHeader {
+    padding: 2rem 0;
+  }
+  
+  .pageHeader h1 {
+    font-size: 2rem;
+  }
+  
+  .professionalsContent {
+    padding: 2rem 20px;
+  }
+  
+  .resourcesGrid,
+  .toolsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .resourceCard,
+  .toolCard {
+    padding: 1.5rem;
+  }
+  
+  .toolsSection {
+    padding: 2rem 0;
+    margin: 2rem 0;
+  }
+  
+  .cta {
+    padding: 2rem 0;
+  }
+  
+  .cta h2 {
+    font-size: 1.75rem;
+  }
+}

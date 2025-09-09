@@ -1,0 +1,149 @@
+.filter {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.filterTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.filterGroup {
+  margin-bottom: 1.5rem;
+}
+
+.filterGroup:last-child {
+  margin-bottom: 0;
+}
+
+.filterGroupTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filterOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filterOption {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.25rem 0;
+}
+
+.filterOption input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.filterOption label {
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #666;
+  flex: 1;
+}
+
+.filterOption:hover label {
+  color: #333;
+}
+
+.filterRange {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filterRange input[type="range"] {
+  flex: 1;
+  height: 4px;
+  background: #e5e5e5;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.filterRange input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #333;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.filterRange input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #333;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.filterRangeValue {
+  font-size: 0.875rem;
+  color: #666;
+  min-width: 60px;
+  text-align: right;
+}
+
+.filterButtons {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.filterButton {
+  padding: 0.5rem 1rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  background: #fff;
+  color: #333;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filterButton:hover {
+  background: #f8f9fa;
+  border-color: #ccc;
+}
+
+.filterButton.primary {
+  background: #333;
+  color: #fff;
+  border-color: #333;
+}
+
+.filterButton.primary:hover {
+  background: #555;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .filter {
+    padding: 1rem;
+  }
+  
+  .filterButtons {
+    flex-direction: column;
+  }
+  
+  .filterButton {
+    width: 100%;
+  }
+}

@@ -1,0 +1,131 @@
+.pageHeader {
+  background: #f8f9fa;
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.pageHeader h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.pageHeader p {
+  font-size: 1.125rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.seriesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  padding: 4rem 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.seriesCard {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.seriesCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.seriesImage {
+  width: 100%;
+  height: 300px;
+  background: #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 1rem;
+}
+
+.seriesContent {
+  padding: 2rem;
+}
+
+.seriesTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.seriesDescription {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.seriesFeatures {
+  list-style: none;
+  margin: 0 0 1.5rem 0;
+  padding: 0;
+}
+
+.seriesFeature {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.seriesFeature::before {
+  content: '✓';
+  color: #28a745;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.seriesButton {
+  background: #333;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.seriesButton:hover {
+  background: #555;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .pageHeader {
+    padding: 2rem 0;
+  }
+  
+  .pageHeader h1 {
+    font-size: 2rem;
+  }
+  
+  .seriesGrid {
+    grid-template-columns: 1fr;
+    padding: 2rem 0;
+    gap: 1.5rem;
+  }
+  
+  .seriesImage {
+    height: 250px;
+  }
+  
+  .seriesContent {
+    padding: 1.5rem;
+  }
+}
