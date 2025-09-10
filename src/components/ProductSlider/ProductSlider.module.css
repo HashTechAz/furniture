@@ -1,0 +1,26 @@
+.sliderMain {
+  width: 100%;
+  padding: 30px 80px;
+}
+
+.sliderMain .sliderTitle {
+    width: 100%;
+    padding: 40px 0 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+
+.sliderTitle .sliderTitleText {
+    font-size: 32px;
+    font-weight: 500;
+    color: #333;
+}
+
+.sliderBox {
+    width: 100%;
+    height: 50px;
+    background-color: red;
+    margin-top: 30px;
+}
