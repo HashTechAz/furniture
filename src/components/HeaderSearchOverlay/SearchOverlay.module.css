@@ -67,3 +67,10 @@
   color: #000;
   transform: rotate(90deg);
 }
+
+
+.searchWrapper p {
+    padding: 40px;
+    font-size: 14px;
+    font-weight: 700;
+}

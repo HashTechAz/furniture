@@ -44,7 +44,9 @@ const SearchOverlay = ({ isOpen, onClose }: SearchOverlayProps) => {
           <button className={styles.closeButton} onClick={onClose}>
             &times;
           </button>
+          
         </div>
+        <p>Popular search terms</p>
       </div>
     </div>
   );
