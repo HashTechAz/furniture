@@ -103,3 +103,17 @@
     font-weight: 500;
     color: #333;
 }
+
+/* ProductSlider.module.css faylının sonuna əlavə edin */
+
+/* Normal vəziyyətdə kursor "tutmaq" işarəsi olacaq */
+.sliderBoxWrapper {
+    cursor: grab;
+    /* Sürüşdürərkən kartların içindəki şəkillərin və mətnlərin seçilməsinin qarşısını alır */
+    user-select: none;
+  }
+  
+  /* Sürüşdürmə (dragging) aktiv olduqda kursor "tutulmuş" işarəsi olacaq */
+  .sliderBoxWrapper.dragging {
+    cursor: grabbing;
+  }
