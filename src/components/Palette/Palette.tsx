@@ -27,7 +27,10 @@ export default function Palette() {
           </div>
         </div>
 
-        <div className={styles.paletteImgBox}></div>
+        <div className={styles.paletteImgBox}>
+            <div className={styles.paletteOneColor}></div>
+            <div className={styles.paletteJpg}></div>
+        </div>
       </section>
     </>
   );

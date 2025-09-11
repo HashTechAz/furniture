@@ -9,10 +9,7 @@
     padding: 3rem 10rem 0 0;
 }
 
-.paletteMain .paletteImgBox {
-    width: 50%;
-    background-color: blue;
-}
+
 
 .paletteTextBoxTitle span {
     font-size: 15px !important;
@@ -58,4 +55,26 @@
   
   .heroButton:hover::before {
     transform: translateX(0);
+  }
+
+  .paletteMain .paletteImgBox {
+    width: 50%;
+    position: relative;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+  .paletteOneColor {
+    width: 510px;
+    height: 580px;
+    background-color: #CCC6B8;
+  }
+
+  .paletteJpg {
+     width: 370px;
+     height: 500px;
+     position: absolute;
+     top: 40px;
+     left: 0px;
+     background-color: rgb(234, 105, 105);
   }
