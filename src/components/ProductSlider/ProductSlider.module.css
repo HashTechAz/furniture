@@ -1,8 +1,24 @@
+/* ProductSlider.module.css */
+
+/* ============================================= */
+/* ====         ƏSAS QURULUŞ (LAYOUT)         ==== */
+/* ============================================= */
+
+/* Əsas section tam enli olmalı və üfüqi scroll-bar yaratmamalıdır */
 .sliderMain {
-  width: 100%;
-  padding: 30px 80px;
+    width: 100%;
+    padding: 30px 0; /* Yalnız yuxarı-aşağı boşluq */
+    overflow: hidden; /* Daxili scroll-bar'ın səhifəyə təsir etməsinin qarşısını alır */
 }
 
+/* Mətn və oxları saxlayan konteyner. Saytın ümumi konteyneri ilə eyni olmalıdır. */
+.container {
+    padding: 0 80px; /* Soldan və sağdan boşluq */
+    margin: 0 auto; /* Mərkəzləmək üçün */
+    max-width: 1600px; /* Bu dəyəri öz saytınızın maksimal eninə uyğunlaşdırın */
+}
+
+/* Başlıq və oxları saxlayan div */
 .sliderMain .sliderTitle {
     width: 100%;
     padding: 40px 0 20px 0;
@@ -11,16 +27,79 @@
     align-items: flex-end;
 }
 
-
+/* Başlıq mətni */
 .sliderTitle .sliderTitleText {
     font-size: 32px;
     font-weight: 500;
     color: #333;
 }
 
-.sliderBox {
+
+/* ============================================= */
+/* ====        SLIDER-İN ÖZÜ (SCROLL)         ==== */
+/* ============================================= */
+
+/* Slider-in kənara daşmasını və scroll olmasını təmin edən wrapper */
+.sliderBoxWrapper {
     width: 100%;
-    height: 50px;
-    background-color: red;
-    margin-top: 30px;
+    overflow-x: auto; /* Üfüqi scroll aktivləşdirilir */
+    -ms-overflow-style: none; /* IE və Edge üçün scrollbar-ı gizlədir */
+    scrollbar-width: none; /* Firefox üçün scrollbar-ı gizlədir */
+}
+
+/* Chrome, Safari, Opera üçün scrollbar-ı gizlədir */
+.sliderBoxWrapper::-webkit-scrollbar {
+    display: none;
+}
+
+/* Bütün slayd elementlərini saxlayan əsas qutu */
+.sliderBox {
+    display: flex; /* Elementləri yan-yana düzür */
+    gap: 20px; /* Elementlər arasında boşluq */
+    padding-top: 30px;
+    padding-bottom: 30px;
+    
+    /* Bu, slider-in ilk elementini yuxarıdakı mətnlə eyni hizaya gətirir */
+    padding-left: 80px;
+
+    /* Son elementin ekran kənarına yapışmaması üçün sağdan da boşluq */
+    padding-right: 80px;
+}
+
+
+/* ============================================= */
+/* ====      TƏK SLAYD ELEMENTLƏRİ (CARD)     ==== */
+/* ============================================= */
+
+
+
+/* Məhsulun şəkli olan vizual qutu */
+.slideItem {
+    flex-shrink: 0; /* Elementlərin ölçüsünün kiçilməsinin qarşısını alır */
+    width: 320px;
+    height: 400px;
+    background-color: #e0e0e0; /* Şəkil yüklənənə qədər görünən rəng */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Hover effekti üçün tranzisiya */
+
+    /* Şəkillərin düzgün görünməsi üçün əlavə olunan stillər */
+    background-size: cover; /* Şəklin qutunu tam əhatə etməsini təmin edir */
+    background-position: center; /* Şəkli qutunun mərkəzində saxlayır */
+    background-repeat: no-repeat; /* Şəklin təkrarlanmasının qarşısını alır */
+}
+
+/* Hover zamanı şəkli bir az böyüdən effekt */
+.slideItem:hover {
+    transform: scale(1.03); /* Hover zamanı kart bir az böyüyəcək */
+}
+
+/* Qutunun altındakı mətn üçün stil */
+.slideCaption {
+    margin: 0; /* Brauzerin default margin'ini sıfırlayırıq */
+    padding: 0; /* Brauzerin default padding'ini sıfırlayırıq */
+    margin: 15px 0px 0px 5px; /* Sizin təyin etdiyiniz boşluq: yuxarıdan 15px, soldan 5px */
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
 }
