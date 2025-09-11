@@ -12,6 +12,7 @@
     "@types/bcryptjs": "^3.0.0",
     "@types/jsonwebtoken": "^9.0.10",
     "bcryptjs": "^3.0.2",
+    "embla-carousel-react": "^8.6.0",
     "flickity": "^3.0.0",
     "jsonwebtoken": "^9.0.2",
     "next": "15.5.2",

@@ -1,15 +1,11 @@
 
   
-  /* Şəklin konteyneri olan vizual qutu */
   .slideItem {
       flex-shrink: 0; /* Slider içində sıxılmasının qarşısını alır */
       width: 320px;
       height: 400px;
-      border-radius: 8px;
       cursor: pointer;
       background-color: #e0e0e0; /* Şəkil yüklənənə qədər görünəcək ehtiyat rəng */
-      
-      /* VACİB: İçindəki şəkil böyüyəndə kənara çıxmaması üçün */
       overflow: hidden; 
   }
   
