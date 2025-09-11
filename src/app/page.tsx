@@ -4,6 +4,7 @@ import ProductSlider from '@/components/ProductSlider/ProductSlider';
 import Palette from '@/components/Palette/Palette';
 import NewsSection from '@/components/NewsSection/NewsSection';
 import ProductNewsSlider from '@/components/ProductNewsSlider/ProductNewsSlider';
+import MiddleBanner from '@/components/MiddleBanner/MiddleBanner';
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <Palette/>
       <NewsSection/>
       <ProductNewsSlider/>
+      <MiddleBanner/>
     </>
   );
 }
