@@ -17,6 +17,9 @@ const ProductCard = ({ imageSrc, imageSrcHover, title, color, size }: ProductCar
     return null;
   }
 
+  // DEĞİŞİKLİK BURADA:
+  // İç içe <a> etiketi kaldırıldı.
+  // className, onMouseEnter, onMouseLeave gibi tüm özellikler doğrudan <Link> bileşenine verildi.
   return (
     <Link
       href="#"
