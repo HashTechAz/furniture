@@ -1,0 +1,28 @@
+.badges {
+    width: 100%;
+    padding: 50px 80px;
+}
+
+.badges .badgesContent {
+    width: 100%;
+    padding: 3rem 4rem;
+    background-color: #f4f4f1;
+    display: flex;
+    justify-content: space-between;
+}
+
+.badgesContent .badgesItem {
+    width: 31%;
+    padding-right: 12px;
+}
+
+.badgesItem span {
+    font-size: 25px;
+    font-style: italic;
+    font-weight: 500;
+}
+
+.badgesItem p {
+    margin-top: 10px;
+    font-weight: 400;
+}

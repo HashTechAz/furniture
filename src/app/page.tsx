@@ -5,6 +5,7 @@ import Palette from '@/components/Palette/Palette';
 import NewsSection from '@/components/NewsSection/NewsSection';
 import ProductNewsSlider from '@/components/ProductNewsSlider/ProductNewsSlider';
 import MiddleBanner from '@/components/MiddleBanner/MiddleBanner';
+import TrustBadges from "@/components/TrustBadges/TrustBadges"
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <NewsSection/>
       <ProductNewsSlider/>
       <MiddleBanner/>
+      <TrustBadges/>
     </>
   );
 }
