@@ -14,13 +14,14 @@ interface SlideData {
 
 // Məhsul məlumatları (yazısız şəkillərlə)
 const slideData: SlideData[] = [
-    { id: 1, label: 'Modern Chair', imageUrl: 'https://picsum.photos/320/400?random=1' },
-    { id: 2, label: 'Minimalist Sofa', imageUrl: 'https://picsum.photos/320/400?random=2' },
-    { id: 3, label: 'Wooden Table', imageUrl: 'https://picsum.photos/320/400?random=3' },
-    { id: 4, label: 'Tall Bookcase', imageUrl: 'https://picsum.photos/320/400?random=4' },
-    { id: 5, label: 'Sideboard', imageUrl: 'https://picsum.photos/320/400?random=5' },
-    { id: 6, label: 'Designer Lamp', imageUrl: 'https://picsum.photos/320/400?random=6' },
-    { id: 7, label: 'Cozy Armchair', imageUrl: 'https://picsum.photos/320/400?random=7' },
+    { id: 1, label: 'Modern Chair', imageUrl: 'https://profine.pk/wp-content/uploads/2024/12/WhatsApp-Image-2025-03-06-at-2.06.38-PM-1.webp' },
+    { id: 2, label: 'Minimalist Sofa', imageUrl: 'https://www.coxandcox.co.uk/media/catalog/product/a/w/aw16-k-ratchair.png?quality=80&fit=bounds&height=800&width=800' },
+    { id: 3, label: 'Modern Chair', imageUrl: 'https://profine.pk/wp-content/uploads/2024/12/WhatsApp-Image-2025-03-06-at-2.06.38-PM-1.webp' },
+    { id: 4, label: 'Minimalist Sofa', imageUrl: 'https://www.coxandcox.co.uk/media/catalog/product/a/w/aw16-k-ratchair.png?quality=80&fit=bounds&height=800&width=800' },
+    { id: 5, label: 'Modern Chair', imageUrl: 'https://profine.pk/wp-content/uploads/2024/12/WhatsApp-Image-2025-03-06-at-2.06.38-PM-1.webp' },
+    { id: 6, label: 'Minimalist Sofa', imageUrl: 'https://www.coxandcox.co.uk/media/catalog/product/a/w/aw16-k-ratchair.png?quality=80&fit=bounds&height=800&width=800' },
+    { id: 7, label: 'Modern Chair', imageUrl: 'https://profine.pk/wp-content/uploads/2024/12/WhatsApp-Image-2025-03-06-at-2.06.38-PM-1.webp' },
+    { id: 8, label: 'Minimalist Sofa', imageUrl: 'https://www.coxandcox.co.uk/media/catalog/product/a/w/aw16-k-ratchair.png?quality=80&fit=bounds&height=800&width=800' },
 ];
 
 const ProductSlider: React.FC = () => {
