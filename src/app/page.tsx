@@ -3,6 +3,7 @@ import HeroSection from '@/components/HeroSection/HeroSection';
 import ProductSlider from '@/components/ProductSlider/ProductSlider';
 import Palette from '@/components/Palette/Palette';
 import NewsSection from '@/components/NewsSection/NewsSection';
+import ProductNewsSlider from '@/components/ProductNewsSlider/ProductNewsSlider';
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       <ProductSlider/>
       <Palette/>
       <NewsSection/>
+      <ProductNewsSlider/>
     </>
   );
 }
