@@ -1,37 +1,66 @@
 import styles from "./Palette.module.css";
 
-export default function Palette() {
-  return (
-    <>
-      <section className={styles.paletteMain}>
-        <div className={styles.paletteTextBox}>
-          <h1 className={styles.paletteTextBoxTitle}>
-            <span>News</span>
-          </h1>
-          <h2 className={styles.paletteTextBoxTitle}>
-            <span>Refreshing the Palette</span>
-          </h2>
-          <div className={styles.paletteDescription}>
-            <p>
-              The Montana Mini series is now even more versatile with the
-              introduction of an updated colour range. Whether you’re looking to
-              add warmth, make a bold statement, or create a subtle touch of
-              elegance, the new colours empower you to design a space that feels
-              uniquely yours.
-            </p>
-          </div>
-          <div>
-            <a href="#" className={styles.heroButton}>
-              Explore now
-            </a>
-          </div>
-        </div>
+interface PaletteProps {
+  category?: string;
+  title: string;
+  description: string;
+  buttonText: string;
+  buttonLink: string;
+  imageUrl: string;
+  backgroundColor: string;
+  imagePosition: {
+    width: string;
+    height: string;
+    top: string;
+    left: string;
+  };
+}
 
-        <div className={styles.paletteImgBox}>
-            <div className={styles.paletteOneColor}></div>
-            <div className={styles.paletteJpg}></div>
+export default function Palette({
+  category,
+  title,
+  description,
+  buttonText,
+  buttonLink,
+  imageUrl,
+  backgroundColor,
+  imagePosition,
+}: PaletteProps) {
+  return (
+    <section className={styles.paletteMain}>
+      <div className={styles.paletteTextBox}>
+        {category && (
+          <h1 className={styles.paletteTextBoxTitle}>
+            <span>{category}</span>
+          </h1>
+        )}
+        <h2 className={styles.paletteTextBoxTitle}>
+          <span>{title}</span>
+        </h2>
+        <div className={styles.paletteDescription}>
+          <p>{description}</p>
         </div>
-      </section>
-    </>
+        <div>
+          <a href={buttonLink} className={styles.heroButton}>
+            {buttonText}
+          </a>
+        </div>
+      </div>
+
+      <div className={styles.paletteImgBox}>
+        <div
+          className={styles.paletteOneColor}
+          style={{ backgroundColor: backgroundColor }}
+        ></div>
+        <div
+          className={styles.paletteJpg}
+          // DÜZƏLİŞ BURADADIR
+          style={{
+            backgroundImage: `url("${imageUrl}")`,
+            ...imagePosition,
+          }}
+        ></div>
+      </div>
+    </section>
   );
 }
