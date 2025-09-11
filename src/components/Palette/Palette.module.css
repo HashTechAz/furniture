@@ -76,5 +76,6 @@
      position: absolute;
      top: 40px;
      left: 0px;
-     background-color: rgb(234, 105, 105);
+     background-image: url("https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-mini/ss25/montana_mini_displayshelf_rosehip_flint_amber_ruby_clay_h.jpg?mode=crop&width=540&height=720");
+     background-size: cover;
   }

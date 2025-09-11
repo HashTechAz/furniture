@@ -1,0 +1,28 @@
+import Link from "next/link";
+import styles from "./NewsCard.module.css";
+
+interface NewsCardProps {
+  imageSrc: string;
+  title: string;
+  description: string;
+}
+
+const NewsCard = ({ imageSrc, title, description }: NewsCardProps) => {
+  return (
+    <Link href="#" className={styles.cardLink}>
+      <div className={styles.card}>
+        <div className={styles.imageWrapper}>
+          <img
+            src={imageSrc}
+            alt={title}
+            className={styles.image}
+          />
+        </div>
+        <h3 className={styles.cardTitle}>{title}</h3>
+        <p className={styles.cardDescription}>{description}</p>
+      </div>
+    </Link>
+  );
+};
+
+export default NewsCard;
