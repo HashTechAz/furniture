@@ -18,9 +18,9 @@ const TrustBadges = () => {
   <path 
     d="M10 20C15 17.5 17 12.5 17 10C17 7.5 16 4 13 4" 
     stroke="currentColor" 
-    stroke-width="1.5" 
-    stroke-linecap="round" 
-    stroke-linejoin="round"
+    strokeWidth="1.5" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
   />
   <ellipse 
     cx="8" 
@@ -67,9 +67,9 @@ const TrustBadges = () => {
   <path 
     d="M10 20C15 17.5 17 12.5 17 10C17 7.5 16 4 13 4" 
     stroke="currentColor" 
-    stroke-width="1.5" 
-    stroke-linecap="round" 
-    stroke-linejoin="round"
+    strokeWidth="1.5" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
   />
   <ellipse 
     cx="8" 
@@ -116,9 +116,9 @@ const TrustBadges = () => {
   <path 
     d="M10 20C15 17.5 17 12.5 17 10C17 7.5 16 4 13 4" 
     stroke="currentColor" 
-    stroke-width="1.5" 
-    stroke-linecap="round" 
-    stroke-linejoin="round"
+    strokeWidth="1.5" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
   />
   <ellipse 
     cx="8" 
