@@ -59,7 +59,7 @@ const MiddleBanner = ({
 
   return (
     <>
-      <section className={styles.mBanner}>
+      <section className={`${styles.mBanner} ${layout === 'imageRight' ? styles.reversed : ''}`}>
         {layout === 'imageLeft' ? (
           <>
             {LargeImageBlock}

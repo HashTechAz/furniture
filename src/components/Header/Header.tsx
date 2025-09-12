@@ -28,7 +28,7 @@ const Header = () => {
     // Fallback: pixel threshold
     const handleScroll = () => {
       const scrolled = window.scrollY || document.documentElement.scrollTop;
-      setShowSticky(scrolled > 600);
+      setShowSticky(scrolled > 1);
     };
 
     handleScroll();

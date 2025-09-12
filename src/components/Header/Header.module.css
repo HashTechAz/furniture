@@ -18,7 +18,7 @@
 
 /* Slide-in animation class applied briefly when sticky activates */
 .headerSlideFromTop {
-  transform: translateY(-600px);
+  transform: translateY(-200px);
 }
 
 .navbar {
