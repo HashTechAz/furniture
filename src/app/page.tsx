@@ -107,7 +107,7 @@ export default function Home() {
       <Palette {...thirdPaletteData} layout={'textRight'} variant={'third'} />
       <HomeVideo/>
       <Palette {...fourPaletteData} imagePosition={secondPaletteData.imagePosition} />
-      <Form name="Test User" email="test@example.com"/>
+      <Form />
     </>
   );
 }

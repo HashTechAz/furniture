@@ -5,11 +5,11 @@ import styles from "./Form.module.css";
 import Link from "next/link";
 
 interface FormProps {
-  name: string;
-  email: string;
+  name?: string;
+  email?: string;
 }
 
-const Form = ({ name, email }: FormProps) => {
+const Form = ({}: FormProps) => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
