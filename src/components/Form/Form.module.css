@@ -11,7 +11,6 @@
 
 .formMain .formLeftPanel {
   width: 50%;
-  height: 600px;
 }
 
 .formMain .formTitle {
@@ -25,14 +24,12 @@
 
 .formMain .formContentBox {
   width: 100%;
-  height: 300px;
   display: flex;
   margin-top: 40px;
 }
 
 .formContentBox .formLeftContent {
   width: 50%;
-  height: auto;
   padding-right: 50px;
 }
 
@@ -50,5 +47,234 @@
 
 .formContentBox .formRightContent {
   width: 50%;
-  background-color: red;
+  padding: 0px 0px 30px 70px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.inputGroup {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.form input {
+  width: 100%;
+  height: 35px;
+  padding: 8px 12px;
+  border: 1px solid rgb(136, 136, 230);
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  outline: none;
+  box-shadow: none;
+  transition: border-color 0.3s ease;
+  padding-left: 42px;
+}
+
+
+
+.form input::placeholder {
+  font-size: 12px;
+  color: #999;
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  transition: all 0.3s ease;
+  background: white;
+  padding: 0 4px;
+}
+
+.form input:focus {
+  border-color: #2c3587;
+}
+
+.inputError {
+  border-color: #e74c3c !important;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.errorMessage {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 5px;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownContainer {
+  position: relative;
+  width: 100%;
+}
+
+.dropdownInput {
+  cursor: pointer;
+  padding-right: 35px !important;
+  padding-left: 42px !important;
+}
+
+.dropdownArrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: #666;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  pointer-events: none;
+}
+
+.dropdownContainer:hover .dropdownArrow {
+  color: #2c3587;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+  animation: dropdownSlide 0.2s ease-out;
+}
+
+@keyframes dropdownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownItem {
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.dropdownItem:hover {
+  background-color: #f8f9fa;
+}
+
+.dropdownItem:last-child {
+  border-radius: 0 0 4px 4px;
+}
+
+.checkboxGroup {
+  margin-top: 5px;
+  padding-right: 30px;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.checkboxContainer input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgb(136, 136, 230);
+  border-radius: 3px;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.checkboxContainer input[type="checkbox"]:checked {
+  background-color: #2c3587;
+  border-color: #2c3587;
+}
+
+.checkboxLabel {
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  line-height: 1.4;
+  user-select: none;
+}
+
+.checkboxError {
+  border-color: #e74c3c !important;
+  animation: shake 0.5s ease-in-out;
+}
+
+.linkText {
+  color: #2c3587;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.linkText:hover {
+  color: #1a2a6b;
+}
+
+.buttonContainer {
+  margin-top: 12px;
+}
+
+.submitButton {
+  display: inline-block;
+  text-decoration: none;
+  color: white;
+  background-color: #2c3587;
+  padding: 10px 42px;
+  font-size: 14px;
+  font-weight: 600;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  transition: color 0.3s ease-in-out;
+  border: none;
+  cursor: pointer;
+}
+
+.submitButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease-in-out;
+  z-index: -1;
+}
+
+.submitButton:hover::before {
+  transform: translateX(0);
 }
