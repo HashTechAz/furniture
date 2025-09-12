@@ -22,7 +22,7 @@ const originalPaletteData = {
     left: '0px',
   },
   layout: 'textLeft',
-} as const; // <-- DÜZƏLİŞ BURADADIR
+} as const; // 
 
 const secondPaletteData = {
   category: "",
@@ -51,6 +51,18 @@ const thirdPaletteData = {
   imageUrl:
     "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/designer-portraits/montana_peter_joakim_lassen_01.jpg?mode=crop&width=828&height=595",
   backgroundColor: "#2C3587",
+};
+
+const fourPaletteData = {
+  category: "",
+  title: "Montana for professionals",
+  description:
+    "Montana Furniture is a family-owned company, established in 1982, leading within storage and furniture for private homes and contemporary office spaces. The company is founded by Peter J. Lassen, who is also the designer of the Montana system.",
+    buttonText: "Learn more",
+  buttonLink: "/design/balance",
+  imageUrl:
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-office/2022/montana_office_canteen_breakoutarea_mosertable_kevi_12mmsystem_h_crop.jpg?mode=crop&width=828&height=595",
+  backgroundColor: "#263835",
 };
 
 
@@ -89,10 +101,11 @@ export default function Home() {
       <ProductNewsSlider />
       <MiddleBanner {... bannerDataDefault} />
       <TrustBadges />
-      <Palette {...secondPaletteData} />
+      <Palette {...secondPaletteData} imagePosition={secondPaletteData.imagePosition} />
       <MiddleBanner {... bannerDataReversed} />
       <Palette {...thirdPaletteData} layout={'textRight'} variant={'third'} />
       <HomeVideo/>
+      <Palette {...fourPaletteData} imagePosition={secondPaletteData.imagePosition} />
     </>
   );
 }

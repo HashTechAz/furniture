@@ -11,6 +11,12 @@ interface PaletteProps {
   backgroundColor: string;
   layout?: 'textLeft' | 'textRight';
   variant?: 'default' | 'third';
+  imagePosition?: {
+    width: string;
+    height: string;
+    top: string;
+    left: string;
+  };
 }
 
 export default function Palette({
@@ -24,7 +30,7 @@ export default function Palette({
   backgroundColor,
   layout = 'textLeft',
   variant = 'default',
-  // 2. "imagePosition" propu arqumentlərdən silindi
+  imagePosition,
 }: PaletteProps) {
 
   const sectionClassName = `${styles.paletteMain} ${layout === 'textRight' ? styles.reversed : ''} ${variant === 'third' ? styles.thirdVariant : ''}`;
@@ -58,9 +64,14 @@ export default function Palette({
         ></div>
         <div
           className={styles.paletteJpg}
-          // 3. Style-dan "imagePosition" silindi, yalnız şəkil qaldı
           style={{
             backgroundImage: `url("${imageUrl}")`,
+            ...(imagePosition && {
+              width: imagePosition.width,
+              height: imagePosition.height,
+              top: imagePosition.top,
+              left: imagePosition.left,
+            })
           }}
         ></div>
       </div>
