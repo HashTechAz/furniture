@@ -5,6 +5,7 @@ import NewsSection from "@/components/NewsSection/NewsSection";
 import ProductNewsSlider from "@/components/ProductNewsSlider/ProductNewsSlider";
 import MiddleBanner from "@/components/MiddleBanner/MiddleBanner";
 import TrustBadges from "@/components/TrustBadges/TrustBadges";
+import HomeVideo from "@/components/HomeVideo/HomeVideo";
 
 const originalPaletteData = {
   category: "News",
@@ -37,6 +38,19 @@ const secondPaletteData = {
     top: '60px',
     left: '30px',
   }
+};
+
+const thirdPaletteData = {
+  category: "",
+  title: "Creating good design demands honesty and respect",
+  description:
+    "Montana Furniture is a family-owned company, established in 1982, leading within storage and furniture for private homes and contemporary office spaces. The company is founded by Peter J. Lassen, who is also the designer of the Montana system.",
+    description2:"All Montana modules are designed, developed and made in Denmark. Every day, in a small town on the island of Funen over 140 professionals work hard to uphold the highest standards of processing, painting and assembling – making sure that your Montana furniture will last a lifetime.",
+    buttonText: "Learn more",
+  buttonLink: "/design/balance",
+  imageUrl:
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/designer-portraits/montana_peter_joakim_lassen_01.jpg?mode=crop&width=828&height=595",
+  backgroundColor: "#2C3587",
 };
 
 
@@ -77,6 +91,8 @@ export default function Home() {
       <TrustBadges />
       <Palette {...secondPaletteData} />
       <MiddleBanner {... bannerDataReversed} />
+      <Palette {...thirdPaletteData} layout={'textRight'} variant={'third'} />
+      <HomeVideo/>
     </>
   );
 }

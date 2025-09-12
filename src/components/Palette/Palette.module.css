@@ -32,6 +32,10 @@
     font-weight: 600;
 }
 
+.paletteDescription p + p {
+    margin-top: 30px; /* İkinci paragraf için 20px mesafe */
+}
+
 .heroButton {
     display: inline-block;
     text-decoration: none;
@@ -68,6 +72,28 @@
     position: relative;
     display: flex;
     flex-direction: row-reverse;
+}
+
+/* Third variant tweaks */
+.thirdVariant .paletteImgBox {
+    justify-content: flex-end; /* image from right */
+}
+
+.thirdVariant .paletteOneColor {
+    margin-right: auto; /* anchor color block to left */
+    position: relative;
+    z-index: 1; /* stay under the image */
+    width: 510px;
+    height: 600px;
+}
+
+.thirdVariant .paletteJpg {
+    width: 630px;
+    height: 500px;
+    top: 50px;
+    right: -20px; /* stick out 50-60px from right */
+    left: auto; /* position from right */
+    z-index: 2; /* above the color block */
 }
 
 .paletteOneColor {

@@ -34,9 +34,9 @@ const ProductCard = ({ imageSrc, imageSrcHover, title, color, size }: ProductCar
             alt={title}
             className={styles.image}
           />
-          <a href="#" className={styles.productButton}>
+          <button type="button" className={styles.productButton} onClick={(e) => { e.preventDefault(); /* open quick view modal here */ }}>
             Quick view
-          </a>
+          </button>
         </div>
         <h3 className={styles.cardTitle}>{title}</h3>
         <p className={styles.cardDetails}>

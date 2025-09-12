@@ -4,26 +4,30 @@ interface PaletteProps {
   category?: string;
   title: string;
   description: string;
+  description2?: string;
   buttonText: string;
   buttonLink: string;
   imageUrl: string;
   backgroundColor: string;
   layout?: 'textLeft' | 'textRight';
+  variant?: 'default' | 'third';
 }
 
 export default function Palette({
   category,
   title,
   description,
+  description2,
   buttonText,
   buttonLink,
   imageUrl,
   backgroundColor,
   layout = 'textLeft',
+  variant = 'default',
   // 2. "imagePosition" propu arqumentlərdən silindi
 }: PaletteProps) {
 
-  const sectionClassName = `${styles.paletteMain} ${layout === 'textRight' ? styles.reversed : ''}`;
+  const sectionClassName = `${styles.paletteMain} ${layout === 'textRight' ? styles.reversed : ''} ${variant === 'third' ? styles.thirdVariant : ''}`;
 
   return (
     <section className={sectionClassName}>
@@ -38,6 +42,7 @@ export default function Palette({
         </h2>
         <div className={styles.paletteDescription}>
           <p>{description}</p>
+          {description2 && <p>{description2}</p>}
         </div>
         <div>
           <a href={buttonLink} className={styles.heroButton}>

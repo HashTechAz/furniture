@@ -1,0 +1,13 @@
+.videoMain {
+    width: 100%;
+    padding: 60px 80px 60px 0px;
+}
+
+.videoMain .videoContent {
+    width: 100%;
+    height: 800px;
+    background-image: url("https://images.pexels.com/photos/8089158/pexels-photo-8089158.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
