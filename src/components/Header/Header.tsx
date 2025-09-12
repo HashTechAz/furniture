@@ -1,12 +1,50 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "./Header.module.css";
 import SearchOverlay from "../HeaderSearchOverlay/SearchOverlay";
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [showSticky, setShowSticky] = useState(false);
+  const [triggerSlide, setTriggerSlide] = useState(false);
+
+  useEffect(() => {
+    const sentinel = document.getElementById('header-trigger');
+
+    if ('IntersectionObserver' in window && sentinel) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          setShowSticky(!entry.isIntersecting);
+        },
+        { root: null, threshold: 0, rootMargin: '0px' }
+      );
+      observer.observe(sentinel);
+      return () => observer.disconnect();
+    }
+
+    // Fallback: pixel threshold
+    const handleScroll = () => {
+      const scrolled = window.scrollY || document.documentElement.scrollTop;
+      setShowSticky(scrolled > 600);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!showSticky) return;
+    setTriggerSlide(true);
+    const id = requestAnimationFrame(() => {
+      const id2 = requestAnimationFrame(() => setTriggerSlide(false));
+      return () => cancelAnimationFrame(id2);
+    });
+    return () => cancelAnimationFrame(id);
+  }, [showSticky]);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -18,7 +56,7 @@ const Header = () => {
 
   return (
     <>
-      <header className={styles.header}>
+      <header className={`${styles.header} ${showSticky ? styles.headerSticky : ''} ${showSticky && triggerSlide ? styles.headerSlideFromTop : ''}`}>
         <nav className={styles.navbar}>
           <div className={styles.navigationMenu}>
             <ul>

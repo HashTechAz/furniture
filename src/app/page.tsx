@@ -68,6 +68,7 @@ export default function Home() {
   return (
     <>
       <HeroSection />
+      <div id="header-trigger" style={{ height: 1 }} />
       <ProductSlider />
       <Palette {...originalPaletteData} />
       <NewsSection />

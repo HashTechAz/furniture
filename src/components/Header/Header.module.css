@@ -1,9 +1,24 @@
 .header {
-  background-color: #633730;
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 100;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   padding: 30px 80px;
+  background-color: #633730; /* Default background on load */
+  transform: translateY(0);
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1), background-color 400ms ease, box-shadow 400ms ease;
+}
+
+.headerSticky {
+  background-color: #ffffff; /* White on scroll */
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(0);
+}
+
+/* Slide-in animation class applied briefly when sticky activates */
+.headerSlideFromTop {
+  transform: translateY(-600px);
 }
 
 .navbar {
@@ -75,4 +90,13 @@ nav .navSearch {
   cursor: pointer;
   padding: 0;
   color: #DBD1CF; /* İkon rengini beyaz yapar */
+}
+
+/* Colors when sticky (on white background) */
+.headerSticky .navigationMenu ul .navLists {
+  color: #333333;
+}
+
+.headerSticky .searchButton {
+  color: #333333;
 }
