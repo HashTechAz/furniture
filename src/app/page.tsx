@@ -6,6 +6,7 @@ import ProductNewsSlider from "@/components/ProductNewsSlider/ProductNewsSlider"
 import MiddleBanner from "@/components/MiddleBanner/MiddleBanner";
 import TrustBadges from "@/components/TrustBadges/TrustBadges";
 import HomeVideo from "@/components/HomeVideo/HomeVideo";
+import Form from "@/components/Form/Form";
 
 const originalPaletteData = {
   category: "News",
@@ -106,6 +107,7 @@ export default function Home() {
       <Palette {...thirdPaletteData} layout={'textRight'} variant={'third'} />
       <HomeVideo/>
       <Palette {...fourPaletteData} imagePosition={secondPaletteData.imagePosition} />
+      <Form name="Test User" email="test@example.com"/>
     </>
   );
 }

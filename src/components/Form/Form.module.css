@@ -1,0 +1,54 @@
+.formSection {
+  width: 100%;
+  padding: 60px 80px;
+}
+
+.formSection .formMain {
+  width: 100%;
+  padding: 56px 128px 56px 72px;
+  background-color: #F4F4F1;
+}
+
+.formMain .formLeftPanel {
+  width: 50%;
+  height: 600px;
+}
+
+.formMain .formTitle {
+  width: 50%;
+}
+
+.formTitle h1 {
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.formMain .formContentBox {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  margin-top: 40px;
+}
+
+.formContentBox .formLeftContent {
+  width: 50%;
+  height: auto;
+  padding-right: 50px;
+}
+
+.formLeftContent p {
+  font-weight: 600;
+}
+
+.formLeftContent p .formLink {
+   text-decoration: underline;
+}
+
+.formLeftContent p .formLink:hover {
+  color: rgb(117, 117, 207);
+}
+
+.formContentBox .formRightContent {
+  width: 50%;
+  background-color: red;
+}
