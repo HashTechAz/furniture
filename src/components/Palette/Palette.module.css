@@ -1,7 +1,12 @@
-.paletteMain  {
- width: 100%;
- padding: 60px 80px;
- display: flex;
+.paletteMain {
+  width: 100%;
+  padding: 60px 80px;
+  display: flex;
+}
+
+/* YENİ KOD: Düzülüşü tərs çevirir */
+.paletteMain.reversed {
+  flex-direction: row-reverse;
 }
 
 .paletteMain .paletteTextBox {
@@ -9,7 +14,10 @@
     padding: 3rem 10rem 0 0;
 }
 
-
+/* YENİ KOD: Tərs düzülüşdə padding-i də tərsinə çevirir */
+.paletteMain.reversed .paletteTextBox {
+  padding: 3rem 0 0 10rem;
+}
 
 .paletteTextBoxTitle span {
     font-size: 15px !important;
@@ -26,7 +34,6 @@
     font-weight: 600;
 }
 
-
 .heroButton {
     display: inline-block;
     text-decoration: none;
@@ -39,9 +46,9 @@
     z-index: 2;
     overflow: hidden;
     transition: color 0.3s ease-in-out;
-  }
+}
   
-  .heroButton::before {
+.heroButton::before {
     content: '';
     position: absolute;
     top: 0;
@@ -52,34 +59,30 @@
     transform: translateX(-100%);
     transition: transform 0.5s ease-in-out;
     z-index: -1;
-  }
+}
   
-  .heroButton:hover::before {
+.heroButton:hover::before {
     transform: translateX(0);
-  }
+}
 
-  .paletteMain .paletteImgBox {
+.paletteMain .paletteImgBox {
     width: 50%;
     position: relative;
     display: flex;
     flex-direction: row-reverse;
 }
 
-  .paletteOneColor {
+.paletteOneColor {
     width: 510px;
     height: 580px;
-  }
+}
 
-  .paletteJpg {
-     /* width: 370px;
-     height: 500px; */
-     position: absolute;
-     /* top: 40px;
-     left: 0px; */
-     background-size: cover;
-     transition: transform 0.4s ease-in-out;
-  }
+.paletteJpg {
+    position: absolute;
+    background-size: cover;
+    transition: transform 0.4s ease-in-out;
+}
 
-  .paletteJpg:hover {
+.paletteJpg:hover {
     transform: scale(1.05);
-  }
+}
