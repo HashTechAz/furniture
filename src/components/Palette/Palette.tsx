@@ -1,7 +1,7 @@
 import styles from "./Palette.module.css";
 
+// 1. "imagePosition" propu interfeysdən silindi
 interface PaletteProps {
-  // ...digər proplar eyni qalır...
   category?: string;
   title: string;
   description: string;
@@ -9,14 +9,6 @@ interface PaletteProps {
   buttonLink: string;
   imageUrl: string;
   backgroundColor: string;
-  // DƏYİŞİKLİK BURADADIR:
-  imagePosition: {
-    width: string;
-    height: string;
-    top: string;
-    left?: string;  // Opsional oldu (sual işarəsi əlavə edildi)
-    right?: string; // Yeni opsional prop əlavə edildi
-  };
   layout?: 'textLeft' | 'textRight';
 }
 
@@ -28,15 +20,13 @@ export default function Palette({
   buttonLink,
   imageUrl,
   backgroundColor,
-  imagePosition,
   layout = 'textLeft',
+  // 2. "imagePosition" propu arqumentlərdən silindi
 }: PaletteProps) {
 
-  // 3. DÜZÜLÜŞƏ GÖRƏ LAZIM OLAN CLASS TƏYİN EDİLİR
   const sectionClassName = `${styles.paletteMain} ${layout === 'textRight' ? styles.reversed : ''}`;
 
   return (
-    // VƏ BURADA İSTİFADƏ EDİLİR
     <section className={sectionClassName}>
       <div className={styles.paletteTextBox}>
         {category && (
@@ -64,9 +54,9 @@ export default function Palette({
         ></div>
         <div
           className={styles.paletteJpg}
+          // 3. Style-dan "imagePosition" silindi, yalnız şəkil qaldı
           style={{
             backgroundImage: `url("${imageUrl}")`,
-            ...imagePosition,
           }}
         ></div>
       </div>

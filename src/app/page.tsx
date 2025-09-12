@@ -39,22 +39,7 @@ const secondPaletteData = {
   }
 };
 
-const thirdPaletteData = {
-  category: "",
-  title: "Creating good design demands honesty and respect",
-  description: "Montana Furniture is a family-owned company, established in 1982, leading within storage and furniture for private homes and contemporary office spaces. The company is founded by Peter J. Lassen, who is also the designer of the Montana system. All Montana modules are designed, developed and made in Denmark. Every day, in a small town on the island of Funen over 140 professionals work hard to uphold the highest standards of processing, painting and assembling – making sure that your Montana furniture will last a lifetime.",
-  buttonText: "Learn About Our Promise",
-  buttonLink: "/sustainability",
-  imageUrl: "https://images.unsplash.com/photo-1592078615290-033ee584e267?w=800&q=80",
-  backgroundColor: "#E3E9E3",
-  imagePosition: {
-    width: '420px',
-    height: '550px',
-    top: '20px',
-    right: '80px',
-  },
-  layout: 'textRight', 
-} as const;
+
 
 // 1. Orijinal MiddleBanner düzülüşü üçün məlumatlar
 const bannerDataDefault = {
@@ -91,7 +76,6 @@ export default function Home() {
       <TrustBadges />
       <Palette {...secondPaletteData} />
       <MiddleBanner {... bannerDataReversed} />
-      <Palette {...thirdPaletteData} />
     </>
   );
 }
