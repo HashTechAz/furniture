@@ -5,24 +5,47 @@
     gap: 15px;
 }
 
+.mBanner.reversed {
+    flex-direction: row-reverse;
+  }
+
 .mBanner .leftBanner {
     width: 50%;
-    height: 150vh;
-    background-image: url("https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/panton-x-montana/wire/montana_pantonwire_d35_blackred_rosehiptop_h.jpg?mode=crop&width=1520&height=2027");
+    height: 900px;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
 }
 
-.mBanner .rightBanner {
-    width: 35%;
-    height: 150vh;
+.mBanner:not(.reversed) .leftBanner {
+    width: 800px;
+    height: 1000px;
+}
+
+.mBanner.reversed .leftBanner {
+    width: 680px;
+    height: 900px;
+}
+
+
+.mBanner:not(.reversed) .rightBanner {
+    width: 560px;
+    height: 750px;
+}
+
+.mBanner.reversed .rightBanner {
+    width: 680px;
+    height: 500px;
+}
+
+/* Reversed layout'ta small image tam ölçüde */
+.mBanner.reversed .rightImg {
+    width: 100%;
+    height: 100%;
 }
 
 .rightBanner .rightImg {
     width: 100%;
-    height: 110vh;
-    background-image: url("https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/panton-x-montana/wire/montana_pantonwire_d35_blackred_detail_h.jpg?mode=crop&width=1520&height=2027");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -30,7 +53,7 @@
 
 .rightBanner .rightText {
     width: 100%;
-    height: 40vh;
+    height: 250px;
     padding: 2rem;
 }
 
@@ -71,3 +94,4 @@
   .heroButton:hover::before {
     transform: translateX(0);
   }
+  
