@@ -1,6 +1,5 @@
 import styles from "./Palette.module.css";
 
-// 1. "imagePosition" propu interfeysdən silindi
 interface PaletteProps {
   category?: string;
   title: string;
