@@ -4,7 +4,20 @@
 }
 
 .videoMain .videoContent {
+    height: 700px;
     width: 100%;
-    height: 800px;
     background-color: #BB723A;
+    padding: 40px 80px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.videoContent img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
