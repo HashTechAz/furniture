@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './layout.module.css';
+import { FaBars } from 'react-icons/fa';
 
 export default function AdminLayout({
   children,
@@ -69,22 +70,23 @@ export default function AdminLayout({
             Users
           </Link>
         </nav>
+        <div style={{width:"100%",display:'flex',justifyContent:"center"}}>
+          <button onClick={handleLogout} className={styles.logoutButton}>
+              Logout
+            </button>
+        </div>
       </div>
 
       <div className={styles.mainContent}>
         <header className={styles.header}>
-          <button
-            className={styles.menuButton}
-            onClick={() => setIsSidebarOpen(true)}
-          >
-            ☰
-          </button>
+        
           
           <div className={styles.headerActions}>
+             <button title='side' onClick={() => setIsSidebarOpen(!isSidebarOpen)} className=''>
+              <FaBars/>
+              </button>
             <span className={styles.userEmail}>{user?.email}</span>
-            <button onClick={handleLogout} className={styles.logoutButton}>
-              Logout
-            </button>
+          
           </div>
         </header>
 

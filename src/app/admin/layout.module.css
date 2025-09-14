@@ -1,23 +1,25 @@
 .adminLayout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
   background: #f8f9fa;
 }
 
 .sidebar {
-  width: 250px;
+  width: 0px;
+  height: 100vh;
   background: #333;
   color: #fff;
   position: fixed;
-  height: 100vh;
   left: -250px;
   transition: left 0.3s ease;
   z-index: 1000;
   overflow-y: auto;
+  transition: ease-in-out 0.4s;
 }
 
 .sidebarOpen {
-  left: 0;
+   width: 250px;
+   transition: ease-in-out 0.3s;
 }
 
 .sidebarHeader {
@@ -81,6 +83,7 @@
   align-items: center;
   position: sticky;
   top: 0;
+  height: 40px;
   z-index: 100;
 }
 
@@ -121,6 +124,8 @@
 
 .content {
   padding: 2rem;
+  height:calc(100% - 40px)!important;
+  overflow-y: scroll;
 }
 
 /* Desktop styles */
