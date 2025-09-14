@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import styles from "./Header.module.css";
 import SearchOverlay from "../HeaderSearchOverlay/SearchOverlay";
@@ -9,6 +10,7 @@ const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [showSticky, setShowSticky] = useState(false);
   const [triggerSlide, setTriggerSlide] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const sentinel = document.getElementById('header-trigger');
@@ -54,9 +56,11 @@ const Header = () => {
     setIsSearchOpen(!isSearchOpen);
   };
 
+  const isSustainabilityPage = pathname === '/sustainability';
+
   return (
     <>
-      <header className={`${styles.header} ${showSticky ? styles.headerSticky : ''} ${showSticky && triggerSlide ? styles.headerSlideFromTop : ''}`}>
+      <header className={`${styles.header} ${showSticky ? styles.headerSticky : ''} ${showSticky && triggerSlide ? styles.headerSlideFromTop : ''} ${isSustainabilityPage ? styles.sustainabilityHeader : ''}`}>
         <nav className={styles.navbar}>
           <div className={styles.navigationMenu}>
             <ul>
@@ -81,8 +85,8 @@ const Header = () => {
                 </Link>
               </li>
               <li className={styles.navLists}>
-                <Link href="/professionals" className={styles.navLinks}>
-                  Professionals
+                <Link href="/sustainability" className={styles.navLinks}>
+                Sustainability
                 </Link>
               </li>
             </ul>

@@ -122,6 +122,9 @@ const Footer = () => {
       </div>
         </div>
       </div>
+      <div className={styles.footerEnd}>
+        <h3>© 2025 Montana Furniture A/S. All rights reserved.</h3>
+      </div>
     </footer>
   );
 };

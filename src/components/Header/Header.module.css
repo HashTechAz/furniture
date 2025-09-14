@@ -100,3 +100,17 @@ nav .navSearch {
 .headerSticky .searchButton {
   color: #333333;
 }
+
+/* Sustainability page header styles */
+.sustainabilityHeader {
+  background-color: #3B7840 !important;
+  box-shadow: none !important;
+}
+
+.sustainabilityHeader .navigationMenu ul .navLists {
+  color: #ffffff !important;
+}
+
+.sustainabilityHeader .searchButton {
+  color: #ffffff !important;
+}
