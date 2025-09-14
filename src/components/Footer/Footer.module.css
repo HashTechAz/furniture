@@ -1,181 +1,89 @@
 .footer {
-  background: #f8f9fa;
-  border-top: 1px solid #e5e5e5;
-  margin-top: 4rem;
+  background: #000;
+  width: 100%;
+  padding: 40px 80px;
 }
 
-.footerContent {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 3rem 20px 2rem;
+.footer .footerMain {
+  width: 100%;
+  height: 400px;
 }
 
-.footerGrid {
+.footerMain h2 {
+  font-size: 20px;
+  color: #fff;
+}
+
+.parent {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  gap: 8px;
+  margin-top: 45px;
 }
 
-.footerSection h3 {
-  font-size: 1.125rem;
+.parent .footerItem p {
+  font-size: 12px;
+  color: #fff;
   font-weight: 600;
-  margin-bottom: 1rem;
-  color: #333;
 }
 
-.footerList {
-  list-style: none;
+.footerItem .cvrNumber {
+  margin-top: 4.8em;
+}
+
+.parent .footerItem h3 {
+  color: #fff;
+  font-size: 12px;
   margin: 0;
-  padding: 0;
+  font-weight: 800;
 }
 
-.footerItem {
-  margin-bottom: 0.5rem;
+.parent > .footerItem:first-child {
+  width: 300px;
+  /* background-color: red; */
+}
+
+.footerItem ul  {
+   list-style-type: none;
+   margin-top: 14px;
+}
+
+.footerItem ul li {
+  color: #ffffffcc;
+  font-size: 12px;
+  padding-bottom: 12px;
+  font-weight: 500;
 }
 
 .footerLink {
-  color: #666;
-  transition: color 0.2s ease;
+  position: relative; /* Bu, ::after elementinin buna görə mövqelənməsi üçün vacibdir */
+  text-decoration: none;
+  color: inherit;
+  padding-bottom: 2px; /* Xətt ilə mətn arasında boşluq */
+  display: inline-block; /* Düzgün ölçü alması üçün */
 }
 
-.footerLink:hover {
-  color: #333;
+/* 2. Xətti yaradırıq və başlanğıcda gizlədirik */
+.footerLink::after {
+  content: ''; /* Psevdo-elementlərin işləməsi üçün vacibdir */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%; /* Linkin eni qədər olsun */
+  height: 1px; /* Xəttin qalınlığı */
+  background-color: #ffffffcc; /* Xəttin rəngi */
+
+  /* Başlanğıcda enini sıfırlayaraq gizlədirik */
+  transform: scaleX(0);
+  transform-origin: left; /* Böyümənin soldan başlamasını təmin edir */
+
+  /* Animasiyanın özü: transform dəyişəndə 0.4 saniyəlik axıcı keçid etsin */
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.newsletter {
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.newsletter h3 {
-  margin-bottom: 0.5rem;
-}
-
-.newsletter p {
-  color: #666;
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
-}
-
-.newsletterForm {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.newsletterInput {
-  flex: 1;
-  padding: 0.75rem;
-  border: 1px solid #e5e5e5;
-  border-radius: 4px;
-  font-size: 0.875rem;
-}
-
-.newsletterInput:focus {
-  outline: none;
-  border-color: #333;
-}
-
-.newsletterButton {
-  background: #333;
-  color: #fff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-}
-
-.newsletterButton:hover {
-  background: #555;
-}
-
-.socialLinks {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.socialLink {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 50%;
-  color: #666;
-  transition: all 0.2s ease;
-}
-
-.socialLink:hover {
-  background: #333;
-  color: #fff;
-  border-color: #333;
-}
-
-.footerBottom {
-  border-top: 1px solid #e5e5e5;
-  padding-top: 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.copyright {
-  color: #666;
-  font-size: 0.875rem;
-}
-
-.legalLinks {
-  display: flex;
-  gap: 2rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.legalItem {
-  margin: 0;
-}
-
-.legalLink {
-  color: #666;
-  font-size: 0.875rem;
-  transition: color 0.2s ease;
-}
-
-.legalLink:hover {
-  color: #333;
-}
-
-/* Mobile styles */
-@media (max-width: 768px) {
-  .footerContent {
-    padding: 2rem 15px 1.5rem;
-  }
-  
-  .footerGrid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .newsletterForm {
-    flex-direction: column;
-  }
-  
-  .footerBottom {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .legalLinks {
-    justify-content: center;
-  }
+/* 3. Hover zamanı xətti göstəririk */
+.footerLink:hover::after {
+  /* Enini 100% edərək görünən hala gətiririk */
+  transform: scaleX(1);
 }
