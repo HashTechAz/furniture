@@ -95,7 +95,7 @@ const Header = () => {
           <div className={styles.logo}>M. Logo</div>
 
           <div className={styles.navSearch}>
-            <button className={styles.searchButton} onClick={toggleSearch}>
+            <button type="button" title="mebel"  className={styles.searchButton} onClick={toggleSearch}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
