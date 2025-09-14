@@ -4,7 +4,10 @@ import styles from "./sustainability.module.css"
 
 const page = () => {
   return (
-    <section className={styles.sustainability}></section>
+    <div className={styles.container}>
+      <h1>Sustainability</h1>
+      <p>Welcome to our sustainability page</p>
+    </div>
   )
 }
 
