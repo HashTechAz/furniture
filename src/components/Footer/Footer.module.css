@@ -87,3 +87,40 @@
   /* Enini 100% edərək görünən hala gətiririk */
   transform: scaleX(1);
 }
+
+.footerItem .footerSocial ul {
+  list-style-type: none;
+  display: flex;
+  gap: 10px; /* Boşluğu bir az artırdım */
+  padding: 0; /* Standart boşluğu sıfırlayırıq */
+}
+
+.footerItem .footerSocial ul li {
+  border-radius: 50%;
+  padding: 8px; /* Dairəni bir az böyütdüm */
+  background-color: #fff;
+  font-size: 12px; /* İkon ölçüsünü artırdım */
+  color: #000; /* İkonların rəngi qara olsun */
+  
+  /* YENİ KOD: İkonları dairənin mərkəzində saxlamaq üçün */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* YENİ KOD: Böyümə animasiyası üçün */
+  transition: transform 0.3s ease-in-out;
+}
+
+/* YENİ KOD: Hover zamanı dairəni 10% böyüdür */
+.footerItem .footerSocial ul li:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+/* Link elementinin içindəki ikonun düzgün ölçü alması üçün */
+.footerItem .footerSocial ul li a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit; /* Valideynin (li) rəngini alır */
+}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./Footer.module.css";
+import { FaFacebookF, FaInstagram, FaYoutube, FaPinterestP, FaLinkedinIn } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -87,7 +88,38 @@ const Footer = () => {
             </ul>
           </div>
 
-          
+          <div className={styles.footerItem}>
+        <h3>Select Market</h3>
+        <div className={styles.footerSocial}>
+          <ul>
+            <li>
+              <Link href={"/"} aria-label="Facebook">
+                <FaFacebookF />
+              </Link>
+            </li>
+            <li>
+              <Link href={"/"} aria-label="Instagram">
+                <FaInstagram />
+              </Link>
+            </li>
+            <li>
+              <Link href={"/"} aria-label="YouTube">
+                <FaYoutube />
+              </Link>
+            </li>
+            <li>
+              <Link href={"/"} aria-label="Pinterest">
+                <FaPinterestP />
+              </Link>
+            </li>
+            <li>
+              <Link href={"/"} aria-label="LinkedIn">
+                <FaLinkedinIn />
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
         </div>
       </div>
     </footer>
