@@ -1,0 +1,13 @@
+.susImgBox {
+  width: 100%;
+  margin: 70px 0;
+  display: flex;
+  gap: 15px;
+}
+
+.susImgBox .leftImg img {
+  width: 680px;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
