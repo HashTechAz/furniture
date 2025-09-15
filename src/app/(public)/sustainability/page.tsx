@@ -3,6 +3,7 @@ import SustainabilityHero from "./components/SustainabilityHero/SustainabilityHe
 import SustainabilityGallery from "./components/SustainabilityGallery/SustainabilityGallery";
 import SustainabilityCertifications from "./components/SustainabilityCertifications/SustainabilityCertifications";
 import SustainabilityHistory from "./components/SustainabilityHistory/SustainabilityHistory"
+import FlexImages from "./components/FlexImages/FlexImages";
 
 const page = () => {
   return (
@@ -11,6 +12,7 @@ const page = () => {
       <SustainabilityGallery />
       <SustainabilityCertifications />
       <SustainabilityHistory/>
+      <FlexImages/>
     </>
   );
 };

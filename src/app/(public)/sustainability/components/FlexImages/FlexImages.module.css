@@ -1,0 +1,31 @@
+.imagesSection {
+    width: 100%;
+    padding: 60px 0px;
+}
+
+.imagesSection .imagesMain {
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 10px;
+}
+
+.imagesMain .imagesLeft {
+    width: 560px;
+}
+
+.imagesLeft img {
+    width: 100%;
+    height: 750px;
+    object-fit: cover;
+}
+
+.imagesMain .imagesRight {
+    width: 800px;
+}
+
+.imagesRight img {
+  width: 100%;
+  height: 570px;
+  object-fit: cover;
+}
