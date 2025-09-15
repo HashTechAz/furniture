@@ -32,9 +32,9 @@ export function generateToken(user: Omit<User, 'password'>): string {
     );
 }
 
-export function verifyToken(token: string): any {
+export function verifyToken(token: string): { id: string; email: string; iat?: number; exp?: number } | null {
     try {
-        return jwt.verify(token, JWT_SECRET);
+        return jwt.verify(token, JWT_SECRET) as { id: string; email: string; iat?: number; exp?: number };
     } catch (error) {
         return null;
     }

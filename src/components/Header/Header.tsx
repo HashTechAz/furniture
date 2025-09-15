@@ -48,9 +48,9 @@ const Header = () => {
     return () => cancelAnimationFrame(id);
   }, [showSticky]);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
+  // const toggleMobileMenu = () => {
+  //   setIsMobileMenuOpen(!isMobileMenuOpen);
+  // };
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);

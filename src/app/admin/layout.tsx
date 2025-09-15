@@ -12,7 +12,8 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  interface AdminUser { email: string }
+  const [user, setUser] = useState<AdminUser | null>(null);
   const router = useRouter();
 
   useEffect(() => {

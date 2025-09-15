@@ -22,25 +22,27 @@ interface FilterGroup {
 interface FilterProps {
   title: string;
   groups: FilterGroup[];
-  onFilterChange: (filters: Record<string, any>) => void;
+  onFilterChange: (filters: Record<string, string[] | number | undefined>) => void;
   onClearFilters: () => void;
 }
 
+type FiltersState = Record<string, string[] | number | undefined>;
+
 export default function Filter({ title, groups, onFilterChange, onClearFilters }: FilterProps) {
-  const [filters, setFilters] = useState<Record<string, any>>({});
+  const [filters, setFilters] = useState<FiltersState>({});
 
   const handleCheckboxChange = (groupTitle: string, value: string, checked: boolean) => {
-    const newFilters = { ...filters };
-    if (!newFilters[groupTitle]) {
-      newFilters[groupTitle] = [];
-    }
-    
+    const newFilters: FiltersState = { ...filters };
+
+    const current = newFilters[groupTitle];
+    const currentArray: string[] = Array.isArray(current) ? current : [];
+
     if (checked) {
-      newFilters[groupTitle] = [...newFilters[groupTitle], value];
+      newFilters[groupTitle] = [...currentArray, value];
     } else {
-      newFilters[groupTitle] = newFilters[groupTitle].filter((item: string) => item !== value);
+      newFilters[groupTitle] = currentArray.filter((item) => item !== value);
     }
-    
+
     setFilters(newFilters);
     onFilterChange(newFilters);
   };
@@ -71,7 +73,7 @@ export default function Filter({ title, groups, onFilterChange, onClearFilters }
                   <input
                     type="checkbox"
                     id={`${group.title}-${option.value}`}
-                    checked={filters[group.title]?.includes(option.value) || false}
+                    checked={Array.isArray(filters[group.title]) ? (filters[group.title] as string[]).includes(option.value) : false}
                     onChange={(e) => handleCheckboxChange(group.title, option.value, e.target.checked)}
                   />
                   <label htmlFor={`${group.title}-${option.value}`}>
@@ -94,7 +96,7 @@ export default function Filter({ title, groups, onFilterChange, onClearFilters }
                 onChange={(e) => handleRangeChange(group.title, Number(e.target.value))}
               />
               <span className={styles.filterRangeValue}>
-                {filters[group.title] || group.min || 0}{group.unit}
+                {typeof filters[group.title] === 'number' ? (filters[group.title] as number) : (group.min || 0)}{group.unit || ''}
               </span>
             </div>
           )}

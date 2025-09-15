@@ -18,7 +18,7 @@ export default function Contact() {
             <div className={styles.contactInfo}>
               <h2>Get in Touch</h2>
               <p>
-                We're here to help you find the perfect furniture solutions for your space. 
+                We&apos;re here to help you find the perfect furniture solutions for your space. 
                 Contact us for product information, design consultation, or support.
               </p>
               
