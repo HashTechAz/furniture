@@ -24,7 +24,7 @@
 
 .susImgBox {
   width: 100%;
-  margin: 70px 0 80px;
+  margin: 70px 0;
   display: flex;
   gap: 15px;
 }
@@ -37,3 +37,24 @@
   object-fit: cover;
   display: block;
 }
+
+.certifications {
+  width: 100%;
+  padding: 70px;
+}
+
+.certifications .certificationsMain {
+  width: 560px;
+  margin: 0 auto;
+}
+
+.certificationsMain h2 {
+  font-weight: 600;
+  margin-bottom: 25px
+}
+
+.certificationsMain p {
+  font-weight: 600;
+  margin-bottom: 25px
+}
+

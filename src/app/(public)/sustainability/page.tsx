@@ -34,6 +34,24 @@ const page = () => {
           />
         </div>
       </section>
+
+      <section className={styles.certifications}>
+        <div className={styles.certificationsMain}>
+          <h2>Certifications</h2>
+          <p>
+            The Montana shelving modules carry the EU Ecolabel, the Danish
+            Indoor Climate Label, and the PEFC certification. Further, Montana's
+            production comply with the ISO 14001 environmental standards.
+          </p>
+
+          <p>
+            Montana became one of the first Danish businesses to run
+            ‘cradle-to-grave’ analyses of the environmental consequences of a
+            given product. Since 2007, we have exclusively used water-based
+            lacquer colours, which neither smell nor contain solvents.
+          </p>
+        </div>
+      </section>
     </>
   );
 };
