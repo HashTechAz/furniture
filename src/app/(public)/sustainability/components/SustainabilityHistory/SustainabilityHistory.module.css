@@ -1,0 +1,34 @@
+.history {
+    width: 100%;
+    padding: 60px 80px;
+}
+
+.history .historyMain {
+    width: 100%;
+    display: flex;
+}
+
+.historyMain .historyLeftTitle {
+    width: 60%;
+}
+
+.historyMain .historyList {
+    padding-right: 30px;
+}
+
+.historyLeftTitle h1 {
+    color: #2c3587;
+    font-size: 48px;
+}
+
+.historyMain .historyList ul {
+    list-style-type: none;
+}
+
+.historyList ul li {
+    padding-bottom: 20px;
+}
+
+.historyList ul li p {
+    font-weight: 600;
+}
