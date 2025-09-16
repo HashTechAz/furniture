@@ -6,6 +6,7 @@
 .fav .favMain {
     width: 55%;
     margin: 0 auto;
+    padding-right: 6em;
 }
 
 .favMain h2 {
@@ -13,4 +14,26 @@
     margin-bottom: 1.4em;
     font-size: 32px;
     font-weight: 400;
+}
+
+.favText {
+    font-weight: 600;
+}
+
+
+.favMain p + p {
+    margin-top: 30px;
+}
+
+.favBtn {
+    display: inline-block;
+    padding: 10px 24px;
+    border: 1px solid rgb(175, 175, 175);
+    font-size: 14px;
+    margin-top: 20px;
+    transition: all .3s ease;
+}
+
+.favBtn:hover {
+    border: 1px solid #020203;
 }
