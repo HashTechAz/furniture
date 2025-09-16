@@ -1,0 +1,38 @@
+.companies {
+    width: 100%;
+    padding: 60px 80px;
+}
+
+.companies .companiesTitle {
+    width: 75%;
+    margin: 0 auto;
+    padding: 4em 6em;
+    position: relative;
+}
+
+.companiesTitle span {
+    font-size: 24px;
+    color: #020203;
+    font-style: italic;
+}
+
+.companiesTitle .companyBox {
+    width: 300px;
+    height: 190px;
+    background-color: #EAEFD9;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: -1;
+    padding: 2.5em 3em;
+}
+
+.companyAuthor {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.companyAuthor span {
+    font-size: 14px;
+    font-weight: 600;
+}
