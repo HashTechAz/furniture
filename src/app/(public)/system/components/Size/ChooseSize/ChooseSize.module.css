@@ -1,0 +1,28 @@
+.chooseSize {
+    width: 100%;
+    padding: 60px 80px;
+}
+.chooseSize .chooseMain {
+    width: 100%;
+}
+.chooseMain .chooseHeader {
+    width: 40%;
+}
+.chooseHeader h1 {
+    font-size: 32px;
+    color: #020203;
+    font-weight: 400;
+    margin-bottom: 1.4em;
+}
+.chooseHeader p {
+    font-weight: 600;
+}
+.chooseMain .chooseImage {
+    width: 100%;
+    margin: 5em 0 0 3em;
+}
+.chooseImage img {
+    width: 100%;
+    height: 800px;
+    object-fit: cover;
+}

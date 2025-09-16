@@ -1,0 +1,50 @@
+.detailSize {
+  width: 100%;
+  padding: 60px 80px;
+}
+
+.detailMain {
+  width: 100%;
+}
+
+.detailHeader {
+  width: 40%;
+}
+
+.detailHeader h1 {
+  font-size: 32px;
+  color: #020203;
+  font-weight: 400;
+  margin-bottom: 1.4em;
+}
+
+.detailHeader p {
+  font-weight: 600;
+}
+
+.detailGrid {
+  margin-top: 80px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  width: 70%;
+  margin: 6em auto 0;
+  text-align: center;
+}
+
+.detailCard img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.detailCard h3 {
+  font-size: 14px;
+  margin-top: 12px;
+}
+
+.detailCard span {
+  font-size: 14px;
+}
+
+

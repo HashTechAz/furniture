@@ -1,0 +1,16 @@
+.fav {
+    width: 100%;
+    padding: 60px 80px;
+}
+
+.fav .favMain {
+    width: 55%;
+    margin: 0 auto;
+}
+
+.favMain h2 {
+    color: #020203;
+    margin-bottom: 1.4em;
+    font-size: 32px;
+    font-weight: 400;
+}
