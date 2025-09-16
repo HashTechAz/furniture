@@ -1,0 +1,46 @@
+.related {
+    width: 100%;
+    padding: 60px 80px;
+    background-color: #F6F6F6;
+    margin-bottom: 60px;
+}
+
+.related h1 {
+    color: #333;
+    font-size: 32px;
+    font-weight: 500;
+}
+
+.related .relatedMain {
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+
+.relatedMain .relatedItems {
+    width: 32%;
+}
+
+.relatedItems img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+}
+
+.relatedItems h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .relatedItems p {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #666;
+    padding-right: 50px;
+  }

@@ -114,3 +114,17 @@ nav .navSearch {
 .sustainabilityHeader .searchButton {
   color: #ffffff !important;
 }
+
+/* System page header styles */
+.systemHeader {
+  background-color: #2C3587 !important;
+  box-shadow: none !important;
+}
+
+.systemHeader .navigationMenu ul .navLists {
+  color: #ffffff !important;
+}
+
+.systemHeader .searchButton {
+  color: #ffffff !important;
+}

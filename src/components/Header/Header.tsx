@@ -57,10 +57,11 @@ const Header = () => {
   };
 
   const isSustainabilityPage = pathname === '/sustainability';
+  const isSystemPage = pathname === '/system';
 
   return (
     <>
-      <header className={`${styles.header} ${showSticky ? styles.headerSticky : ''} ${showSticky && triggerSlide ? styles.headerSlideFromTop : ''} ${isSustainabilityPage ? styles.sustainabilityHeader : ''}`}>
+      <header className={`${styles.header} ${showSticky ? styles.headerSticky : ''} ${showSticky && triggerSlide ? styles.headerSlideFromTop : ''} ${isSustainabilityPage ? styles.sustainabilityHeader : ''} ${isSystemPage ? styles.systemHeader : ''}`}>
         <nav className={styles.navbar}>
           <div className={styles.navigationMenu}>
             <ul>
@@ -80,8 +81,8 @@ const Header = () => {
                 </Link>
               </li>
               <li className={styles.navLists}>
-                <Link href="/customer-support" className={styles.navLinks}>
-                  Customer Support
+                <Link href="/system" className={styles.navLinks}>
+                  Montana System
                 </Link>
               </li>
               <li className={styles.navLists}>

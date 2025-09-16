@@ -10,6 +10,7 @@ interface SearchOverlayProps {
 
 const SearchOverlay = ({ isOpen, onClose }: SearchOverlayProps) => {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   
 
@@ -29,6 +30,13 @@ const SearchOverlay = ({ isOpen, onClose }: SearchOverlayProps) => {
     };
   }, [isOpen, onClose]);
 
+  // Focus the input only on client when overlay opens to avoid SSR/CSR mismatch
+  useEffect(() => {
+    if (isOpen) {
+      inputRef.current?.focus();
+    }
+  }, [isOpen]);
+
   const overlayClasses = `${styles.overlayContainer} ${isOpen ? styles.open : ""}`;
 
   return (
@@ -36,10 +44,10 @@ const SearchOverlay = ({ isOpen, onClose }: SearchOverlayProps) => {
       <div className={styles.searchWrapper}>
         <div className={styles.searchBox}>
           <input
+            ref={inputRef}
             type="text"
             placeholder="Search..."
             className={styles.searchInput}
-            autoFocus
           />
           <button className={styles.closeButton} onClick={onClose}>
             &times;

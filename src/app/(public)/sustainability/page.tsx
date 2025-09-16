@@ -8,6 +8,7 @@ import Companies from "./components/Companies/Companies";
 import Ecolabel from "./components/Ecolabel/Ecolabel";
 import HomeVideo from "@/components/HomeVideo/HomeVideo";
 import Palette from "@/components/Palette/Palette";
+import Related from "./components/Related/Related";
 
 const sustainabilityPaletteData = {
   category: "Sustainability",
@@ -18,7 +19,7 @@ const sustainabilityPaletteData = {
   buttonLink: "/sustainability",
   imageUrl:
     "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/margrethe-collab/montana_3newcolours_2023_margretheodgaard_05_h.jpg?mode=crop&width=540&height=720",
-  backgroundColor: "#E6F3EC",
+  backgroundColor: "#EAEFD9",
   imagePosition: {
     width: "370px",
     height: "500px",
@@ -40,6 +41,7 @@ const page = () => {
       <Ecolabel />
       <HomeVideo />
       <Palette {...sustainabilityPaletteData} />
+      <Related/>
     </>
   );
 };
