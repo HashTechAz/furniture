@@ -1,0 +1,84 @@
+.paletteMain {
+  width: 100%;
+  padding: 60px 80px;
+  display: flex;
+}
+
+.reversed {
+  flex-direction: row-reverse;
+}
+
+.paletteTextBox {
+  width: 50%;
+  padding: 3rem 10rem 0 0;
+}
+
+.reversed .paletteTextBox {
+  padding: 3rem 0 0 10rem;
+}
+
+.paletteTextBoxTitle span {
+  font-size: 15px !important;
+  font-weight: 700;
+}
+
+.paletteTextBox h2 span {
+  font-size: 40px !important;
+  font-weight: 400;
+}
+
+.paletteDescription {
+  margin: 30px 0px;
+  font-weight: 600;
+}
+
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 30px 0;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.featureBullet {
+  width: 10px;
+  height: 10px;
+  background-color: #2C3587;
+}
+
+.paletteImgBox {
+  width: 50%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+.paletteOneColor {
+  width: 510px;
+  height: 580px;
+  margin-left: auto; /* default right anchor like home */
+  position: relative;
+  z-index: 1;
+}
+
+.thirdVariant .paletteOneColor {
+  margin-right: auto; /* system case left anchor if needed */
+}
+
+.paletteJpg {
+  width: 370px;
+  height: 500px;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: auto;
+  background-size: cover;
+  transition: transform 0.4s ease-in-out;
+  z-index: 2;
+}
+

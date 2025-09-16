@@ -1,10 +1,12 @@
-import styles from "./Palette.module.css";
+import styles from "./SystemPalette.module.css";
 
-interface PaletteProps {
+
+interface SystemPaletteProps {
   category?: string;
   title: string;
   description: string;
   description2?: string;
+  features?: string[];
   buttonText: string;
   buttonLink: string;
   imageUrl: string;
@@ -20,11 +22,12 @@ interface PaletteProps {
   };
 }
 
-export default function Palette({
+export default function SystemPalette({
   category,
   title,
   description,
   description2,
+  features,
   buttonText,
   buttonLink,
   imageUrl,
@@ -32,7 +35,7 @@ export default function Palette({
   layout = 'textLeft',
   variant = 'default',
   imagePosition,
-}: PaletteProps) {
+}: SystemPaletteProps) {
 
   const sectionClassName = `${styles.paletteMain} ${layout === 'textRight' ? styles.reversed : ''} ${variant === 'third' ? styles.thirdVariant : ''}`;
 
@@ -51,6 +54,16 @@ export default function Palette({
           <p>{description}</p>
           {description2 && <p>{description2}</p>}
         </div>
+        {features && features.length > 0 && (
+          <ul className={styles.featureList}>
+            {features.map((item, idx) => (
+              <li key={idx} className={styles.featureItem}>
+                <span className={styles.featureBullet} />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        )}
         <div>
           <a href={buttonLink} className={styles.heroButton}>
             {buttonText}
@@ -80,3 +93,5 @@ export default function Palette({
     </section>
   );
 }
+
+

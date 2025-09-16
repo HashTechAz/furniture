@@ -32,6 +32,8 @@
     font-weight: 600;
 }
 
+/* list styles removed from base Palette */
+
 .paletteDescription p + p {
     margin-top: 30px; /* İkinci paragraf için 20px mesafe */
 }
@@ -71,7 +73,7 @@
     width: 50%;
     position: relative;
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row; /* image and color block in natural order */
 }
 
 /* Third variant tweaks */
@@ -80,7 +82,7 @@
 }
 
 .thirdVariant .paletteOneColor {
-    margin-right: auto; /* anchor color block to left */
+    margin-right: 200px; /* anchor color block to left */
     position: relative;
     z-index: 1; /* stay under the image */
     width: 510px;
@@ -99,6 +101,9 @@
 .paletteOneColor {
     width: 510px;
     height: 580px;
+    margin-left: auto; /* stick to right by default */
+    position: relative;
+    z-index: 1;
 }
 
 .paletteJpg {
@@ -106,9 +111,11 @@
     height: 500px;
     position: absolute;
     top: 40px;
-    left: 0px;
+    left: auto; /* allow right-based positioning */
+    right: 0;   /* default anchor to right */
     background-size: cover;
     transition: transform 0.4s ease-in-out;
+    z-index: 2;
 }
 
 .paletteJpg:hover {

@@ -3,6 +3,7 @@
 import React, { useCallback } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import styles from './ProductSlider.module.css';
+import systemStyles from './ProductSliderSystem.module.css';
 import CategoryCard from '../CategoryCard/CategoryCard';
 
 // TypeScript üçün məlumat strukturu
@@ -24,11 +25,20 @@ const slideData: SlideData[] = [
     { id: 8, label: 'Minimalist Sofa', imageUrl: 'https://www.coxandcox.co.uk/media/catalog/product/a/w/aw16-k-ratchair.png?quality=80&fit=bounds&height=800&width=800' },
 ];
 
-const ProductSlider: React.FC = () => {
+interface ProductSliderProps {
+  variant?: 'default' | 'system';
+  titleTop?: string;
+  titleBottom?: string;
+}
+
+const ProductSlider: React.FC<ProductSliderProps> = ({ variant = 'default', titleTop, titleBottom }) => {
   // Embla hook-unu çağırırıq.
   // loop: false -> sona çatdıqda başa qayıtmasın.
   // dragFree: true -> mausla sürüşdürəndə fizika-əsaslı ətalət effekti verir.
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, dragFree: true });
+
+  // Variant'a göre stil seçimi
+  const currentStyles = variant === 'system' ? systemStyles : styles;
 
   // Oxlar üçün idarəetmə funksiyaları
   const scrollPrev = useCallback(() => {
@@ -40,13 +50,13 @@ const ProductSlider: React.FC = () => {
   }, [emblaApi]);
 
   return (
-    <section className={styles.sliderMain}>
-      <div className={styles.container}>
-        <div className={styles.sliderTitle}>
-          <div className={styles.sliderTitleText}>
+    <section className={currentStyles.sliderMain}>
+      <div className={currentStyles.container}>
+        <div className={currentStyles.sliderTitle}>
+          <div className={currentStyles.sliderTitleText}>
             <span>
-              Explore the endless possibilities. <br />
-              36 modules, 4 depths and 43 colours.
+              {titleTop ?? 'Explore the endless possibilities.'} <br />
+              {titleBottom ?? '36 modules, 4 depths and 43 colours.'}
             </span>
           </div>
           <div
@@ -77,13 +87,14 @@ const ProductSlider: React.FC = () => {
       </div>
 
       {/* Embla Carousel üçün xüsusi struktur */}
-      <div className={styles.embla} ref={emblaRef}>
-        <div className={styles.embla__container}>
+      <div className={currentStyles.embla} ref={emblaRef}>
+        <div className={currentStyles.embla__container}>
           {slideData.map((slide) => (
-            <div className={styles.embla__slide} key={slide.id}>
+            <div className={currentStyles.embla__slide} key={slide.id}>
               <CategoryCard
                 label={slide.label}
                 imageUrl={slide.imageUrl}
+                variant={variant}
               />
             </div>
           ))}
