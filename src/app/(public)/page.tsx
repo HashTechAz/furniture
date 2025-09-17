@@ -23,7 +23,7 @@ const originalPaletteData = {
     left: '0px',
   },
   layout: 'textLeft',
-} as const; // 
+} as const; 
 
 const secondPaletteData = {
   category: "",
@@ -107,7 +107,7 @@ export default function Home() {
       <Palette {...thirdPaletteData} layout={'textRight'} variant={'third'} />
       <HomeVideo/>
       <Palette {...fourPaletteData} imagePosition={secondPaletteData.imagePosition} />
-      <Form />
+      <Form />      
     </>
   );
 }

@@ -5,63 +5,39 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import styles from "./Header.module.css";
 import SearchOverlay from "../HeaderSearchOverlay/SearchOverlay";
+
 const Header = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [showSticky, setShowSticky] = useState(false);
-  const [triggerSlide, setTriggerSlide] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
-    const sentinel = document.getElementById('header-trigger');
-
-    if ('IntersectionObserver' in window && sentinel) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const entry = entries[0];
-          setShowSticky(!entry.isIntersecting);
-        },
-        { root: null, threshold: 0, rootMargin: '0px' }
-      );
-      observer.observe(sentinel);
-      return () => observer.disconnect();
-    }
-
-    // Fallback: pixel threshold
     const handleScroll = () => {
       const scrolled = window.scrollY || document.documentElement.scrollTop;
-      setShowSticky(scrolled > 1);
+      setIsSticky(scrolled > 300);
     };
 
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => {
-    if (!showSticky) return;
-    setTriggerSlide(true);
-    const id = requestAnimationFrame(() => {
-      const id2 = requestAnimationFrame(() => setTriggerSlide(false));
-      return () => cancelAnimationFrame(id2);
-    });
-    return () => cancelAnimationFrame(id);
-  }, [showSticky]);
-
-  // const toggleMobileMenu = () => {
-  //   setIsMobileMenuOpen(!isMobileMenuOpen);
-  // };
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
   };
 
-  const isSustainabilityPage = pathname === '/sustainability';
-  const isSystemPage = pathname === '/system';
+  const isSustainabilityPage = pathname === "/sustainability";
+  const isSystemPage = pathname === "/system";
 
   return (
     <>
-      <header className={`${styles.header} ${showSticky ? styles.headerSticky : ''} ${showSticky && triggerSlide ? styles.headerSlideFromTop : ''} ${isSustainabilityPage ? styles.sustainabilityHeader : ''} ${isSystemPage ? styles.systemHeader : ''}`}>
+      <header
+        className={`
+          ${styles.header} 
+          ${isSticky ? styles.headerSticky : styles.headerDefault} 
+          ${isSustainabilityPage ? styles.sustainabilityHeader : ""} 
+          ${isSystemPage ? styles.systemHeader : ""}
+        `}
+      >
         <nav className={styles.navbar}>
           <div className={styles.navigationMenu}>
             <ul>
@@ -87,7 +63,7 @@ const Header = () => {
               </li>
               <li className={styles.navLists}>
                 <Link href="/sustainability" className={styles.navLinks}>
-                Sustainability
+                  Sustainability
                 </Link>
               </li>
             </ul>
@@ -96,7 +72,11 @@ const Header = () => {
           <div className={styles.logo}>M. Logo</div>
 
           <div className={styles.navSearch}>
-            <button type="button" title="mebel"  className={styles.searchButton} onClick={toggleSearch}>
+            <button
+              type="button"
+              className={styles.searchButton}
+              onClick={toggleSearch}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -115,6 +95,7 @@ const Header = () => {
           </div>
         </nav>
       </header>
+
       <SearchOverlay isOpen={isSearchOpen} onClose={toggleSearch} />
     </>
   );
