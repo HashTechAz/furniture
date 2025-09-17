@@ -9,6 +9,13 @@
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Overlay açıkken header'ı beyaza çevir */
+.headerOverlayOpen {
+  background-color: #ffffff !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08) !important;
+  color: #333333 !important;
+}
+
 /* Home: pull header slightly above to hide any 1px seam */
 .headerFlushTop {
   top: -2px;
@@ -177,4 +184,22 @@
 .headerSticky.systemHeader .navLists,
 .headerSticky.systemHeader .searchButton {
   color: #333333 !important;
+}
+
+/* Series overlay - header'dan başlar, header görünür kalır */
+.seriesOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  background: white;
+  z-index: 999; /* header (1000) altında, header görünür kalır */
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  transition: height 0.35s ease;
+}
+
+.seriesOverlayOpen {
+  height: 80vh; /* 80vh yükseklik */
 }

@@ -9,6 +9,7 @@ import SearchOverlay from "../HeaderSearchOverlay/SearchOverlay";
 const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
+  const [isSeriesOpen, setIsSeriesOpen] = useState(false);
   const pathname = usePathname();
 
   const isSustainabilityPage = pathname === "/sustainability";
@@ -30,6 +31,16 @@ const Header = () => {
     setIsSearchOpen(!isSearchOpen);
   };
 
+  const onClickSeries = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    setIsSeriesOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    // Route değiştiğinde overlay'i kapat
+    setIsSeriesOpen(false);
+  }, [pathname]);
+
   
 
   return (
@@ -40,6 +51,7 @@ const Header = () => {
           ${isSticky ? styles.headerSticky : styles.headerDefault} 
           ${isSustainabilityPage ? styles.sustainabilityHeader : ""} 
           ${isSystemPage ? styles.systemHeader : ""}
+          ${isSeriesOpen ? styles.headerOverlayOpen : ""}
         `}
       >
         <nav className={styles.navbar}>
@@ -47,7 +59,7 @@ const Header = () => {
             <ul>
               <li className={styles.navLists}>
                 <Link href="/series" className={styles.navLinks}>
-                  Series
+                Inspiration
                 </Link>
               </li>
               <li className={styles.navLists}>
@@ -56,7 +68,7 @@ const Header = () => {
                 </Link>
               </li>
               <li className={styles.navLists}>
-                <Link href="" className={styles.navLinks}>
+                <Link href="#" className={styles.navLinks} onClick={onClickSeries}>
                   Series
                 </Link>
               </li>
@@ -99,6 +111,11 @@ const Header = () => {
           </div>
         </nav>
       </header>
+
+      {/* Series Overlay */}
+      <div className={`${styles.seriesOverlay} ${isSeriesOpen ? styles.seriesOverlayOpen : ""}`}>
+        {/* İçerik daha sonra eklenecek */}
+      </div>
 
       <SearchOverlay isOpen={isSearchOpen} onClose={toggleSearch} />
     </>
