@@ -6,7 +6,12 @@
   z-index: 1000;
   padding: 30px 80px;
   transform: translateY(0);
-  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Home: pull header slightly above to hide any 1px seam */
+.headerFlushTop {
+  top: -2px;
 }
 
 .headerDefault {
@@ -35,11 +40,11 @@
 
 /* Animasyonlar */
 .headerSlideDown {
-  animation: slideDown 0.6s ease forwards;
+  animation: slideDown 0.2s ease forwards;
 }
 
 .headerSlideUp {
-  animation: slideUp 0.6s ease forwards;
+  animation: slideUp 0.2s ease forwards;
 }
 
 @keyframes slideDown {
@@ -132,7 +137,7 @@
 
 /* Sustainability Page özel tema */
 .sustainabilityHeader {
-  background-color: #3B7840 !important;
+  background-color: transparent; /* transparent until sticky */
   box-shadow: none !important;
 }
 
@@ -141,13 +146,35 @@
   color: #ffffff !important;
 }
 
+/* On scroll (sticky), sustainability header becomes white with dark text */
+.headerSticky.sustainabilityHeader {
+  background-color: #ffffff !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+.headerSticky.sustainabilityHeader .navLists,
+.headerSticky.sustainabilityHeader .searchButton {
+  color: #333333 !important;
+}
+
 /* System Page özel tema */
 .systemHeader {
-  background-color: #2C3587 !important;
+  background-color: transparent !important; /* transparent until sticky */
   box-shadow: none !important;
 }
 
 .systemHeader .navLists,
 .systemHeader .searchButton {
   color: #ffffff !important;
+}
+
+/* On scroll (sticky), system header becomes white with dark text */
+.headerSticky.systemHeader {
+  background-color: #ffffff !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+.headerSticky.systemHeader .navLists,
+.headerSticky.systemHeader .searchButton {
+  color: #333333 !important;
 }

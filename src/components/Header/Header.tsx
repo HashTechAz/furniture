@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import styles from "./Header.module.css";
@@ -11,22 +11,26 @@ const Header = () => {
   const [isSticky, setIsSticky] = useState(false);
   const pathname = usePathname();
 
+  const isSustainabilityPage = pathname === "/sustainability";
+  const isSystemPage = pathname === "/system";
+  const stickyThreshold = (isSustainabilityPage || isSystemPage) ? 5 : 200;
+
   useEffect(() => {
     const handleScroll = () => {
       const scrolled = window.scrollY || document.documentElement.scrollTop;
-      setIsSticky(scrolled > 300);
+      setIsSticky(scrolled > stickyThreshold);
     };
 
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [stickyThreshold]);
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
   };
 
-  const isSustainabilityPage = pathname === "/sustainability";
-  const isSystemPage = pathname === "/system";
+  
 
   return (
     <>
