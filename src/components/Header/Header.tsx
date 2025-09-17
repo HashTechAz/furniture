@@ -56,8 +56,8 @@ const Header = () => {
                 </Link>
               </li>
               <li className={styles.navLists}>
-                <Link href="/about" className={styles.navLinks}>
-                  About
+                <Link href="" className={styles.navLinks}>
+                  Series
                 </Link>
               </li>
               <li className={styles.navLists}>
