@@ -84,7 +84,7 @@ const Header = () => {
               </li>
             </ul>
           </div>
-
+  
           <div className={styles.logo}>M. Logo</div>
 
           <div className={styles.navSearch}>
