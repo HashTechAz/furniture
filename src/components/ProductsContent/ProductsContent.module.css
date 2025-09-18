@@ -1,4 +1,4 @@
-.seriesCategoryMain {
+.productsCategoryMain {
   overflow: hidden;
   width: 100vw;
   height: 100vh;
@@ -8,28 +8,24 @@
   margin-top: 0px;
 }
 
-.seriesCategoryText {
+.productsCategoryText {
   width: 20%;
   height: 100%;
   background-color: #F4F4F1;
-  margin-top: 6em;
+  margin-top: 4em;
   padding-left: 80px;
 }
 
-.seriesCategoryText h5 {
+.productsCategoryText h5 {
   font-size: 14px;
-  
 }
 
-.seriesCategoryText ul {
+.productsCategoryText ul {
   list-style-type: none;
 }
 
-.seriesCategoryText ul li {
+.productsCategoryText ul li {
   padding-bottom: 10px;
-}
-
-.seriesCategoryText ul li {
   font-size: 13px;
 }
 
@@ -41,8 +37,8 @@
 
 .gridContainer {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   justify-items: center;
-  margin-top: 6em;
+  margin-top: 4em;
 }

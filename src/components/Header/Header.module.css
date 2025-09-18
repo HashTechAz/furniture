@@ -11,8 +11,8 @@
 
 /* Overlay açıkken header'ı beyaza çevir */
 .headerOverlayOpen {
-  background-color: #ffffff !important;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08) !important;
+  background: linear-gradient(to right, #F4F4F1 18.72%, #ffffff 18.72%) !important;
+  box-shadow: none !important;
   color: #333333 !important;
 }
 

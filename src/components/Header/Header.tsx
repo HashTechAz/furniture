@@ -5,13 +5,14 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import styles from "./Header.module.css";
 import SearchOverlay from "../HeaderSearchOverlay/SearchOverlay";
-// Header.js dosyasının en üstüne ekleyin
 import SeriesContent from "../SeriesContent/SeriesContent";
+import ProductsContent from "../ProductsContent/ProductsContent";
 
 const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [isSeriesOpen, setIsSeriesOpen] = useState(false);
+  const [isProductsOpen, setIsProductsOpen] = useState(false);
   const pathname = usePathname();
 
   const isSustainabilityPage = pathname === "/sustainability";
@@ -38,10 +39,27 @@ const Header = () => {
     setIsSeriesOpen((prev) => !prev);
   };
 
+  const onClickProducts = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    setIsProductsOpen((prev) => !prev);
+  };
+
   useEffect(() => {
-    // Route değiştiğinde overlay'i kapat
     setIsSeriesOpen(false);
+    setIsProductsOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    if (isSeriesOpen || isProductsOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isSeriesOpen, isProductsOpen]);
 
   return (
     <>
@@ -52,6 +70,7 @@ const Header = () => {
           ${isSustainabilityPage ? styles.sustainabilityHeader : ""} 
           ${isSystemPage ? styles.systemHeader : ""}
           ${isSeriesOpen ? styles.headerOverlayOpen : ""}
+          ${isProductsOpen ? styles.headerOverlayOpen : ""}
         `}
       >
         <nav className={styles.navbar}>
@@ -63,7 +82,11 @@ const Header = () => {
                 </Link>
               </li>
               <li className={styles.navLists}>
-                <Link href="/products" className={styles.navLinks}>
+                <Link
+                  href="#"
+                  className={styles.navLinks}
+                  onClick={onClickProducts}
+                >
                   Products
                 </Link>
               </li>
@@ -89,7 +112,7 @@ const Header = () => {
             </ul>
           </div>
 
-          <div className={styles.logo}>M. Logo</div>
+          <Link href="/" className={styles.logo}>M. Logo</Link>
 
           <div className={styles.navSearch}>
             <button
@@ -121,7 +144,15 @@ const Header = () => {
           isSeriesOpen ? styles.seriesOverlayOpen : ""
         }`}
       >
-        {isSeriesOpen && <SeriesContent />} {/* <-- BU SATIRI EKLEYİN */}
+        {isSeriesOpen && <SeriesContent />} 
+      </div>
+
+      <div
+        className={`${styles.seriesOverlay} ${
+          isProductsOpen ? styles.seriesOverlayOpen : ""
+        }`}
+      >
+        {isProductsOpen && <ProductsContent />} 
       </div>
 
       <SearchOverlay isOpen={isSearchOpen} onClose={toggleSearch} />
