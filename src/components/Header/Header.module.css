@@ -6,13 +6,13 @@
   z-index: 1000;
   padding: 30px 80px;
   transform: translateY(0);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 0.1s ease, box-shadow 0.1s ease, color 0.1s ease;
 }
 
 /* Overlay açıkken header'ı beyaza çevir */
 .headerOverlayOpen {
-  background: linear-gradient(to right, #F4F4F1 18.72%, #ffffff 18.72%) !important;
-  box-shadow: none !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08) !important;
   color: #333333 !important;
 }
 
