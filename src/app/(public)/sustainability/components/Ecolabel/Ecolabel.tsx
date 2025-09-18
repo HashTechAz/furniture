@@ -17,48 +17,26 @@ const Ecolabel = () => {
         </p>
 
         <ul>
-          <li>
-            <Link href={"/"}>Kevi</Link>
-          </li>
-          <li>
-            <Link href={"/"}>Chairik</Link>
-          </li>
-          <li>
-            <Link href={"/"}>Marée</Link>
-          </li>
-          <li>
-            <Link href={"/"}>Montana System</Link>
-          </li>
-          <li>
-            <Link href={"/"}>Montana Selection</Link>
-          </li>
-          <li>
-            <Link href={"/"}>Montana TV & Sound</Link>
-          </li>
-          <li>
-            <Link href={"/"}>Montana Free</Link>
-          </li>
-          <li>
-            <Link href={"/"}>Montana Mega</Link>
-          </li>
-          <li>
-            <Link href={"/"}>Montana Mini</Link>
-          </li>
-          <li>
-            <Link href={"/"}>Montana 16 mm System (CO16)</Link>
-          </li>
-          <li>
-            <Link href={"/"}>Montana Living Things</Link>
-          </li>
-          <li>
-            <Link href={"/"}>Montana Noticeboard</Link>
-          </li>
-          <li>
-            <Link href={"/"}>Skyline & Skyline Table</Link>
-          </li>
-          <li>
-            <Link href={"/"}>Montana Lockers</Link>
-          </li>
+          {[
+            "Kevi",
+            "Chairik",
+            "Marée",
+            "Montana System",
+            "Montana Selection",
+            "Montana TV & Sound",
+            "Montana Free",
+            "Montana Mega",
+            "Montana Mini",
+            "Montana 16 mm System (CO16)",
+            "Montana Living Things",
+            "Montana Noticeboard",
+            "Skyline & Skyline Table",
+            "Montana Lockers",
+          ].map((product) => (
+            <li key={product}>
+              <Link href={"/"}>{product}</Link>
+            </li>
+          ))}
         </ul>
 
         <p>
@@ -80,35 +58,19 @@ const Ecolabel = () => {
 
         <div className={styles.newListBox}>
             <h3>The EU Ecolabel guarantees</h3>
-        <ul className={styles.newList}>
-          <li>
-            <span>
-              that a high percentage of wood is from legal sustainably managed
-              forests
-            </span>
-          </li>
-          <li>
-            <span>
-              tough restrictions on the use of environmentally hazardous
-              substances
-            </span>
-          </li>
-          <li>
-            <span>
-              that wood has low emissions of the allergenic substance
-              formaldehyde
-            </span>
-          </li>
-          <li>
-            <span>tough restrictions on the use of toxic substances</span>
-          </li>
-          <li>
-            <span>
-              a 5-year product guarantee (Montana has opted to retain its
-              10-year product guarantee)
-            </span>
-          </li>
-        </ul>
+          <ul className={styles.newList}>
+            {[
+              "that a high percentage of wood is from legal sustainably managed forests",
+              "tough restrictions on the use of environmentally hazardous substances",
+              "that wood has low emissions of the allergenic substance formaldehyde",
+              "tough restrictions on the use of toxic substances",
+              "a 5-year product guarantee (Montana has opted to retain its 10-year product guarantee)",
+            ].map((guarantee) => (
+              <li key={guarantee}>
+                <span>{guarantee}</span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <p className={styles.endPara}>
@@ -118,14 +80,6 @@ const Ecolabel = () => {
           manufacturers in Europe to achieve it because I consider
           sustainability a key part of our responsibilities as a manufacturer in
           Denmark."
-        </p>
-
-        <p className={styles.newEu}>
-          The objective of the EU Ecolabel is to reduce the overall
-          environmental impact of the production and consumption of goods. The
-          label looks at the entire product’s life cycle and the environmental
-          problems that arise along the way – for the benefit of people, the
-          environment and the earth’s resources.
         </p>
       </section>
     </>

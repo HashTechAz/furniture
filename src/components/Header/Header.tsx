@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import styles from "./Header.module.css";
 import SearchOverlay from "../HeaderSearchOverlay/SearchOverlay";
+// Header.js dosyasının en üstüne ekleyin
+import SeriesContent from "../SeriesContent/SeriesContent";
 
 const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -14,7 +16,7 @@ const Header = () => {
 
   const isSustainabilityPage = pathname === "/sustainability";
   const isSystemPage = pathname === "/system";
-  const stickyThreshold = (isSustainabilityPage || isSystemPage) ? 5 : 200;
+  const stickyThreshold = isSustainabilityPage || isSystemPage ? 5 : 200;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,8 +43,6 @@ const Header = () => {
     setIsSeriesOpen(false);
   }, [pathname]);
 
-  
-
   return (
     <>
       <header
@@ -59,7 +59,7 @@ const Header = () => {
             <ul>
               <li className={styles.navLists}>
                 <Link href="/series" className={styles.navLinks}>
-                Inspiration
+                  Inspiration
                 </Link>
               </li>
               <li className={styles.navLists}>
@@ -68,7 +68,11 @@ const Header = () => {
                 </Link>
               </li>
               <li className={styles.navLists}>
-                <Link href="#" className={styles.navLinks} onClick={onClickSeries}>
+                <Link
+                  href="#"
+                  className={styles.navLinks}
+                  onClick={onClickSeries}
+                >
                   Series
                 </Link>
               </li>
@@ -84,7 +88,7 @@ const Header = () => {
               </li>
             </ul>
           </div>
-  
+
           <div className={styles.logo}>M. Logo</div>
 
           <div className={styles.navSearch}>
@@ -112,9 +116,12 @@ const Header = () => {
         </nav>
       </header>
 
-      {/* Series Overlay */}
-      <div className={`${styles.seriesOverlay} ${isSeriesOpen ? styles.seriesOverlayOpen : ""}`}>
-        {/* İçerik daha sonra eklenecek */}
+      <div
+        className={`${styles.seriesOverlay} ${
+          isSeriesOpen ? styles.seriesOverlayOpen : ""
+        }`}
+      >
+        {isSeriesOpen && <SeriesContent />} {/* <-- BU SATIRI EKLEYİN */}
       </div>
 
       <SearchOverlay isOpen={isSearchOpen} onClose={toggleSearch} />
