@@ -77,14 +77,13 @@ const ProductsContent = () => {
         </div>
         <div className={styles.contentWrapper}>
           <div className={styles.gridContainer}>
-            {productsCategories.map((category) => (
-              <NavbarCategoryCard
-                key={category.id}
-                href={category.href}
-                label={category.label}
-                imageUrl={category.imageUrl}
-              />
-            ))}
+            <ul>
+              <li>salam</li>
+              <li>salam</li>
+              <li>salam</li>
+              <li>salam</li>
+              <li>salam</li>
+            </ul>
           </div>
         </div>
       </section>
