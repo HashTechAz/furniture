@@ -69,29 +69,21 @@ const Header = () => {
 
   useEffect(() => {
     if (isSeriesOpen || isProductsOpen) {
-      // Tüm scroll'u tamamen engelle
+      // Sadece overflow'u engelle, position fixed kullanma
       document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
-      document.body.style.top = `-${window.scrollY}px`;
+      // Scroll pozisyonunu koru
+      const scrollY = window.scrollY;
+      document.body.style.paddingRight = '0px';
     } else {
       // Scroll'u serbest bırak
-      const scrollY = document.body.style.top;
       document.body.style.overflow = 'unset';
-      document.body.style.position = '';
-      document.body.style.width = '';
-      document.body.style.top = '';
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
-      }
+      document.body.style.paddingRight = '';
     }
     
     return () => {
       // Cleanup
       document.body.style.overflow = 'unset';
-      document.body.style.position = '';
-      document.body.style.width = '';
-      document.body.style.top = '';
+      document.body.style.paddingRight = '';
     };
   }, [isSeriesOpen, isProductsOpen]);
 

@@ -7,9 +7,11 @@
   padding: 30px 80px;
   transform: translateY(0);
   transition: background-color 0.1s ease, box-shadow 0.1s ease, color 0.1s ease;
-  /* Scroll bar kaybolduğunda layout shift'i engelle */
-  width: 100vw;
+  /* Layout shift'i engelle */
+  width: 100%;
   box-sizing: border-box;
+  /* Header'ın sabit kalması için */
+  will-change: auto;
 }
 
 /* Overlay açıkken header'ı beyaza çevir */
@@ -23,6 +25,9 @@
   left: 0 !important;
   right: 0 !important;
   z-index: 1000 !important;
+  /* Header'ın hiç hareket etmemesi için */
+  transform: none !important;
+  width: 100% !important;
 }
 
 /* Home: pull header slightly above to hide any 1px seam */
@@ -98,6 +103,9 @@
   gap: 0;
   padding: 0;
   margin: 0;
+  /* Header'ın hiç hareket etmemesi için */
+  will-change: auto;
+  transform: none;
 }
 
 .navigationMenu {
@@ -275,6 +283,11 @@
   /* Arka plan scroll'unu tamamen engelle */
   touch-action: none;
   -webkit-overflow-scrolling: touch;
+  /* Layout shift'i engelle */
+  width: 100%;
+  box-sizing: border-box;
+  /* Header'ı etkilememesi için */
+  will-change: height;
 }
 
 .seriesOverlayOpen {
