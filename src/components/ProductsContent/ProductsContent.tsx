@@ -39,13 +39,39 @@ const ProductsContent = () => {
     <>
       <section className={styles.productsCategoryMain}>
         <div className={styles.productsCategoryText}>
-          <h5>Products</h5>
+          <h5>About Montana</h5>
           <ul>
             <li>
-              <Link href="/">Montana System</Link>
+              <Link href="/">Customize your solution</Link>
             </li>
             <li>
+              <Link href="/">41 colors & 2 veneers</Link>
+            </li>
+            <li>
+              <Link href="/">Susainability</Link>
+            </li>
+            <li>
+              <Link href="/">Designers</Link>
+            </li>
+          </ul>
+
+
+          <h5>Product Series</h5>
+          <ul>
+            <li>
               <Link href="/">Montana Selection</Link>
+            </li>
+            <li>
+              <Link href="/">Montana Mini</Link>
+            </li>
+            <li>
+              <Link href="/">Montana Mega</Link>
+            </li>
+            <li>
+              <Link href="/">Kevi Chairs</Link>
+            </li>
+            <li>
+              <Link href="/">All product series</Link>
             </li>
           </ul>
         </div>

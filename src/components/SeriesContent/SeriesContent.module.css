@@ -17,7 +17,7 @@
 
 .seriesCategoryText h5 {
   font-size: 14px;
-  
+  color: #333333;
 }
 
 .seriesCategoryText ul {
@@ -30,6 +30,31 @@
 
 .seriesCategoryText ul li {
   font-size: 13px;
+  color: #333333;
+}
+
+.seriesCategoryText ul li a {
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  padding-bottom: 4px;
+}
+
+.seriesCategoryText ul li a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: bottom left;
+  transition: transform 0.3s ease-out;
+}
+
+.seriesCategoryText ul li a:hover::after {
+  transform: scaleX(1);
 }
 
 .contentWrapper {

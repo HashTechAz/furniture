@@ -57,35 +57,7 @@
 }
 
 .footerLink {
-  position: relative; /* Bu, ::after elementinin buna görə mövqelənməsi üçün vacibdir */
-  text-decoration: none;
-  color: inherit;
-  padding-bottom: 2px; /* Xətt ilə mətn arasında boşluq */
-  display: inline-block; /* Düzgün ölçü alması üçün */
-}
-
-/* 2. Xətti yaradırıq və başlanğıcda gizlədirik */
-.footerLink::after {
-  content: ''; /* Psevdo-elementlərin işləməsi üçün vacibdir */
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%; /* Linkin eni qədər olsun */
-  height: 1px; /* Xəttin qalınlığı */
-  background-color: #ffffffcc; /* Xəttin rəngi */
-
-  /* Başlanğıcda enini sıfırlayaraq gizlədirik */
-  transform: scaleX(0);
-  transform-origin: left; /* Böyümənin soldan başlamasını təmin edir */
-
-  /* Animasiyanın özü: transform dəyişəndə 0.4 saniyəlik axıcı keçid etsin */
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-/* 3. Hover zamanı xətti göstəririk */
-.footerLink:hover::after {
-  /* Enini 100% edərək görünən hala gətiririk */
-  transform: scaleX(1);
+  @apply hover-underline-button;
 }
 
 .footerItem .footerSocial ul {

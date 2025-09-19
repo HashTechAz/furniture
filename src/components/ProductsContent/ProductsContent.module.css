@@ -12,21 +12,53 @@
   width: 20%;
   height: 100%;
   background-color: #F4F4F1;
-  margin-top: 4em;
-  padding-left: 80px;
+  padding: 60px 0px 0px 80px;
 }
 
 .productsCategoryText h5 {
   font-size: 14px;
+  margin-bottom: 5px;
+  color: #333333;
+}
+
+.productsCategoryText h5:nth-child(3) {
+  margin-top: 30px;
 }
 
 .productsCategoryText ul {
   list-style-type: none;
 }
 
+
+
 .productsCategoryText ul li {
-  padding-bottom: 10px;
-  font-size: 13px;
+  padding-bottom: 5px;
+  font-size: 14px;
+  color: #333333;
+}
+
+.productsCategoryText ul li a {
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  padding-bottom: 4px;
+}
+
+.productsCategoryText ul li a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: bottom left;
+  transition: transform 0.3s ease-out;
+}
+
+.productsCategoryText ul li a:hover::after {
+  transform: scaleX(1);
 }
 
 .contentWrapper {

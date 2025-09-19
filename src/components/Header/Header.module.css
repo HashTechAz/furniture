@@ -103,7 +103,6 @@
 .navigationMenu {
   justify-self: start;
   grid-area: nav;
-  /* Sabit kalması için */
   position: relative;
   z-index: 1000;
 }
@@ -197,6 +196,9 @@
 .sustainabilityHeader {
   background-color: transparent; /* transparent until sticky */
   box-shadow: none !important;
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
 }
 
 .sustainabilityHeader .navLists,
@@ -208,6 +210,9 @@
 .headerSticky.sustainabilityHeader {
   background-color: #ffffff !important;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08) !important;
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
 }
 
 .headerSticky.sustainabilityHeader .navLists,
@@ -215,10 +220,19 @@
   color: #333333 !important;
 }
 
+/* Overlay açıkken sustainability header'da yazılar görünür olsun */
+.headerOverlayOpen.sustainabilityHeader .navLists,
+.headerOverlayOpen.sustainabilityHeader .searchButton {
+  color: #333333 !important;
+}
+
 /* System Page özel tema */
 .systemHeader {
   background-color: transparent !important; /* transparent until sticky */
   box-shadow: none !important;
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
 }
 
 .systemHeader .navLists,
@@ -230,11 +244,20 @@
 .headerSticky.systemHeader {
   background-color: #ffffff !important;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08) !important;
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
 }
 
 .headerSticky.systemHeader .navLists,
 .headerSticky.systemHeader .searchButton {
   color: #333333 !important;
+}
+
+/* Overlay açıkken system header'da yazılar beyaz kalsın */
+.headerOverlayOpen.systemHeader .navLists,
+.headerOverlayOpen.systemHeader .searchButton {
+  color: #ffffff !important;
 }
 
 /* Series overlay - header'ın altından başlar, sayfa boyunca uzunlukta */

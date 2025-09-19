@@ -32,7 +32,6 @@ const sustainabilityPaletteData = {
 const page = () => {
   return (
     <>
-      <div id="header-trigger" style={{ height: 1 }} />
       <SustainabilityHero />
       <SustainabilityGallery />
       <SustainabilityCertifications />

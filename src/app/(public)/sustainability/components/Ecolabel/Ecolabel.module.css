@@ -14,6 +14,7 @@
 
 .ecolabel ul {
   margin: 30px 0px 0px 30px;
+  list-style: disc;
 }
 
 .ecolabel ul li {
@@ -31,6 +32,10 @@
 
 .newListBox h3 {
     margin-bottom: 0px;
+}
+
+.newList {
+  list-style: disc;
 }
 
 .endPara {
