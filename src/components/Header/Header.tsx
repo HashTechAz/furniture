@@ -36,12 +36,30 @@ const Header = () => {
 
   const onClickSeries = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    setIsSeriesOpen((prev) => !prev);
+    // Eğer Products açıksa önce onu kapat, sonra Series'i aç
+    if (isProductsOpen) {
+      setIsProductsOpen(false);
+      // Kısa bir gecikme ile Series'i aç
+      setTimeout(() => {
+        setIsSeriesOpen(true);
+      }, 50);
+    } else {
+      setIsSeriesOpen((prev) => !prev);
+    }
   };
 
   const onClickProducts = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    setIsProductsOpen((prev) => !prev);
+    // Eğer Series açıksa önce onu kapat, sonra Products'ı aç
+    if (isSeriesOpen) {
+      setIsSeriesOpen(false);
+      // Kısa bir gecikme ile Products'ı aç
+      setTimeout(() => {
+        setIsProductsOpen(true);
+      }, 50);
+    } else {
+      setIsProductsOpen((prev) => !prev);
+    }
   };
 
   useEffect(() => {
@@ -51,13 +69,29 @@ const Header = () => {
 
   useEffect(() => {
     if (isSeriesOpen || isProductsOpen) {
+      // Tüm scroll'u tamamen engelle
       document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${window.scrollY}px`;
     } else {
+      // Scroll'u serbest bırak
+      const scrollY = document.body.style.top;
       document.body.style.overflow = 'unset';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
     }
     
     return () => {
+      // Cleanup
       document.body.style.overflow = 'unset';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
     };
   }, [isSeriesOpen, isProductsOpen]);
 
@@ -84,7 +118,7 @@ const Header = () => {
               <li className={styles.navLists}>
                 <Link
                   href="#"
-                  className={styles.navLinks}
+                  className={`${styles.navLinks} ${isProductsOpen ? styles.active : ''}`}
                   onClick={onClickProducts}
                 >
                   Products
@@ -93,7 +127,7 @@ const Header = () => {
               <li className={styles.navLists}>
                 <Link
                   href="#"
-                  className={styles.navLinks}
+                  className={`${styles.navLinks} ${isSeriesOpen ? styles.active : ''}`}
                   onClick={onClickSeries}
                 >
                   Series
