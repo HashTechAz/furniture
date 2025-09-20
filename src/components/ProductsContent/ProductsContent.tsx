@@ -77,13 +77,25 @@ const ProductsContent = () => {
         </div>
         <div className={styles.contentWrapper}>
           <div className={styles.gridContainer}>
+           <div className={styles.gridItemMain}>
             <ul>
-              <li>salam</li>
-              <li>salam</li>
-              <li>salam</li>
-              <li>salam</li>
-              <li>salam</li>
+              <h5>Montana List</h5>
+              <li><Link href="/">Montana Selection</Link></li>
+              <li><Link href="/">Montana Mini</Link></li>
+              <li><Link href="/">Montana Mega</Link></li>
+              <li><Link href="/">Kevi Chairs</Link></li>
+              <li><Link href="/">All product series</Link></li>
             </ul>
+
+            <ul>
+              <h5>Montana List</h5>
+              <li><Link href="/">Montana Selection</Link></li>
+              <li><Link href="/">Montana Mini</Link></li>
+              <li><Link href="/">Montana Mega</Link></li>
+              <li><Link href="/">Kevi Chairs</Link></li>
+              <li><Link href="/">All product series</Link></li>
+            </ul>
+           </div>
           </div>
         </div>
       </section>
