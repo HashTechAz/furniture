@@ -1,120 +1,70 @@
+/* TEMEL HEADER STİLİ */
 .header {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
+  width: 100%;
   z-index: 1000;
   padding: 30px 80px;
-  transform: translateY(0);
-  transition: background-color 0.1s ease, box-shadow 0.1s ease, color 0.1s ease;
-  /* Layout shift'i engelle */
-  width: 100%;
   box-sizing: border-box;
-  /* Header'ın sabit kalması için */
-  will-change: auto;
+  transform: translateY(0);
+  transition: transform 0.4s ease, background-color 0.4s ease, color 0.4s ease;
+  color: white;
 }
 
-/* Overlay açıkken header'ı beyaza çevir */
+/* 1. DURUM: SAYFANIN EN ÜSTÜNDEYKEN (Varsayılan) */
+.headerAtTop {
+  background-color: #633730;
+  color: white;
+  transform: translateY(0);
+}
+.headerAtTop.sustainabilityHeader,
+.headerAtTop.systemHeader {
+  background-color: transparent;
+}
+
+/* 2. DURUM: AŞAĞI SCROLL EDİNCE GİZLENMİŞ HALİ */
+.headerHidden {
+  transform: translateY(-110%);
+}
+
+/* 3. DURUM: YUKARI SCROLL EDİNCE GÖRÜNEN BEYAZ HALİ */
+.headerVisibleOnScroll {
+  background-color: #ffffff;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  color: #333333;
+}
+
+/* 4. DURUM: EN TEPEYE DÖNERKEN ÇIKIŞ ANİMASYONU */
+.headerExiting {
+  background-color: #ffffff;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  color: #333333;
+  transform: translateY(-110%);
+}
+
+/* OVERLAY AÇIKKEN (Bu sınıf her şeyi ezer) */
 .headerOverlayOpen {
   background-color: #ffffff !important;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08) !important;
   color: #333333 !important;
-  /* Header'ın overlay açıldığında sabit kalması için */
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  z-index: 1000 !important;
-  /* Header'ın hiç hareket etmemesi için */
-  transform: none !important;
-  width: 100% !important;
+  transform: translateY(0) !important;
 }
 
-/* Home: pull header slightly above to hide any 1px seam */
-.headerFlushTop {
-  top: -2px;
-}
-
-.headerDefault {
-  background-color: #633730;
-  box-shadow: none;
-  color: white; /* Add this */
-}
-
-.headerSticky {
-  background-color: #ffffff;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
-  color: black; /* Add this */
-}
-
-/* Başlangıç rengi */
-.headerDefault {
-  background-color: #633730;
-  box-shadow: none;
-}
-
-/* Scroll sonrası sticky rengi */
-.headerSticky {
-  background-color: #ffffff;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
-}
-
-/* Animasyonlar */
-.headerSlideDown {
-  animation: slideDown 0.2s ease forwards;
-}
-
-.headerSlideUp {
-  animation: slideUp 0.2s ease forwards;
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateY(-120%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-120%);
-  }
-}
-
-/* NAVBAR düzeni */
+/* DİĞER STİLLER */
 .navbar {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  /* Overlay açıldığında navbar'ın sabit kalması için */
   position: relative;
   z-index: 1000;
-  /* Layout shift'i engelle */
   box-sizing: border-box;
-  min-width: 0;
-  /* Grid düzenini sabitle */
-  grid-template-areas: "nav logo search";
-  gap: 0;
-  padding: 0;
-  margin: 0;
-  /* Header'ın hiç hareket etmemesi için */
-  will-change: auto;
-  transform: none;
 }
 
 .navigationMenu {
   justify-self: start;
-  grid-area: nav;
-  position: relative;
-  z-index: 1000;
 }
-
 .navigationMenu ul {
   list-style-type: none;
   display: flex;
@@ -122,21 +72,18 @@
   margin: 0;
   padding: 0;
 }
-
 .navigationMenu ul .navLists {
   color: inherit;
   font-size: 14px;
 }
-
 .navLinks {
   position: relative;
   text-decoration: none;
   color: inherit;
   padding-bottom: 4px;
 }
-
 .navLinks::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   height: 1px;
@@ -147,22 +94,10 @@
   transform-origin: bottom left;
   transition: transform 0.3s ease-out;
 }
-
-.navLinks:hover::after {
-  transform: scaleX(1);
-}
-
-/* Overlay açıkken hover çizgisinin kalması için */
+.navLinks:hover::after,
 .navLinks.active::after {
   transform: scaleX(1);
 }
-
-/* Overlay açıkken hover durumunu koru */
-.headerOverlayOpen .navLinks:hover::after,
-.headerOverlayOpen .navLinks.active::after {
-  transform: scaleX(1);
-}
-
 .logo {
   width: 100px;
   background-color: black;
@@ -171,125 +106,38 @@
   font-weight: 800;
   text-align: center;
   justify-self: center;
-  grid-area: logo;
-  /* Logo'nun overlay açıldığında da sabit kalması için */
-  position: relative;
-  z-index: 1001; /* Header'dan (1000) daha yüksek */
-  transition: none !important; /* Animasyon yok */
-  /* Logo'nun hiç hareket etmemesi için */
-  transform: none !important;
-  left: 0 !important;
-  right: 0 !important;
-  margin: 0 !important;
-  flex-shrink: 0;
-  flex-grow: 0;
 }
-
 .navSearch {
   justify-self: end;
-  grid-area: search;
-  /* Sabit kalması için */
-  position: relative;
-  z-index: 1000;
 }
-
 .searchButton {
   background: none;
   border: none;
   cursor: pointer;
   color: inherit;
 }
-
-/* Sustainability Page özel tema */
-.sustainabilityHeader {
-  background-color: transparent; /* transparent until sticky */
-  box-shadow: none !important;
-  border: none !important;
-  border-top: none !important;
-  border-bottom: none !important;
-}
-
 .sustainabilityHeader .navLists,
-.sustainabilityHeader .searchButton {
-  color: #ffffff !important;
-}
-
-/* On scroll (sticky), sustainability header becomes white with dark text */
-.headerSticky.sustainabilityHeader {
-  background-color: #ffffff !important;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08) !important;
-  border: none !important;
-  border-top: none !important;
-  border-bottom: none !important;
-}
-
-.headerSticky.sustainabilityHeader .navLists,
-.headerSticky.sustainabilityHeader .searchButton {
-  color: #333333 !important;
-}
-
-/* Overlay açıkken sustainability header'da yazılar görünür olsun */
-.headerOverlayOpen.sustainabilityHeader .navLists,
-.headerOverlayOpen.sustainabilityHeader .searchButton {
-  color: #333333 !important;
-}
-
-/* System Page özel tema */
-.systemHeader {
-  background-color: transparent !important; /* transparent until sticky */
-  box-shadow: none !important;
-  border: none !important;
-  border-top: none !important;
-  border-bottom: none !important;
-}
-
+.sustainabilityHeader .searchButton,
 .systemHeader .navLists,
 .systemHeader .searchButton {
-  color: #ffffff !important;
+  color: #ffffff;
 }
-
-/* On scroll (sticky), system header becomes white with dark text */
-.headerSticky.systemHeader {
-  background-color: #ffffff !important;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08) !important;
-  border: none !important;
-  border-top: none !important;
-  border-bottom: none !important;
+.headerVisibleOnScroll.sustainabilityHeader,
+.headerVisibleOnScroll.systemHeader {
+  color: #333333;
 }
-
-.headerSticky.systemHeader .navLists,
-.headerSticky.systemHeader .searchButton {
-  color: #333333 !important;
-}
-
-/* Overlay açıkken system header'da yazılar beyaz kalsın */
-.headerOverlayOpen.systemHeader .navLists,
-.headerOverlayOpen.systemHeader .searchButton {
-  color: #ffffff !important;
-}
-
-/* Series overlay - header'ın altından başlar, sayfa boyunca uzunlukta */
 .seriesOverlay {
   position: fixed;
-  top: 95px; /* Header'ın yüksekliği kadar aşağıdan başlar */
+  top: 95px;
   left: 0;
   right: 0;
   height: 0;
   background: white;
-  z-index: 999; /* header (1000) altında, header görünür kalır */
+  z-index: 999;
   overflow: hidden;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
   transition: height 0.35s ease;
-  /* Arka plan scroll'unu tamamen engelle */
-  touch-action: none;
-  -webkit-overflow-scrolling: touch;
-  /* Layout shift'i engelle */
-  width: 100%;
-  box-sizing: border-box;
-  /* Header'ı etkilememesi için */
-  will-change: height;
 }
-
 .seriesOverlayOpen {
-  height: calc(100vh - 50px); /* Sayfa boyunca uzunlukta, header'ı çıkar */
+  height: calc(100vh - 95px);
 }
