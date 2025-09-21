@@ -5,20 +5,22 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import styles from "./Header.module.css";
 
-// Bu componentlerin projenizde var olduğunu varsayıyorum
+// Gerekli tüm içerik bileşenlerini import ediyoruz
 import SearchOverlay from "../HeaderSearchOverlay/SearchOverlay";
 import SeriesContent from "../SeriesContent/SeriesContent";
 import ProductsContent from "../ProductsContent/ProductsContent";
+import InspirationContent from "../Inspiration/InspirationContent";
 
 const Header: React.FC = () => {
+  // State'ler
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [isSeriesOpen, setIsSeriesOpen] = useState<boolean>(false);
   const [isProductsOpen, setIsProductsOpen] = useState<boolean>(false);
+  const [isInspirationOpen, setIsInspirationOpen] = useState<boolean>(false); // Inspiration menüsü için state
   
+  // Scroll animasyonu için state'ler
   const [isVisible, setIsVisible] = useState<boolean>(true);
   const [isAtTop, setIsAtTop] = useState<boolean>(true);
-  
-  // Çıkış animasyonunu yönetmek için yeni state
   const [isExiting, setIsExiting] = useState<boolean>(false);
   
   const lastScrollY = useRef<number>(0);
@@ -26,33 +28,29 @@ const Header: React.FC = () => {
   const isSustainabilityPage = pathname === "/sustainability";
   const isSystemPage = pathname === "/system";
 
+  // Scroll animasyonunu yöneten useEffect
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // EĞER EN TEPEYE ULAŞILDIYSA VE DAHA ÖNCE TEPEDE DEĞİLSEK
       if (currentScrollY === 0 && !isAtTop) {
-        setIsExiting(true); // Çıkış animasyonunu başlat
-        // Animasyon süresi bittikten sonra durumu sıfırla
+        setIsExiting(true);
         setTimeout(() => {
           setIsAtTop(true);
           setIsExiting(false);
-        }, 400); // CSS'deki transition süresiyle aynı olmalı
-      } 
-      // EĞER TEPEDEYKEN AŞAĞI KAYDIRDIYSAK
-      else if (currentScrollY > 0 && isAtTop) {
+        }, 400); 
+      } else if (currentScrollY > 0 && isAtTop) {
         setIsAtTop(false);
       }
 
-      // Sadece tepede değilken scroll yönünü kontrol et
       if (!isAtTop) {
         if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
-          setIsVisible(false); // Aşağı scroll -> gizle
+          setIsVisible(false);
         } else if (currentScrollY < lastScrollY.current) {
-          setIsVisible(true); // Yukarı scroll -> göster
+          setIsVisible(true);
         }
       } else {
-        setIsVisible(true); // Tepedeyken her zaman görünür yap
+        setIsVisible(true);
       }
       
       lastScrollY.current = currentScrollY;
@@ -60,39 +58,56 @@ const Header: React.FC = () => {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isAtTop]); // isAtTop'ı dependency array'e ekliyoruz
+  }, [isAtTop]);
 
+  // Arama overlay'ini açıp kapatan fonksiyon
   const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
 
-  const onClickSeries = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  // Menülere tıklandığında çalışan merkezi fonksiyon
+  const handleMenuClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    setter: React.Dispatch<React.SetStateAction<boolean>>,
+    isCurrentlyOpen: boolean
+  ) => {
     e.preventDefault();
-    if (isProductsOpen) {
-      setIsProductsOpen(false);
-      setTimeout(() => setIsSeriesOpen(true), 50);
-    } else {
-      setIsSeriesOpen(prev => !prev);
-    }
-  };
 
-  const onClickProducts = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    if (isSeriesOpen) {
+    const closeAllMenus = () => {
+      setIsInspirationOpen(false);
+      setIsProductsOpen(false);
       setIsSeriesOpen(false);
-      setTimeout(() => setIsProductsOpen(true), 50);
+    };
+
+    // Tıklanan menü zaten açıksa, hepsini kapat
+    if (isCurrentlyOpen) {
+      closeAllMenus();
+      return;
+    }
+
+    // Başka bir menü açıksa, önce onu kapat, sonra yenisini küçük bir gecikmeyle aç
+    if (isSeriesOpen || isProductsOpen || isInspirationOpen) {
+        closeAllMenus();
+        setTimeout(() => {
+            setter(true);
+        }, 100);
     } else {
-      setIsProductsOpen(prev => !prev);
+        // Hiçbir menü açık değilse, tıklananı aç
+        setter(true);
     }
   };
   
+  // Sayfa (route) değiştiğinde tüm menüleri kapat
   useEffect(() => {
     setIsSeriesOpen(false);
     setIsProductsOpen(false);
+    setIsInspirationOpen(false);
   }, [pathname]);
 
+  // Menülerden herhangi biri açıkken body'nin scroll olmasını engelle
   useEffect(() => {
-    document.body.style.overflow = (isSeriesOpen || isProductsOpen) ? 'hidden' : 'unset';
+    const isAnyMenuOpen = isSeriesOpen || isProductsOpen || isInspirationOpen;
+    document.body.style.overflow = isAnyMenuOpen ? 'hidden' : 'unset';
     return () => { document.body.style.overflow = 'unset'; };
-  }, [isSeriesOpen, isProductsOpen]);
+  }, [isSeriesOpen, isProductsOpen, isInspirationOpen]);
 
   return (
     <>
@@ -103,7 +118,7 @@ const Header: React.FC = () => {
           ${isAtTop ? styles.headerAtTop : ''}
           ${isVisible && !isAtTop ? styles.headerVisibleOnScroll : ''}
           ${isExiting ? styles.headerExiting : ''}
-          ${isSeriesOpen || isProductsOpen ? styles.headerOverlayOpen : ""}
+          ${isSeriesOpen || isProductsOpen || isInspirationOpen ? styles.headerOverlayOpen : ""}
           ${isSustainabilityPage ? styles.sustainabilityHeader : ""}
           ${isSystemPage ? styles.systemHeader : ""}
         `}
@@ -112,25 +127,17 @@ const Header: React.FC = () => {
            <div className={styles.navigationMenu}>
              <ul>
                <li className={styles.navLists}>
-                 <Link href="/series" className={styles.navLinks}>
+                 <Link href="#" className={`${styles.navLinks} ${isInspirationOpen ? styles.active : ''}`} onClick={(e) => handleMenuClick(e, setIsInspirationOpen, isInspirationOpen)}>
                    Inspiration
                  </Link>
                </li>
                <li className={styles.navLists}>
-                 <Link
-                   href="#"
-                   className={`${styles.navLinks} ${isProductsOpen ? styles.active : ''}`}
-                   onClick={onClickProducts}
-                 >
+                 <Link href="#" className={`${styles.navLinks} ${isProductsOpen ? styles.active : ''}`} onClick={(e) => handleMenuClick(e, setIsProductsOpen, isProductsOpen)}>
                    Products
                  </Link>
                </li>
                <li className={styles.navLists}>
-                 <Link
-                   href="#"
-                   className={`${styles.navLinks} ${isSeriesOpen ? styles.active : ''}`}
-                   onClick={onClickSeries}
-                 >
+                 <Link href="#" className={`${styles.navLinks} ${isSeriesOpen ? styles.active : ''}`} onClick={(e) => handleMenuClick(e, setIsSeriesOpen, isSeriesOpen)}>
                    Series
                  </Link>
                </li>
@@ -158,6 +165,10 @@ const Header: React.FC = () => {
          </nav>
       </header>
       
+      {/* Overlay'ler */}
+      <div className={`${styles.seriesOverlay} ${isInspirationOpen ? styles.seriesOverlayOpen : ""}`}>
+        {isInspirationOpen && <InspirationContent />}
+      </div>
       <div className={`${styles.seriesOverlay} ${isSeriesOpen ? styles.seriesOverlayOpen : ""}`}>
         {isSeriesOpen && <SeriesContent />}
       </div>
