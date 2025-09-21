@@ -3,20 +3,22 @@
   width: 100vw;
   height: 100vh;
   display: flex;
-  padding: 0px 80px 0px 0px;
+  padding: 0px 80px 0px 0px; /* Sağdan boşluk kalabilir */
   gap: 40px;
   margin-top: 0px;
+  box-sizing: border-box;
 }
 
 .productsCategoryText {
   width: 20%;
   height: 100%;
   background-color: #F4F4F1;
-  padding: 60px 0px 0px 80px;
+  padding: 60px 0px 0px 80px; /* Soldan 80px boşluk burada */
+  flex-shrink: 0; /* Küçülmesini engelle */
 }
 
 .productsCategoryText h5,
-.gridItemMain h5 {
+.listsGrid h5 {
   font-size: 14px;
   margin-bottom: 5px;
   color: #333333;
@@ -27,21 +29,20 @@
 }
 
 .productsCategoryText ul,
-.gridItemMain ul {
+.listsGrid ul {
   list-style-type: none;
+  padding: 0;
 }
 
-
-
 .productsCategoryText ul li,
-.gridItemMain ul li {
+.listsGrid ul li {
   padding-bottom: 5px;
   font-size: 14px;
   color: #333333;
 }
 
 .productsCategoryText ul li a,
-.gridItemMain ul li a {
+.listsGrid ul li a {
   position: relative;
   text-decoration: none;
   color: inherit;
@@ -49,7 +50,7 @@
 }
 
 .productsCategoryText ul li a::after,
-.gridItemMain ul li a::after {
+.listsGrid ul li a::after {
   content: '';
   position: absolute;
   width: 100%;
@@ -63,7 +64,7 @@
 }
 
 .productsCategoryText ul li a:hover::after,
-.gridItemMain ul li a:hover::after {
+.listsGrid ul li a:hover::after {
   transform: scaleX(1);
 }
 
@@ -72,18 +73,34 @@
   height: 100%;
   background-color: white;
   padding-top: 60px;
+  /* HİZALAMA İÇİN EKLENDİ: Sol menüdeki 80px padding'e karşılık gelecek şekilde ayarlandı. */
 }
 
 .gridContainer {
-  display: flex;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
-  justify-items: center;
+  display: flex; /* Sadece tek bir ana item olacağı için flex yeterli */
 }
 
-.gridContainer .gridItemMain {
-  width: 600px;
+.gridItemMain {
+  width: 100%;
   height: 400px;
-  background-color: rgb(225, 224, 224);
   display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.gridItemMainText {
+  width: 65%;
+}
+
+.listsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  height: 100%;
+}
+
+.gridItemMainImage {
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
 }

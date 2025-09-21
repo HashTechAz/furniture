@@ -18,7 +18,7 @@ const Header: React.FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(true);
   const [isAtTop, setIsAtTop] = useState<boolean>(true);
   
-  // Çıkış animasyonunu yönetmek için state
+  // Çıkış animasyonunu yönetmek için yeni state
   const [isExiting, setIsExiting] = useState<boolean>(false);
   
   const lastScrollY = useRef<number>(0);
@@ -47,9 +47,9 @@ const Header: React.FC = () => {
       // Sadece tepede değilken scroll yönünü kontrol et
       if (!isAtTop) {
         if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
-          setIsVisible(false);
+          setIsVisible(false); // Aşağı scroll -> gizle
         } else if (currentScrollY < lastScrollY.current) {
-          setIsVisible(true);
+          setIsVisible(true); // Yukarı scroll -> göster
         }
       } else {
         setIsVisible(true); // Tepedeyken her zaman görünür yap
