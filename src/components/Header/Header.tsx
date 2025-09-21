@@ -16,7 +16,7 @@ const Header: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [isSeriesOpen, setIsSeriesOpen] = useState<boolean>(false);
   const [isProductsOpen, setIsProductsOpen] = useState<boolean>(false);
-  const [isInspirationOpen, setIsInspirationOpen] = useState<boolean>(false); // Inspiration menüsü için state
+  const [isInspirationOpen, setIsInspirationOpen] = useState<boolean>(false);
   
   // Scroll animasyonu için state'ler
   const [isVisible, setIsVisible] = useState<boolean>(true);
@@ -27,6 +27,7 @@ const Header: React.FC = () => {
   const pathname = usePathname();
   const isSustainabilityPage = pathname === "/sustainability";
   const isSystemPage = pathname === "/system";
+  const isProductPage = pathname.startsWith("/product");
 
   // Scroll animasyonunu yöneten useEffect
   useEffect(() => {
@@ -121,6 +122,7 @@ const Header: React.FC = () => {
           ${isSeriesOpen || isProductsOpen || isInspirationOpen ? styles.headerOverlayOpen : ""}
           ${isSustainabilityPage ? styles.sustainabilityHeader : ""}
           ${isSystemPage ? styles.systemHeader : ""}
+          ${isProductPage ? styles.productDetailsHeader : ""}
         `}
       >
         <nav className={styles.navbar}>

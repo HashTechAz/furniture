@@ -19,19 +19,19 @@ const ProductsContent = () => {
         <div className={styles.productsCategoryText}>
           <h5>About Montana</h5>
           <ul>
-            <li><Link href="/">Customize your solution</Link></li>
-            <li><Link href="/">41 colors & 2 veneers</Link></li>
-            <li><Link href="/">Susainability</Link></li>
-            <li><Link href="/">Designers</Link></li>
+            <li><Link href="/product">Customize your solution</Link></li>
+            <li><Link href="/product">41 colors & 2 veneers</Link></li>
+            <li><Link href="/product">Susainability</Link></li>
+            <li><Link href="/product">Designers</Link></li>
           </ul>
 
           <h5>Product Series</h5>
           <ul>
-            <li><Link href="/">Montana Selection</Link></li>
-            <li><Link href="/">Montana Mini</Link></li>
-            <li><Link href="/">Montana Mega</Link></li>
-            <li><Link href="/">Kevi Chairs</Link></li>
-            <li><Link href="/">All product series</Link></li>
+            <li><Link href="/product">Montana Selection</Link></li>
+            <li><Link href="/product">Montana Mini</Link></li>
+            <li><Link href="/product">Montana Mega</Link></li>
+            <li><Link href="/product">Kevi Chairs</Link></li>
+            <li><Link href="/product">All product series</Link></li>
           </ul>
         </div>
         <div className={styles.contentWrapper}>
@@ -42,11 +42,11 @@ const ProductsContent = () => {
                   {[...Array(6)].map((_, index) => (
                     <ul key={index}>
                       <h5>Montana List</h5>
-                      <li><Link href="/">Montana Selection</Link></li>
-                      <li><Link href="/">Montana Mini</Link></li>
-                      <li><Link href="/">Montana Mega</Link></li>
-                      <li><Link href="/">Kevi Chairs</Link></li>
-                      <li><Link href="/">All product series</Link></li>
+                      <li><Link href="/product">Montana Selection</Link></li>
+                      <li><Link href="/product">Montana Mini</Link></li>
+                      <li><Link href="/product">Montana Mega</Link></li>
+                      <li><Link href="/product">Kevi Chairs</Link></li>
+                      <li><Link href="/product">All product series</Link></li>
                     </ul>
                   ))}
                 </div>

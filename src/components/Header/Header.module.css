@@ -141,3 +141,43 @@
 .seriesOverlayOpen {
   height: calc(100vh - 95px);
 }
+
+
+
+/* ... dosyanın diğer stilleri aynı kalıyor ... */
+
+/* 1. DURUM: SAYFANIN EN ÜSTÜNDEYKEN (Varsayılan) */
+.headerAtTop {
+  background-color: #633730;
+  color: white;
+  transform: translateY(0);
+}
+.headerAtTop.sustainabilityHeader,
+.headerAtTop.systemHeader,
+.headerAtTop.productDetailsHeader { /* YENİ EKLENDİ */
+  background-color: transparent;
+}
+
+/* ... dosyanın diğer stilleri aynı kalıyor ... */
+
+.searchButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+}
+.sustainabilityHeader .navLists,
+.sustainabilityHeader .searchButton,
+.systemHeader .navLists,
+.systemHeader .searchButton,
+.productDetailsHeader .navLists, /* YENİ EKLENDİ */
+.productDetailsHeader .searchButton { /* YENİ EKLENDİ */
+  color: #ffffff;
+}
+.headerVisibleOnScroll.sustainabilityHeader,
+.headerVisibleOnScroll.systemHeader,
+.headerVisibleOnScroll.productDetailsHeader { /* YENİ EKLENDİ */
+  color: #333333;
+}
+
+/* ... dosyanın geri kalanı aynı ... */
