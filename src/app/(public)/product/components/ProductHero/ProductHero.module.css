@@ -1,11 +1,9 @@
 .heroSection {
   width: 100%;
-  /* İstediğin arka plan rengi */
   background-color: #DD7D74; 
   color: #fff;
-  padding: 60px 80px;
-  padding-top: 160px; /* Header'ın altında başlaması için padding artırıldı */
-  min-height: 50vh;
+  padding: 40px 80px;
+  padding-top: 130px; 
   display: flex;
   align-items: center;
   box-sizing: border-box;

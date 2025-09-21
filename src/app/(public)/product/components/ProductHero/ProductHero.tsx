@@ -6,11 +6,8 @@ const ProductHero = () => {
     <section className={styles.heroSection}>
       <div className={styles.content}>
         <h1 className={styles.title}>
-          Ripply
+          All Products
         </h1>
-        <p className={styles.description}>
-          The Ripply shelving unit is a new take on the classic Montana shelf. A ripple effect on the back panel adds a vibrant and playful expression.
-        </p>
       </div>
     </section>
   );

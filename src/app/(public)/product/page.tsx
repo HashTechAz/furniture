@@ -1,19 +1,16 @@
 import React from 'react';
 import ProductHero from './components/ProductHero/ProductHero';
-// İleride eklenecek diğer bileşenler
-// import ProductImages from './components/ProductImages/ProductImages';
-// import ProductInfo from './components/ProductInfo/ProductInfo';
+import CategoryFilters from './components/CategoryFilters/CategoryFilters';
+import DropdownFilters from './components/DropdownFilters/DropdownFilters';
+import ProductGrid from './components/ProductGrid/ProductGrid';
 
 const ProductPage = () => {
   return (
     <main>
       <ProductHero />
-      {/* <ProductImages /> */}
-      {/* <ProductInfo /> */}
-      {/* Diğer bileşenler buraya gelecek */}
-       <div style={{ height: '100vh', padding: '80px', boxSizing: 'border-box' }}>
-        <h2>Ürün Detayları Alanı</h2>
-      </div>
+      <CategoryFilters />
+      <DropdownFilters />
+      <ProductGrid />
     </main>
   );
 };
