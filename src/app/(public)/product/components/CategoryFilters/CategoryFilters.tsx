@@ -6,10 +6,10 @@ const CategoryFilters = () => {
     "All products",
     "Shelving systems",
     "Bookcases",
-    "Sideboards",
-    "TV units",
-    "Wardrobes",
-    "Tables",
+    "Montana System basic units",
+    "Montana free",
+    "Pantron Wire",
+    "Wall mounted shelving systems",
     "Chairs"
   ];
 

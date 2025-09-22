@@ -1,26 +1,35 @@
 .filtersWrapper {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start; /* Üstten hizalamak daha iyi görünebilir */
   padding: 20px 80px;
-  border-bottom: 1px solid #e5e5e5;
 }
 
 .leftFilters, .rightFilters {
   display: flex;
   gap: 15px;
+  align-items: flex-start;
+}
+
+/* Her bir dropdown'ı ve menüsünü saran ana konteyner */
+.dropdown {
+    /* position: relative; kaldırıldı */
+    width: 180px; /* Sabit bir genişlik vermek daha düzenli gösterebilir */
 }
 
 .dropdownButton {
   display: flex;
   align-items: center;
+  justify-content: space-between; /* İçeriği iki uca yasla */
+  width: 100%; /* Konteynerin tamamını kapla */
   gap: 8px;
   padding: 8px 12px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid transparent;
   border-radius: 4px;
   background: #fff;
-  font-size: 14px;
+  font-size: 12px;
   cursor: pointer;
+  text-align: left; /* Metni sola hizala */
   transition: background-color 0.2s ease;
 }
 
@@ -30,4 +39,52 @@
 
 .dropdownButton span {
   font-weight: 500;
+}
+
+.arrow {
+    transition: transform 0.3s ease;
+    flex-shrink: 0; /* Okun küçülmesini engelle */
+}
+
+.arrowOpen {
+    transform: rotate(180deg);
+}
+
+/* --- ANA DEĞİŞİKLİKLER BURADA --- */
+.dropdownMenu {
+  /* position: absolute ve ilgili diğer özellikler kaldırıldı */
+  background: #fff;
+  
+  /* Animasyon için başlangıç durumu */
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-in-out, padding 0.3s ease-in-out, margin-top 0.3s ease-in-out;
+}
+
+/* Menü açıkken uygulanacak stil */
+.menuOpen {
+  max-height: 200px;
+  margin-top: 30px; /* Buton ile menü arasına küçük bir boşluk */
+  border-radius: 4px;
+}
+
+.dropdownMenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdownMenu ul a {
+  display: block;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.dropdownMenu ul a:hover {
+  background-color: #f8f9fa;
 }
