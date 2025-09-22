@@ -11,10 +11,12 @@
   align-items: flex-start;
 }
 
+/* YENİ EKLENDİ: "Sort by:" etiketi için stil */
 .sortByLabel {
     font-size: 12px;
     font-weight: 500;
     color: #333;
+    /* Butonla aynı hizada olması için */
     padding: 8px 0; 
 }
 
@@ -64,9 +66,7 @@
 
 .menuOpen {
   max-height: 200px;
-  margin-top: 5px;
-  padding: 10px;
-  border: 1px solid #e5e5e5;
+  margin-top: 30px;
   border-radius: 4px;
 }
 
@@ -89,19 +89,4 @@
 
 .dropdownMenu ul a:hover {
   background-color: #f8f9fa;
-}
-
-/* YENİ EKLENEN STİLLER */
-.colorOption {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Kutucuk ile metin arasına boşluk */
-}
-
-.colorSwatch {
-    width: 16px;
-    height: 16px;
-    border-radius: 4px; /* Oval veya kare yapabilirsin */
-    border: 1px solid #ddd;
-    flex-shrink: 0; /* Boyutunun bozulmasını engeller */
 }

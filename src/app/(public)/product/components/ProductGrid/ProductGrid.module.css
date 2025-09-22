@@ -2,12 +2,72 @@
   padding: 60px 80px;
 }
 
+.countDisplay {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 14px;
+    color: #666;
+}
+
 .grid {
   display: grid;
-  /* DEĞİŞİKLİK: Sabit 4 sütunlu yapı */
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
 }
+
+
+/* --- YENİ EKLENEN STİLLER --- */
+
+.paginationControls {
+    text-align: center;
+    padding-top: 60px; /* Ürünlerle arasına boşluk koyar */
+}
+
+.itemCount {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.loadMoreButton {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    
+    /* Hover efekti için gerekli stiller */
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: color 0.4s ease-in-out;
+}
+
+.loadMoreButton::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.15); /* Açık siyah efekti için */
+    z-index: -1;
+    
+    transform: translateX(-100%);
+    transition: transform 0.4s ease-in-out;
+}
+
+.loadMoreButton:hover::before {
+    transform: translateX(0);
+}
+
+
+/* --------------------------- */
+
 
 /* Mobil cihazlar için responsive ayar */
 @media (max-width: 1200px) {

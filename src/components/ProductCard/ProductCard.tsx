@@ -1,18 +1,20 @@
-'use client'; // <--- BU SATIRI EKLE
+'use client';
 
 import { useState } from "react";
 import Link from "next/link";
 import styles from "./ProductCard.module.css";
 
+// Kartın alacağı props'ları güncelliyoruz
 interface ProductCardProps {
   imageSrc: string;
   imageSrcHover: string;
   title: string;
   color: string;
-  size: string;
+  measurements: string; // 'size' yerine 'measurements'
+  position: string;
 }
 
-const ProductCard = ({ imageSrc, imageSrcHover, title, color, size }: ProductCardProps) => {
+const ProductCard = ({ imageSrc, imageSrcHover, title, color, measurements, position }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   if (!imageSrc) {
@@ -33,14 +35,19 @@ const ProductCard = ({ imageSrc, imageSrcHover, title, color, size }: ProductCar
             alt={title}
             className={styles.image}
           />
-          <button type="button" className={styles.productButton} onClick={(e) => { e.preventDefault(); /* open quick view modal here */ }}>
-            Quick view
+          <button type="button" className={styles.productButton}>
+            Configure product
           </button>
         </div>
-        <h3 className={styles.cardTitle}>{title}</h3>
-        <p className={styles.cardDetails}>
-          <span className={styles.cardColor}>{color}</span> / <span className={styles.cardSize}>{size}</span>
-        </p>
+
+        {/* --- DEĞİŞİKLİK BURADA --- */}
+        <div className={styles.cardInfo}>
+            <h3 className={styles.cardTitle}>{title}</h3>
+            <p className={styles.cardColor}>Color: {color}</p>
+            <p className={styles.cardMeasurements}>Measurements: {measurements}</p>
+            <p className={styles.cardPosition}>Position: {position}</p>
+        </div>
+
       </div>
     </Link>
   );

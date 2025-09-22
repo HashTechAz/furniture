@@ -50,7 +50,11 @@ const SearchOverlay = ({ isOpen, onClose }: SearchOverlayProps) => {
             className={styles.searchInput}
           />
           <button className={styles.closeButton} onClick={onClose}>
-            &times;
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5"/>
+                <path d="M14.5 9.5L9.5 14.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                <path d="M9.5 9.5L14.5 14.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
           </button>
           
         </div>

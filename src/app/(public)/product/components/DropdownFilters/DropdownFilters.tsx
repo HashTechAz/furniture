@@ -3,30 +3,22 @@
 import React, { useState } from 'react';
 import styles from './DropdownFilters.module.css';
 
-// Renk seçenekleri için yeni bir tip tanımı
-interface ColorOption {
-  name: string;
-  hex: string;
-}
-
-// Dropdown'un alabileceği props'ları güncelliyoruz
+// Her bir dropdown için props tanımı
 interface DropdownProps {
-  label?: string;
-  // options artık ya string dizisi ya da ColorOption dizisi olabilir
-  options: (string | ColorOption)[]; 
-  initialSelected?: string;
+  label?: string; // Normal dropdown'lar için
+  options: string[];
+  initialSelected?: string; // Seçili değeri göstermek için
 }
 
 // Tek bir Dropdown bileşeni
 const Dropdown = ({ label, options, initialSelected }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(initialSelected || (typeof options[0] === 'string' ? options[0] : options[0].name));
+  // Seçilen seçeneği saklamak için yeni bir state
+  const [selectedOption, setSelectedOption] = useState(initialSelected || options[0]);
 
-  const handleOptionClick = (option: string | ColorOption) => {
-    // Tıklanan seçeneğin adını alıyoruz
-    const optionName = typeof option === 'string' ? option : option.name;
-    setSelectedOption(optionName);
-    setIsOpen(false);
+  const handleOptionClick = (option: string) => {
+    setSelectedOption(option); // Seçeneği güncelle
+    setIsOpen(false); // Menüyü kapat
   };
 
   return (
@@ -35,6 +27,10 @@ const Dropdown = ({ label, options, initialSelected }: DropdownProps) => {
         className={styles.dropdownButton} 
         onClick={() => setIsOpen(!isOpen)}
       >
+        {/*
+          Eğer 'label' prop'u varsa onu, yoksa 'selectedOption'ı göster.
+          Bu, hem normal ("Dispatch time") hem de seçici ("Sort by") dropdown'lar için çalışmasını sağlar.
+        */}
         <span>{label ? label : selectedOption}</span>
         <svg 
           width="12" height="12" viewBox="0 0 24 24" 
@@ -47,26 +43,14 @@ const Dropdown = ({ label, options, initialSelected }: DropdownProps) => {
       
       <div className={`${styles.dropdownMenu} ${isOpen ? styles.menuOpen : ''}`}>
         <ul>
-          {options.map((option, index) => {
-            // Seçeneğin tipini kontrol ediyoruz
-            const isColor = typeof option !== 'string';
-            const optionName = isColor ? option.name : option;
-            
-            return (
-              <li key={index}>
-                <a href="#" className={isColor ? styles.colorOption : ''} onClick={(e) => { e.preventDefault(); handleOptionClick(option); }}>
-                  {isColor && (
-                    // Renk kutucuğunu (swatch) ekliyoruz
-                    <span 
-                      className={styles.colorSwatch} 
-                      style={{ backgroundColor: (option as ColorOption).hex }}
-                    ></span>
-                  )}
-                  {optionName}
-                </a>
-              </li>
-            );
-          })}
+          {options.map((option, index) => (
+            <li key={index}>
+              {/* Tıklandığında handleOptionClick fonksiyonunu çağır */}
+              <a href="#" onClick={(e) => { e.preventDefault(); handleOptionClick(option); }}>
+                {option}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
     </div>
@@ -75,20 +59,12 @@ const Dropdown = ({ label, options, initialSelected }: DropdownProps) => {
 
 // Ana bileşen
 const DropdownFilters = () => {
+  // Her dropdown için seçenek listeleri
   const dispatchOptions = ["In stock", "1-2 weeks", "3-4 weeks"];
   const depthOptions = ["30 cm", "38 cm", "47 cm"];
+  const colourOptions = ["New White", "Fjord", "Ruby", "Acacia"];
   const seriesOptions = ["Montana System", "Montana Free", "Panton Wire"];
   const sortOptions = ["Montana recommends", "Price: Low to High", "Price: High to Low"];
-
-  // DEĞİŞİKLİK: Renkleri isim ve hex kodu olarak tanımlıyoruz
-  const colourOptions: ColorOption[] = [
-    { name: "New White", hex: "#F1F0EA" },
-    { name: "Fjord", hex: "#A9B3B9" },
-    { name: "Ruby", hex: "#9B2C33" },
-    { name: "Acacia", hex: "#A58D7F" },
-    { name: "Oat", hex: "#E4D9C8" },
-    { name: "Truffle", hex: "#D9CDC2" },
-  ];
 
   return (
     <div className={styles.filtersWrapper}>
@@ -98,8 +74,11 @@ const DropdownFilters = () => {
         <Dropdown label="Colour" options={colourOptions} />
         <Dropdown label="Product series" options={seriesOptions} />
       </div>
+      {/* --- DEĞİŞİKLİK BURADA --- */}
       <div className={styles.rightFilters}>
+        {/* Sabit etiket */}
         <span className={styles.sortByLabel}>Sort by:</span>
+        {/* Seçici Dropdown */}
         <Dropdown options={sortOptions} initialSelected={sortOptions[0]} />
       </div>
     </div>

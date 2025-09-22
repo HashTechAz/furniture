@@ -19,7 +19,8 @@
   transform: translateY(0);
 }
 .headerAtTop.sustainabilityHeader,
-.headerAtTop.systemHeader {
+.headerAtTop.systemHeader,
+.headerAtTop.productDetailsHeader {
   background-color: transparent;
 }
 
@@ -116,16 +117,26 @@
   cursor: pointer;
   color: inherit;
 }
-.sustainabilityHeader .navLists,
-.sustainabilityHeader .searchButton,
-.systemHeader .navLists,
-.systemHeader .searchButton {
+
+/* --- ANA DÜZELTME BURADA --- */
+/* Bu kural, özel sayfalardaki yazı ve ikon rengini SADECE sayfanın en üstündeyken beyaz yapar. */
+.headerAtTop.sustainabilityHeader .navLists,
+.headerAtTop.sustainabilityHeader .searchButton,
+.headerAtTop.systemHeader .navLists,
+.headerAtTop.systemHeader .searchButton,
+.headerAtTop.productDetailsHeader .navLists,
+.headerAtTop.productDetailsHeader .searchButton {
   color: #ffffff;
 }
+
+/* Bu kural, scroll edildiğinde rengin siyaha dönmesini sağlar (zaten vardı, doğruluğu teyit edildi) */
 .headerVisibleOnScroll.sustainabilityHeader,
-.headerVisibleOnScroll.systemHeader {
+.headerVisibleOnScroll.systemHeader,
+.headerVisibleOnScroll.productDetailsHeader {
   color: #333333;
 }
+/* ------------------------ */
+
 .seriesOverlay {
   position: fixed;
   top: 95px;
@@ -141,43 +152,3 @@
 .seriesOverlayOpen {
   height: calc(100vh - 95px);
 }
-
-
-
-/* ... dosyanın diğer stilleri aynı kalıyor ... */
-
-/* 1. DURUM: SAYFANIN EN ÜSTÜNDEYKEN (Varsayılan) */
-.headerAtTop {
-  background-color: #633730;
-  color: white;
-  transform: translateY(0);
-}
-.headerAtTop.sustainabilityHeader,
-.headerAtTop.systemHeader,
-.headerAtTop.productDetailsHeader { /* YENİ EKLENDİ */
-  background-color: transparent;
-}
-
-/* ... dosyanın diğer stilleri aynı kalıyor ... */
-
-.searchButton {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: inherit;
-}
-.sustainabilityHeader .navLists,
-.sustainabilityHeader .searchButton,
-.systemHeader .navLists,
-.systemHeader .searchButton,
-.productDetailsHeader .navLists, /* YENİ EKLENDİ */
-.productDetailsHeader .searchButton { /* YENİ EKLENDİ */
-  color: #ffffff;
-}
-.headerVisibleOnScroll.sustainabilityHeader,
-.headerVisibleOnScroll.systemHeader,
-.headerVisibleOnScroll.productDetailsHeader { /* YENİ EKLENDİ */
-  color: #333333;
-}
-
-/* ... dosyanın geri kalanı aynı ... */
