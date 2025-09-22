@@ -19,9 +19,12 @@
   transform: translateY(0);
 }
 .headerAtTop.sustainabilityHeader,
-.headerAtTop.systemHeader,
-.headerAtTop.productDetailsHeader {
+.headerAtTop.systemHeader {
   background-color: transparent;
+}
+
+.headerAtTop.productDetailsHeader {
+  background-color: #F5F5F5;
 }
 
 /* 2. DURUM: AŞAĞI SCROLL EDİNCE GİZLENMİŞ HALİ */
@@ -123,10 +126,13 @@
 .headerAtTop.sustainabilityHeader .navLists,
 .headerAtTop.sustainabilityHeader .searchButton,
 .headerAtTop.systemHeader .navLists,
-.headerAtTop.systemHeader .searchButton,
+.headerAtTop.systemHeader .searchButton {
+  color: #ffffff;
+}
+
 .headerAtTop.productDetailsHeader .navLists,
 .headerAtTop.productDetailsHeader .searchButton {
-  color: #ffffff;
+  color: #000000;
 }
 
 /* Bu kural, scroll edildiğinde rengin siyaha dönmesini sağlar (zaten vardı, doğruluğu teyit edildi) */
