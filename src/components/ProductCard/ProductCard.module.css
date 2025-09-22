@@ -8,28 +8,38 @@
   width: 100%;
   text-align: left;
   position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .imageWrapper {
-  /* Genişliği %100 yaparak grid'e uyum sağlamasını sağlıyoruz */
   width: 100%; 
-  height: 320px; /* Yüksekliği biraz azalttım, metinlere yer açılsın */
-  /* overflow: hidden; */
+  height: 320px;
+  overflow: hidden;
   position: relative;
-  background-color: #f8f9fa; /* Resim yüklenene kadar yer tutucu */
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease-in-out;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+  will-change: transform;
 }
 
 
 /* --- YENİ EKLENEN VE GÜNCELLENEN STİLLER --- */
 .cardInfo {
-    margin-top: 15px;
+  margin-top: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
      
 .cardTitle {
@@ -64,6 +74,10 @@
   visibility: hidden;
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
   white-space: nowrap; /* Metnin alta kaymasını engelle */
+}
+
+.cardLink:hover .image {
+  transform: scale(1.02);
 }
 
 .cardLink:hover .productButton {

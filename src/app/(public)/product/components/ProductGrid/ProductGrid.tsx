@@ -108,6 +108,7 @@ const ProductGrid = () => {
         {products.map((product) => (
           <ProductCard
             key={product.id}
+            id={product.id}
             title={product.title}
             color={product.color}
             measurements={product.measurements}

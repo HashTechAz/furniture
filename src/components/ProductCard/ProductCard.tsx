@@ -6,6 +6,7 @@ import styles from "./ProductCard.module.css";
 
 // Kartın alacağı props'ları güncelliyoruz
 interface ProductCardProps {
+  id?: number;
   imageSrc: string;
   imageSrcHover: string;
   title: string;
@@ -14,7 +15,7 @@ interface ProductCardProps {
   position: string;
 }
 
-const ProductCard = ({ imageSrc, imageSrcHover, title, color, measurements, position }: ProductCardProps) => {
+const ProductCard = ({ id, imageSrc, imageSrcHover, title, color, measurements, position }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   if (!imageSrc) {
@@ -23,7 +24,7 @@ const ProductCard = ({ imageSrc, imageSrcHover, title, color, measurements, posi
 
   return (
     <Link
-      href="#"
+      href={id ? `/product/${id}` : "#"}
       className={styles.cardLink}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
