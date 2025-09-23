@@ -28,6 +28,7 @@ const Header: React.FC = () => {
   const isSustainabilityPage = pathname === "/sustainability";
   const isSystemPage = pathname === "/system";
   const isProductPage = pathname.startsWith("/product");
+  const isProductsMainPage = pathname === "/product";
 
   // Scroll animasyonunu yöneten useEffect
   useEffect(() => {
@@ -122,7 +123,8 @@ const Header: React.FC = () => {
           ${isSeriesOpen || isProductsOpen || isInspirationOpen ? styles.headerOverlayOpen : ""}
           ${isSustainabilityPage ? styles.sustainabilityHeader : ""}
           ${isSystemPage ? styles.systemHeader : ""}
-          ${isProductPage ? styles.productDetailsHeader : ""}
+          ${isProductsMainPage ? styles.productsMainHeader : ""}
+          ${isProductPage && !isProductsMainPage ? styles.productDetailsHeader : ""}
         `}
       >
         <nav className={styles.navbar}>

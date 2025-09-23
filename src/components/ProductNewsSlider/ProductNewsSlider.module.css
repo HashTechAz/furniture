@@ -98,7 +98,7 @@
   }
   
 .embla__slide {
-  flex: 0 0 280px; /* Sabit genişlik */
+  flex: 0 0 350px; /* Sabit genişlik */
   min-width: 0;
   position: relative;
   margin-right: 20px; /* Slaytlar arası boşluk */

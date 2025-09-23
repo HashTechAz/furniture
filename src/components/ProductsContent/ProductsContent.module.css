@@ -24,6 +24,12 @@
   color: #333333;
 }
 
+/* Products sayfasında dropdown açıkken yazıları siyah yap */
+body:has(.headerOverlayOpen.productsMainHeader) .productsCategoryText h5,
+body:has(.headerOverlayOpen.productsMainHeader) .listsGrid h5 {
+  color: #333333;
+}
+
 .productsCategoryText h5:nth-child(3) {
   margin-top: 30px;
 }
@@ -38,6 +44,12 @@
 .listsGrid ul li {
   padding-bottom: 5px;
   font-size: 14px;
+  color: #333333;
+}
+
+/* Products sayfasında dropdown açıkken link yazılarını siyah yap */
+body:has(.headerOverlayOpen.productsMainHeader) .productsCategoryText ul li,
+body:has(.headerOverlayOpen.productsMainHeader) .listsGrid ul li {
   color: #333333;
 }
 

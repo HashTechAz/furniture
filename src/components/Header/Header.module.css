@@ -23,6 +23,10 @@
   background-color: transparent;
 }
 
+.headerAtTop.productsMainHeader {
+  background-color: #DD7D74;
+}
+
 .headerAtTop.productDetailsHeader {
   background-color: #F5F5F5;
 }
@@ -53,6 +57,12 @@
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08) !important;
   color: #333333 !important;
   transform: translateY(0) !important;
+}
+
+/* Products sayfasında overlay açıkken özel renk */
+.headerOverlayOpen.productsMainHeader {
+  background-color: #ffffff !important;
+  color: #333333 !important;
 }
 
 /* DİĞER STİLLER */
@@ -130,6 +140,17 @@
   color: #ffffff;
 }
 
+.headerAtTop.productsMainHeader .navLists,
+.headerAtTop.productsMainHeader .searchButton {
+  color: #ffffff;
+}
+
+/* Products sayfasında overlay açıkken yazıları siyah yap */
+.headerOverlayOpen.productsMainHeader .navLists,
+.headerOverlayOpen.productsMainHeader .searchButton {
+  color: #333333;
+}
+
 .headerAtTop.productDetailsHeader .navLists,
 .headerAtTop.productDetailsHeader .searchButton {
   color: #000000;
@@ -138,6 +159,7 @@
 /* Bu kural, scroll edildiğinde rengin siyaha dönmesini sağlar (zaten vardı, doğruluğu teyit edildi) */
 .headerVisibleOnScroll.sustainabilityHeader,
 .headerVisibleOnScroll.systemHeader,
+.headerVisibleOnScroll.productsMainHeader,
 .headerVisibleOnScroll.productDetailsHeader {
   color: #333333;
 }
