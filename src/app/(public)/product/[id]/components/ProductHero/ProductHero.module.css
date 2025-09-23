@@ -1,84 +1,270 @@
 .hero {
-  padding: 60px 0;
-  background-color: #f8f9fa;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: center;
+  gap: 80px;
+  margin-bottom: 100px;
+  margin-top: 95px;
+  margin-left: auto;
+  margin-right: auto;
+  /* DEĞİŞİKLİK: Arka plan rengini istediğin gibi ayarladım */
+  background-color: #F5F5F5;
 }
 
-.imageSection {
+.imageGallery {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.mainImage {
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
   position: relative;
 }
 
-.heroImage {
+.image {
   width: 100%;
-  height: 500px;
-  object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  object-fit: contain; /* Contain daha iyi bir görünüm sağlayabilir */
+  transition: transform 0.3s ease;
 }
 
-.contentSection {
+.thumbnailContainer {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 8px 0;
+}
+
+.thumbnail {
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+  border: 2px solid transparent;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  /* DEĞİŞİKLİK: Beyaz arka planı şeffaf yapıyoruz */
+  background-color: transparent;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.thumbnail.active {
+  border-color: #000;
+}
+
+.thumbnail:hover {
+  border-color: #666;
+}
+
+.productInfo {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 32px;
+  padding-left: 20px;
+}
+
+.productHeader {
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 24px;
 }
 
 .title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #333;
+  font-size: 2.8rem;
+  font-weight: 300;
+  color: #000;
+  margin: 0 0 16px 0;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.priceContainer {
   margin: 0;
-  line-height: 1.2;
 }
 
 .price {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #DD7D74;
-  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #000;
 }
 
-.description {
-  font-size: 1.1rem;
-  color: #666;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.details {
+.configuration {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 32px;
+}
+
+.configSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.configTitle {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #000;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.colorOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.colorOption {
+  padding: 12px 20px;
+  border: 1px solid #d0d0d0;
+  /* DEĞİŞİKLİK: Beyaz arka planı şeffaf yapıyoruz */
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #333;
+}
+
+.colorOption:hover {
+  border-color: #000;
+}
+
+.colorOption.selected {
+  border-color: #000;
+  background-color: #000;
+  color: white;
+}
+
+.baseTypeOptions {
+  display: flex;
+  gap: 12px;
+}
+
+.baseTypeOption {
+  padding: 12px 20px;
+  border: 1px solid #d0d0d0;
+  /* DEĞİŞİKLİK: Beyaz arka planı şeffaf yapıyoruz */
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #333;
+}
+
+.baseTypeOption:hover {
+  border-color: #000;
+}
+
+.baseTypeOption.selected {
+  border-color: #000;
+  background-color: #000;
+  color: white;
+}
+
+.productDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .measurements,
-.position {
+.position,
+.description {
   font-size: 1rem;
-  color: #555;
+  line-height: 1.6;
+  color: #333;
   margin: 0;
+  font-weight: 400;
 }
 
-/* Responsive */
+.actionButtons {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.configureButton {
+  flex: 1;
+  padding: 18px 32px;
+  background-color: #000;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.configureButton:hover {
+  background-color: #333;
+}
+
+.addToCartButton {
+  flex: 1;
+  padding: 18px 32px;
+  background-color: transparent;
+  color: #000;
+  border: 1px solid #000;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.addToCartButton:hover {
+  background-color: #000;
+  color: white;
+}
+
+@media (max-width: 1024px) {
+  .hero {
+    gap: 60px;
+    padding: 40px; /* Kenar boşlukları ekledim */
+  }
+}
+
 @media (max-width: 768px) {
-  .container {
+  .hero {
     grid-template-columns: 1fr;
     gap: 40px;
+    margin-bottom: 60px;
+    padding: 20px; /* Kenar boşlukları ekledim */
+    margin-top: 80px; /* Header için boşluk */
   }
-  
+
+  .productInfo {
+    padding-left: 0;
+    gap: 24px;
+  }
+
   .title {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
-  
-  .heroImage {
+
+  .actionButtons {
+    flex-direction: column;
+  }
+
+  .mainImage {
     height: 400px;
+  }
+
+  .colorOptions,
+  .baseTypeOptions {
+    flex-direction: column;
+    align-items: stretch; /* Butonlar tam genişlikte olsun */
   }
 }
