@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import styles from './page.module.css';
 
 // Bileşenleri import ediyoruz
-import ProductDetailsGallery from './components/ProductDetailsGallery/ProductDetailsGallery';
+import ProductHero from './components/ProductHero/ProductHero';
 import SystemAbout from '@/app/(public)/system/components/SystemAbout/SystemAbout';
 import SystemPalette from '@/components/Palette/SystemPalette';
 import TrustBadges from '@/components/TrustBadges/TrustBadges';
@@ -74,13 +74,8 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
     <main>
 
        
-      {/* Galeri ve Bilgi Bölümü yan yana */}
-      <div className={styles.mainContent}>
-        <div className={styles.galleryWrapper}>
-          <ProductDetailsGallery product={product} />
-        </div>
-        
-      </div>
+      {/* Product Hero */}
+      <ProductHero product={product} />
 
       {/* İlgili Ürünler Slider'ı */}
       <div className={styles.sliderSection}>
