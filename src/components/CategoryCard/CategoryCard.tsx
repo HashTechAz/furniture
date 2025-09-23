@@ -7,16 +7,27 @@ interface CategoryCardProps {
   imageUrl: string;
   label: string;
   variant?: 'default' | 'system';
+  size?: 'wide' | 'normal' | 'default';
 }
 
-const CategoryCard: React.FC<CategoryCardProps> = ({ imageUrl, label, variant = 'default' }) => {
+const CategoryCard: React.FC<CategoryCardProps> = ({ imageUrl, label, variant = 'default', size = 'default' }) => {
   const currentStyles = variant === 'system' ? systemStyles : styles;
+  
+  // Size'a göre sınıf belirleme
+  const getSizeClass = () => {
+    if (variant === 'system') {
+      if (size === 'wide') return `${currentStyles.slideItem} ${currentStyles.wide}`;
+      if (size === 'normal') return `${currentStyles.slideItem} ${currentStyles.normal}`;
+    }
+    return currentStyles.slideItem;
+  };
+  
   return (
     // Kartın ümumi konteyneri
     <div className={currentStyles.slideContainer}>
       
       {/* Şəklin konteyneri. Hover effekti bu elementə tətbiq olunur. */}
-      <div className={currentStyles.slideItem}>
+      <div className={getSizeClass()}>
         
         {/* Standart <img> teqi. Şəkil burada göstərilir. */}
         <img 

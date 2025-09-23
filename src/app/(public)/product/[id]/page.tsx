@@ -4,14 +4,13 @@ import styles from './page.module.css';
 
 // Bileşenleri import ediyoruz
 import ProductDetailsGallery from './components/ProductDetailsGallery/ProductDetailsGallery';
-import ProductDetailsInfo from './components/ProductDetailsInfo/ProductDetailsInfo';
-import ProductDetailsSpecs from './components/ProductDetailsSpecs/ProductDetailsSpecs';
+import SystemAbout from '@/app/(public)/system/components/SystemAbout/SystemAbout';
 import SystemPalette from '@/components/Palette/SystemPalette';
 import TrustBadges from '@/components/TrustBadges/TrustBadges';
 import ProductNewsSlider from '@/components/ProductNewsSlider/ProductNewsSlider';
+import ProductSlider from '@/components/ProductSlider/ProductSlider';
 
-// Ürün verilerini ve tipini ayrı bir dosyaya taşımak daha iyi bir pratiktir,
-// ama şimdilik burada tutabiliriz.
+
 export interface Product {
   id: number;
   title: string;
@@ -80,9 +79,7 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
         <div className={styles.galleryWrapper}>
           <ProductDetailsGallery product={product} />
         </div>
-        <div className={styles.infoWrapper}>
-          <ProductDetailsInfo product={product} />
-        </div>
+        
       </div>
 
       {/* İlgili Ürünler Slider'ı */}
@@ -90,9 +87,15 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
         <ProductNewsSlider />
       </div>
 
-     
+      {/* Product Slider System */}
+      <ProductSlider 
+        variant="system" 
+        titleTop="Bookcase and shelving inspiration"
+        titleBottom=""
+      />
 
-     
+      {/* System About */}
+      <SystemAbout />
 
       {/* System Palette */}
       <SystemPalette

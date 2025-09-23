@@ -59,6 +59,17 @@
     overflow: hidden; 
 }
 
+/* Farklı width'ler için sınıflar */
+.slideItem.wide {
+    width: 900px;
+    height: 700px;
+}
+
+.slideItem.normal {
+    width: 700px;
+    height: 700px;
+}
+
 /* Şəklin özü üçün stil */
 .cardImage {
     width: 100%;
