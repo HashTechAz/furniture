@@ -6,6 +6,8 @@ import styles from './page.module.css';
 import ProductDetailsGallery from './components/ProductDetailsGallery/ProductDetailsGallery';
 import ProductDetailsInfo from './components/ProductDetailsInfo/ProductDetailsInfo';
 import ProductDetailsSpecs from './components/ProductDetailsSpecs/ProductDetailsSpecs';
+import SystemPalette from '@/components/Palette/SystemPalette';
+import TrustBadges from '@/components/TrustBadges/TrustBadges';
 import ProductNewsSlider from '@/components/ProductNewsSlider/ProductNewsSlider';
 
 // Ürün verilerini ve tipini ayrı bir dosyaya taşımak daha iyi bir pratiktir,
@@ -61,9 +63,8 @@ interface ProductDetailsPageProps {
   };
 }
 
-// async/await kaldırıldı çünkü server component'lerde doğrudan kullanılabilir
-const ProductDetailsPage = ({ params }: ProductDetailsPageProps) => {
-  const { id } = params; // await kaldırıldı
+const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
+  const { id } = await params;
   const product = getProductData(id);
 
   if (!product) {
@@ -72,6 +73,8 @@ const ProductDetailsPage = ({ params }: ProductDetailsPageProps) => {
 
   return (
     <main>
+
+       
       {/* Galeri ve Bilgi Bölümü yan yana */}
       <div className={styles.mainContent}>
         <div className={styles.galleryWrapper}>
@@ -82,15 +85,36 @@ const ProductDetailsPage = ({ params }: ProductDetailsPageProps) => {
         </div>
       </div>
 
-      {/* Akordiyon / Detaylar Bölümü */}
-      <div className={styles.specsSection}>
-        <ProductDetailsSpecs product={product} />
-      </div>
-
       {/* İlgili Ürünler Slider'ı */}
       <div className={styles.sliderSection}>
         <ProductNewsSlider />
       </div>
+
+     
+
+     
+
+      {/* System Palette */}
+      <SystemPalette
+        category=""
+        title="Find a Montana retailer near you"
+        description="The Montana range offers endless possibilities and therefore we can only show a limited range online. If you have not found what you are looking for, or just want more inspiration and advice, visit your nearest Montana retailer. "
+        features={[
+          "Montana retailers are trained in Montana products",
+          "They are experts in advising you on style, colours and interior design for the home or office environments", 
+          "They can help you draw up a Montana storage solution, so you can get exactly the design you want"
+        ]}
+        buttonText="Go to retailer map"
+        buttonLink="/contact"
+        imageUrl="https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/studio/montana_home_23_24_r03_shadow_monarch_amber_ruby_colourbox_i_noticeboard_hokkaido_monterey_kevi_h.jpg?mode=crop&width=640&height=640"
+        backgroundColor="#EFC7C7"
+        layout="textLeft"
+      />
+
+      {/* Trust Badges */}
+      <TrustBadges />
+
+      
     </main>
   );
 };

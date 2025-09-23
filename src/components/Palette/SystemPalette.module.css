@@ -23,32 +23,76 @@
 }
 
 .paletteTextBox h2 span {
-  font-size: 40px !important;
+  font-size: 32px !important;
   font-weight: 400;
 }
 
 .paletteDescription {
-  margin: 30px 0px;
+  margin: 15px 0px;
   font-weight: 600;
+}
+
+.heroButton {
+  display: inline-block;
+  text-decoration: none;
+  color: white;
+  background-color: #2c3587;
+  padding: 8px 30px;
+  font-size: 14px;
+  font-weight: 600;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  transition: color 0.3s ease-in-out;
+}
+
+.heroButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease-in-out;
+  z-index: -1;
+}
+
+.heroButton:hover::before {
+  transform: translateX(0);
 }
 
 .featureList {
   list-style: none;
   padding: 0;
-  margin: 20px 0 30px 0;
+  margin: 10px 0 30px 0;
+  margin-left: 20px;
 }
 
 .featureItem {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  padding: 8px 0;
+}
+
+.featureItem span {
+  font-family: 'Poppins', sans-serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 1.5;
+  color: #333;
 }
 
 .featureBullet {
   width: 10px;
   height: 10px;
   background-color: #2C3587;
+  flex-shrink: 0;
+  margin-top: 6px;
 }
 
 .paletteImgBox {
@@ -71,7 +115,7 @@
 }
 
 .paletteJpg {
-  width: 370px;
+  width: 500px;
   height: 500px;
   position: absolute;
   top: 40px;

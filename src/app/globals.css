@@ -8,7 +8,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -46,6 +46,7 @@ img {
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
   font-weight: 600;
   line-height: 1.2;
   margin-bottom: 1rem;
@@ -57,6 +58,56 @@ h3 { font-size: 1.5rem; }
 h4 { font-size: 1.25rem; }
 h5 { font-size: 1.125rem; }
 h6 { font-size: 1rem; }
+
+/* Typography Classes */
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+.text-display {
+  font-family: 'Poppins', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.text-heading {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.text-body {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.text-caption {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Estetik Italic Stiller */
+.text-italic-elegant {
+  font-family: 'Poppins', sans-serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 1.5;
+}
+
+.text-italic-bold {
+  font-family: 'Poppins', sans-serif;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  line-height: 1.4;
+}
 
 p {
   margin-bottom: 1rem;

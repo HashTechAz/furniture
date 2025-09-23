@@ -76,7 +76,8 @@ const ProductNewsSlider = () => {
                 imageSrcHover={product.imageHover}
                 title={product.title}
                 color={product.color}
-                size={product.size}
+                measurements={product.size}
+                position="Standard"
               />
             </div>
           ))}
