@@ -1,52 +1,101 @@
-.hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  margin-bottom: 100px;
-  margin-top: 95px;
-  margin-left: auto;
-  margin-right: auto;
-  /* DEĞİŞİKLİK: Arka plan rengini istediğin gibi ayarladım */
+.heroSection {
   background-color: #F5F5F5;
+  padding: 120px 0 120px; /* Üst ve alt padding arttırıldı */
+  min-height: 800px;
+  margin-top: 0; /* Navbar ile arasında boşluk olmaması için */
 }
 
-.imageGallery {
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 240px 1fr 380px;
+  gap: 60px;
+  padding: 0 40px;
+  align-items: start;
+}
+
+/* Sol Sidebar */
+.leftSidebar {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
+  padding-top: 100px;
+}
+
+.sidebarItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.sidebarItem:hover {
+  opacity: 0.7;
+}
+
+.sidebarItem svg {
+  color: #333;
+}
+
+.sidebarText {
+  font-size: 14px;
+  color: #333;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+
+.scrollIndicator {
+  margin-top: auto;
+  padding-top: 60px;
+}
+
+.scrollIndicator span {
+  font-size: 11px;
+  color: #666;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Orta Alan - Görsel */
+.imageSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mainImageWrapper {
+  background: #F5F5F5; /* Beyaz yerine section ile aynı renk */
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
 }
 
 .mainImage {
   width: 100%;
-  height: 600px;
-  overflow: hidden;
-  position: relative;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
 }
 
-.image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* Contain daha iyi bir görünüm sağlayabilir */
-  transition: transform 0.3s ease;
-}
-
-.thumbnailContainer {
+.thumbnailList {
   display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  padding: 8px 0;
+  gap: 12px;
+  justify-content: center;
 }
 
 .thumbnail {
-  flex-shrink: 0;
-  width: 100px;
-  height: 100px;
-  border: 2px solid transparent;
-  overflow: hidden;
+  width: 80px;
+  height: 80px;
+  padding: 8px;
+  background: #F5F5F5; /* Beyaz yerine section ile aynı renk */
+  border: 1px solid #e0e0e0;
   cursor: pointer;
-  transition: all 0.2s ease;
-  /* DEĞİŞİKLİK: Beyaz arka planı şeffaf yapıyoruz */
-  background-color: transparent;
+  transition: border-color 0.2s ease;
 }
 
 .thumbnail img {
@@ -56,215 +105,226 @@
 }
 
 .thumbnail.active {
-  border-color: #000;
+  border-color: #333;
 }
 
 .thumbnail:hover {
   border-color: #666;
 }
 
-.productInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  padding-left: 20px;
+/* Sağ Alan - Bilgiler */
+.infoSection {
+  padding-top: 40px;
 }
 
 .productHeader {
-  border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 24px;
+  margin-bottom: 40px;
 }
 
-.title {
-  font-size: 2.8rem;
+.productTitle {
+  font-size: 36px;
   font-weight: 300;
-  color: #000;
-  margin: 0 0 16px 0;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  margin: 0 0 8px 0;
+  color: #1a1a1a;
+  letter-spacing: -0.5px;
 }
 
-.priceContainer {
-  margin: 0;
-}
-
-.price {
-  font-size: 1.8rem;
+.productPrice {
+  font-size: 24px;
   font-weight: 400;
-  color: #000;
+  margin: 0;
+  color: #333;
 }
 
-.configuration {
+/* Konfiguratör */
+.configurator {
   display: flex;
   flex-direction: column;
   gap: 32px;
+  margin-bottom: 40px;
 }
 
-.configSection {
+.configGroup {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
-.configTitle {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #000;
+.configLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.5px;
 }
 
-.colorOptions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+/* Renk Butonları */
+.colorGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
 }
 
-.colorOption {
-  padding: 12px 20px;
+.colorButton {
+  padding: 12px 16px;
+  background: #F5F5F5; /* Beyaz yerine section ile aynı renk */
   border: 1px solid #d0d0d0;
-  /* DEĞİŞİKLİK: Beyaz arka planı şeffaf yapıyoruz */
-  background: transparent;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 0.9rem;
   font-weight: 400;
-  color: #333;
 }
 
-.colorOption:hover {
-  border-color: #000;
+.colorButton:hover {
+  border-color: #333;
+  background: #e8e8e8; /* Hover'da hafif koyulaşma */
 }
 
-.colorOption.selected {
-  border-color: #000;
-  background-color: #000;
+.colorButton.selected {
+  background: #1a1a1a;
   color: white;
+  border-color: #1a1a1a;
 }
 
+/* Base Type Butonları */
 .baseTypeOptions {
   display: flex;
-  gap: 12px;
+  gap: 8px;
 }
 
-.baseTypeOption {
-  padding: 12px 20px;
+.baseButton {
+  flex: 1;
+  padding: 12px 24px;
+  background: #F5F5F5; /* Beyaz yerine section ile aynı renk */
   border: 1px solid #d0d0d0;
-  /* DEĞİŞİKLİK: Beyaz arka planı şeffaf yapıyoruz */
-  background: transparent;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 0.9rem;
   font-weight: 400;
+}
+
+.baseButton:hover {
+  border-color: #333;
+  background: #e8e8e8; /* Hover'da hafif koyulaşma */
+}
+
+.baseButton.selected {
+  background: #1a1a1a;
+  color: white;
+  border-color: #1a1a1a;
+}
+
+/* Ölçü Bilgisi */
+.measurementInfo {
+  background: #F5F5F5; /* Beyaz yerine section ile aynı renk */
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+}
+
+.measurementText {
+  margin: 0;
+  font-size: 14px;
   color: #333;
 }
 
-.baseTypeOption:hover {
-  border-color: #000;
+/* Açıklama */
+.productDescription {
+  margin-bottom: 40px;
 }
 
-.baseTypeOption.selected {
-  border-color: #000;
-  background-color: #000;
-  color: white;
-}
-
-.productDetails {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.measurements,
-.position,
-.description {
-  font-size: 1rem;
+.productDescription p {
+  font-size: 15px;
   line-height: 1.6;
   color: #333;
   margin: 0;
   font-weight: 400;
 }
 
-.actionButtons {
+/* Aksiyon Butonları */
+.actionArea {
   display: flex;
-  gap: 16px;
-  margin-top: 8px;
+  gap: 12px;
 }
 
-.configureButton {
+.configureBtn,
+.addToCartBtn {
   flex: 1;
-  padding: 18px 32px;
-  background-color: #000;
-  color: white;
-  border: none;
-  font-size: 1rem;
+  padding: 16px 24px;
+  font-size: 14px;
   font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.configureButton:hover {
-  background-color: #333;
-}
-
-.addToCartButton {
-  flex: 1;
-  padding: 18px 32px;
-  background-color: transparent;
-  color: #000;
-  border: 1px solid #000;
-  font-size: 1rem;
-  font-weight: 500;
+  letter-spacing: 0.5px;
   cursor: pointer;
   transition: all 0.2s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  border: 1px solid #1a1a1a;
 }
 
-.addToCartButton:hover {
-  background-color: #000;
+.configureBtn {
+  background: #1a1a1a;
   color: white;
+}
+
+.configureBtn:hover {
+  background: #333;
+  border-color: #333;
+}
+
+.addToCartBtn {
+  background: #F5F5F5; /* Beyaz yerine section ile aynı renk */
+  color: #1a1a1a;
+}
+
+.addToCartBtn:hover {
+  background: #e8e8e8;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .container {
+    grid-template-columns: 200px 1fr 340px;
+    gap: 40px;
+  }
 }
 
 @media (max-width: 1024px) {
-  .hero {
-    gap: 60px;
-    padding: 40px; /* Kenar boşlukları ekledim */
+  .heroSection {
+    padding: 80px 0; /* Mobilde de padding korunuyor */
+  }
+  
+  .container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .leftSidebar {
+    display: none;
+  }
+  
+  .infoSection {
+    max-width: 500px;
+    margin: 0 auto;
   }
 }
 
 @media (max-width: 768px) {
-  .hero {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    margin-bottom: 60px;
-    padding: 20px; /* Kenar boşlukları ekledim */
-    margin-top: 80px; /* Header için boşluk */
+  .heroSection {
+    padding: 60px 0;
   }
-
-  .productInfo {
-    padding-left: 0;
-    gap: 24px;
+  
+  .container {
+    padding: 0 20px;
   }
-
-  .title {
-    font-size: 2.2rem;
+  
+  .productTitle {
+    font-size: 28px;
   }
-
-  .actionButtons {
+  
+  .colorGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .actionArea {
     flex-direction: column;
-  }
-
-  .mainImage {
-    height: 400px;
-  }
-
-  .colorOptions,
-  .baseTypeOptions {
-    flex-direction: column;
-    align-items: stretch; /* Butonlar tam genişlikte olsun */
   }
 }

@@ -28,12 +28,15 @@ export interface Product {
   };
 }
 
+// ProductDetailsPage içinde ProductHero'yu çağırırken güncelleme gerek yok
+// Sadece product verisinde depth alanı eklemeniz gerekebilir
+
 const getProductData = (id: string): Product | undefined => {
   const products: Product[] = [
     {
       id: 1,
       title: "Shelf 1323",
-      color: "Darkblue",
+      color: "Ruby",
       measurements: "W 69.6 x H 69.6 x D 30 cm",
       position: "Legs H12.6 cm",
       description: "A modern and functional shelf that combines style with practicality. Perfect for organizing your space with elegance.",
@@ -48,8 +51,7 @@ const getProductData = (id: string): Product | undefined => {
         weight: "15 kg",
         assembly: "Required"
       }
-    },
-    // Diğer ürünlerin buraya eklenebilir...
+    }
   ];
 
   return products.find(product => product.id === parseInt(id));
