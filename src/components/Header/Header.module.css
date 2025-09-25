@@ -140,6 +140,14 @@
   color: #ffffff;
 }
 
+/* Sustainability ve System sayfalarında overlay açıkken yazıları siyah yap */
+.headerOverlayOpen.sustainabilityHeader .navLists,
+.headerOverlayOpen.sustainabilityHeader .searchButton,
+.headerOverlayOpen.systemHeader .navLists,
+.headerOverlayOpen.systemHeader .searchButton {
+  color: #333333;
+}
+
 .headerAtTop.productsMainHeader .navLists,
 .headerAtTop.productsMainHeader .searchButton {
   color: #ffffff;

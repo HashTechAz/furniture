@@ -34,6 +34,8 @@ const Header: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const headerTrigger = document.getElementById('header-trigger');
+      const triggerHeight = headerTrigger ? headerTrigger.offsetTop : 0;
 
       if (currentScrollY === 0 && !isAtTop) {
         setIsExiting(true);
