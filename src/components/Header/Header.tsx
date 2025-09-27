@@ -17,6 +17,12 @@ const Header: React.FC = () => {
   const [isInspirationOpen, setIsInspirationOpen] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
+  // YENİ STATE-LƏR: Hər menyu bəndi üçün ayrı state
+  const [isMobileInspirationOpen, setIsMobileInspirationOpen] = useState<boolean>(false);
+  const [isMobileProductsOpen, setIsMobileProductsOpen] = useState<boolean>(false);
+  const [isMobileSeriesOpen, setIsMobileSeriesOpen] = useState<boolean>(false);
+
+
   const [isVisible, setIsVisible] = useState<boolean>(true);
   const [isAtTop, setIsAtTop] = useState<boolean>(true);
   const [isExiting, setIsExiting] = useState<boolean>(false);
@@ -102,6 +108,40 @@ const Header: React.FC = () => {
     setIsMobileMenuOpen(false);
   };
 
+  // --- ALT MENYU LİNKLƏRİ (Məzmunu buradan dəyişə bilərsiniz) ---
+  const inspirationSubLinks = [
+    { label: "View all inspiration", href: "/inspiration" },
+    { label: "Bedroom", href: "/inspiration/bedroom" },
+    { label: "Home office", href: "/inspiration/home-office" },
+    { label: "Childrens room", href: "/inspiration/childrens-room" },
+    { label: "Kids room", href: "/inspiration/kids-room" },
+    { label: "Kitchen", href: "/inspiration/kitchen" },
+    { label: "Entrance hall", href: "/inspiration/entrance-hall" },
+    { label: "Dining room", href: "/inspiration/dining-room" },
+  ];
+
+  const productsSubLinks = [
+    { label: "View all products", href: "/product" },
+    { label: "Shelving systems", href: "/product/shelving" },
+    { label: "Bookcases", href: "/product/bookcases" },
+    { label: "Tables & Chairs", href: "/product/tables-chairs" },
+  ];
+
+  const seriesSubLinks = [
+    { label: "View all series", href: "/series" },
+    { label: "Montana System", href: "/series/montana-system" },
+    { label: "Montana Mini", href: "/series/montana-mini" },
+    { label: "Panton Wire", href: "/series/panton-wire" },
+  ];
+
+  // --- MOBİL MENYU AÇIB-BAĞLAMA FUNKSİYASI ---
+  const toggleMobileSubMenu = (menu: 'inspiration' | 'products' | 'series') => {
+    setIsMobileInspirationOpen(menu === 'inspiration' ? !isMobileInspirationOpen : false);
+    setIsMobileProductsOpen(menu === 'products' ? !isMobileProductsOpen : false);
+    setIsMobileSeriesOpen(menu === 'series' ? !isMobileSeriesOpen : false);
+  };
+
+
   return (
     <>
       <header
@@ -112,6 +152,7 @@ const Header: React.FC = () => {
           ${isVisible && !isAtTop ? styles.headerVisibleOnScroll : ''}
           ${isExiting ? styles.headerExiting : ''}
           ${isSeriesOpen || isProductsOpen || isInspirationOpen || isMobileMenuOpen || isSearchOpen ? styles.headerOverlayOpen : ""}
+          ${isSeriesOpen || isProductsOpen || isInspirationOpen ? styles.headerMenuContentOpen : ""}
           ${isSustainabilityPage ? styles.sustainabilityHeader : ""}
           ${isSystemPage ? styles.systemHeader : ""}
           ${isProductsMainPage ? styles.productsMainHeader : ""}
@@ -164,9 +205,46 @@ const Header: React.FC = () => {
       <div className={`${styles.mobileMenuOverlay} ${isMobileMenuOpen ? styles.open : ''}`}>
         <div className={styles.mainNav}>
           <ul>
-            <li><Link href="/inspiration" onClick={handleMobileLinkClick}>Inspiration</Link></li>
-            <li><Link href="/product" onClick={handleMobileLinkClick}>Products</Link></li>
-            <li><Link href="/series" onClick={handleMobileLinkClick}>Series</Link></li>
+            {/* === INSPIRATION DROPDOWN === */}
+            <li>
+              <div className={styles.mobileNavItem} onClick={() => toggleMobileSubMenu('inspiration')}>
+                <span>Inspiration</span>
+                <svg className={`${styles.arrowIcon} ${isMobileInspirationOpen ? styles.arrowIconOpen : ''}`} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div className={`${styles.mobileSubMenu} ${isMobileInspirationOpen ? styles.subMenuOpen : ''}`}>
+                <ul>
+                  {inspirationSubLinks.map((link) => (<li key={link.href}><Link href={link.href} onClick={handleMobileLinkClick}>{link.label}</Link></li>))}
+                </ul>
+              </div>
+            </li>
+            
+            {/* === PRODUCTS DROPDOWN === */}
+            <li>
+              <div className={styles.mobileNavItem} onClick={() => toggleMobileSubMenu('products')}>
+                <span>Products</span>
+                <svg className={`${styles.arrowIcon} ${isMobileProductsOpen ? styles.arrowIconOpen : ''}`} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div className={`${styles.mobileSubMenu} ${isMobileProductsOpen ? styles.subMenuOpen : ''}`}>
+                <ul>
+                  {productsSubLinks.map((link) => (<li key={link.href}><Link href={link.href} onClick={handleMobileLinkClick}>{link.label}</Link></li>))}
+                </ul>
+              </div>
+            </li>
+
+            {/* === SERIES DROPDOWN === */}
+            <li>
+              <div className={styles.mobileNavItem} onClick={() => toggleMobileSubMenu('series')}>
+                <span>Series</span>
+                <svg className={`${styles.arrowIcon} ${isMobileSeriesOpen ? styles.arrowIconOpen : ''}`} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div className={`${styles.mobileSubMenu} ${isMobileSeriesOpen ? styles.subMenuOpen : ''}`}>
+                <ul>
+                  {seriesSubLinks.map((link) => (<li key={link.href}><Link href={link.href} onClick={handleMobileLinkClick}>{link.label}</Link></li>))}
+                </ul>
+              </div>
+            </li>
+
+            {/* === NORMAL LINKS === */}
             <li><Link href="/system" onClick={handleMobileLinkClick}>Montana System</Link></li>
             <li><Link href="/sustainability" onClick={handleMobileLinkClick}>Sustainability</Link></li>
             <li><Link href="/professionals" onClick={handleMobileLinkClick} className={styles.professionalsLink}>Professionals</Link></li>

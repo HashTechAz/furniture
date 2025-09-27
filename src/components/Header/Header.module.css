@@ -45,6 +45,12 @@
     transform: translateY(0) !important;
 }
 
+.headerMenuContentOpen {
+  background-color: #ffffff !important;
+  color: #333333 !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+}
+
 /* Rəng dəyişməsi və alt xətt isə yalnız 1024px-dən kiçik ekranlarda tətbiq olunacaq */
 @media (max-width: 1024px) {
   .headerOverlayOpen {
@@ -251,4 +257,60 @@
   }
 
   
+}
+
+
+
+.mobileNavItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Alt menyunu saxlayan konteyner */
+.mobileSubMenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-in-out;
+  padding-left: 20px; /* Alt menyunu bir az içəri çəkir */
+}
+
+/* Alt menyu açıq olduqda */
+.mobileSubMenu.subMenuOpen {
+  max-height: 500px; /* Ehtiyac olarsa daha da artırın */
+  margin-top: 10px; /* Üstdən kiçik boşluq */
+}
+
+/* Alt menyu linkləri */
+.mobileSubMenu ul li a {
+  font-size: 13px; /* --- DƏYİŞİKLİK --- */
+  font-weight: 500;
+  color: #555;
+  display: block;
+  padding: 6px 0; /* --- DƏYİŞİKLİK (boşluq azaldıldı) --- */
+}
+
+/* Ox ikonu üçün stil */
+.arrowIcon {
+  transition: transform 0.3s ease-out;
+}
+
+/* Ox ikonu menyu açıq olduqda 180 dərəcə fırlanır */
+.arrowIcon.arrowIconOpen {
+  transform: rotate(180deg);
+}
+
+/* mainNav içindəki Link-lərin stilini dəyişmək lazım ola bilər */
+.mainNav a {
+  font-size: 22px;
+  font-weight: 700;
+  color: #333;
+  text-decoration: none;
+  display: block; /* Bu, klik sahəsini genişləndirir */
 }
