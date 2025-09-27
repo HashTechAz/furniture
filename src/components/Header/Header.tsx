@@ -115,9 +115,6 @@ const Header: React.FC = () => {
     { label: "Home office", href: "/inspiration/home-office" },
     { label: "Childrens room", href: "/inspiration/childrens-room" },
     { label: "Kids room", href: "/inspiration/kids-room" },
-    { label: "Kitchen", href: "/inspiration/kitchen" },
-    { label: "Entrance hall", href: "/inspiration/entrance-hall" },
-    { label: "Dining room", href: "/inspiration/dining-room" },
   ];
 
   const productsSubLinks = [
@@ -125,6 +122,7 @@ const Header: React.FC = () => {
     { label: "Shelving systems", href: "/product/shelving" },
     { label: "Bookcases", href: "/product/bookcases" },
     { label: "Tables & Chairs", href: "/product/tables-chairs" },
+    { label: "View all inspiration", href: "/inspiration" },
   ];
 
   const seriesSubLinks = [

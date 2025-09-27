@@ -123,3 +123,21 @@ p {
   h2 { font-size: 1.75rem; }
   h3 { font-size: 1.25rem; }
 }
+
+
+/* === RESPONSIVE GÖRÜNÜRLÜK ÜÇÜN YARDIMÇI KLASSLAR === */
+
+/* Yalnız 768px və daha kiçik ekranlarda göstərir */
+.showOnlyOnMobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Yalnız 768px və daha kiçik ekranlarda gizlədir */
+  .hideOnMobile {
+    display: none;
+  }
+  .showOnlyOnMobile {
+    display: block;
+  }
+}

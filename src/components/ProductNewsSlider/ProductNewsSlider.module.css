@@ -1,5 +1,6 @@
 .sliderSection {
   padding: 70px 0;
+  overflow: hidden;
 }
 
 .sliderHeader {
@@ -68,7 +69,6 @@
   width: 40px;
   height: 40px;
   cursor: pointer;
-  transition: all 0.3s ease;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -77,12 +77,6 @@
 
 .arrow {
   color: #333;
-  transition: color 0.3s ease;
-}
-
-.prevButton:hover .arrow,
-.nextButton:hover .arrow {
-  color: #000;
 }
 
 .embla {
@@ -97,40 +91,124 @@
 }
 
 .embla__slide {
-flex: 0 0 350px;
-min-width: 0;
-position: relative;
-margin-right: 20px;
-height: auto;
+  flex: 0 0 350px;
+  min-width: 0;
+  position: relative;
+  margin-right: 20px;
+  height: auto;
 }
 
-/* --- RESPONSIVE STYLES --- */
+/* --- MOBİL ÜÇÜN ELEMENTLƏR (DEFAULT OLARAQ GİZLİ) --- */
+.mobileControls,
+.progressBar {
+  display: none;
+}
+
+/* ------------------------------------------- */
+/* --- RESPONSİV STİLLƏR (768px üçün) --- */
+/* ------------------------------------------- */
 @media (max-width: 768px) {
   .sliderSection {
-      padding: 40px 0;
+    padding: 40px 0;
   }
 
   .sliderHeader {
-      padding: 0 20px;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 20px;
+    padding: 0 20px;
+    margin-bottom: 20px; /* Boşluğu azaldırıq */
   }
-
+  
   .sectionTitle {
-      font-size: 28px;
+    font-size: 24px;
   }
 
-  .categoryLinks {
-      gap: 20px;
-      flex-wrap: wrap; /* Linkler sığmazsa alt satıra geçsin */
+  /* Desktop elementlərini gizlədirik */
+  .categoryLinks,
+  .sliderNav {
+    display: none;
   }
 
+  /* --- MOBİL KONTROL ELEMENTLƏRİ --- */
+  .mobileControls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    margin-top: -10px; /* Başlıqla arasını azaldır */
+  }
+
+  .mobileCategoryDropdown {
+    position: relative;
+  }
+  
+  .dropdownButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .arrowIcon {
+    transition: transform 0.3s ease-out;
+  }
+  
+  .arrowIcon.arrowIconOpen {
+    transform: rotate(180deg);
+  }
+
+  .dropdownMenu {
+    position: absolute;
+    top: 120%;
+    left: 0;
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+  }
+
+  .dropdownMenu a {
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .dropdownMenu a:hover {
+    background-color: #f5f5f5;
+  }
+
+  .mobileViewAll a {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    text-decoration: underline;
+    white-space: nowrap;
+  }
+  
   .embla {
-      padding-left: 20px;
+    padding-left: 20px;
   }
-
+  
   .embla__slide {
-      flex: 0 0 280px; /* Slayt genişliği azaltıldı */
+    flex: 0 0 260px;
+  }
+  
+  .progressBar {
+    display: block;
+    position: relative;
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 30px 20px 0 20px;
+  }
+  
+  .progressBarFill {
+    position: absolute;
+    height: 100%;
+    background-color: #333;
+    transition: width 50ms linear;
   }
 }
+

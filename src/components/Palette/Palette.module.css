@@ -124,12 +124,10 @@
   @media (max-width: 768px) {
       .paletteMain {
           padding: 40px 20px;
-          /* DƏYİŞİKLİK: Sıranı dəyişmək üçün column-reverse istifadə olunur */
           flex-direction: column-reverse; 
       }
   
       .paletteMain.reversed {
-          /* DƏYİŞİKLİK: Hər iki halda da şəkil yuxarıda olacaq */
           flex-direction: column-reverse;
       }
   
@@ -139,29 +137,27 @@
       }
   
       .paletteMain .paletteTextBox {
-          padding: 2.5rem 0 0 0; /* Şəkildən sonra yuxarıdan boşluq */
+          padding: 2.5rem 0 0 0;
       }
       
       .paletteMain.reversed .paletteTextBox {
-          padding: 2rem 0 0 0; /* Hər iki halda da eyni */
+          padding: 2.5rem 0 0 0;
       }
   
       .paletteTextBox h2 span {
-          font-size: 32px !important;
+          font-size: 26px !important;
       }
   
       .paletteImgBox {
           min-height: 380px;
-          position: relative; /* DƏYİŞİKLİK: Absolute elementlərin düzgün yerləşməsi üçün */
-          display: block; /* DƏYİŞİKLİK: Flex-i ləğv edirik */
+          position: relative;
+          display: block;
       }
   
-      /* --- YENİ DÜZƏLİŞLƏR BURADADIR --- */
       .paletteOneColor {
           width: 270px !important;
           height: 380px !important;
           position: absolute;
-          /* DƏYİŞİKLİK: Sola hizalama */
           left: 0;
           right: auto;
       }
@@ -171,8 +167,34 @@
           height: 300px !important;
           position: absolute;
           top: 40px !important;
-          /* DƏYİŞİKLİK: Sola hizalama */
           left: auto !important;
           right: 30px !important;
       }
+
+      /* === DƏYİŞİKLİK BURADADIR === */
+
+      /* Hər iki variant üçün eyni mobil stili tətbiq edir */
+      .colorClassVariant .paletteOneColor,
+      .thirdVariant .paletteOneColor {
+          width: 240px !important;
+          height: 300px !important;
+          margin-right: 0 !important; /* Desktop margin-i ləğv edir */
+      }
+
+      .colorClassVariant .paletteJpg {
+          width: 310px !important;
+          height: 230px !important;
+          top: 35px !important;
+          right: 0 !important;
+      }
+      
+      /* DÜZƏLİŞ: .thirdVariant şəklini soldan hizalayır */
+      .thirdVariant .paletteJpg {
+          width: 310px !important;
+          height: 230px !important;
+          top: 35px !important;
+          right: auto !important;
+          left: 0 !important;
+      }
   }
+

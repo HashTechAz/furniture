@@ -290,7 +290,7 @@
 /* Alt menyu linkləri */
 .mobileSubMenu ul li a {
   font-size: 13px; /* --- DƏYİŞİKLİK --- */
-  font-weight: 500;
+  font-weight: 700;
   color: #555;
   display: block;
   padding: 6px 0; /* --- DƏYİŞİKLİK (boşluq azaldıldı) --- */

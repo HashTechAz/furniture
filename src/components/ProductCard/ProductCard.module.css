@@ -103,3 +103,17 @@
 .productButton:hover::after {
   transform: scaleX(1);
 }
+
+
+/* --- YENİ RESPONSİV STİL --- */
+@media (max-width: 768px) {
+    /* ProductNewsSlider üçün xüsusi hündürlük */
+    :global(.embla__slide) {
+        height: 340px;
+    }
+    
+    .imageWrapper {
+        /* Mətn hissəsini nəzərə alaraq şəklin hündürlüyünü azaldırıq */
+        height: 240px;
+    }
+}

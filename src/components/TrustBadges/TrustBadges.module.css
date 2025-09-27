@@ -16,8 +16,11 @@
     padding-right: 12px;
 }
 
-.badgesItem span {
-    font-size: 25px;
+.badgesItem h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
     font-style: italic;
     font-weight: 500;
 }
@@ -25,6 +28,7 @@
 .badgesItem p {
     margin-top: 10px;
     font-weight: 400;
+    font-size: 15px;
 }
 
 /* --- RESPONSIVE STYLES --- */
@@ -42,5 +46,14 @@
     .badgesContent .badgesItem {
         width: 100%;
         padding-right: 0;
+    }
+
+    /* === DƏYİŞİKLİKLƏR BURADADIR === */
+    .badgesItem h3 {
+        font-size: 18px; /* Başlıq ölçüsü kiçildildi */
+    }
+
+    .badgesItem p {
+        font-size: 14px; /* Təsvir mətni kiçildildi */
     }
 }

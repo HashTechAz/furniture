@@ -22,6 +22,7 @@
 
 /* --- RESPONSIVE STYLES --- */
 @media (max-width: 768px) {
+    /* Standart mobil stil (əgər başqa yerdə istifadə olunarsa) */
     .videoMain {
         padding: 40px 20px;
     }
@@ -30,4 +31,20 @@
         height: 350px;
         padding: 20px;
     }
+    
+    /* === DƏYİŞİKLİKLƏR BURADADIR === */
+
+    /* Mobil üçün xüsusi olaraq sola yapışıq variant */
+    .videoMain.mobileVariant {
+        width: 90%;
+        padding: 40px 0; /* Sol padding ləğv edildi */
+        margin-right: auto;
+    }
+
+    /* Xüsusi variant üçün video hündürlüyü */
+    .videoMain.mobileVariant .videoContent {
+        height: 200px; /* Hündürlük 200px oldu */
+        padding: 10px; /* İçəridəki boşluqları ləğv edirik ki, tam yapışsın */
+    }
 }
+

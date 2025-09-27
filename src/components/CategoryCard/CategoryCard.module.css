@@ -1,38 +1,44 @@
+.slideItem {
+    flex-shrink: 0; /* Slider içində sıxılmasının qarşısını alır */
+    width: 320px;
+    height: 400px;
+    cursor: pointer;
+    background-color: #e0e0e0; /* Şəkil yüklənənə qədər görünəcək ehtiyat rəng */
+    overflow: hidden; 
+}
 
-  
-  .slideItem {
-      flex-shrink: 0; /* Slider içində sıxılmasının qarşısını alır */
-      width: 320px;
-      height: 400px;
-      cursor: pointer;
-      background-color: #e0e0e0; /* Şəkil yüklənənə qədər görünəcək ehtiyat rəng */
-      overflow: hidden; 
-  }
-  
-  /* Şəklin özü üçün stil */
-  .cardImage {
-      width: 100%;
-      height: 100%;
-      
-      /* Bu, şəklin "background-size: cover" kimi davranmasını təmin edir.
-         Şəkil əzilmədən konteyneri tam doldurur. */
-      object-fit: cover;
-  
-      /* Hover effekti üçün yumşaq keçid */
-      transition: transform 0.4s ease;
-  }
-  
-  /* Konteynerin (.slideItem) üzərinə gəldikdə şəkli (.cardImage) böyüdən effekt */
-  .slideItem:hover .cardImage {
-      transform: scale(1.1); /* Şəkli 10% böyüdür */
-  }
-  
-  /* Qutunun altındakı mətn üçün stil */
-  .slideCaption {
-      margin: 0; /* Brauzerin standart margin'ini sıfırlayırıq */
-      padding: 0; /* Brauzerin standart padding'ini sıfırlayırıq */
-      margin: 15px 0px 0px 5px; /* Sizin təyin etdiyiniz boşluq: yuxarıdan 15px, soldan 5px */
-      font-size: 16px;
-      font-weight: 500;
-      color: #333;
-  }
+/* Şəklin özü üçün stil */
+.cardImage {
+    width: 100%;
+    height: 100%;
+    
+    /* Bu, şəklin "background-size: cover" kimi davranmasını təmin edir.
+       Şəkil əzilmədən konteyneri tam doldurur. */
+    object-fit: cover;
+
+    /* Hover effekti üçün yumşaq keçid */
+    transition: transform 0.4s ease;
+}
+
+/* Konteynerin (.slideItem) üzərinə gəldikdə şəkli (.cardImage) böyüdən effekt */
+.slideItem:hover .cardImage {
+    transform: scale(1.1); /* Şəkli 10% böyüdür */
+}
+
+/* Qutunun altındakı mətn üçün stil */
+.slideCaption {
+    margin: 0; /* Brauzerin standart margin'ini sıfırlayırıq */
+    padding: 0; /* Brauzerin standart padding'ini sıfırlayırıq */
+    margin: 15px 0px 0px 5px; /* Sizin təyin etdiyiniz boşluq: yuxarıdan 15px, soldan 5px */
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* YENİ: Mobil üçün responsiv stil */
+@media (max-width: 768px) {
+.slideItem {
+  width: 180px;
+  height: 240px;
+}
+}

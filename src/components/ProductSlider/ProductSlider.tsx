@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useCallback } from 'react';
+// Dəyişiklik: useState, useEffect əlavə edildi
+import React, { useState, useEffect, useCallback } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import styles from './ProductSlider.module.css';
 import systemStyles from './ProductSliderSystem.module.css';
@@ -14,7 +15,7 @@ interface SlideData {
   size?: 'wide' | 'normal' | 'default';
 }
 
-// Məhsul məlumatları (yazısız şəkillərlə)
+// Məhsul məlumatları
 const slideData: SlideData[] = [
     { id: 1, label: 'Modern Chair', imageUrl: 'https://profine.pk/wp-content/uploads/2024/12/WhatsApp-Image-2025-03-06-at-2.06.38-PM-1.webp', size: 'wide' },
     { id: 2, label: 'Minimalist Sofa', imageUrl: 'https://www.coxandcox.co.uk/media/catalog/product/a/w/aw16-k-ratchair.png?quality=80&fit=bounds&height=800&width=800', size: 'default' },
@@ -33,15 +34,28 @@ interface ProductSliderProps {
 }
 
 const ProductSlider: React.FC<ProductSliderProps> = ({ variant = 'default', titleTop, titleBottom }) => {
-  // Embla hook-unu çağırırıq.
-  // loop: false -> sona çatdıqda başa qayıtmasın.
-  // dragFree: true -> mausla sürüşdürəndə fizika-əsaslı ətalət effekti verir.
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, dragFree: true });
 
-  // Variant'a göre stil seçimi
+  // YENİ: Scroll bar üçün state
+  const [scrollProgress, setScrollProgress] = useState(0);
+
   const currentStyles = variant === 'system' ? systemStyles : styles;
 
-  // Oxlar üçün idarəetmə funksiyaları
+  // YENİ: Scroll hadisəsini dinləyən funksiya
+  const onScroll = useCallback(() => {
+    if (!emblaApi) return;
+    const progress = Math.max(0, Math.min(1, emblaApi.scrollProgress()));
+    setScrollProgress(progress * 100);
+  }, [emblaApi]);
+
+  // YENİ: emblaApi hazır olanda scroll event-ini qoşmaq üçün
+  useEffect(() => {
+    if (!emblaApi) return;
+    onScroll();
+    emblaApi.on('scroll', onScroll);
+    emblaApi.on('reInit', onScroll);
+  }, [emblaApi, onScroll]);
+
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
   }, [emblaApi]);
@@ -60,13 +74,8 @@ const ProductSlider: React.FC<ProductSliderProps> = ({ variant = 'default', titl
               {titleBottom ?? '36 modules, 4 depths and 43 colours.'}
             </span>
           </div>
-          <div
-            style={{
-              display: 'flex',
-              gap: '10px',
-              alignItems: 'center',
-            }}
-          >
+          {/* DƏYİŞİKLİK: Oxları saxlayan div-ə yeni klass əlavə edirik */}
+          <div className={currentStyles.desktopNav}>
             <svg
               onClick={scrollPrev}
               xmlns="http://www.w3.org/2000/svg" width="30" height="10" viewBox="0 0 30 10" fill="none"
@@ -87,7 +96,6 @@ const ProductSlider: React.FC<ProductSliderProps> = ({ variant = 'default', titl
         </div>
       </div>
 
-      {/* Embla Carousel üçün xüsusi struktur */}
       <div className={currentStyles.embla} ref={emblaRef}>
         <div className={currentStyles.embla__container}>
           {slideData.map((slide) => (
@@ -101,6 +109,14 @@ const ProductSlider: React.FC<ProductSliderProps> = ({ variant = 'default', titl
             </div>
           ))}
         </div>
+      </div>
+
+      {/* YENİ: Mobil üçün progress bar */}
+      <div className={currentStyles.progressBar}>
+        <div 
+          className={currentStyles.progressBarFill} 
+          style={{ width: `${scrollProgress}%` }}
+        />
       </div>
     </section>
   );

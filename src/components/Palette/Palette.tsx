@@ -10,7 +10,7 @@ interface PaletteProps {
   imageUrl: string;
   backgroundColor: string;
   layout?: 'textLeft' | 'textRight';
-  variant?: 'default' | 'third';
+  variant?: 'default' | 'third' | 'colorClass'; // Yeni variant əlavə edildi
   imagePosition?: {
     width: string;
     height: string;
@@ -34,7 +34,12 @@ export default function Palette({
   imagePosition,
 }: PaletteProps) {
 
-  const sectionClassName = `${styles.paletteMain} ${layout === 'textRight' ? styles.reversed : ''} ${variant === 'third' ? styles.thirdVariant : ''}`;
+  // Yeni variant üçün klass əlavə edildi
+  const sectionClassName = `${styles.paletteMain} ${
+    layout === 'textRight' ? styles.reversed : ''
+  } ${variant === 'third' ? styles.thirdVariant : ''} ${
+    variant === 'colorClass' ? styles.colorClassVariant : ''
+  }`;
 
   return (
     <section className={sectionClassName}>

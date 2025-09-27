@@ -33,6 +33,7 @@ const secondPaletteData = {
   buttonLink: "/collections/summer",
   imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/colours/colour-class/cc-02/Montana_Colour_Class_2_header_iris_2024.jpg?mode=crop&width=828&height=595",
   backgroundColor: "#BDD2DA",
+  variant: 'colorClass',
   imagePosition: {
     width: '600px',
     height: '450px',
@@ -100,12 +101,22 @@ export default function Home() {
       <Palette {...originalPaletteData} />
       <NewsSection />
       <ProductNewsSlider />
-      <MiddleBanner {... bannerDataDefault} />
+      {/* 1. Bu MiddleBanner yalnız desktopda görünəcək */}
+      <div className="hideOnMobile">
+        <MiddleBanner {...bannerDataDefault} />
+      </div>
+      {/* 2. Bu HomeVideo yalnız mobilda görünəcək və xüsusi stili olacaq */}
+      <div className="showOnlyOnMobile">
+        <HomeVideo variant="mobile" />
+      </div>
       <TrustBadges />
       <Palette {...secondPaletteData} imagePosition={secondPaletteData.imagePosition} />
       <MiddleBanner {... bannerDataReversed} />
       <Palette {...thirdPaletteData} layout={'textRight'} variant={'third'} />
-      <HomeVideo/>
+      {/* 3. Orijinal HomeVideo yalnız desktopda görünəcək */}
+      <div className="hideOnMobile">
+        <HomeVideo />
+      </div>
       <Palette {...fourPaletteData} imagePosition={secondPaletteData.imagePosition} />
       <Form />      
     </>

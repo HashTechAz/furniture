@@ -1,71 +1,54 @@
 .mBanner {
     width: 100%;
     display: flex;
-    padding: 50px 0px;
+    padding: 50px 0;
     gap: 15px;
 }
 
-.mBanner.reversed { gap: 15px; }
-
-.mBanner .leftBanner {
-    width: 50%;
-    height: 900px;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+.mBanner.reversed {
+    flex-direction: row-reverse;
 }
 
-.mBanner:not(.reversed) .leftBanner {
+.leftBanner {
     width: 800px;
     height: 1000px;
 }
-
-.mBanner.reversed .leftBanner { background-position: center; width: calc(50% - 120px); }
-
-.leftBannerReversed {
-    width: 560px;
-    height: 860px;
+.mBanner.reversed .leftBanner {
+    width: calc(50% - 120px);
+    height: 900px;
 }
 
-.rightBannerReversed {
+.rightBanner {
+    width: 560px;
+}
+.mBanner.reversed .rightBanner {
     width: 680px;
-    height: 500px;
     margin-left: auto;
 }
 
-
-.mBanner:not(.reversed) .rightBanner {
-    width: 560px;
-    height: 750px;
+/* Şəkillərin özləri üçün ümumi stillər */
+.leftBanner img,
+.rightImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.mBanner.reversed .rightBanner {
-    width: 680px;
+.rightImgContainer {
+    width: 100%;
+    height: 750px;
+}
+.mBanner.reversed .rightImgContainer {
     height: 500px;
 }
 
-.mBanner.reversed .rightImg {
+.rightText {
     width: 100%;
-    height: 100%;
-}
-
-.rightBanner .rightImg {
-    width: 100%;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
-.rightBanner .rightText {
-    width: 100%;
-    height: 250px;
     padding: 2rem;
 }
 
-.mBanner.reversed .rightBanner .rightText {
+.mBanner.reversed .rightText {
     padding-right: 130px;
-    font-weight: 600;
-    font-size: 14px;
 }
 
 .rightText h1 {
@@ -87,9 +70,9 @@
     z-index: 2;
     overflow: hidden;
     transition: color 0.3s ease-in-out;
-  }
-  
-  .heroButton::before {
+}
+
+.heroButton::before {
     content: '';
     position: absolute;
     top: 0;
@@ -100,39 +83,68 @@
     transform: translateX(-100%);
     transition: transform 0.5s ease-in-out;
     z-index: -1;
-  }
-  
-  .heroButton:hover::before {
-    transform: translateX(0);
-  }
+}
 
-/* --- RESPONSIVE STYLES --- */
+.heroButton:hover::before {
+    transform: translateX(0);
+}
+
+/* === MOBİL DƏYİŞİKLİKLƏR === */
 @media (max-width: 768px) {
     .mBanner {
-        flex-direction: column !important; /* Her iki layout için de dikey */
-        padding: 40px 20px;
+        flex-direction: column !important;
+        padding: 40px 0;
+        gap: 30px;
+        align-items: flex-start;
     }
 
-    .mBanner .leftBanner,
-    .mBanner .rightBanner,
-    .mBanner:not(.reversed) .leftBanner,
-    .mBanner:not(.reversed) .rightBanner,
-    .mBanner.reversed .leftBanner,
+    /* DƏYİŞİKLİK: Ümumi en qaydası sadələşdirilib */
+    .rightBanner,
     .mBanner.reversed .rightBanner {
-        width: 100% !important;
+        width: 100%;
         height: auto;
-    }
-
-    .mBanner .leftBanner {
-        min-height: 400px;
+        margin-left: 0;
     }
     
-    .rightBanner .rightText {
-        height: auto;
-        padding: 2rem 0;
+    /* DƏYİŞİKLİK: Böyük şəkil üçün xüsusi qayda */
+    .leftBanner,
+    .mBanner.reversed .leftBanner {
+        width: 85%;
+        height: 430px; 
+        margin-left: 0;
     }
 
-    .mBanner.reversed .rightBanner .rightText {
-        padding-right: 0;
+    /* DƏYİŞİKLİK: Mətn və kiçik şəkli saxlayan blok 100% enində */
+    .rightBanner {
+        width: 100%;
+    }
+    
+    /* DƏYİŞİKLİK: Kiçik şəkil 85% enində */
+    .rightImgContainer {
+        width: 85%;
+        height: 250px !important;
+    }
+
+    .rightText {
+        padding: 2rem 20px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .mBanner.reversed .rightText {
+        padding: 2rem 20px;
+    }
+
+    .rightText h1 {
+        font-size: 24px;
+    }
+    .rightText p {
+        font-size: 13px;
+        font-weight: 600;
+        padding-right: 30px;
+    }
+
+    .heroButton {
+        font-size: 12px;
     }
 }
+

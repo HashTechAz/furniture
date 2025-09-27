@@ -9,10 +9,6 @@ interface MiddleBannerProps {
   buttonText: string;
   buttonLink: string;
   layout?: 'imageLeft' | 'imageRight';
-  // 1. ƏVVƏL UNUDULMUŞ PROPU BURA YENİDƏN ƏLAVƏ EDİRİK
-  smallImageHeight?: string; 
-  textBlockWidth?: string;
-  reversedSmallImageHeight?: string; // Reversed layout için ayrı height
 }
 
 const MiddleBanner = ({
@@ -23,28 +19,19 @@ const MiddleBanner = ({
   buttonText,
   buttonLink,
   layout = 'imageLeft',
-  smallImageHeight = '750px', 
-  textBlockWidth = '30%',
-  reversedSmallImageHeight = '500px', 
 }: MiddleBannerProps) => {
 
   const LargeImageBlock = (
-    <div 
-      className={styles.leftBanner} 
-      style={{ backgroundImage: `url("${largeImageUrl}")` }}
-    ></div>
+    <div className={styles.leftBanner}>
+      <img src={largeImageUrl} alt={title} />
+    </div>
   );
 
   const TextAndSmallImageBlock = (
     <div className={styles.rightBanner}>
-      <div 
-        className={styles.rightImg}
-        // 3. HÜNDÜRLÜYÜ STİLƏ YENİDƏN TƏTBİQ EDİRİK
-        style={{ 
-          backgroundImage: `url("${smallImageUrl}")`,
-          height: layout === 'imageRight' ? reversedSmallImageHeight : smallImageHeight,
-        }}
-      ></div>
+      <div className={styles.rightImgContainer}>
+        <img src={smallImageUrl} alt={title} className={styles.rightImg} />
+      </div>
       <div className={styles.rightText}>
         <h1 className={styles.title}>{title}</h1>
         <p>{description}</p>
@@ -58,21 +45,19 @@ const MiddleBanner = ({
   );
 
   return (
-    <>
-      <section className={`${styles.mBanner} ${layout === 'imageRight' ? styles.reversed : ''}`}>
-        {layout === 'imageLeft' ? (
-          <>
-            {LargeImageBlock}
-            {TextAndSmallImageBlock}
-          </>
-        ) : (
-          <>
-            {TextAndSmallImageBlock}
-            {LargeImageBlock}
-          </>
-        )}
-      </section>
-    </>
+    <section className={`${styles.mBanner} ${layout === 'imageRight' ? styles.reversed : ''}`}>
+      {layout === 'imageLeft' ? (
+        <>
+          {LargeImageBlock}
+          {TextAndSmallImageBlock}
+        </>
+      ) : (
+        <>
+          {TextAndSmallImageBlock}
+          {LargeImageBlock}
+        </>
+      )}
+    </section>
   );
 };
 

@@ -25,11 +25,12 @@
   }
 
   .newsTitle {
-      font-size: 28px;
+      font-size: 24px;
   }
 
   .newsGrid {
-      grid-template-columns: 1fr; /* Tek sütun */
-      gap: 40px;
+      /* DƏYİŞİKLİK: 4 sütun yerinə 2 sütun olacaq */
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px; /* Sütunlar arası boşluğu bir az azaldırıq */
   }
 }
