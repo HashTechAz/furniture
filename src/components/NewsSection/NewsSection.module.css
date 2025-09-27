@@ -24,6 +24,10 @@
       padding: 40px 20px;
   }
 
+  .newsHeader {
+      margin-bottom: 20px;
+  }
+
   .newsTitle {
       font-size: 24px;
   }

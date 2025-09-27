@@ -34,7 +34,7 @@
 /* --- RESPONSIVE STYLES --- */
 @media (max-width: 768px) {
     .badges {
-        padding: 40px 20px;
+        padding: 40px 0;
     }
 
     .badges .badgesContent {

@@ -2,11 +2,11 @@
     width: 100%;
     display: flex;
     padding: 50px 0;
-    gap: 15px;
+    gap: 20px;
 }
 
 .mBanner.reversed {
-    flex-direction: row-reverse;
+    flex-direction: row;
 }
 
 .leftBanner {
@@ -14,16 +14,16 @@
     height: 1000px;
 }
 .mBanner.reversed .leftBanner {
-    width: calc(50% - 120px);
-    height: 900px;
+    width: 800px;
+    height: 1000px;
 }
 
 .rightBanner {
     width: 560px;
 }
 .mBanner.reversed .rightBanner {
-    width: 680px;
-    margin-left: auto;
+    width: 560px;
+    margin-left: 0;
 }
 
 /* Şəkillərin özləri üçün ümumi stillər */

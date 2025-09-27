@@ -112,12 +112,12 @@ export default function Home() {
       <TrustBadges />
       <Palette {...secondPaletteData} imagePosition={secondPaletteData.imagePosition} />
       <MiddleBanner {... bannerDataReversed} />
-      <Palette {...thirdPaletteData} layout={'textRight'} variant={'third'} />
+      <Palette {...thirdPaletteData} layout={'textRight'} variant={'colorClass'} />
       {/* 3. Orijinal HomeVideo yalnız desktopda görünəcək */}
       <div className="hideOnMobile">
         <HomeVideo />
       </div>
-      <Palette {...fourPaletteData} imagePosition={secondPaletteData.imagePosition} />
+      <Palette {...fourPaletteData} imagePosition={secondPaletteData.imagePosition} variant={'colorClass'} />
       <Form />      
     </>
   );

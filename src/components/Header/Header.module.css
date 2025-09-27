@@ -243,6 +243,14 @@
     width: 85px;
   }
 
+  /* Mobile'da scroll yaparken header her zaman beyaz olsun */
+  .headerVisibleOnScroll {
+    background-color: #ffffff !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08) !important;
+    color: #333333 !important;
+  }
+}
+
   .hamburgerButton {
     background: none;
     border: none;
@@ -255,9 +263,6 @@
     position: relative;
     z-index: 1003;
   }
-
-  
-}
 
 
 

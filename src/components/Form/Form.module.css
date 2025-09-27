@@ -282,11 +282,12 @@
 /* --- RESPONSIVE STYLES --- */
 @media (max-width: 768px) {
     .formSection {
-        padding: 40px 20px;
+        padding: 0 0 40px 0;
+        width: 100%;
     }
 
     .formSection .formMain {
-        padding: 2rem;
+        padding: 40px 20px;
     }
 
     .formMain .formTitle {
@@ -294,18 +295,43 @@
     }
 
     .formTitle h1 {
-        font-size: 28px;
+        font-size: 22px;
+        font-weight: 500;
     }
 
     .formMain .formContentBox {
         flex-direction: column;
-        gap: 30px;
+        gap: 20px;
+        margin-top: 20px;
     }
 
     .formContentBox .formLeftContent,
     .formContentBox .formRightContent {
         width: 100%;
         padding: 0;
+    }
+
+    .formLeftContent p {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .form input {
+        font-size: 14px;
+        height: 40px;
+    }
+
+    .form input::placeholder {
+        font-size: 14px;
+    }
+
+    .checkboxLabel {
+        font-size: 14px;
+    }
+
+    .submitButton {
+        font-size: 14px;
+        padding: 12px 30px;
     }
 
     .checkboxGroup {

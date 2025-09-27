@@ -46,14 +46,22 @@ const Header: React.FC = () => {
         setIsAtTop(false);
       }
 
-      if (!isAtTop) {
-        if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
-          setIsVisible(false);
-        } else if (currentScrollY < lastScrollY.current) {
+      // Mobile'da (1024px ve altı) header her zaman görünür olsun
+      const isMobile = window.innerWidth <= 1024;
+      
+      if (isMobile) {
+        setIsVisible(true);
+      } else {
+        // Desktop davranışı
+        if (!isAtTop) {
+          if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+            setIsVisible(false);
+          } else if (currentScrollY < lastScrollY.current) {
+            setIsVisible(true);
+          }
+        } else {
           setIsVisible(true);
         }
-      } else {
-        setIsVisible(true);
       }
       
       lastScrollY.current = currentScrollY;
