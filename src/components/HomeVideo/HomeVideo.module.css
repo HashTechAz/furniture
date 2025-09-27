@@ -14,10 +14,20 @@
     justify-content: center;
 }
 
-
-
 .videoContent img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+    .videoMain {
+        padding: 40px 20px;
+    }
+
+    .videoMain .videoContent {
+        height: 350px;
+        padding: 20px;
+    }
 }

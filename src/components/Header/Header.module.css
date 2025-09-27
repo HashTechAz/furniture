@@ -4,114 +4,104 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
-  padding: 30px 80px;
+  z-index: 1001;
+  padding: 30px 20px;
   box-sizing: border-box;
   transform: translateY(0);
   transition: transform 0.4s ease, background-color 0.4s ease, color 0.4s ease;
   color: white;
 }
 
-/* 1. DURUM: SAYFANIN EN ÜSTÜNDEYKEN (Varsayılan) */
+/* Digər header vəziyyətləri */
 .headerAtTop {
-  background-color: #633730;
-  color: white;
-  transform: translateY(0);
+    background-color: #633730;
+    color: white;
 }
 .headerAtTop.sustainabilityHeader,
 .headerAtTop.systemHeader {
-  background-color: transparent;
+    background-color: transparent;
 }
-
 .headerAtTop.productsMainHeader {
-  background-color: #DD7D74;
+    background-color: #DD7D74;
 }
-
 .headerAtTop.productDetailsHeader {
-  background-color: #F5F5F5;
+    background-color: #F5F5F5;
 }
-
-/* 2. DURUM: AŞAĞI SCROLL EDİNCE GİZLENMİŞ HALİ */
 .headerHidden {
-  transform: translateY(-110%);
+    transform: translateY(-110%);
 }
-
-/* 3. DURUM: YUKARI SCROLL EDİNCE GÖRÜNEN BEYAZ HALİ */
 .headerVisibleOnScroll {
-  background-color: #ffffff;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
-  color: #333333;
+    background-color: #ffffff;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+    color: #333333;
 }
-
-/* 4. DURUM: EN TEPEYE DÖNERKEN ÇIKIŞ ANİMASYONU */
 .headerExiting {
-  background-color: #ffffff;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
-  color: #333333;
-  transform: translateY(-110%);
+    background-color: #ffffff;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+    color: #333333;
+    transform: translateY(-110%);
 }
-
-/* OVERLAY AÇIKKEN (Bu sınıf her şeyi ezer) */
 .headerOverlayOpen {
-  background-color: #ffffff !important;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08) !important;
-  color: #333333 !important;
-  transform: translateY(0) !important;
+    transform: translateY(0) !important;
 }
 
-/* Products sayfasında overlay açıkken özel renk */
-.headerOverlayOpen.productsMainHeader {
-  background-color: #ffffff !important;
-  color: #333333 !important;
+/* Rəng dəyişməsi və alt xətt isə yalnız 1024px-dən kiçik ekranlarda tətbiq olunacaq */
+@media (max-width: 1024px) {
+  .headerOverlayOpen {
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+    color: #333333 !important;
+    border-bottom: 1px solid #2d2d2d;
+  }
 }
 
-/* DİĞER STİLLER */
 .navbar {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   position: relative;
-  z-index: 1000;
+  z-index: 1002;
   box-sizing: border-box;
 }
 
+/* Desktop naviqasiya stilləri */
 .navigationMenu {
-  justify-self: start;
+    justify-self: start;
 }
 .navigationMenu ul {
-  list-style-type: none;
-  display: flex;
-  gap: 35px;
-  margin: 0;
-  padding: 0;
+    list-style-type: none;
+    display: flex;
+    gap: 35px;
+    margin: 0;
+    padding: 0;
 }
 .navigationMenu ul .navLists {
-  color: inherit;
-  font-size: 14px;
+    color: inherit;
+    font-size: 13px;
 }
 .navLinks {
-  position: relative;
-  text-decoration: none;
-  color: inherit;
-  padding-bottom: 4px;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    padding-bottom: 4px;
 }
 .navLinks::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 1px;
-  bottom: 0;
-  left: 0;
-  background-color: currentColor;
-  transform: scaleX(0);
-  transform-origin: bottom left;
-  transition: transform 0.3s ease-out;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: bottom left;
+    transition: transform 0.3s ease-out;
 }
-.navLinks:hover::after,
-.navLinks.active::after {
-  transform: scaleX(1);
+.navLinks:hover::after, .navLinks.active::after {
+    transform: scaleX(1);
 }
+
 .logo {
   width: 100px;
   background-color: black;
@@ -120,6 +110,8 @@
   font-weight: 800;
   text-align: center;
   justify-self: center;
+  position: relative;
+  z-index: 1003;
 }
 .navSearch {
   justify-self: end;
@@ -129,62 +121,134 @@
   border: none;
   cursor: pointer;
   color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* --- ANA DÜZELTME BURADA --- */
-/* Bu kural, özel sayfalardaki yazı ve ikon rengini SADECE sayfanın en üstündeyken beyaz yapar. */
-.headerAtTop.sustainabilityHeader .navLists,
-.headerAtTop.sustainabilityHeader .searchButton,
-.headerAtTop.systemHeader .navLists,
-.headerAtTop.systemHeader .searchButton {
-  color: #ffffff;
-}
-
-/* Sustainability ve System sayfalarında overlay açıkken yazıları siyah yap */
-.headerOverlayOpen.sustainabilityHeader .navLists,
-.headerOverlayOpen.sustainabilityHeader .searchButton,
-.headerOverlayOpen.systemHeader .navLists,
-.headerOverlayOpen.systemHeader .searchButton {
-  color: #333333;
-}
-
-.headerAtTop.productsMainHeader .navLists,
-.headerAtTop.productsMainHeader .searchButton {
-  color: #ffffff;
-}
-
-/* Products sayfasında overlay açıkken yazıları siyah yap */
-.headerOverlayOpen.productsMainHeader .navLists,
-.headerOverlayOpen.productsMainHeader .searchButton {
-  color: #333333;
-}
-
-.headerAtTop.productDetailsHeader .navLists,
-.headerAtTop.productDetailsHeader .searchButton {
-  color: #000000;
-}
-
-/* Bu kural, scroll edildiğinde rengin siyaha dönmesini sağlar (zaten vardı, doğruluğu teyit edildi) */
-.headerVisibleOnScroll.sustainabilityHeader,
-.headerVisibleOnScroll.systemHeader,
-.headerVisibleOnScroll.productsMainHeader,
-.headerVisibleOnScroll.productDetailsHeader {
-  color: #333333;
-}
-/* ------------------------ */
-
+/* Desktop açılan menyular */
 .seriesOverlay {
-  position: fixed;
-  top: 95px;
-  left: 0;
-  right: 0;
-  height: 0;
-  background: white;
-  z-index: 999;
-  overflow: hidden;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
-  transition: height 0.35s ease;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    height: 0;
+    background: white;
+    z-index: 999;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+    transition: height 0.35s ease;
 }
 .seriesOverlayOpen {
-  height: calc(100vh - 95px);
+    height: calc(100vh - 80px);
+}
+
+/* --- DÜZƏLİŞ EDİLMİŞ MOBİL MENYU STİLLƏRİ --- */
+.mobileMenuOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 100px 20px 40px 20px; /* Ümumi konteyner üçün padding */
+  box-sizing: border-box;
+  transform: translateY(-100%);
+  transition: transform 0.4s ease-in-out;
+  color: #333;
+}
+
+.mobileMenuOverlay.open {
+  transform: translateY(0);
+}
+
+.mainNav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+.mainNav li {
+  margin-bottom: 15px;
+}
+.mainNav a {
+  font-size: 22px;
+  font-weight: 700;
+  color: #333;
+  text-decoration: none;
+}
+
+.professionalsLink {
+    font-weight: 700 !important;
+}
+
+.bottomNavWrapper {
+    margin-top: auto; /* Elementi konteynerin aşağısına itələyir */
+    padding-top: 30px; /* Üstdən əlavə boşluq */
+}
+
+.supportNav {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 20px 0; /* Aşağıdan boşluq */
+    border-bottom: 1px solid #2d2d2d;
+}
+.supportNav li {
+    margin-bottom: 15px;
+}
+.supportNav a {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #333;
+    text-decoration: none;
+}
+
+/* Responsiv düzəlişlər */
+.desktopOnly { display: block; }
+.mobileOnly { display: none; }
+.mobileActions { display: none; }
+
+@media (min-width: 1025px) {
+  .header {
+    padding: 30px 80px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .header {
+    padding: 15px 20px;
+  }
+  .desktopOnly { display: none; }
+  .mobileOnly { display: flex; }
+
+  .mobileActions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-self: start;
+    width: 85px;
+  }
+
+  .hamburgerButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1003;
+  }
+
+  
 }

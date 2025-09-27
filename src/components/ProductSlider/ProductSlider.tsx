@@ -56,7 +56,7 @@ const ProductSlider: React.FC<ProductSliderProps> = ({ variant = 'default', titl
         <div className={currentStyles.sliderTitle}>
           <div className={currentStyles.sliderTitleText}>
             <span>
-              {titleTop ?? 'Explore the endless possibilities.'} <br />
+              {titleTop ?? 'Making room for personality.'} <br />
               {titleBottom ?? '36 modules, 4 depths and 43 colours.'}
             </span>
           </div>

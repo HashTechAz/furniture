@@ -5,20 +5,18 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import styles from "./Header.module.css";
 
-// Gerekli tüm içerik bileşenlerini import ediyoruz
 import SearchOverlay from "../HeaderSearchOverlay/SearchOverlay";
 import SeriesContent from "../SeriesContent/SeriesContent";
 import ProductsContent from "../ProductsContent/ProductsContent";
 import InspirationContent from "../Inspiration/InspirationContent";
 
 const Header: React.FC = () => {
-  // State'ler
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [isSeriesOpen, setIsSeriesOpen] = useState<boolean>(false);
   const [isProductsOpen, setIsProductsOpen] = useState<boolean>(false);
   const [isInspirationOpen, setIsInspirationOpen] = useState<boolean>(false);
-  
-  // Scroll animasyonu için state'ler
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+
   const [isVisible, setIsVisible] = useState<boolean>(true);
   const [isAtTop, setIsAtTop] = useState<boolean>(true);
   const [isExiting, setIsExiting] = useState<boolean>(false);
@@ -30,19 +28,14 @@ const Header: React.FC = () => {
   const isProductPage = pathname.startsWith("/product");
   const isProductsMainPage = pathname === "/product";
 
-  // Scroll animasyonunu yöneten useEffect
   useEffect(() => {
     const handleScroll = () => {
+      if (isMobileMenuOpen || isSearchOpen) return;
       const currentScrollY = window.scrollY;
-      const headerTrigger = document.getElementById('header-trigger');
-      const triggerHeight = headerTrigger ? headerTrigger.offsetTop : 0;
-
+      
       if (currentScrollY === 0 && !isAtTop) {
         setIsExiting(true);
-        setTimeout(() => {
-          setIsAtTop(true);
-          setIsExiting(false);
-        }, 400); 
+        setTimeout(() => { setIsAtTop(true); setIsExiting(false); }, 400); 
       } else if (currentScrollY > 0 && isAtTop) {
         setIsAtTop(false);
       }
@@ -62,67 +55,63 @@ const Header: React.FC = () => {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isAtTop]);
+  }, [isAtTop, isMobileMenuOpen, isSearchOpen]);
 
-  // Arama overlay'ini açıp kapatan fonksiyon
-  const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
+  const toggleSearch = () => setIsSearchOpen(prev => !prev);
 
-  // Menülere tıklandığında çalışan merkezi fonksiyon
-  const handleMenuClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    setter: React.Dispatch<React.SetStateAction<boolean>>,
-    isCurrentlyOpen: boolean
-  ) => {
+  const handleMenuClick = (e: React.MouseEvent<HTMLAnchorElement>, setter: React.Dispatch<React.SetStateAction<boolean>>, isCurrentlyOpen: boolean) => {
     e.preventDefault();
-
     const closeAllMenus = () => {
       setIsInspirationOpen(false);
       setIsProductsOpen(false);
       setIsSeriesOpen(false);
     };
 
-    // Tıklanan menü zaten açıksa, hepsini kapat
     if (isCurrentlyOpen) {
       closeAllMenus();
       return;
     }
-
-    // Başka bir menü açıksa, önce onu kapat, sonra yenisini küçük bir gecikmeyle aç
     if (isSeriesOpen || isProductsOpen || isInspirationOpen) {
         closeAllMenus();
-        setTimeout(() => {
-            setter(true);
-        }, 100);
+        setTimeout(() => setter(true), 100);
     } else {
-        // Hiçbir menü açık değilse, tıklananı aç
         setter(true);
     }
   };
   
-  // Sayfa (route) değiştiğinde tüm menüleri kapat
   useEffect(() => {
     setIsSeriesOpen(false);
     setIsProductsOpen(false);
     setIsInspirationOpen(false);
+    setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  // Menülerden herhangi biri açıkken body'nin scroll olmasını engelle
   useEffect(() => {
-    const isAnyMenuOpen = isSeriesOpen || isProductsOpen || isInspirationOpen;
-    document.body.style.overflow = isAnyMenuOpen ? 'hidden' : 'unset';
-    return () => { document.body.style.overflow = 'unset'; };
-  }, [isSeriesOpen, isProductsOpen, isInspirationOpen]);
+    const isAnyMenuOpen = isSeriesOpen || isProductsOpen || isInspirationOpen || isMobileMenuOpen || isSearchOpen;
+    if (isAnyMenuOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+    return () => { 
+      document.body.classList.remove("no-scroll");
+    };
+  }, [isSeriesOpen, isProductsOpen, isInspirationOpen, isMobileMenuOpen, isSearchOpen]);
+
+  const handleMobileLinkClick = () => {
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <>
       <header
         className={`
           ${styles.header}
-          ${!isVisible && !isExiting ? styles.headerHidden : ''} 
+          ${!isVisible && !isExiting && !isMobileMenuOpen && !isSearchOpen ? styles.headerHidden : ''} 
           ${isAtTop ? styles.headerAtTop : ''}
           ${isVisible && !isAtTop ? styles.headerVisibleOnScroll : ''}
           ${isExiting ? styles.headerExiting : ''}
-          ${isSeriesOpen || isProductsOpen || isInspirationOpen ? styles.headerOverlayOpen : ""}
+          ${isSeriesOpen || isProductsOpen || isInspirationOpen || isMobileMenuOpen || isSearchOpen ? styles.headerOverlayOpen : ""}
           ${isSustainabilityPage ? styles.sustainabilityHeader : ""}
           ${isSystemPage ? styles.systemHeader : ""}
           ${isProductsMainPage ? styles.productsMainHeader : ""}
@@ -130,57 +119,71 @@ const Header: React.FC = () => {
         `}
       >
         <nav className={styles.navbar}>
-           <div className={styles.navigationMenu}>
+           <div className={`${styles.navigationMenu} ${styles.desktopOnly}`}>
              <ul>
-               <li className={styles.navLists}>
-                 <Link href="#" className={`${styles.navLinks} ${isInspirationOpen ? styles.active : ''}`} onClick={(e) => handleMenuClick(e, setIsInspirationOpen, isInspirationOpen)}>
-                   Inspiration
-                 </Link>
-               </li>
-               <li className={styles.navLists}>
-                 <Link href="#" className={`${styles.navLinks} ${isProductsOpen ? styles.active : ''}`} onClick={(e) => handleMenuClick(e, setIsProductsOpen, isProductsOpen)}>
-                   Products
-                 </Link>
-               </li>
-               <li className={styles.navLists}>
-                 <Link href="#" className={`${styles.navLinks} ${isSeriesOpen ? styles.active : ''}`} onClick={(e) => handleMenuClick(e, setIsSeriesOpen, isSeriesOpen)}>
-                   Series
-                 </Link>
-               </li>
-               <li className={styles.navLists}>
-                 <Link href="/system" className={styles.navLinks}>
-                   Montana System
-                 </Link>
-               </li>
-               <li className={styles.navLists}>
-                 <Link href="/sustainability" className={styles.navLinks}>
-                   Sustainability
-                 </Link>
-               </li>
+               <li><Link href="#" className={`${styles.navLinks}`} onClick={(e) => handleMenuClick(e, setIsInspirationOpen, isInspirationOpen)}>Inspiration</Link></li>
+               <li><Link href="#" className={`${styles.navLinks}`} onClick={(e) => handleMenuClick(e, setIsProductsOpen, isProductsOpen)}>Products</Link></li>
+               <li><Link href="#" className={`${styles.navLinks}`} onClick={(e) => handleMenuClick(e, setIsSeriesOpen, isSeriesOpen)}>Series</Link></li>
+               <li><Link href="/system" className={styles.navLinks}>Montana System</Link></li>
+               <li><Link href="/sustainability" className={styles.navLinks}>Sustainability</Link></li>
              </ul>
            </div>
-           <Link href="/" className={styles.logo}>M. Logo</Link>
-           <div className={styles.navSearch}>
-             <button type="button" className={styles.searchButton} onClick={toggleSearch}>
+           
+           <div className={`${styles.mobileActions} ${styles.mobileOnly}`}>
+              <button type="button" className={styles.hamburgerButton} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Toggle menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d={isMobileMenuOpen ? "M18 6L6 18" : "M4 6h16"} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d={isMobileMenuOpen ? "M6 6l12 12" : "M4 12h16"} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    {!isMobileMenuOpen && <path d="M4 18h16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>}
+                </svg>
+              </button>
+              <button type="button" className={`${styles.searchButton} ${isSearchOpen ? styles.searchButtonActive : ''}`} onClick={toggleSearch}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
              </button>
            </div>
-         </nav>
+          
+           <Link href="/" className={styles.logo}>M. Logo</Link>
+           
+           <div className={styles.navSearch}>
+              <div className={styles.desktopOnly}>
+                <button type="button" className={`${styles.searchButton} ${isSearchOpen ? styles.searchButtonActive : ''}`} onClick={toggleSearch}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+              </div>
+              <div className={styles.mobileOnly} style={{ width: '85px' }}></div>
+           </div>
+        </nav>
       </header>
       
-      {/* Overlay'ler */}
-      <div className={`${styles.seriesOverlay} ${isInspirationOpen ? styles.seriesOverlayOpen : ""}`}>
-        {isInspirationOpen && <InspirationContent />}
+      <div className={`${styles.mobileMenuOverlay} ${isMobileMenuOpen ? styles.open : ''}`}>
+        <div className={styles.mainNav}>
+          <ul>
+            <li><Link href="/inspiration" onClick={handleMobileLinkClick}>Inspiration</Link></li>
+            <li><Link href="/product" onClick={handleMobileLinkClick}>Products</Link></li>
+            <li><Link href="/series" onClick={handleMobileLinkClick}>Series</Link></li>
+            <li><Link href="/system" onClick={handleMobileLinkClick}>Montana System</Link></li>
+            <li><Link href="/sustainability" onClick={handleMobileLinkClick}>Sustainability</Link></li>
+            <li><Link href="/professionals" onClick={handleMobileLinkClick} className={styles.professionalsLink}>Professionals</Link></li>
+          </ul>
+        </div>
+        
+        <div className={styles.bottomNavWrapper}>
+            <ul className={styles.supportNav}>
+                <li><Link href="/contact" onClick={handleMobileLinkClick}>Customer support</Link></li>
+                <li><Link href="/retailers" onClick={handleMobileLinkClick}>Find retailers</Link></li>
+            </ul>
+        </div>
       </div>
-      <div className={`${styles.seriesOverlay} ${isSeriesOpen ? styles.seriesOverlayOpen : ""}`}>
-        {isSeriesOpen && <SeriesContent />}
-      </div>
-      <div className={`${styles.seriesOverlay} ${isProductsOpen ? styles.seriesOverlayOpen : ""}`}>
-        {isProductsOpen && <ProductsContent />}
-      </div>
+      
+      <div className={`${styles.seriesOverlay} ${isInspirationOpen ? styles.seriesOverlayOpen : ""}`}>{isInspirationOpen && <InspirationContent />}</div>
+      <div className={`${styles.seriesOverlay} ${isSeriesOpen ? styles.seriesOverlayOpen : ""}`}>{isSeriesOpen && <SeriesContent />}</div>
+      <div className={`${styles.seriesOverlay} ${isProductsOpen ? styles.seriesOverlayOpen : ""}`}>{isProductsOpen && <ProductsContent />}</div>
       <SearchOverlay isOpen={isSearchOpen} onClose={toggleSearch} />
     </>
   );

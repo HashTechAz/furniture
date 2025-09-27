@@ -22,7 +22,6 @@
 
 .mBanner.reversed .leftBanner { background-position: center; width: calc(50% - 120px); }
 
-/* Explicit reversed sizing and alignment */
 .leftBannerReversed {
     width: 560px;
     height: 860px;
@@ -31,7 +30,7 @@
 .rightBannerReversed {
     width: 680px;
     height: 500px;
-    margin-left: auto; /* push to right edge */
+    margin-left: auto;
 }
 
 
@@ -45,7 +44,6 @@
     height: 500px;
 }
 
-/* Reversed layout'ta small image tam ölçüde */
 .mBanner.reversed .rightImg {
     width: 100%;
     height: 100%;
@@ -64,7 +62,6 @@
     padding: 2rem;
 }
 
-/* Reversed layout: add extra right padding to text only */
 .mBanner.reversed .rightBanner .rightText {
     padding-right: 130px;
     font-weight: 600;
@@ -108,4 +105,34 @@
   .heroButton:hover::before {
     transform: translateX(0);
   }
-  
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+    .mBanner {
+        flex-direction: column !important; /* Her iki layout için de dikey */
+        padding: 40px 20px;
+    }
+
+    .mBanner .leftBanner,
+    .mBanner .rightBanner,
+    .mBanner:not(.reversed) .leftBanner,
+    .mBanner:not(.reversed) .rightBanner,
+    .mBanner.reversed .leftBanner,
+    .mBanner.reversed .rightBanner {
+        width: 100% !important;
+        height: auto;
+    }
+
+    .mBanner .leftBanner {
+        min-height: 400px;
+    }
+    
+    .rightBanner .rightText {
+        height: auto;
+        padding: 2rem 0;
+    }
+
+    .mBanner.reversed .rightBanner .rightText {
+        padding-right: 0;
+    }
+}

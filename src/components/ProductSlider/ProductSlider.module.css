@@ -1,49 +1,58 @@
-/* ProductSlider.module.css */
-
 .sliderMain {
-    width: 100%;
-    padding: 30px 0;
-    overflow: hidden;
+  width: 100%;
+  padding: 30px 0;
+  overflow: hidden;
 }
 
 .container {
-    padding: 0 80px;
-    margin: 0 auto;
-    max-width: 1600px;
+  padding: 0 80px;
+  margin: 0 auto;
+  max-width: 1600px;
 }
 
 .sliderMain .sliderTitle {
-    width: 100%;
-    padding: 40px 0 20px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+  width: 100%;
+  padding: 40px 0 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 
 .sliderTitle .sliderTitleText {
-    font-size: 32px;
-    font-weight: 500;
-    color: #333;
+  font-size: 32px;
+  font-weight: 500;
+  color: #333;
 }
 
-/* EMBLA STILLƏRİ */
 .embla {
-  overflow: hidden;
-  /* Soldan padding veririk ki, slider mətnlə eyni xətdən başlasın */
-  padding-left: 80px; 
-  margin-top: 25px;
+overflow: hidden;
+padding-left: 80px; 
+margin-top: 25px;
 }
 
 .embla__container {
-  display: flex;
-  /* Sonda boşluq qalması üçün sağdan padding */
-  padding-right: 20px;
+display: flex;
+padding-right: 20px;
 }
 
 .embla__slide {
-  flex: 0 0 auto; /* Slaydların ölçüsünün dəyişməməsini təmin edir */
-  min-width: 0;
-  position: relative;
-  /* Slaydlar arasında boşluq */
-  margin-right: 20px;
+flex: 0 0 auto;
+min-width: 0;
+position: relative;
+margin-right: 20px;
+}
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .container {
+      padding: 0 20px;
+  }
+
+  .sliderTitle .sliderTitleText {
+      font-size: 24px;
+  }
+
+  .embla {
+      padding-left: 20px;
+  }
 }

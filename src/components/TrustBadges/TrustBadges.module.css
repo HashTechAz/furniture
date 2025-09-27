@@ -26,3 +26,21 @@
     margin-top: 10px;
     font-weight: 400;
 }
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+    .badges {
+        padding: 40px 20px;
+    }
+
+    .badges .badgesContent {
+        flex-direction: column;
+        gap: 30px;
+        padding: 2rem;
+    }
+
+    .badgesContent .badgesItem {
+        width: 100%;
+        padding-right: 0;
+    }
+}

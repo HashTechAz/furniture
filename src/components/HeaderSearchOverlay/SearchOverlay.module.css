@@ -1,35 +1,37 @@
+/* Stiller bütün ekran ölçüləri üçün eyniləşdirildi */
 .overlayContainer {
   position: fixed;
   top: 0;
-  right: 0;
-  width: 45%;
-  height: 100vh;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-color: white;
-  z-index: 2000;
-  transform: translateY(-100%);
-  transition: transform 0.5s ease-in-out;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Header-in arxasında qalması üçün */
+  transform: translateY(-100%); /* Başlanğıcda yuxarıda gizli */
+  transition: transform 0.4s ease-in-out;
   display: flex;
   justify-content: center;
+  overflow-x: hidden; /* Üfüqi scroll problemini həll edir */
 }
 
 .overlayContainer.open {
-  transform: translateY(0);
+  transform: translateY(0); /* Açıq vəziyyətdə aşağıya sürüşür */
 }
 
 .searchWrapper {
   width: 100%;
-  padding-top: 30px;
+  padding-top: 120px; /* Header-in altına düşməsi üçün */
+  max-width: 880px; /* Geniş ekranlarda məzmunun çox yayılmaması üçün */
+  margin: 0 auto;
 }
 
 .searchBox {
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 800px;
   padding: 0 40px;
   box-sizing: border-box;
-  gap: 40px;
+  gap: 20px;
 }
 
 .searchInput {
@@ -49,19 +51,15 @@
 }
 
 .searchInput:focus {
-  border-bottom-color: #633730;
+  border-bottom-color: #333;
 }
-
 
 .closeButton {
   background: none;
   border: none;
   cursor: pointer;
-  /* Başlangıç rengini de biraz yumuşattım */
   color: #888; 
-  
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,17 +67,30 @@
   height: 44px;
   padding: 0;
   border-radius: 50%;
+  flex-shrink: 0; /* Sıxılmasının qarşısını alır */
 }
 
 .closeButton:hover {
-  /* DEĞİŞİKLİK: Saf siyah (#000) yerine koyu gri (#333) kullanıldı */
   color: #333;
   transform: scale(1.1);
 }
-
 
 .searchWrapper p {
     padding: 40px;
     font-size: 14px;
     font-weight: 700;
+}
+
+/* Mobil üçün kiçik kosmetik düzəlişlər */
+@media (max-width: 768px) {
+  .searchBox {
+    padding: 0 20px;
+    gap: 15px;
+  }
+  .searchInput {
+    font-size: 1.5rem;
+  }
+  .searchWrapper p {
+    padding: 30px 20px;
+  }
 }

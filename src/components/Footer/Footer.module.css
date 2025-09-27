@@ -6,10 +6,10 @@
 
 .footer .footerMain {
   width: 100%;
-  height: 400px;
 }
 
-.footerMain h2 {
+/* YENİ: footerTitle olaraq dəyişdirildi */
+.footerTitle {
   font-size: 20px;
   color: #fff;
 }
@@ -17,7 +17,6 @@
 .parent {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(1, 1fr);
   gap: 8px;
   margin-top: 45px;
 }
@@ -39,12 +38,12 @@
   font-weight: 800;
 }
 
-.parent > .footerItem:first-child {
+/* Masaüstü üçün ilk elementin eni */
+.parent > .info {
   width: 300px;
-  /* background-color: red; */
 }
 
-.footerItem ul  {
+.footerItem ul {
    list-style-type: none;
    margin-top: 14px;
 }
@@ -56,49 +55,86 @@
   font-weight: 500;
 }
 
-.footerLink {
-  @apply hover-underline-button;
-}
-
 .footerItem .footerSocial ul {
   list-style-type: none;
   display: flex;
-  gap: 10px; /* Boşluğu bir az artırdım */
-  padding: 0; /* Standart boşluğu sıfırlayırıq */
+  gap: 10px;
+  padding: 0;
 }
 
 .footerItem .footerSocial ul li {
   border-radius: 50%;
-  padding: 8px; /* Dairəni bir az böyütdüm */
+  padding: 8px;
   background-color: #fff;
-  font-size: 12px; /* İkon ölçüsünü artırdım */
-  color: #000; /* İkonların rəngi qara olsun */
-  
-  /* YENİ KOD: İkonları dairənin mərkəzində saxlamaq üçün */
+  font-size: 12px;
+  color: #000;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  /* YENİ KOD: Böyümə animasiyası üçün */
   transition: transform 0.3s ease-in-out;
 }
 
-/* YENİ KOD: Hover zamanı dairəni 10% böyüdür */
 .footerItem .footerSocial ul li:hover {
   transform: scale(1.1);
   cursor: pointer;
 }
 
-/* Link elementinin içindəki ikonun düzgün ölçü alması üçün */
 .footerItem .footerSocial ul li a {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: inherit; /* Valideynin (li) rəngini alır */
+    color: inherit;
+}
+
+.footerEnd {
+  /* YENİ: Copyright bölməsini yuxarıdan ayırmaq üçün */
+  margin-top: 40px; 
+  padding-top: 40px;
+  border-top: 1px solid #444;
 }
 
 .footerEnd h3 {
   font-size: 12px;
   color: #fff;
   margin: 0px;
+}
+
+/* --- YENİ RESPONSİV STİLLƏR --- */
+@media (max-width: 768px) {
+  .footer {
+    padding: 40px 20px;
+  }
+
+  .parent {
+    display: grid;
+    /* Düzülüşü idarə etmək üçün grid-template-areas istifadə edirik */
+    grid-template-areas:
+      "montana ressources"
+      "service service"
+      "info info"
+      "social social";
+    grid-template-columns: 1fr 1fr;
+    gap: 40px 20px; /* Sətir və sütun arası boşluq */
+  }
+
+  /* Hər elementə təyin olunmuş sahəni veririk */
+  .info { grid-area: info; }
+  .montanaLinks { grid-area: montana; }
+  .ressourcesLinks { grid-area: ressources; }
+  .serviceLinks { grid-area: service; }
+  .social { grid-area: social; }
+
+  /* Mobil üçün sabit eni ləğv edirik */
+  .parent > .info {
+    width: auto;
+  }
+
+  .footerItem .cvrNumber {
+    margin-top: 1em;
+  }
+
+  .footerEnd {
+    margin-top: 30px;
+    padding-top: 30px;
+  }
 }

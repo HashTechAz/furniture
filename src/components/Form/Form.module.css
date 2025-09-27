@@ -278,3 +278,37 @@
 .submitButton:hover::before {
   transform: translateX(0);
 }
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+    .formSection {
+        padding: 40px 20px;
+    }
+
+    .formSection .formMain {
+        padding: 2rem;
+    }
+
+    .formMain .formTitle {
+        width: 100%;
+    }
+
+    .formTitle h1 {
+        font-size: 28px;
+    }
+
+    .formMain .formContentBox {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .formContentBox .formLeftContent,
+    .formContentBox .formRightContent {
+        width: 100%;
+        padding: 0;
+    }
+
+    .checkboxGroup {
+        padding-right: 0;
+    }
+}

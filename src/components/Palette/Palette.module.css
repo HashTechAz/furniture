@@ -1,123 +1,178 @@
 .paletteMain {
-  width: 100%;
-  padding: 60px 80px;
-  display: flex;
-}
-
-.paletteMain.reversed {
-  flex-direction: row-reverse;
-}
-
-.paletteMain .paletteTextBox {
-    width: 50%;
-    padding: 3rem 10rem 0 0;
-}
-
-.paletteMain.reversed .paletteTextBox {
-  padding: 3rem 0 0 10rem;
-}
-
-.paletteTextBoxTitle span {
-    font-size: 15px !important;
-    font-weight: 700;
-}
-
-.paletteTextBox h2 span {
-    font-size: 40px !important;
-    font-weight: 400;
-}
-
-.paletteDescription {
-    margin: 30px 0px;
-    font-weight: 600;
-}
-
-/* list styles removed from base Palette */
-
-.paletteDescription p + p {
-    margin-top: 30px; /* İkinci paragraf için 20px mesafe */
-}
-
-.heroButton {
-    display: inline-block;
-    text-decoration: none;
-    color: white;
-    background-color: #2c3587;
-    padding: 8px 30px;
-    font-size: 14px;
-    font-weight: 600;
-    position: relative;
-    z-index: 2;
-    overflow: hidden;
-    transition: color 0.3s ease-in-out;
-  }
-  
-  .heroButton::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.2);
-    transform: translateX(-100%);
-    transition: transform 0.5s ease-in-out;
-    z-index: -1;
+    padding: 60px 80px;
+    display: flex;
+    overflow: hidden;
   }
   
-  .heroButton:hover::before {
-    transform: translateX(0);
+  .paletteMain.reversed {
+    flex-direction: row-reverse;
   }
-
-.paletteMain .paletteImgBox {
-    width: 50%;
-    position: relative;
-    display: flex;
-    flex-direction: row; /* image and color block in natural order */
-}
-
-/* Third variant tweaks */
-.thirdVariant .paletteImgBox {
-    justify-content: flex-end; /* image from right */
-}
-
-.thirdVariant .paletteOneColor {
-    margin-right: 200px; /* anchor color block to left */
-    position: relative;
-    z-index: 1; /* stay under the image */
-    width: 510px;
-    height: 600px;
-}
-
-.thirdVariant .paletteJpg {
-    width: 630px;
-    height: 500px;
-    top: 50px;
-    right: -20px; /* stick out 50-60px from right */
-    left: auto; /* position from right */
-    z-index: 2; /* above the color block */
-}
-
-.paletteOneColor {
-    width: 510px;
-    height: 580px;
-    margin-left: auto; /* stick to right by default */
-    position: relative;
-    z-index: 1;
-}
-
-.paletteJpg {
-    width: 370px;
-    height: 500px;
-    position: absolute;
-    top: 40px;
-    left: auto; /* allow right-based positioning */
-    right: 0;   /* default anchor to right */
-    background-size: cover;
-    transition: transform 0.4s ease-in-out;
-    z-index: 2;
-}
-
-.paletteJpg:hover {
-    transform: scale(1.05);
-}
+  
+  .paletteMain .paletteTextBox {
+      width: 50%;
+      padding: 3rem 10rem 0 0;
+  }
+  
+  .paletteMain.reversed .paletteTextBox {
+    padding: 3rem 0 0 10rem;
+  }
+  
+  .paletteTextBoxTitle span {
+      font-size: 15px !important;
+      font-weight: 700;
+  }
+  
+  .paletteTextBox h2 span {
+      font-size: 40px !important;
+      font-weight: 400;
+  }
+  
+  .paletteDescription {
+      margin: 30px 0px;
+      font-weight: 600;
+  }
+  
+  .paletteDescription p + p {
+      margin-top: 30px;
+  }
+  
+  .heroButton {
+      display: inline-block;
+      text-decoration: none;
+      color: white;
+      background-color: #2c3587;
+      padding: 8px 30px;
+      font-size: 14px;
+      font-weight: 600;
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+      transition: color 0.3s ease-in-out;
+    }
+    
+    .heroButton::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.2);
+      transform: translateX(-100%);
+      transition: transform 0.5s ease-in-out;
+      z-index: -1;
+    }
+    
+    .heroButton:hover::before {
+      transform: translateX(0);
+    }
+  
+  .paletteMain .paletteImgBox {
+      width: 50%;
+      position: relative;
+      display: flex;
+      flex-direction: row;
+  }
+  
+  .thirdVariant .paletteImgBox {
+      justify-content: flex-end;
+  }
+  
+  .thirdVariant .paletteOneColor {
+      margin-right: 200px;
+      position: relative;
+      z-index: 1;
+      width: 510px;
+      height: 600px;
+  }
+  
+  .thirdVariant .paletteJpg {
+      width: 630px;
+      height: 500px;
+      top: 50px;
+      right: -20px;
+      left: auto;
+      z-index: 2;
+  }
+  
+  .paletteOneColor {
+      width: 510px;
+      height: 580px;
+      margin-left: auto;
+      position: relative;
+      z-index: 1;
+  }
+  
+  .paletteJpg {
+      width: 370px;
+      height: 500px;
+      position: absolute;
+      top: 40px;
+      left: auto;
+      right: 0;
+      background-size: cover;
+      transition: transform 0.4s ease-in-out;
+      z-index: 2;
+  }
+  
+  .paletteJpg:hover {
+      transform: scale(1.05);
+  }
+  
+  /* --- RESPONSIVE STYLES --- */
+  @media (max-width: 768px) {
+      .paletteMain {
+          padding: 40px 20px;
+          /* DƏYİŞİKLİK: Sıranı dəyişmək üçün column-reverse istifadə olunur */
+          flex-direction: column-reverse; 
+      }
+  
+      .paletteMain.reversed {
+          /* DƏYİŞİKLİK: Hər iki halda da şəkil yuxarıda olacaq */
+          flex-direction: column-reverse;
+      }
+  
+      .paletteMain .paletteTextBox,
+      .paletteMain .paletteImgBox {
+          width: 100%;
+      }
+  
+      .paletteMain .paletteTextBox {
+          padding: 2.5rem 0 0 0; /* Şəkildən sonra yuxarıdan boşluq */
+      }
+      
+      .paletteMain.reversed .paletteTextBox {
+          padding: 2rem 0 0 0; /* Hər iki halda da eyni */
+      }
+  
+      .paletteTextBox h2 span {
+          font-size: 32px !important;
+      }
+  
+      .paletteImgBox {
+          min-height: 380px;
+          position: relative; /* DƏYİŞİKLİK: Absolute elementlərin düzgün yerləşməsi üçün */
+          display: block; /* DƏYİŞİKLİK: Flex-i ləğv edirik */
+      }
+  
+      /* --- YENİ DÜZƏLİŞLƏR BURADADIR --- */
+      .paletteOneColor {
+          width: 270px !important;
+          height: 380px !important;
+          position: absolute;
+          /* DƏYİŞİKLİK: Sola hizalama */
+          left: 0;
+          right: auto;
+      }
+  
+      .paletteJpg {
+          width: 240px !important;
+          height: 300px !important;
+          position: absolute;
+          top: 40px !important;
+          /* DƏYİŞİKLİK: Sola hizalama */
+          left: auto !important;
+          right: 30px !important;
+      }
+  }
