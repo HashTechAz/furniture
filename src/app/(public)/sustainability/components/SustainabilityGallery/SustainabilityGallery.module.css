@@ -11,3 +11,19 @@
   object-fit: cover;
   display: block;
 }
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .susImgBox {
+    flex-direction: column;
+    gap: 20px;
+    margin: 40px 0;
+  }
+
+  .susImgBox .leftImg img {
+    width: 340px;
+    height: 460px;
+    object-fit: cover;
+    display: block;
+  }
+}

@@ -31,3 +31,44 @@
   height: 200px;
   margin-bottom: 40px;
 }
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .certifications {
+    padding: 40px 20px;
+  }
+
+  .certifications .certificationsMain {
+    width: 100%;
+    margin: 0;
+  }
+
+  .certificationsMain h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .certificationsMain p {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .certifications .certificationsLogo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .certificationsLogo .certificationsLogoItems {
+    width: 100%;
+    height: auto;
+    margin-bottom: 0;
+  }
+
+  .certificationsLogo .certificationsLogoItems img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+}
