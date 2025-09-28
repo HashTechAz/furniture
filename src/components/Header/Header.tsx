@@ -35,6 +35,7 @@ const Header: React.FC = () => {
   const isProductPage = pathname.startsWith("/product");
   const isProductsMainPage = pathname === "/product";
   const isProductDetailsPage = pathname.startsWith("/product/") && pathname !== "/product";
+  const isColoursPage = pathname === "/colours";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -167,6 +168,7 @@ const Header: React.FC = () => {
           ${isProductsMainPage ? styles.productsMainHeader : ""}
           ${isProductPage && !isProductsMainPage ? styles.productDetailsHeader : ""}
           ${isProductDetailsPage ? styles.productDetailsPage : ""}
+          ${isColoursPage ? styles.coloursHeader : ""}
         `}
       >
         <nav className={styles.navbar}>

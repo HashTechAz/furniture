@@ -1,0 +1,24 @@
+.coloursImg {
+    width: 100%;
+    padding: 60px 80px 60px 0px;
+}
+
+.coloursImgMain {
+    width: 100%;
+}
+
+.coloursImgMain img {
+    width: 100%;
+}
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+    .coloursImg {
+        padding: 40px 20px;
+    }
+    
+    .coloursImgMain img {
+        width: 100%;
+        height: auto;
+    }
+}
