@@ -17,8 +17,9 @@ const ProductsContent = () => {
     <>
       <section className={styles.productsCategoryMain}>
         <div className={styles.productsCategoryText}>
-          <h5>About Montana</h5>
+          <h5><Link href="/about">About Montana</Link></h5>
           <ul>
+            <li><Link href="/about">Montana System</Link></li>
             <li><Link href="/product">Customize your solution</Link></li>
             <li><Link href="/product">41 colors & 2 veneers</Link></li>
             <li><Link href="/product">Susainability</Link></li>

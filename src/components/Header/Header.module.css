@@ -18,7 +18,8 @@
     color: white;
 }
 .headerAtTop.sustainabilityHeader,
-.headerAtTop.systemHeader {
+.headerAtTop.systemHeader,
+.headerAtTop.aboutHeader {
     background-color: transparent;
 }
 .headerAtTop.productsMainHeader {

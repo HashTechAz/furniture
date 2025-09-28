@@ -1,60 +1,50 @@
 import styles from './page.module.css';
+import AboutHero from './components/AboutHero/AboutHero';
+import AboutCompany from './components/AboutCompany/AboutCompany';
+import MiddleBanner from '@/components/MiddleBanner/MiddleBanner';
+import Palette from '@/components/Palette/Palette';
+import HomeVideo from '@/components/HomeVideo/HomeVideo';
+import ProductSlider from '@/components/ProductSlider/ProductSlider';
+import AboutBigImage from './components/AboutBigImage/AboutBigImage';
+
+// About sayfası için banner verisi
+const aboutBannerData = {
+  largeImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/colours/montana_colourps_azure_oat_rosehip.jpg?mode=crop&width=1520&height=2027",
+  smallImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/colours/montana_colourps_amber_camomile_rhubarb_flint_oat.jpg?mode=crop&width=1520&height=2027",
+  title: "Endless possibilities with Montana",
+  description: "Montana Furniture is based on Peter J. Lassen's philosophy that every one of us has a need for freedom and a natural desire to create our own personal spaces. With Montana you get endless possibilities and freedom to create the look that's just right for you.",
+  buttonText: "Learn more about our design",
+  buttonLink: "/design",
+};
+
+// About sayfası için palette verisi
+const aboutPaletteData = {
+  category: "About Montana",
+  title: "A poetic range of 41 Montana colours",
+  description: "Montana’s functional and flexible system is featured in a range of 41 poetic and complex colours developed in close collaboration with the award-winning Danish designer and colour expert Margrethe Odgaard. Colours mean everything. Ambience. Atmosphere. Identity. Colours are paramount in our design. We want to influence and inspire the world of interiors with our take on colours. Bright and light. Dense and deep. There is a colour for any purpose.",
+  buttonText: "Discover our history",
+  buttonLink: "/history",
+  imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/designer-portraits/montana_margretheodgaard_newcolours2019_01_s.jpg?mode=crop&width=640&height=640",
+  backgroundColor: "#EFC7C7",
+  imagePosition: {
+    width: '370px',
+    height: '500px',
+    top: '40px',
+    left: '0px',
+  },
+  layout: 'textLeft',
+} as const;
 
 export default function About() {
   return (
     <>
-      <div className={styles.pageHeader}>
-        <div className="container">
-          <h1>About Montana</h1>
-          <p>
-            Discover our story, values, and commitment to creating innovative furniture solutions for modern living.
-          </p>
-        </div>
-      </div>
-
-      <div className={styles.aboutContent}>
-        <div className="container">
-          <div className={styles.contentGrid}>
-            <div className={styles.textContent}>
-              <h2>Our Story</h2>
-              <p>
-                Founded with a vision to revolutionize modern furniture design, Montana has been at the forefront 
-                of innovative storage and living solutions for over three decades. Our commitment to quality, 
-                functionality, and aesthetic excellence has made us a trusted partner for architects, designers, 
-                and homeowners worldwide.
-              </p>
-              <p>
-                We believe that furniture should not only serve a purpose but also enhance the way we live and work. 
-                Our modular systems and thoughtful designs adapt to changing needs, ensuring that our products 
-                remain relevant and valuable for years to come.
-              </p>
-            </div>
-            <div className={styles.imageContent}>
-              <div className={styles.placeholderImage}>
-                Company Image
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.valuesSection}>
-            <h2>Our Values</h2>
-            <div className={styles.valuesGrid}>
-              <div className={styles.valueCard}>
-                <h3>Innovation</h3>
-                <p>We continuously push the boundaries of furniture design, creating solutions that anticipate future needs.</p>
-              </div>
-              <div className={styles.valueCard}>
-                <h3>Quality</h3>
-                <p>Every piece is crafted with attention to detail, using premium materials and rigorous quality standards.</p>
-              </div>
-              <div className={styles.valueCard}>
-                <h3>Sustainability</h3>
-                <p>We are committed to environmental responsibility, using sustainable materials and manufacturing processes.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <AboutHero/>
+      <AboutCompany/>
+      <AboutBigImage/>
+      <MiddleBanner {...aboutBannerData} />
+      <Palette {...aboutPaletteData} />
+      <HomeVideo imageUrl="https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/location---radiohuset/montana_home_23_24_ruby_hokkaido_iris_cumin_02_h.jpg?mode=crop&width=828&height=1104" />
+      <ProductSlider />
     </>
   );
 }

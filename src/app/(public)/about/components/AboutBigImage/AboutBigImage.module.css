@@ -1,0 +1,16 @@
+.aboutBigImage {
+  width: 100%;
+  height: auto;
+  padding: 60px 0px 60px 80px;
+}
+
+.aboutBigImageMain {
+  width: 100%;
+  height: auto;
+}
+
+.aboutBigImageMain img {
+  width: 100%;
+  height: 1000px;
+  object-fit: cover;
+}

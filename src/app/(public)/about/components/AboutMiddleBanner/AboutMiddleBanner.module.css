@@ -9,6 +9,10 @@
     flex-direction: row;
 }
 
+.rightText h1 {
+    font-size: 22px;
+}
+
 .leftBanner {
     width: 800px;
     height: 1000px;
@@ -52,15 +56,9 @@
 }
 
 .rightText h1 {
-    font-size: 26px;
+    font-size: 22px !important;
     font-weight: 500;
     font-style: italic;
-}
-
-.rightText p {
-    font-size: 14px;
-    font-weight: 600;
-    padding-right: 30px;
 }
 
 .heroButton {
@@ -153,4 +151,3 @@
         font-size: 12px;
     }
 }
-

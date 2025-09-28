@@ -31,6 +31,7 @@ const Header: React.FC = () => {
   const pathname = usePathname();
   const isSustainabilityPage = pathname === "/sustainability";
   const isSystemPage = pathname === "/system";
+  const isAboutPage = pathname === "/about";
   const isProductPage = pathname.startsWith("/product");
   const isProductsMainPage = pathname === "/product";
   const isProductDetailsPage = pathname.startsWith("/product/") && pathname !== "/product";
@@ -162,6 +163,7 @@ const Header: React.FC = () => {
           ${isSeriesOpen || isProductsOpen || isInspirationOpen ? styles.headerMenuContentOpen : ""}
           ${isSustainabilityPage ? styles.sustainabilityHeader : ""}
           ${isSystemPage ? styles.systemHeader : ""}
+          ${isAboutPage ? styles.aboutHeader : ""}
           ${isProductsMainPage ? styles.productsMainHeader : ""}
           ${isProductPage && !isProductsMainPage ? styles.productDetailsHeader : ""}
           ${isProductDetailsPage ? styles.productDetailsPage : ""}
