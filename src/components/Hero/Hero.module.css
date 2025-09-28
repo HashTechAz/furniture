@@ -1,7 +1,7 @@
-.coloursHero {
+.hero {
   width: 100%;
-  background-color: #EEECDD; /* <-- Yeni arxa fon rəngi */
-  color: #333; /* <-- Yeni mətn rəngi */
+  background-color: #EEECDD;
+  color: #333;
   padding: 120px 80px;
 }
 
@@ -67,17 +67,16 @@
 }
 
 @media (max-width: 768px) {
-  .coloursHero {
+  .hero {
     padding: 0;
   }
 
   .textContent {
     width: 100%;
-    background-color: #EEECDD; /* <-- Mobil üçün dəyişiklik */
     padding: 10px 20px;
     padding-top: 100px;
     position: relative;
-    z-index: 1; /* z-index-i aşağı saldım */
+    z-index: 1;
   }
 
   .content {

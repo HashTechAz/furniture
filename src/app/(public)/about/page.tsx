@@ -1,5 +1,5 @@
 import styles from './page.module.css';
-import AboutHero from './components/AboutHero/AboutHero';
+import Hero from '@/components/Hero/Hero';
 import AboutCompany from './components/AboutCompany/AboutCompany';
 import MiddleBanner from '@/components/MiddleBanner/MiddleBanner';
 import Palette from '@/components/Palette/Palette';
@@ -38,7 +38,15 @@ const aboutPaletteData = {
 export default function About() {
   return (
     <>
-      <AboutHero/>
+      <Hero
+        title="About Montana"
+        titleSpan="Let's create playful spaces"
+        description="The family-owned Montana Furniture has provided generations with personalized storage solutions, since 1982. The Danish high-end furniture company was established by Peter J. Lassen, who also created the modular Montana System. Today, the company is run by Peter's son Joakim Lassen, who is the fifth generation of his family to work with furniture and the great-grandson of manufacturer Fritz Hansen."
+        imageUrl="https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-home/2023/location---radiohuset/montana_home_23_24_ruby_hokkaido_iris_cumin_detail_01_w.jpg?mode=crop&width=1080&height=776"
+        imageAlt="Montana Company"
+        backgroundColor="#2c3587"
+        textColor="#ffffff"
+      />
       <AboutCompany/>
       <AboutBigImage/>
       <MiddleBanner {...aboutBannerData} />

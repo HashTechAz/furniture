@@ -21,8 +21,8 @@ const ProductsContent = () => {
           <ul>
             <li><Link href="/system">Customize your solution</Link></li>
             <li><Link href="/colours">41 colors & 2 veneers</Link></li>
-            <li><Link href="/product">Susainability</Link></li>
-            <li><Link href="/product">Designers</Link></li>
+            <li><Link href="/sustainability">Susainability</Link></li>
+            <li><Link href="/designers">Designers</Link></li>
           </ul>
 
           <h5>Product Series</h5>

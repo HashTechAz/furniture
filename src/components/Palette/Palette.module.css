@@ -117,7 +117,29 @@
   }
   
   .paletteJpg:hover {
-      transform: scale(1.05);
+    transform: scale(1.05);
+  }
+
+  /* Desktop için colorClassVariant düzenlemesi */
+  .colorClassVariant .paletteOneColor {
+    width: 480px;
+    height: 580px;
+    margin-left: 0;
+    margin-right: auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .colorClassVariant .paletteJpg {
+    width: 380px;
+    height: 500px;
+    position: absolute;
+    top: 40px;
+    right: 30px;
+    left: auto;
+    background-size: cover;
+    transition: transform 0.4s ease-in-out;
+    z-index: 2;
   }
   
   /* --- RESPONSIVE STYLES --- */
@@ -211,6 +233,17 @@
       .thirdVariant .paletteJpg {
           right: 0 !important;
           left: auto !important;
+      }
+
+      /* Designers sayfası için özel düzenleme: renkli div sağda, resim solda */
+      .colorClassVariant .paletteOneColor {
+          margin-left: auto !important;
+          margin-right: 0 !important;
+      }
+
+      .colorClassVariant .paletteJpg {
+          left: 0 !important;
+          right: auto !important;
       }
   }
 

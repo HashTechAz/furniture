@@ -385,6 +385,10 @@
 }
 
 /* YENİ STİLİ BURA ƏLAVƏ EDİN */
+.headerAtTop.designersHeader {
+  background-color: #275138;
+}
+
 .headerAtTop.coloursHeader {
   background-color: #EEECDD;
   color: #333; /* Arxa fon açıq olduğu üçün mətnin rəngini tünd edirik */
