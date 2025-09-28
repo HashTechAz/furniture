@@ -208,7 +208,7 @@
     position: absolute;
     height: 100%;
     background-color: #333;
-    transition: width 50ms linear;
+    transition: width 100ms ease-out;
   }
 }
 

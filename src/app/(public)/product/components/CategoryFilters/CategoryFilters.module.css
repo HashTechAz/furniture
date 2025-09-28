@@ -58,3 +58,30 @@
 .categoryList a.active:hover::before {
   transform: translateX(0);
 }
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .filterContainer {
+    padding: 40px 20px 10px 20px;
+  }
+
+  .categoryList {
+    display: flex;
+    flex-wrap: nowrap; /* Mobile'da wrap olmasın */
+    gap: 10px;
+    overflow-x: auto; /* Yatay scroll */
+    overflow-y: hidden;
+    padding-bottom: 10px; /* Scroll bar için boşluk */
+    -webkit-overflow-scrolling: touch; /* iOS smooth scroll */
+  }
+
+  .categoryList li {
+    flex-shrink: 0; /* Itemlar küçülmesin */
+  }
+
+  .categoryList a {
+    font-size: 12px;
+    padding: 6px 20px;
+    white-space: nowrap; /* Text kırılmasın */
+  }
+}

@@ -26,8 +26,8 @@ const ProductNewsSlider = () => {
 
   const onScroll = useCallback(() => {
     if (!emblaApi) return;
-    const progress = Math.max(0, Math.min(1, emblaApi.scrollProgress()));
-    setScrollProgress(progress * 100);
+    const progress = emblaApi.scrollProgress();
+    setScrollProgress(Math.min(100, Math.max(0, progress * 100)));
   }, [emblaApi]);
 
   useEffect(() => {

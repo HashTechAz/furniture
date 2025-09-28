@@ -59,12 +59,50 @@ const Dropdown = ({ label, options, initialSelected }: DropdownProps) => {
 
 // Ana bileşen
 const DropdownFilters = () => {
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState({
+    dispatch: "",
+    depth: "",
+    colour: "",
+    series: ""
+  });
+  const [openSections, setOpenSections] = useState({
+    dispatch: false,
+    depth: false,
+    colour: false,
+    series: false
+  });
+
   // Her dropdown için seçenek listeleri
   const dispatchOptions = ["In stock", "1-2 weeks", "3-4 weeks"];
   const depthOptions = ["30 cm", "38 cm", "47 cm"];
   const colourOptions = ["New White", "Fjord", "Ruby", "Acacia"];
   const seriesOptions = ["Montana System", "Montana Free", "Panton Wire"];
   const sortOptions = ["Montana recommends", "Price: Low to High", "Price: High to Low"];
+
+  const handleFilterSelect = (category: string, value: string) => {
+    setSelectedFilters(prev => ({
+      ...prev,
+      [category]: prev[category] === value ? "" : value
+    }));
+  };
+
+  const toggleSection = (section: string) => {
+    setOpenSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
+  const handleApply = () => {
+    // Apply logic here
+    console.log("Applied filters:", selectedFilters);
+    setIsMobileFilterOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsMobileFilterOpen(false);
+  };
 
   return (
     <div className={styles.filtersWrapper}>
@@ -74,10 +112,128 @@ const DropdownFilters = () => {
         <Dropdown label="Colour" options={colourOptions} />
         <Dropdown label="Product series" options={seriesOptions} />
       </div>
+      
       {/* --- DEĞİŞİKLİK BURADA --- */}
       <div className={styles.rightFilters}>
-        {/* Sabit etiket */}
-        <span className={styles.sortByLabel}>Sort by:</span>
+        {/* Mobile Filter Button */}
+        <button 
+          className={styles.mobileFilterButton}
+          onClick={() => setIsMobileFilterOpen(true)}
+        >
+          <div className={styles.filterIcon}>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          Filter
+        </button>
+
+        {/* Mobile Filter Modal */}
+        <div className={`${styles.mobileDropdownMenu} ${isMobileFilterOpen ? styles.open : ''}`}>
+        <div className={styles.mobileDropdownContent}>
+          <div className={styles.mobileDropdownHeader}>
+            <h3>Filters</h3>
+            <button className={styles.closeButton} onClick={handleCancel}>×</button>
+          </div>
+
+          <div className={styles.mobileFilterSection}>
+            <h4 
+              className={openSections.dispatch ? styles.open : ''}
+              onClick={() => toggleSection('dispatch')}
+            >
+              Dispatch time
+              <span className={styles.arrow}>▼</span>
+            </h4>
+            <div className={`${styles.mobileFilterOptions} ${openSections.dispatch ? styles.open : ''}`}>
+              {dispatchOptions.map((option, index) => (
+                <div
+                  key={index}
+                  className={`${styles.mobileFilterOption} ${selectedFilters.dispatch === option ? styles.selected : ''}`}
+                  onClick={() => handleFilterSelect('dispatch', option)}
+                >
+                  {option}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className={styles.mobileFilterSection}>
+            <h4 
+              className={openSections.depth ? styles.open : ''}
+              onClick={() => toggleSection('depth')}
+            >
+              Depth
+              <span className={styles.arrow}>▼</span>
+            </h4>
+            <div className={`${styles.mobileFilterOptions} ${openSections.depth ? styles.open : ''}`}>
+              {depthOptions.map((option, index) => (
+                <div
+                  key={index}
+                  className={`${styles.mobileFilterOption} ${selectedFilters.depth === option ? styles.selected : ''}`}
+                  onClick={() => handleFilterSelect('depth', option)}
+                >
+                  {option}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className={styles.mobileFilterSection}>
+            <h4 
+              className={openSections.colour ? styles.open : ''}
+              onClick={() => toggleSection('colour')}
+            >
+              Colour
+              <span className={styles.arrow}>▼</span>
+            </h4>
+            <div className={`${styles.mobileFilterOptions} ${openSections.colour ? styles.open : ''}`}>
+              {colourOptions.map((option, index) => (
+                <div
+                  key={index}
+                  className={`${styles.mobileFilterOption} ${selectedFilters.colour === option ? styles.selected : ''}`}
+                  onClick={() => handleFilterSelect('colour', option)}
+                >
+                  {option}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className={styles.mobileFilterSection}>
+            <h4 
+              className={openSections.series ? styles.open : ''}
+              onClick={() => toggleSection('series')}
+            >
+              Product series
+              <span className={styles.arrow}>▼</span>
+            </h4>
+            <div className={`${styles.mobileFilterOptions} ${openSections.series ? styles.open : ''}`}>
+              {seriesOptions.map((option, index) => (
+                <div
+                  key={index}
+                  className={`${styles.mobileFilterOption} ${selectedFilters.series === option ? styles.selected : ''}`}
+                  onClick={() => handleFilterSelect('series', option)}
+                >
+                  {option}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className={styles.mobileFilterButtons}>
+            <button className={styles.cancelButton} onClick={handleCancel}>
+              Cancel
+            </button>
+            <button className={styles.applyButton} onClick={handleApply}>
+              Apply
+            </button>
+          </div>
+        </div>
+        </div>
+
+        {/* Items count */}
+        <span className={styles.itemsCount}>12 items</span>
+        
         {/* Seçici Dropdown */}
         <Dropdown options={sortOptions} initialSelected={sortOptions[0]} />
       </div>

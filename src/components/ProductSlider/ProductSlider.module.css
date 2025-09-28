@@ -59,11 +59,11 @@
 }
 
 .progressBarFill {
-    position: absolute;
-    height: 100%;
-    background-color: #333;
-    /* Keçidi daha səlis etmək üçün transition əlavə edirik */
-    transition: width 50ms linear;
+  position: absolute;
+  height: 100%;
+  background-color: #333;
+  /* Keçidi daha səlis etmək üçün transition əlavə edirik */
+  transition: width 100ms ease-out;
 }
 
 

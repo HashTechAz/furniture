@@ -87,3 +87,19 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Mobile'da "Show X items" text'ini gizle */
+@media (max-width: 768px) {
+  .gridContainer {
+    padding: 20px;
+  }
+  
+  .countDisplay {
+    display: none; /* Mobile'da gizle */
+  }
+  
+  .grid {
+    grid-template-columns: repeat(2, 1fr); /* Mobile'da 2 sütun */
+    gap: 15px; /* Mobile'da daha küçük gap */
+  }
+}

@@ -26,3 +26,43 @@
   font-size: 15px;
   font-weight: 600;
 }
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .productAbout {
+    padding: 40px 20px;
+    margin-top: 20px;
+  }
+
+  .productAboutTitle h1 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .productAboutMain {
+    flex-direction: column;
+  }
+
+  .productLeftText {
+    width: 100%;
+    padding: 0 0 30px 0;
+  }
+
+  .productRightText {
+    width: 100%;
+    padding: 0;
+  }
+
+  .productLeftText h5,
+  .productRightText h5 {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  .productLeftText p,
+  .productRightText p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+  }
+}

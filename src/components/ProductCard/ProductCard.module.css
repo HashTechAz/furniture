@@ -20,16 +20,17 @@
   height: 390px;
   overflow: hidden;
   position: relative;
-  background-color: #f8f9fa;
+  background-color: #f5f5f5;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px; /* Resimlere padding ver */
 }
 
 .image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* Resimlerin tam görünmesi için contain */
   transition: transform 0.2s ease;
   will-change: transform;
 }
@@ -113,7 +114,17 @@
     }
     
     .imageWrapper {
-        /* Mətn hissəsini nəzərə alaraq şəklin hündürlüyünü azaldırıq */
-        height: 240px;
+        /* Mobile'da kartların height'ini 220px yap */
+        height: 220px;
+    }
+    
+    .cardTitle {
+        font-size: 12px; /* Mobile'da daha küçük title */
+    }
+    
+    .cardColor,
+    .cardMeasurements,
+    .cardPosition {
+        font-size: 12px; /* Mobile'da daha küçük description */
     }
 }

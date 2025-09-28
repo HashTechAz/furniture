@@ -5,6 +5,17 @@
   padding: 20px 80px;
 }
 
+/* Desktop'da mobile filter button'u gizle */
+@media (min-width: 769px) {
+  .mobileFilterButton {
+    display: none;
+  }
+  
+  .mobileDropdownMenu {
+    display: none;
+  }
+}
+
 .leftFilters, .rightFilters {
   display: flex;
   gap: 15px;
@@ -20,8 +31,23 @@
     padding: 8px 0; 
 }
 
+/* Items count için stil */
+.itemsCount {
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+    padding: 8px 0;
+}
+
 .dropdown {
     width: 180px; 
+}
+
+/* Mobile'da dropdown'lar sabit kalmalı */
+@media (max-width: 768px) {
+  .dropdown {
+    width: 160px; /* Mobile'da daha küçük */
+  }
 }
 
 .dropdownButton {
@@ -30,7 +56,7 @@
   justify-content: space-between;
   width: 100%;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 8px 6px;
   border: 1px solid transparent;
   border-radius: 4px;
   background: #fff;
@@ -70,6 +96,29 @@
   border-radius: 4px;
 }
 
+/* Mobile'da dropdown menu sabit kalmalı */
+@media (max-width: 768px) {
+  .dropdown {
+    position: relative; /* Dropdown için relative positioning */
+  }
+  
+  .dropdownMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .menuOpen {
+    margin-top: 5px;
+  }
+}
+
 .dropdownMenu ul {
   list-style: none;
   padding: 0;
@@ -89,4 +138,191 @@
 
 .dropdownMenu ul a:hover {
   background-color: #f8f9fa;
+}
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .filtersWrapper {
+    padding: 10px;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .leftFilters {
+    display: none; /* Mobile'da desktop filtreleri gizle */
+  }
+
+  .rightFilters {
+    width: 100%;
+    justify-content: space-between;
+    position: relative; /* Filter button için relative positioning */
+    align-items: center;
+    flex-wrap: nowrap; /* Mobile'da wrap olmasın */
+    display: flex; /* Flex container olarak düzenle */
+  }
+
+  /* Mobile filter button */
+  .mobileFilterButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background-color: transparent;
+    color: #333;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .mobileFilterButton .filterIcon {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mobileFilterButton .filterIcon span {
+    width: 16px;
+    height: 2px;
+    background-color: #333;
+    border-radius: 1px;
+  }
+
+  /* Mobile dropdown menu */
+  .mobileDropdownMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: none;
+    max-height: 70vh;
+    overflow-y: auto;
+    margin-top: 5px; /* Filter button ile arasında küçük boşluk */
+  }
+
+  .mobileDropdownMenu.open {
+    display: block;
+  }
+
+  .mobileDropdownContent {
+    padding: 20px;
+  }
+
+  .mobileDropdownHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .mobileDropdownHeader h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .closeButton {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+  }
+
+  .mobileFilterSection {
+    margin-bottom: 20px;
+  }
+
+  .mobileFilterSection h4 {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .mobileFilterSection h4 .arrow {
+    transition: transform 0.3s ease;
+    font-size: 12px;
+  }
+
+  .mobileFilterSection h4.open .arrow {
+    transform: rotate(180deg);
+  }
+
+  .mobileFilterOptions {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .mobileFilterOptions.open {
+    display: flex;
+  }
+
+  .mobileFilterOption {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13px;
+  }
+
+  .mobileFilterOption:hover {
+    background-color: #f8f9fa;
+    border-color: #333;
+  }
+
+  .mobileFilterOption.selected {
+    background-color: #333;
+    color: white;
+    border-color: #333;
+  }
+
+  .mobileFilterButtons {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 15px;
+  }
+
+  .applyButton {
+    flex: 1;
+    padding: 12px 24px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .cancelButton {
+    flex: 1;
+    padding: 12px 24px;
+    background-color: white;
+    color: #333;
+    border: 1px solid #333;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
 }
