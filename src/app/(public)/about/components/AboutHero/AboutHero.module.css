@@ -14,7 +14,7 @@
 
 .textContent {
   width: 48%;
-  margin-top: 40px;
+  margin-top: 50px;
 }
 
 .title {
@@ -40,7 +40,7 @@
   height: 540px;
   overflow: hidden;
   position: absolute;
-  top: 0px;
+  top: 20px;
   right: 0;
 }
 
