@@ -80,14 +80,14 @@ const DropdownFilters = () => {
   const seriesOptions = ["Montana System", "Montana Free", "Panton Wire"];
   const sortOptions = ["Montana recommends", "Price: Low to High", "Price: High to Low"];
 
-  const handleFilterSelect = (category: string, value: string) => {
+  const handleFilterSelect = (category: keyof typeof selectedFilters, value: string) => {
     setSelectedFilters(prev => ({
       ...prev,
       [category]: prev[category] === value ? "" : value
     }));
   };
 
-  const toggleSection = (section: string) => {
+  const toggleSection = (section: keyof typeof openSections) => {
     setOpenSections(prev => ({
       ...prev,
       [section]: !prev[section]
