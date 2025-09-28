@@ -14,3 +14,17 @@
   height: 1000px;
   object-fit: cover;
 }
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .aboutBigImage {
+    padding: 40px 50px 40px 0px;
+    display: flex;
+    flex-direction: row-reverse;
+  }
+  
+  
+  .aboutBigImageMain img {
+    height: 300px;
+  }
+}

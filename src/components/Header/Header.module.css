@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1001;
+  z-index: 1000;
   padding: 30px 20px;
   box-sizing: border-box;
   transform: translateY(0);
@@ -18,9 +18,18 @@
     color: white;
 }
 .headerAtTop.sustainabilityHeader,
-.headerAtTop.systemHeader,
+.headerAtTop.systemHeader {
+    background-color: transparent;
+}
+
 .headerAtTop.aboutHeader {
     background-color: transparent;
+}
+
+@media (max-width: 768px) {
+  .headerAtTop.aboutHeader {
+    background-color: #2C3587;
+  }
 }
 .headerAtTop.productsMainHeader {
     background-color: #DD7D74;
