@@ -319,3 +319,57 @@
   text-decoration: none;
   display: block; /* Bu, klik sahəsini genişləndirir */
 }
+
+/* Product details sayfası için özel styling */
+.productDetailsPage {
+  background-color: #ffffff !important;
+  color: #333333 !important;
+}
+
+.productDetailsPage .headerLogo {
+  color: #333333 !important;
+}
+
+.productDetailsPage .headerNav a {
+  color: #333333 !important;
+}
+
+.productDetailsPage .headerSearchIcon {
+  color: #333333 !important;
+}
+
+.productDetailsPage .headerMobileMenuButton {
+  color: #333333 !important;
+}
+
+.productDetailsPage .headerMobileMenuButton span {
+  background-color: #333333 !important;
+}
+
+/* Mobile'da da aynı styling */
+@media (max-width: 1024px) {
+  .productDetailsPage {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+  }
+  
+  .productDetailsPage .headerLogo {
+    color: #333333 !important;
+  }
+  
+  .productDetailsPage .headerNav a {
+    color: #333333 !important;
+  }
+  
+  .productDetailsPage .headerSearchIcon {
+    color: #333333 !important;
+  }
+  
+  .productDetailsPage .headerMobileMenuButton {
+    color: #333333 !important;
+  }
+  
+  .productDetailsPage .headerMobileMenuButton span {
+    background-color: #333333 !important;
+  }
+}
