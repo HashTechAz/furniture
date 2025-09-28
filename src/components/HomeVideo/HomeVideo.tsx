@@ -3,13 +3,13 @@ import styles from "./HomeVideo.module.css";
 
 // Komponentə variant propu əlavə edirik
 interface HomeVideoProps {
-  variant?: 'default' | 'mobile';
+  variant?: 'default' | 'mobile' | 'colours';
   imageUrl?: string;
 }
 
 const HomeVideo = ({ variant = 'default', imageUrl }: HomeVideoProps) => {
   // className-i variant'a görə dinamik edirik
-  const containerClass = `${styles.videoMain} ${variant === 'mobile' ? styles.mobileVariant : ''}`;
+  const containerClass = `${styles.videoMain} ${variant === 'mobile' ? styles.mobileVariant : ''} ${variant === 'colours' ? styles.coloursVariant : ''}`;
 
   return (
     <>

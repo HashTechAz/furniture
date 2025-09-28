@@ -47,3 +47,14 @@
     }
 }
 
+/* Colours sayfası için özel variant */
+.videoMain.coloursVariant .videoContent {
+    height: 900px;
+}
+
+@media (max-width: 768px) {
+    .videoMain.coloursVariant .videoContent {
+        height: 400px;
+    }
+}
+

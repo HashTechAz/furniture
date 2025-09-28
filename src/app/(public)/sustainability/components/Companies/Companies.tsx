@@ -7,8 +7,7 @@ const Companies = () => {
       <section className={styles.companies}>
         <div className={styles.companiesTitle}>
           <h4>
-            Companies are the most powerful drivers in terms of making the world
-            a better place
+          Just as the modules offer infinite possibilities for combination, the colours also need to be able to be mixed and matched
           </h4>
           <div className={styles.companyBox}>
             <p>
