@@ -44,3 +44,42 @@
     color: #666;
     padding-right: 50px;
   }
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .related {
+    padding: 40px 20px;
+    margin-bottom: 40px;
+  }
+
+  .related h1 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .related .relatedMain {
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 20px;
+  }
+
+  .relatedMain .relatedItems {
+    width: 100%;
+  }
+
+  .relatedItems img {
+    height: 250px;
+  }
+
+  .relatedItems h3 {
+    font-size: 16px;
+    margin-top: 15px;
+    margin-bottom: 8px;
+  }
+
+  .relatedItems p {
+    font-size: 14px;
+    padding-right: 0;
+    line-height: 1.4;
+  }
+}

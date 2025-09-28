@@ -10,10 +10,10 @@
     position: relative;
 }
 
-.companiesTitle span {
-    font-size: 24px;
+.companiesTitle h4 {
     color: #020203;
     font-style: italic;
+    font-weight: 500;
 }
 
 .companiesTitle .companyBox {
@@ -35,4 +35,60 @@
 .companyAuthor span {
     font-size: 14px;
     font-weight: 600;
+}
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .companies {
+    padding: 40px 0;
+  }
+
+  .companies .companiesTitle {
+    width: 100%;
+    margin: 0;
+    padding: 2em 20px;
+    position: relative;
+  }
+
+  .companiesTitle h4 {
+    padding-right: 20px;
+    font-size: 16px;
+    line-height: 1.4;
+    margin: 60px 0px 0px 30px;
+  }
+
+  .companiesTitle .companyBox {
+    width: 60%;
+    height: 250px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 2em;
+    z-index: -1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .companyBox p {
+    position: absolute;
+    top: 10px;
+    left: 30px;
+  }
+
+  .companiesTitle span {
+    margin-left: 60px;
+    margin-top: 0;
+  }
+
+  .companyAuthor {
+    align-items: flex-start;
+    margin-left: 60px;
+    margin-top: 10px;
+  }
+
+  .companyAuthor span {
+    font-size: 12px;
+  }
 }

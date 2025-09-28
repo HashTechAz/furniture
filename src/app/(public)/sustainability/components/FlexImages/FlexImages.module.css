@@ -29,3 +29,36 @@
   height: 570px;
   object-fit: cover;
 }
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .imagesSection {
+    padding: 40px 0;
+  }
+
+  .imagesSection .imagesMain {
+    flex-direction: column;
+    gap: 20px;
+    padding: 0;
+  }
+
+  .imagesMain .imagesLeft {
+    width: 100%;
+  }
+
+  .imagesLeft img {
+    width: 340px;
+    height: 240px;
+    object-fit: cover;
+  }
+
+  .imagesMain .imagesRight {
+    width: 100%;
+  }
+
+  .imagesRight img {
+    width: 340px;
+    height: 460px;
+    object-fit: cover;
+  }
+}

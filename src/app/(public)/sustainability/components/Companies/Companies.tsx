@@ -6,10 +6,10 @@ const Companies = () => {
     <>
       <section className={styles.companies}>
         <div className={styles.companiesTitle}>
-          <span>
+          <h4>
             Companies are the most powerful drivers in terms of making the world
             a better place
-          </span>
+          </h4>
           <div className={styles.companyBox}>
             <p>
               <svg

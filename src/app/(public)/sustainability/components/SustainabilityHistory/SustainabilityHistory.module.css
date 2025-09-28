@@ -32,3 +32,42 @@
 .historyList ul li p {
     font-weight: 600;
 }
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .history {
+    padding: 40px 20px;
+  }
+
+  .history .historyMain {
+    flex-direction: column;
+  }
+
+  .historyMain .historyLeftTitle {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .historyMain .historyList {
+    padding-right: 0;
+  }
+
+  .historyLeftTitle h1 {
+    font-size: 22px;
+    line-height: 1.3;
+  }
+
+  .historyList ul li {
+    padding-bottom: 15px;
+  }
+
+  .historyList ul li h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+
+  .historyList ul li p {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+}

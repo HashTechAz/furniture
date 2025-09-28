@@ -41,3 +41,60 @@
 .endPara {
     margin-top: 25px;
 }
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .ecolabel {
+    width: 100%;
+    margin: 0;
+    padding: 40px 20px;
+  }
+
+  .ecolabel > h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .ecolabel p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .ecolabel ul {
+    margin: 20px 0 0 0;
+    padding-left: 20px;
+  }
+
+  .ecolabel ul li {
+    padding-bottom: 15px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .ecolabel .newEu {
+    margin-top: 30px;
+  }
+
+  .newListBox {
+    margin-top: 30px;
+  }
+
+  .newListBox h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .newList {
+    padding-left: 20px;
+  }
+
+  .newList li {
+    padding-bottom: 12px;
+    font-size: 14px;
+  }
+
+  .endPara {
+    margin-top: 20px;
+  }
+}

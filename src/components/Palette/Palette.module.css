@@ -137,18 +137,20 @@
       }
   
       .paletteMain .paletteTextBox {
-          padding: 0;
+          padding: 0 25px;
       }
       
       .paletteMain.reversed .paletteTextBox {
-          padding: 0;
-      }
-  
-      .paletteTextBox h2 span {
-          font-size: 22px !important;
+          padding: 0 20px;
       }
 
-     
+      .paletteTextBox h2 span {
+          font-size: 18px !important;
+      }
+
+      .paletteDescription {
+        font-size: 14px;
+      }
 
       .paletteDescription p + p {
         margin-top: 10px;
@@ -169,7 +171,7 @@
       }
   
       .paletteJpg {
-          width: 240px !important;
+          width: 280px !important;
           height: 300px !important;
           position: absolute;
           top: 40px !important;
@@ -191,13 +193,13 @@
       
       /* DÜZƏLİŞ: .thirdVariant şəklini soldan hizalayır */
       /* DÜZƏLİŞ: Hər iki variantın şəkillərini eyni (sağdan) hizalayır */
-.colorClassVariant .paletteJpg,
-.thirdVariant .paletteJpg {
-    width: 310px !important;
-    height: 230px !important;
-    top: 35px !important;
-    right: 0 !important;
-    left: auto !important; /* left: 0 ləğv edildi */
-}
+      .colorClassVariant .paletteJpg,
+      .thirdVariant .paletteJpg {
+          width: 350px !important;
+          height: 230px !important;
+          top: 35px !important;
+          right: 0 !important;
+          left: auto !important; /* left: 0 ləğv edildi */
+      }
   }
 
