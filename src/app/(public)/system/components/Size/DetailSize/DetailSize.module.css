@@ -47,4 +47,55 @@
   font-size: 14px;
 }
 
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .detailSize {
+    padding: 40px 0px;
+  }
+
+  .detailMain {
+    width: 100%;
+  }
+
+  .detailHeader {
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 0 20px;
+  }
+
+  .detailHeader h1 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .detailHeader p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .detailGrid {
+    margin: 20px 0 0 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .detailCard img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+  }
+
+  .detailCard h3 {
+    font-size: 14px;
+    margin-top: 10px;
+  }
+
+  .detailCard span {
+    font-size: 12px;
+  }
+}
+
 

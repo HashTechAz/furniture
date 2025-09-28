@@ -37,3 +37,36 @@
 .favBtn:hover {
     border: 1px solid #020203;
 }
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .fav {
+    padding: 40px 0px;
+  }
+
+  .fav .favMain {
+    width: 100%;
+    margin: 0;
+    padding: 0 20px;
+  }
+
+  .favMain h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .favText {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .favMain p + p {
+    margin-top: 20px;
+  }
+
+  .favBtn {
+    padding: 12px 20px;
+    font-size: 14px;
+    margin-top: 25px;
+  }
+}

@@ -26,3 +26,41 @@
     height: 800px;
     object-fit: cover;
 }
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .chooseSize {
+    padding: 40px 0px;
+  }
+
+  .chooseSize .chooseMain {
+    width: 100%;
+  }
+
+  .chooseMain .chooseHeader {
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 0 20px;
+
+  }
+
+  .chooseHeader h1 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .chooseHeader p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .chooseMain .chooseImage {
+    width: 100%;
+    margin: 20px 0 0 0;
+  }
+
+  .chooseImage img {
+    height: 300px;
+    object-fit: contain;
+  }
+}

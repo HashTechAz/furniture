@@ -201,5 +201,16 @@
           right: 0 !important;
           left: auto !important; /* left: 0 ləğv edildi */
       }
+
+      /* System sayfası için özel düzenleme: renkli div solda, resim sağda */
+      .thirdVariant .paletteOneColor {
+          margin-left: 0 !important;
+          margin-right: auto !important;
+      }
+
+      .thirdVariant .paletteJpg {
+          right: 0 !important;
+          left: auto !important;
+      }
   }
 

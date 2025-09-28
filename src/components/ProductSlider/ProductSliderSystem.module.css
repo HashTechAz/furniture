@@ -26,6 +26,11 @@
     color: #333;
 }
 
+/* System variant için arrow'ları gizle */
+.desktopNav {
+    display: none;
+}
+
 .embla {
   overflow: hidden;
   padding-left: 80px; 
@@ -85,4 +90,61 @@
     font-size: 16px;
     font-weight: 500;
     color: #333;
+}
+
+/* Progress bar stilleri */
+.progressBar {
+    display: none; /* Desktopda gizli */
+    position: relative;
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 40px 80px 0 80px;
+}
+
+.progressBarFill {
+    position: absolute;
+    height: 100%;
+    background-color: #333;
+    transition: width 50ms linear;
+}
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .container {
+      padding: 0 20px;
+  }
+
+  .sliderTitle .sliderTitleText {
+      font-size: 22px;
+  }
+
+  .embla {
+      padding-left: 20px;
+  }
+
+  .slideItem {
+      width: 280px !important;
+      height: 350px !important;
+  }
+
+  .slideItem.wide {
+      width: 280px !important;
+      height: 350px !important;
+  }
+
+  .slideItem.normal {
+      width: 280px !important;
+      height: 350px !important;
+  }
+
+  .slideCaption {
+      font-size: 14px;
+      margin: 10px 0px 0px 0px;
+  }
+
+  /* Progress bar'ı mobile'da göster */
+  .progressBar {
+      display: block;
+      margin: 40px 20px 0 20px;
+  }
 }

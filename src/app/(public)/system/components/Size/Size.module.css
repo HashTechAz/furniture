@@ -27,3 +27,33 @@
 .sizeItems span {
     font-size: 14px;
 }
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .size {
+    padding: 40px 20px;
+  }
+
+  .size .sizeContent {
+    width: 100%;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .sizeContent .sizeItems {
+    width: 100%;
+  }
+
+  .sizeItems img {
+    height: 250px;
+  }
+
+  .sizeItems h3 {
+    font-size: 15px;
+    margin-top: 15px;
+  }
+
+  .sizeItems span {
+    font-size: 14px;
+  }
+}

@@ -76,10 +76,11 @@ export default function SystemPalette({
           className={styles.paletteOneColor}
           style={{ backgroundColor: backgroundColor }}
         ></div>
-        <div
+        <img
+          src={imageUrl}
+          alt={title}
           className={styles.paletteJpg}
           style={{
-            backgroundImage: `url("${imageUrl}")`,
             ...(imagePosition && {
               width: imagePosition.width,
               height: imagePosition.height,
@@ -88,7 +89,7 @@ export default function SystemPalette({
               ...(imagePosition.right ? { right: imagePosition.right } : {}),
             })
           }}
-        ></div>
+        />
       </div>
     </section>
   );

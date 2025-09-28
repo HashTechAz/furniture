@@ -126,3 +126,11 @@
   z-index: 2;
 }
 
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .paletteMain {
+    display: none; /* Mobile'da gizle */
+  }
+
+}
+
