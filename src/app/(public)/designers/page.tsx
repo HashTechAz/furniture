@@ -19,7 +19,7 @@ const secondBannerData = {
   largeImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-joint/montana_joint_chair_1211_yellowstone.jpg?mode=crop&width=1520&height=2027",
   smallImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/designer-portraits/screenshot_50-1-720x840.png?mode=crop&width=1520&height=1520",
   title: "Anders Hermansen",
-  description: "Margrethe Odgaard graduated in 2005 from The Royal Danish Academy of Fine Arts, School of Design in Copenhagen and also studied at The Rhode Island School of Design in the US. In 2016 she won the prestigious Torsten and Wanja Söderberg Prize for her colour and textile work.",
+  description: "Anders Hermansen is a designer from the Royal Danish Academy of Fine Arts, mastering industrial design and furniture architecture. He graduated in 1982 at the age of only 22. As a recent graduate, he began working for Danish design companies such as Louis Poulsen, Paustian and Bang & Olufsen. Significant for Hermansen is his unique handmade wire sketch furniture.",
   buttonText: "Learn more",
   buttonLink: "/designers",
 };
@@ -41,6 +41,34 @@ const designersPaletteData = {
   },
   layout: "textLeft",
 } as const;
+
+// Related componentinin üzeri için yeni palette verisi
+const relatedDesignersPaletteData = {
+  category: "Designers",
+  title: "Erik Magnussen",
+  description: "Erik Magnussen graduated as a ceramicist in 1960 and started working for highly esteemed Bing & Grøndahl as an industrial designer. Since the late 1970s, Magnussen has been synonymous with the Stelton thermos. A key theme of Erik Magnussen’s work is simplicity – nothing is superfluous.",
+  buttonText: "Discover more",
+  buttonLink: "/designers",
+  imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/designer-portraits/erik-magnussen_bw-720x840.jpg?mode=crop&width=540&height=720",
+  backgroundColor: "#BDD2DA",
+  imagePosition: {
+    width: "370px",
+    height: "500px",
+    top: "40px",
+    left: "0px",
+  },
+  layout: "textLeft",
+} as const;
+
+// Related componentinin üzeri için yeni banner verisi
+const relatedBannerData = {
+  largeImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-szene/lundgaardtranbergarchitects_02-1920x1080.png?mode=crop&width=1520&height=2027",
+  smallImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/designer-portraits/lundgaardtranbergarchitects_03-720x840.png?mode=crop&width=1520&height=1520",
+  title: "Lundgaard & Tranberg",
+  description: "Lundgaard & Tranberg Architects is a Danish architecture office founded in 1985 by architects Boje Lundgaard and Lene Tranberg. Lundgaard & Tranberg is renowned for their iconic buildings in Denmark, among others the Tietgen Dormitory, Axel Towers and theRoyal Danish Theatre’s Playhouse in Copenhagen.",
+  buttonText: "Learn more",
+  buttonLink: "/designers",
+};
 
 const DesignersPage = () => {
   return (
@@ -65,9 +93,11 @@ const DesignersPage = () => {
         layout="textRight"
         variant="colorClass"
       />
-      <MiddleBanner {...bannerDataDefault} />
+      <MiddleBanner {...bannerDataDefault} smallImageHeight="550px" />
       <Palette {...designersPaletteData} />
-      <MiddleBanner {...secondBannerData} />
+      <MiddleBanner {...secondBannerData} smallImageHeight="550px" />
+      <Palette {...relatedDesignersPaletteData} />
+      <MiddleBanner {...relatedBannerData} smallImageHeight="550px" />
       <Related />
     </div>
   );

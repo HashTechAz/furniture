@@ -1,23 +1,39 @@
 import React from 'react';
 import styles from './HeroSection.module.css';
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  title?: string;
+  titleSpan?: string;
+  buttonText?: string;
+  buttonLink?: string;
+  backgroundImage?: string;
+}
+
+const HeroSection = ({ 
+  title = "Paradigm", 
+  titleSpan = "The new language of lounge",
+  buttonText = "Explore now",
+  buttonLink = "#",
+  backgroundImage
+}: HeroSectionProps) => {
     return (
         <section className={styles.hero}>
             {/* Yuxarı rəngli hissə */}
             <div className={styles.heroTop}>
-                {/* Səhvin olduğu təkrarlanan blok buradan silindi */}
                 <div className={styles.heroContent}>
                     <h1 className={styles.heroTitle}>
-                        Paradigm <span>The new language of lounge</span>
+                        {title} <span>{titleSpan}</span>
                     </h1>
-                    <a href="#" className={styles.heroButton}>
-                        Explore now
+                    <a href={buttonLink} className={styles.heroButton}>
+                        {buttonText}
                     </a>
                 </div>
             </div>
             {/* Aşağı şəkil hissəsi */}
-            <div className={styles.heroBottom}></div>
+            <div 
+              className={styles.heroBottom}
+              style={backgroundImage ? { backgroundImage: `url(${backgroundImage})` } : {}}
+            ></div>
         </section>
     );
 };

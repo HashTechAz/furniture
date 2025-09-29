@@ -25,7 +25,7 @@ const ProductsContent = () => {
             <li><Link href="/designers">Designers</Link></li>
           </ul>
 
-          <h5>Product Series</h5>
+          <h5><Link href="/productseries">Product Series</Link></h5>
           <ul>
             <li><Link href="/product">Montana Selection</Link></li>
             <li><Link href="/product">Montana Mini</Link></li>

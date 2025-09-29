@@ -393,3 +393,8 @@
   background-color: #EEECDD;
   color: #333; /* Arxa fon açıq olduğu üçün mətnin rəngini tünd edirik */
 }
+
+.headerAtTop.productSeriesHeader {
+  background-color: #FEF4BD;
+  color: #333; /* Siyahı text rengi */
+}

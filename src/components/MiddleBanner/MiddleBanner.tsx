@@ -9,6 +9,7 @@ interface MiddleBannerProps {
   buttonText: string;
   buttonLink: string;
   layout?: 'imageLeft' | 'imageRight';
+  smallImageHeight?: string;
 }
 
 const MiddleBanner = ({
@@ -19,6 +20,7 @@ const MiddleBanner = ({
   buttonText,
   buttonLink,
   layout = 'imageLeft',
+  smallImageHeight,
 }: MiddleBannerProps) => {
 
   const LargeImageBlock = (
@@ -29,7 +31,7 @@ const MiddleBanner = ({
 
   const TextAndSmallImageBlock = (
     <div className={styles.rightBanner}>
-      <div className={styles.rightImgContainer}>
+      <div className={styles.rightImgContainer} style={{ height: smallImageHeight }}>
         <img src={smallImageUrl} alt={title} className={styles.rightImg} />
       </div>
       <div className={styles.rightText}>
