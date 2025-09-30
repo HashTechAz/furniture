@@ -33,7 +33,8 @@ const PaletteRightImage = ({
               </a>
             </div>
           </div>
-          <div className={styles.paletteImgBox}>
+          {/* BU HİSSƏDƏ DƏYİŞİKLİK EDİLİB */}
+          <div className={`${styles.paletteImgBox} ${imageSize === 'large' ? styles.largeImage : ''}`}>
             <div 
               className={styles.paletteOneColor}
               style={{ backgroundColor: backgroundColor }}
