@@ -108,7 +108,7 @@
 
     .paletteImgBox {
         width: 100%;
-        min-height: 330px;
+        min-height: 400px;
         position: relative;
         display: block;
         margin-bottom: 30px;
@@ -124,8 +124,8 @@
     }
 
     .paletteOneColor {
-        width: 240px !important;
-        height: 330px !important;
+        width: 265px !important;
+        height: 400px !important;
         position: absolute;
         left: 0;
         right: auto;
@@ -133,10 +133,10 @@
     }
 
     .paletteJpg {
-        width: 280px !important;
-        height: 360px !important;
+        width: 240px !important;
+        height: 320px !important;
         position: absolute;
-        top: 50px !important;
+        top: 35px !important;
         left: auto !important;
         right: 0 !important;
         transform: translateX(120px);
