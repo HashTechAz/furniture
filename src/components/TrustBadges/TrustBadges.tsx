@@ -9,8 +9,8 @@ const TrustBadges = () => {
           <div className={styles.badgesItem}>
             <h3>
               <svg
-                width="24"
-                height="24"
+                width="32"
+                height="32"
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -58,8 +58,8 @@ const TrustBadges = () => {
           <div className={styles.badgesItem}>
             <h3>
               <svg
-                width="24"
-                height="24"
+                width="32"
+                height="32"
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -106,8 +106,8 @@ const TrustBadges = () => {
           <div className={styles.badgesItem}>
             <h3>
               <svg
-                width="24"
-                height="24"
+                width="32"
+                height="32"
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"

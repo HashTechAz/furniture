@@ -57,7 +57,7 @@ const Ecolabel = () => {
         </p>
 
         <div className={styles.newListBox}>
-            <h3>The EU Ecolabel guarantees</h3>
+          <h3>The EU Ecolabel guarantees</h3>
           <ul className={styles.newList}>
             {[
               "that a high percentage of wood is from legal sustainably managed forests",
@@ -80,6 +80,17 @@ const Ecolabel = () => {
           manufacturers in Europe to achieve it because I consider
           sustainability a key part of our responsibilities as a manufacturer in
           Denmark."
+        </p>
+
+        <p className={styles.endPara}>
+          Montana Furniture is a family-owned company, established in 1982,
+          leading within storage and furniture for private homes and
+          contemporary office spaces. The company is founded by Peter J. Lassen,
+          who is also the designer of the Montana system. All Montana modules
+          are designed, developed and made in Denmark. Every day, in a small
+          town on the island of Funen over 140 professionals work hard to uphold
+          the highest standards of processing, painting and assembling – making
+          sure that your Montana furniture will last a lifetime.
         </p>
       </section>
     </>

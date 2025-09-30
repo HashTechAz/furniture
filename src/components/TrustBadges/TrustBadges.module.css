@@ -19,7 +19,7 @@
 .badgesItem h3 {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     font-size: 20px;
     font-style: italic;
     font-weight: 500;
@@ -51,6 +51,7 @@
     /* === DƏYİŞİKLİKLƏR BURADADIR === */
     .badgesItem h3 {
         font-size: 18px; /* Başlıq ölçüsü kiçildildi */
+        gap: 10px; /* Mobil cihazlarda gap azaldıldı */
     }
 
     .badgesItem p {

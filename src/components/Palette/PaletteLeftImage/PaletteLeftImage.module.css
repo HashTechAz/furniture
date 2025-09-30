@@ -12,7 +12,7 @@
 
 .paletteTextBox {
     width: 50%;
-    padding: 5em 10em 0 0;
+    padding: 5em 0 0 10em;
 }
 
 .paletteTextBoxTitle {
@@ -26,6 +26,11 @@
     margin-bottom: 40px;
 }
 
+.paletteImgBox {
+    width: 50%;
+    display: flex;
+    justify-content: flex-start;
+}
 
 .paletteOneColor {
     width: 510px;
@@ -39,15 +44,15 @@
     height: 400px;
     position: absolute;
     top: 60px;
-    left: -8em;
+    right: -8em;
 }
 
 .paletteJpgLarge {
-    width: 620px;
+    width: 600px;
     height: 430px;
     position: absolute;
-    top: 60px;
-    left: -8em;
+    top: 70px;
+    right: -8em;
 }
 
 .heroButton {
@@ -88,7 +93,7 @@
     }
 
     .paletteContainer {
-        flex-direction: column-reverse;
+        flex-direction: column;
     }
 
     .paletteTextBox {

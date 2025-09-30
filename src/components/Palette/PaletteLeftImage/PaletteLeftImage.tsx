@@ -1,7 +1,7 @@
 import React from "react";
-import styles from "./PaletteRightImage.module.css";
+import styles from "./PaletteLeftImage.module.css";
 
-interface PaletteRightImageProps {
+interface PaletteLeftImageProps {
   title: string;
   description: string;
   buttonText: string;
@@ -11,7 +11,7 @@ interface PaletteRightImageProps {
   imageSize?: 'normal' | 'large';
 }
 
-const PaletteRightImage = ({
+const PaletteLeftImage = ({
   title,
   description,
   buttonText,
@@ -19,20 +19,11 @@ const PaletteRightImage = ({
   imageUrl,
   backgroundColor,
   imageSize = 'normal'
-}: PaletteRightImageProps) => {
+}: PaletteLeftImageProps) => {
   return (
     <>
       <section className={styles.paletteMain}>
         <div className={styles.paletteContainer}>
-          <div className={styles.paletteTextBox}>
-            <h2 className={styles.paletteTextBoxTitle}>{title}</h2>
-            <p>{description}</p>
-            <div>
-              <a href={buttonLink} className={styles.heroButton}>
-                {buttonText}
-              </a>
-            </div>
-          </div>
           <div className={styles.paletteImgBox}>
             <div 
               className={styles.paletteOneColor}
@@ -43,10 +34,20 @@ const PaletteRightImage = ({
               </div>
             </div>
           </div>
+
+          <div className={styles.paletteTextBox}>
+            <h2 className={styles.paletteTextBoxTitle}>{title}</h2>
+            <p>{description}</p>
+            <div>
+              <a href={buttonLink} className={styles.heroButton}>
+                {buttonText}
+              </a>
+            </div>
+          </div>
         </div>
       </section>
     </>
   );
 };
 
-export default PaletteRightImage;
+export default PaletteLeftImage;
