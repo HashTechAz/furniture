@@ -1,0 +1,137 @@
+.paletteMain {
+    width: 100%;
+    padding: 60px 80px;
+    display: flex;
+}
+
+.paletteContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.paletteTextBox {
+    width: 50%;
+    padding: 5em 10em 0 0;
+}
+
+.paletteTextBoxTitle {
+    font-size: 40px;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+.paletteTextBox p {
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+
+
+.paletteOneColor {
+    width: 510px;
+    height: 580px;
+    position: relative;
+    background-color: #CCC6B8;
+}
+
+.paletteJpg {
+    width: 340px;
+    height: 400px;
+    position: absolute;
+    top: 60px;
+    left: -8em;
+}
+
+.heroButton {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    background-color: #2c3587;
+    padding: 8px 30px;
+    font-size: 14px;
+    font-weight: 600;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    transition: color 0.3s ease-in-out;
+}
+
+.heroButton::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease-in-out;
+    z-index: -1;
+}
+
+.heroButton:hover::before {
+    transform: translateX(0);
+}
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+    .paletteMain {
+        padding: 40px 20px;
+    }
+
+    .paletteContainer {
+        flex-direction: column-reverse;
+    }
+
+    .paletteTextBox {
+        width: 100%;
+        padding: 0 20px;
+    }
+
+    .paletteTextBoxTitle {
+        font-size: 18px !important;
+        margin-bottom: 20px;
+    }
+
+    .paletteTextBox p {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .paletteImgBox {
+        width: 100%;
+        min-height: 400px;
+        position: relative;
+        display: block;
+        margin-bottom: 30px;
+        z-index: 1;
+    }
+
+    .paletteTextBox {
+        position: relative;
+        z-index: 2;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .paletteOneColor {
+        width: 260px !important;
+        height: 400px !important;
+        position: absolute;
+        left: 0;
+        right: auto;
+        z-index: 1;
+    }
+
+    .paletteJpg {
+        width: 240px !important;
+        height: 320px !important;
+        position: absolute;
+        top: 50px !important;
+        left: auto !important;
+        right: 0 !important;
+        transform: translateX(80px);
+        z-index: 2;
+    }
+}

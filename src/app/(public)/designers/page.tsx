@@ -1,6 +1,5 @@
 import React from "react";
 import Hero from "@/components/Hero/Hero";
-import Palette from "@/components/Palette/Palette";
 import MiddleBanner from "@/components/MiddleBanner/MiddleBanner";
 import Related from "../sustainability/components/Related/Related";
 
@@ -82,21 +81,8 @@ const DesignersPage = () => {
         backgroundColor="#275138"
         textColor="#ffffff"
       />
-      <Palette
-        category=""
-        title="Peter Amvar Aliyev"
-        description="Montana Furniture is a family-owned company, established in 1982, leading within storage and furniture for private homes and contemporary office spaces. The company is founded by Peter J. Lassen, who is also the designer of the Montana system."
-        buttonText="Learn more"
-        buttonLink="/design/balance"
-        imageUrl="https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/designer-portraits/peter_joakim_lassen_montana_2018_2bw.jpg?mode=crop&width=540&height=720"
-        backgroundColor="#2C3587"
-        layout="textRight"
-        variant="colorClass"
-      />
       <MiddleBanner {...bannerDataDefault} smallImageHeight="550px" />
-      <Palette {...designersPaletteData} />
       <MiddleBanner {...secondBannerData} smallImageHeight="550px" />
-      <Palette {...relatedDesignersPaletteData} />
       <MiddleBanner {...relatedBannerData} smallImageHeight="550px" />
       <Related />
     </div>

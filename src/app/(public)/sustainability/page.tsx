@@ -7,7 +7,6 @@ import FlexImages from "./components/FlexImages/FlexImages";
 import Companies from "./components/Companies/Companies";
 import Ecolabel from "./components/Ecolabel/Ecolabel";
 import HomeVideo from "@/components/HomeVideo/HomeVideo";
-import Palette from "@/components/Palette/Palette";
 import Related from "./components/Related/Related";
 
 const sustainabilityPaletteData = {
@@ -44,7 +43,6 @@ const page = () => {
       <Companies />
       <Ecolabel />
       <HomeVideo />
-      <Palette {...sustainabilityPaletteData} />
       <Related/>
     </>
   );

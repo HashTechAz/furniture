@@ -3,7 +3,6 @@ import SystemHero from "./components/SystemHero/SystemHero";
 import SystemAbout from "./components/SystemAbout/SystemAbout";
 import Size from "./components/Size/Size";
 import ProductSlider from "../../../components/ProductSlider/ProductSlider";
-import Palette from "../../../components/Palette/Palette";
 import SystemPalette from "../../../components/Palette/SystemPalette";
 
 const thirdPaletteData = {
@@ -35,23 +34,6 @@ const page = () => {
         titleTop='Montana System inspiration'
         titleBottom=''
       />
-      <Palette
-        category=''
-        title='Renew – your Montana'
-        description='Do you feel like something new? Change a shelf, get a new back panel, switch the castors, revamp your modules with striking handles in a complementary colour or add a brand new set of colourful legs.'
-        buttonText='Explore the possibilities'
-        buttonLink='#'
-        imageUrl='https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/studio/montana_home_23_24_a05_kevilounge_ara_azure_read_acacia_detail_h.jpg?mode=crop&width=828&height=1104'
-        backgroundColor='#B48451'
-        layout='textRight'
-        variant='third'
-        imagePosition={{
-          width: "450px",
-          height: "430px",
-          top: "80px",
-          right: "0px",
-        }}
-      />
       {/* Yeni: Liste içeren SystemPalette (resim solda, metin sağda) */}
       <SystemPalette
         category=''
@@ -75,7 +57,6 @@ const page = () => {
           left: "0px",
         }}
       />
-      <Palette {...thirdPaletteData} layout={'textRight'} variant={'third'} />
       <div style={{ marginBottom: '40px' }}>
         <ProductSlider
           titleTop='Montana System inspiration'
