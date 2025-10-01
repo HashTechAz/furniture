@@ -149,3 +149,15 @@
         font-size: 14px;
     }
 }
+
+/* ProductSeries variant için özel stiller - sadece mobile'da */
+@media (max-width: 768px) {
+    .productseriesVariant .heroTop {
+        background-color: #FEF4BD !important;
+        color: #000 !important;
+    }
+    
+    .productseriesVariant .heroTitle span::before {
+        background-color: #000 !important;
+    }
+}

@@ -5,6 +5,7 @@ interface NewsCardProps {
   imageSrc: string;
   title: string;
   description: string;
+  limit?: number;
 }
 
 const NewsCard = ({ imageSrc, title, description }: NewsCardProps) => {

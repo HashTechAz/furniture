@@ -7,6 +7,7 @@ interface HeroSectionProps {
   buttonText?: string;
   buttonLink?: string;
   backgroundImage?: string;
+  variant?: 'default' | 'productseries';
 }
 
 const HeroSection = ({ 
@@ -14,10 +15,11 @@ const HeroSection = ({
   titleSpan = "The new language of lounge",
   buttonText = "Explore now",
   buttonLink = "#",
-  backgroundImage
+  backgroundImage,
+  variant = 'default'
 }: HeroSectionProps) => {
     return (
-        <section className={styles.hero}>
+        <section className={`${styles.hero} ${variant === 'productseries' ? styles.productseriesVariant : ''}`}>
             {/* Yuxarı rəngli hissə */}
             <div className={styles.heroTop}>
                 <div className={styles.heroContent}>

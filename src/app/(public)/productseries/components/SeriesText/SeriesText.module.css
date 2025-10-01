@@ -1,0 +1,58 @@
+.seriesText {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  padding: 60px 80px;
+}
+
+.leftText {
+  width: 50%;
+  padding-right: 3em;
+
+}
+
+.leftText h2 {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.rightText {
+  width: 50%;
+  padding-right: 7em;
+}
+
+.rightText p {
+  font-weight: 600;
+}
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 768px) {
+  .seriesText {
+    flex-direction: column;
+    gap: 20px;
+    padding: 40px 20px;
+  }
+
+ 
+
+  .leftText {
+    width: 100%;
+    padding-right: 3em;
+  }
+
+  .leftText h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    font-weight: 600;
+  }
+
+  .rightText {
+    width: 100%;
+    padding-right: 3em;
+  }
+
+  .rightText p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+}

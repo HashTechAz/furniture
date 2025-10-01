@@ -52,7 +52,7 @@ export default function Home() {
         imageUrl='https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-mini/ss25/montana_mini_displayshelf_rosehip_flint_amber_ruby_clay_h.jpg?mode=crop&width=540&height=720'
         backgroundColor='#CCC6B8'
       />
-      <NewsSection />
+      <NewsSection limit={4} />
       <ProductNewsSlider />
       <div className='hideOnMobile'>
         <MiddleBanner {...bannerDataDefault} />
