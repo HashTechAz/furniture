@@ -8,7 +8,7 @@ interface PaletteLeftImageProps {
   buttonLink: string;
   imageUrl: string;
   backgroundColor: string;
-  imageSize?: 'normal' | 'large';
+  imageSize?: 'normal' | 'large' | 'custom';
 }
 
 const PaletteLeftImage = ({
@@ -24,12 +24,16 @@ const PaletteLeftImage = ({
     <>
       <section className={styles.paletteMain}>
         <div className={styles.paletteContainer}>
-          <div className={styles.paletteImgBox}>
+          <div className={`${styles.paletteImgBox} ${imageSize === 'large' ? styles.largeImage : ''} ${imageSize === 'custom' ? styles.customImage : ''}`}>
             <div 
               className={styles.paletteOneColor}
               style={{ backgroundColor: backgroundColor }}
             >
-              <div className={imageSize === 'large' ? styles.paletteJpgLarge : styles.paletteJpg}>
+              <div className={
+                imageSize === 'large' ? styles.paletteJpgLarge : 
+                imageSize === 'custom' ? styles.paletteJpgCustom : 
+                styles.paletteJpg
+              }>
                 <img src={imageUrl} alt="" />
               </div>
             </div>

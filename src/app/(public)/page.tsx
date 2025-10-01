@@ -35,7 +35,7 @@ const bannerDataReversed = {
   buttonLink: "/sofas",
   layout: "imageRight",
   smallImageHeight: "400px",
-  textBlockWidth: "40%", // Hündürlük burada 80vh olaraq təyin edildi
+  textBlockWidth: "40%", 
 } as const;
 
 export default function Home() {

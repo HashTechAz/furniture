@@ -5,6 +5,7 @@ import MiddleBanner from '@/components/MiddleBanner/MiddleBanner';
 import HomeVideo from '@/components/HomeVideo/HomeVideo';
 import ProductSlider from '@/components/ProductSlider/ProductSlider';
 import AboutBigImage from './components/AboutBigImage/AboutBigImage';
+import PaletteRightImage from '@/components/Palette/PaletteRightImage/PaletteRightImage';
 
 // About sayfası için banner verisi
 const aboutBannerData = {
@@ -33,7 +34,29 @@ export default function About() {
       <AboutCompany/>
       <AboutBigImage/>
       <MiddleBanner {...aboutBannerData} />
+      <PaletteRightImage
+        title='A poetic range of 41 Montana colours'
+        description='Montana’s functional and flexible system is featured in a range of 41 poetic and complex colours developed in close collaboration with the award-winning Danish designer and colour expert Margrethe Odgaard.
+
+Colours mean everything. Ambience. Atmosphere. Identity. Colours are paramount in our design. We want to influence and inspire the world of interiors with our take on colours. Bright and light. Dense and deep. There is a colour for any purpose.'
+        buttonText='Discover Colour Classes here'
+        buttonLink='/collections/summer'
+        imageUrl='https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/designer-portraits/montana_margretheodgaard_newcolours2019_01_s.jpg?mode=crop&width=640&height=640'
+        backgroundColor='#BDD2DA'
+        imageSize="custom"
+      />
       <HomeVideo imageUrl="https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/location---radiohuset/montana_home_23_24_ruby_hokkaido_iris_cumin_02_h.jpg?mode=crop&width=828&height=1104" />
+      <PaletteRightImage
+        title='A poetic range of 41 Montana colours'
+        description='Montana’s functional and flexible system is featured in a range of 41 poetic and complex colours developed in close collaboration with the award-winning Danish designer and colour expert Margrethe Odgaard.
+
+Colours mean everything. Ambience. Atmosphere. Identity. Colours are paramount in our design. We want to influence and inspire the world of interiors with our take on colours. Bright and light. Dense and deep. There is a colour for any purpose.'
+        buttonText='Discover Colour Classes here'
+        buttonLink='/collections/summer'
+        imageUrl='https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/designer-portraits/montana_peter_lassen.jpg?mode=crop&width=640&height=640'
+        backgroundColor='#2C3587'
+        imageSize="custom"
+      />
       <ProductSlider />
     </>
   );

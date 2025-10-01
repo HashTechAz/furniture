@@ -50,6 +50,27 @@
     left: -8em;
 }
 
+/* Custom image styles - 460x460 */
+.customImage .paletteOneColor {
+    width: 530px;
+    height: 530px;
+}
+
+.paletteJpgCustom {
+    width: 460px;
+    height: 460px;
+    position: absolute;
+    top: 40px;
+    left: -8em;
+    background-size: cover;
+    transition: transform 0.4s ease-in-out;
+    z-index: 2;
+}
+
+.paletteJpgCustom:hover {
+    transform: scale(1.05);
+}
+
 .heroButton {
     display: inline-block;
     text-decoration: none;
@@ -158,6 +179,23 @@
         left: auto !important;
         right: 0 !important;
         transform: translateX(120px);
+        z-index: 2;
+    }
+
+    /* Custom image responsive styles */
+    .customImage .paletteOneColor {
+        width: 280px !important;
+        height: 380px !important;
+    }
+
+    .paletteJpgCustom {
+        width: 300px !important;
+        height: 300px !important;
+        position: absolute;
+        top: 40px !important;
+        left: auto !important;
+        right: 0 !important;
+        transform: translateX(100px);
         z-index: 2;
     }
 }
