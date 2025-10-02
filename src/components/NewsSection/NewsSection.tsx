@@ -5,6 +5,7 @@ import NewsCard from "../NewsCard/NewsCard";
 interface NewsSectionProps {
   limit?: number;
   showTitle?: boolean;
+  customGridClass?: string;
 }
 
 
@@ -95,7 +96,7 @@ const newsData = [
   }
 ];
 
-const NewsSection = ({ limit, showTitle = true }: NewsSectionProps) => {
+const NewsSection = ({ limit, showTitle = true, customGridClass }: NewsSectionProps) => {
   const displayData = limit ? newsData.slice(0, limit) : newsData;
   
   return (
@@ -105,7 +106,7 @@ const NewsSection = ({ limit, showTitle = true }: NewsSectionProps) => {
           <h2 className={styles.newsTitle}>Current News</h2>
         </div>
       )}
-      <div className={styles.newsGrid}>
+      <div className={customGridClass || styles.newsGrid}>
         {displayData.map((newsItem) => (
           <NewsCard
             key={newsItem.id}

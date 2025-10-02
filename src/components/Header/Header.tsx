@@ -17,7 +17,6 @@ const Header: React.FC = () => {
   const [isInspirationOpen, setIsInspirationOpen] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
-  // YENİ STATE-LƏR: Hər menyu bəndi üçün ayrı state
   const [isMobileInspirationOpen, setIsMobileInspirationOpen] = useState<boolean>(false);
   const [isMobileProductsOpen, setIsMobileProductsOpen] = useState<boolean>(false);
   const [isMobileSeriesOpen, setIsMobileSeriesOpen] = useState<boolean>(false);
@@ -38,6 +37,7 @@ const Header: React.FC = () => {
   const isColoursPage = pathname === "/colours";
   const isDesignersPage = pathname === "/designers";
   const isProductSeriesPage = pathname === "/productseries";
+  const isCreativeMindsPage = pathname === "/creative-minds";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -173,6 +173,7 @@ const Header: React.FC = () => {
           ${isColoursPage ? styles.coloursHeader : ""}
           ${isDesignersPage ? styles.designersHeader : ""}
           ${isProductSeriesPage ? styles.productSeriesHeader : ""}
+          ${isCreativeMindsPage ? styles.creativeMindsHeader : ""}
         `}
       >
         <nav className={styles.navbar}>

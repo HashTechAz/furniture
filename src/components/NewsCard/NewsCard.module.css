@@ -57,6 +57,10 @@
 
 .cardDescription {
   font-size: 12px;
-  padding-right: 0; /* Sağdakı boşluğu ləğv edirik */
+}
+
+/* Creative Minds sayfası için özel padding */
+.creative-minds-grid .cardDescription {
+  padding-right: 20px;
 }
 }

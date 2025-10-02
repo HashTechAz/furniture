@@ -45,7 +45,7 @@ const InspirationContent = () => {
     <section className={styles.inspirationMain}>
       {/* Sol Menü */}
       <div className={styles.inspirationText}>
-        <h5>Creative Minds</h5>
+        <h5><Link href="/creative-minds">Creative Minds</Link></h5>
         <ul>
           <li><Link href="#">Faebrik</Link></li>
           <li><Link href="#">Lumikello</Link></li>

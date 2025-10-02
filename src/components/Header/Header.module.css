@@ -398,3 +398,8 @@
   background-color: #FEF4BD;
   color: #333; /* Siyahı text rengi */
 }
+
+.headerAtTop.creativeMindsHeader {
+  background-color: #5F90CA;
+  color: #000;
+}

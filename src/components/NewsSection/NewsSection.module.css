@@ -18,6 +18,11 @@
   gap: 20px;
 }
 
+/* Custom card width support */
+.newsGrid[style*="--news-card-width"] {
+  grid-template-columns: repeat(auto-fit, minmax(var(--news-card-width, 1fr), 1fr));
+}
+
 /* --- RESPONSIVE STYLES --- */
 @media (max-width: 768px) {
   .newsSection {

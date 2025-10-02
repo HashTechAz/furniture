@@ -141,3 +141,28 @@ p {
     display: block;
   }
 }
+
+/* Creative Minds custom grid */
+.creative-minds-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(430px, 1fr));
+  gap: 20px;
+}
+
+/* Creative Minds responsive grid */
+@media (max-width: 768px) {
+  .creative-minds-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  /* NewsSection padding mobile için */
+  .newsSection {
+    padding: 40px 20px !important;
+  }
+  
+  /* Mobile'da text'in sağından padding */
+  .creative-minds-grid .newsCard {
+    padding-right: 20px;
+  }
+}

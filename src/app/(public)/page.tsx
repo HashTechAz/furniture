@@ -9,7 +9,6 @@ import Form from "@/components/Form/Form";
 import PaletteRightImage from "@/components/Palette/PaletteRightImage/PaletteRightImage";
 import PaletteLeftImage from "@/components/Palette/PaletteLeftImage/PaletteLeftImage";
 
-// 1. Orijinal MiddleBanner düzülüşü üçün məlumatlar
 const bannerDataDefault = {
   largeImageUrl:
     "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/panton-x-montana/wire/montana_pantonwire_d35_blackred_rosehiptop_h.jpg",
@@ -22,7 +21,6 @@ const bannerDataDefault = {
   buttonLink: "#",
 };
 
-// 2. Tərs düzülüş və fərqli hündürlük üçün məlumatlar
 const bannerDataReversed = {
   largeImageUrl:
     "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/factory/montana_factory_2022_13_h.jpg?mode=crop&width=1520&height=2027",
