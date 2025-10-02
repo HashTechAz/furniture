@@ -9,7 +9,6 @@ const Footer = () => {
         <h2 className={styles.footerTitle}>Montana Furniture</h2>
 
         <div className={styles.parent}>
-          {/* Elementlərin sırasını CSS-də grid-area ilə idarə edəcəyik */}
           <div className={`${styles.footerItem} ${styles.info}`}>
             <p>
               Akkerupvej 16 <br /> 5683 Haarby <br /> Danmark

@@ -14,11 +14,10 @@
     justify-content: center;
 }
 
-/* YENİ STİLİ BURA ƏLAVƏ EDİN */
 .videoMain.rightAligned {
-    padding: 60px 80px 60px 0px; /* Sol padding-i ləğv edirik */
+    padding: 60px 80px 60px 0px; 
     display: flex;
-    justify-content: flex-end; /* Əsas məntiq - elementi sağa yaslayır */
+    justify-content: flex-end;
   }
 
 .videoContent img {
@@ -40,14 +39,12 @@
         padding: 0;
     }
     
-    /* Mobil üçün xüsusi olaraq sola yapışıq variant */
     .videoMain.mobileVariant {
         width: 85%;
         padding: 40px 0;
         margin: 0;
     }
 
-    /* Xüsusi variant üçün video hündürlüyü */
     .videoMain.mobileVariant .videoContent {
         height: 250px;
         padding: 0;
@@ -58,7 +55,6 @@
       }
 }
 
-/* Colours sayfası için özel variant */
 .videoMain.coloursVariant .videoContent {
     height: 900px;
 }

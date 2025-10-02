@@ -1,14 +1,12 @@
 import React from "react";
 import styles from "./HomeVideo.module.css";
 
-// İnterfeysi yeniləyirik
 interface HomeVideoProps {
   variant?: 'default' | 'mobile' | 'colours' | 'rightAligned'; // YENİ VARIANTI ƏLAVƏ ET
   imageUrl?: string;
 }
 
 const HomeVideo = ({ variant = 'default', imageUrl }: HomeVideoProps) => {
-  // Klas adını dinamik edirik
   const containerClass = `${styles.videoMain} ${styles[variant] || ''}`;
 
   return (

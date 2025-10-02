@@ -1,4 +1,3 @@
-// app/(public)/creative-minds/[slug]/page.tsx
 
 import React from 'react';
 import { notFound } from 'next/navigation';
@@ -23,7 +22,7 @@ const firstFabrikBanner = {
     description: "Ingrid with her personalised trolley that - much like the office dog, Hundre - follows her around everywhere in the studio. This way she has her sewing gear at hand all day.",
     buttonText: "Daha Çox Kəşf Et",
     buttonLink: "/link-unvani",
-    smallImageHeight: "550px",      // BU, BANNER-İ TƏRS ÇEVİRİR
+    smallImageHeight: "550px",      
 };
 
 const mindsPageData: any = {
@@ -77,10 +76,7 @@ const mindsPageData: any = {
       }
     ]
   },
-  // GƏLƏCƏKDƏ "lumikello" SƏHİFƏSİ ÜÇÜN BURA YENİ BİR BÖLMƏ ƏLAVƏ EDƏCƏKSİNİZ
-  // 'lumikello': {
-  //   components: [ /* ... fərqli komponent ardıcıllığı ... */ ]
-  // }
+  
 };
 
 const getPageData = (slug: string) => {
@@ -105,7 +101,6 @@ return (
           return null;
         }
   
-        // YENİ MƏNTİQ BURADADIR
         if (block.component === 'MiddleBanner') {
           return (
             <div key={index} className={pageStyles.bannerWrapper}>
@@ -113,14 +108,11 @@ return (
             </div>
           );
         }
-        // YENİ MƏNTİQ BURADA BİTİR
   
-        // Digər komponentlər olduğu kimi render olunur
         return <Component key={index} {...block.props} />;
       })}
     </main>
   );
-  // ...
 };
 
 export default CreativeMindDetailPage;

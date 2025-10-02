@@ -1,4 +1,3 @@
-// src/component-map.ts
 import Hero from '@/components/Hero/Hero';
 import ProductSlider from '@/components/ProductSlider/ProductSlider';
 import NewsSection from '@/components/NewsSection/NewsSection';
@@ -11,7 +10,6 @@ import Related from '@/app/(public)/sustainability/components/Related/Related';
 import Companies from '@/app/(public)/sustainability/components/Companies/Companies';
 import HomeVideo from '@/components/HomeVideo/HomeVideo';
 
-// Bütün mümkün komponentləri bura yığın
 export const componentMap = {
   Hero,
   ProductSlider,

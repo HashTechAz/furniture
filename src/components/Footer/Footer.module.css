@@ -8,7 +8,6 @@
   width: 100%;
 }
 
-/* YENİ: footerTitle olaraq dəyişdirildi */
 .footerTitle {
   font-size: 20px;
   color: #fff;
@@ -38,7 +37,6 @@
   font-weight: 800;
 }
 
-/* Masaüstü üçün ilk elementin eni */
 .parent > .info {
   width: 300px;
 }
@@ -87,7 +85,6 @@
 }
 
 .footerEnd {
-  /* YENİ: Copyright bölməsini yuxarıdan ayırmaq üçün */
   margin-top: 40px; 
   padding-top: 40px;
   border-top: 1px solid #444;
@@ -99,7 +96,6 @@
   margin: 0px;
 }
 
-/* --- YENİ RESPONSİV STİLLƏR --- */
 @media (max-width: 768px) {
   .footer {
     padding: 40px 20px;
@@ -107,24 +103,21 @@
 
   .parent {
     display: grid;
-    /* Düzülüşü idarə etmək üçün grid-template-areas istifadə edirik */
     grid-template-areas:
       "montana ressources"
       "service service"
       "info info"
       "social social";
     grid-template-columns: 1fr 1fr;
-    gap: 40px 20px; /* Sətir və sütun arası boşluq */
+    gap: 40px 20px; 
   }
 
-  /* Hər elementə təyin olunmuş sahəni veririk */
   .info { grid-area: info; }
   .montanaLinks { grid-area: montana; }
   .ressourcesLinks { grid-area: ressources; }
   .serviceLinks { grid-area: service; }
   .social { grid-area: social; }
 
-  /* Mobil üçün sabit eni ləğv edirik */
   .parent > .info {
     width: auto;
   }
