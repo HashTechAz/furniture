@@ -14,6 +14,13 @@
     justify-content: center;
 }
 
+/* YENİ STİLİ BURA ƏLAVƏ EDİN */
+.videoMain.rightAligned {
+    padding: 60px 80px 60px 0px; /* Sol padding-i ləğv edirik */
+    display: flex;
+    justify-content: flex-end; /* Əsas məntiq - elementi sağa yaslayır */
+  }
+
 .videoContent img {
     width: 100%;
     height: 100%;
@@ -45,6 +52,10 @@
         height: 250px;
         padding: 0;
     }
+
+    .videoMain.rightAligned {
+        padding: 40px 20px 40px 0;
+      }
 }
 
 /* Colours sayfası için özel variant */

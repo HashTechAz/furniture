@@ -7,12 +7,18 @@ import MiddleBanner from '@/components/MiddleBanner/MiddleBanner';
 import SeriesText from '@/app/(public)/productseries/components/SeriesText/SeriesText';
 import PaletteLeftImage from '@/components/Palette/PaletteLeftImage/PaletteLeftImage';
 import PaletteRightImage from '@/components/Palette/PaletteRightImage/PaletteRightImage';
+import Related from '@/app/(public)/sustainability/components/Related/Related';
+import Companies from '@/app/(public)/sustainability/components/Companies/Companies';
+import HomeVideo from '@/components/HomeVideo/HomeVideo';
 
 // Bütün mümkün komponentləri bura yığın
 export const componentMap = {
   Hero,
   ProductSlider,
   NewsSection,
+  Related,
+  Companies,
+  HomeVideo,
   Form,
   MiddleBanner,
   SeriesText,
@@ -20,5 +26,4 @@ export const componentMap = {
   PaletteRightImage,
 };
 
-// Bu, TypeScript üçün bir köməkçi tipdir
 export type ComponentName = keyof typeof componentMap;

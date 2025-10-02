@@ -16,6 +16,16 @@ const firstFabrikBanner = {
     smallImageHeight: "550px",
   };
 
+  const secondFabrikBanner = {
+    largeImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/fabrik/montana_fabrik_portrait_jenny_01_h.jpg?mode=crop&width=1520&height=2027",
+    smallImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/creative-minds/fabrik/montana_fabrik_portrait_jenny_02_w.jpg?mode=crop&width=1520&height=1093",
+    title: "Ingrid's trolley",
+    description: "Ingrid with her personalised trolley that - much like the office dog, Hundre - follows her around everywhere in the studio. This way she has her sewing gear at hand all day.",
+    buttonText: "Daha Çox Kəşf Et",
+    buttonLink: "/link-unvani",
+    smallImageHeight: "550px",      // BU, BANNER-İ TƏRS ÇEVİRİR
+};
+
 const mindsPageData: any = {
   'faebrik': {
     components: [
@@ -35,11 +45,35 @@ const mindsPageData: any = {
         component: 'MiddleBanner',
         props: firstFabrikBanner, // Yuxarıda yaratdığımız obyekti ötürürük
       },
-      
-      
+      {
+        component: 'HomeVideo',
+        props: {
+          variant: 'rightAligned', // Komponenti sağa yaslamaq üçün
+          imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/creative-minds/fabrik/montana_fabrik_portrait_04_w.jpg?mode=crop&width=1520&height=1093"
+        }
+      },
+      {
+        component: 'Companies',
+        props: {} // Bu komponentin xüsusi propsu yoxdur
+      },
+      {
+        component: 'MiddleBanner',
+        props: secondFabrikBanner, // Tərs çevrilmiş banner
+      },
+      {
+        component: 'HomeVideo',
+        props: {
+          variant: 'rightAligned', // Komponenti sağa yaslamaq üçün
+          imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/creative-minds/fabrik/montana_fabrik_portrait_04_w.jpg?mode=crop&width=1520&height=1093"
+        }
+      },
       {
         component: 'Form',
         props: {}
+      },
+      {
+        component: 'Related',
+        props: {} // Bu komponentin xüsusi propsu yoxdur
       }
     ]
   },
@@ -53,14 +87,14 @@ const getPageData = (slug: string) => {
   return mindsPageData[slug];
 }
 
-const CreativeMindDetailPage = async ({ params }: { params: { slug: string } }) => {
-  const pageData = getPageData(params.slug);
+const CreativeMindDetailPage = async ({ params} : {params: Promise<{slug: string}>}) => {
+  const { slug } = await params;
+  const pageData = getPageData(slug)
 
   if (!pageData) {
     notFound();
   }
 
-  // ...
 return (
     <main>
       {pageData.components.map((block: any, index: number) => {
