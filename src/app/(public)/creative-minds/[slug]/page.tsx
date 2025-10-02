@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { notFound } from 'next/navigation';
-import { componentMap, ComponentName } from '@/component-map'; // Addım 1-də yaratdığımız fayl
+import { componentMap, ComponentName } from '@/component-map'; 
+import pageStyles from './page.module.css';
 
 
 const firstFabrikBanner = {
@@ -34,21 +35,8 @@ const mindsPageData: any = {
         component: 'MiddleBanner',
         props: firstFabrikBanner, // Yuxarıda yaratdığımız obyekti ötürürük
       },
-      {
-        component: 'ProductSlider',
-        props: {
-          variant: 'system',
-          titleTop: 'Faebrik üçün Xüsusi Məhsullar'
-        }
-      },
-      {
-        component: 'NewsSection',
-        props: {
-          limit: 4,
-          showTitle: false,
-          customGridClass: "creative-minds-grid"
-        }
-      },
+      
+      
       {
         component: 'Form',
         props: {}
@@ -65,27 +53,40 @@ const getPageData = (slug: string) => {
   return mindsPageData[slug];
 }
 
-const CreativeMindDetailPage = ({ params }: { params: { slug: string } }) => {
+const CreativeMindDetailPage = async ({ params }: { params: { slug: string } }) => {
   const pageData = getPageData(params.slug);
 
   if (!pageData) {
     notFound();
   }
 
-  return (
+  // ...
+return (
     <main>
       {pageData.components.map((block: any, index: number) => {
         const Component = componentMap[block.component as ComponentName];
-
+  
         if (!Component) {
           console.error(`"${block.component}" adlı komponent "component-map.ts"-də tapılmadı.`);
           return null;
         }
-
+  
+        // YENİ MƏNTİQ BURADADIR
+        if (block.component === 'MiddleBanner') {
+          return (
+            <div key={index} className={pageStyles.bannerWrapper}>
+              <Component {...block.props} />
+            </div>
+          );
+        }
+        // YENİ MƏNTİQ BURADA BİTİR
+  
+        // Digər komponentlər olduğu kimi render olunur
         return <Component key={index} {...block.props} />;
       })}
     </main>
   );
+  // ...
 };
 
 export default CreativeMindDetailPage;
