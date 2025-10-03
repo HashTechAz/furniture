@@ -1,0 +1,32 @@
+.centerInfoText {
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.centerInfoTextContent {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.centerInfoTextContent h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.centerInfoTextContent p {
+  font-size: 16px;
+  color: #333;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .centerInfoText {
+    padding: 50px 20px 0;
+  }
+
+  .centerInfoTextContent h2 {
+    font-size: 20px;
+  }
+}   

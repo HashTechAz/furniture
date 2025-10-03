@@ -3,3 +3,14 @@
 .bannerWrapper {
     margin-top: 5em;
   }
+
+  /* Yalnız 769px-dən böyük ekranlarda (desktop/tablet) tətbiq olunsun */
+@media (min-width: 769px) {
+  .lumikelloHeroImage {
+    width: 480px;
+    height: 480px;
+    top: 80px;
+    right: 120px;
+  }
+
+}

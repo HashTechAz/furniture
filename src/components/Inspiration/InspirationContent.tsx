@@ -48,7 +48,7 @@ const InspirationContent = () => {
         <h5><Link href="/creative-minds">Creative Minds</Link></h5>
         <ul>
           <li><Link href="/creative-minds/faebrik">Faebrik</Link></li>
-          <li><Link href="#">Lumikello</Link></li>
+          <li><Link href="/creative-minds/lumikello">Lumikello</Link></li>
           <li><Link href="#">Swantje Hinrichsen</Link></li>
           <li><Link href="#">Cathrine De Lichtenberg</Link></li>
           <li><Link href="#">Tekla Evelina Severin</Link></li>

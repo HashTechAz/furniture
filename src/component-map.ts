@@ -9,6 +9,8 @@ import PaletteRightImage from '@/components/Palette/PaletteRightImage/PaletteRig
 import Related from '@/app/(public)/sustainability/components/Related/Related';
 import Companies from '@/app/(public)/sustainability/components/Companies/Companies';
 import HomeVideo from '@/components/HomeVideo/HomeVideo';
+import ProductNewsSlider from '@/components/ProductNewsSlider/ProductNewsSlider';
+import CenterInfoText from '@/components/CenterInfoText/CenterInfoText';
 
 export const componentMap = {
   Hero,
@@ -16,12 +18,14 @@ export const componentMap = {
   NewsSection,
   Related,
   Companies,
+  ProductNewsSlider,
   HomeVideo,
   Form,
   MiddleBanner,
   SeriesText,
   PaletteLeftImage,
   PaletteRightImage,
+  CenterInfoText,
 };
 
 export type ComponentName = keyof typeof componentMap;

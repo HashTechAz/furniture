@@ -9,6 +9,7 @@ interface HeroProps {
   imageAlt: string;
   backgroundColor?: string;
   textColor?: string;
+  imageClassName?: string;
 }
 
 const Hero = ({ 
@@ -18,7 +19,8 @@ const Hero = ({
   imageUrl, 
   imageAlt,
   backgroundColor = "#2c3587",
-  textColor = "#333"
+  textColor = "#333",
+  imageClassName
 }: HeroProps) => {
   return (
     <>
@@ -36,7 +38,7 @@ const Hero = ({
             </p>
           </div>
           <div className={styles.imageContent}>
-            <div className={styles.heroImage}>
+          <div className={`${styles.heroImage} ${imageClassName || ''}`}>
               <img
                 src={imageUrl}
                 alt={imageAlt}
