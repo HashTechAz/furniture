@@ -101,6 +101,7 @@
     text-decoration: none;
     color: inherit;
     padding-bottom: 4px;
+    font-size: 14px;
 }
 .navLinks::after {
     content: "";
@@ -121,7 +122,7 @@
 .logo {
   width: 100px;
   background-color: black;
-  padding: 6px 8px;
+  padding: 4px 10px;
   color: #fff;
   font-weight: 800;
   text-align: center;

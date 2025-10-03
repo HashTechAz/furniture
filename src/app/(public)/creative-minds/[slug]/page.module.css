@@ -1,10 +1,7 @@
-/* app/(public)/creative-minds/[slug]/page.module.css */
-
 .bannerWrapper {
-    margin-top: 5em;
-  }
+  margin-top: 50px;
+}
 
-  /* Yalnız 769px-dən böyük ekranlarda (desktop/tablet) tətbiq olunsun */
 @media (min-width: 769px) {
   .lumikelloHeroImage {
     width: 480px;
@@ -12,5 +9,11 @@
     top: 80px;
     right: 120px;
   }
+}
 
+@media (min-width: 769px) {
+  .lumikelloHeroWrapper {
+    min-height: 620px;
+    position: relative;
+  }
 }

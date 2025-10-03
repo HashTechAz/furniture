@@ -10,6 +10,7 @@ interface HeroProps {
   backgroundColor?: string;
   textColor?: string;
   imageClassName?: string;
+  heroClassName?: string;
 }
 
 const Hero = ({ 
@@ -20,12 +21,13 @@ const Hero = ({
   imageAlt,
   backgroundColor = "#2c3587",
   textColor = "#333",
-  imageClassName
+  imageClassName,
+  heroClassName
 }: HeroProps) => {
   return (
     <>
       <section 
-        className={styles.hero}
+        className={`${styles.hero} ${heroClassName || ''}`} 
         style={{ backgroundColor, color: textColor }}
       >
         <div className={styles.content}>

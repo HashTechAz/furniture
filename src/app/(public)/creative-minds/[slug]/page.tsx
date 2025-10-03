@@ -34,6 +34,7 @@ const lumikelloHeroProps = {
   backgroundColor: "#EEE7E1", // Lumikello üçün fərqli rəng
   textColor: "#333",
   imageClassName: pageStyles.lumikelloHeroImage,
+  heroClassName: pageStyles.lumikelloHeroWrapper,
 };
 
 const lumikelloBanner1Props = {
@@ -124,6 +125,7 @@ const mindsPageData: any = {
       { component: 'MiddleBanner', props: lumikelloBanner1Props },
       { component: 'HomeVideo', props: { imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/creative-minds/lumikello/homestory7_s.jpg?mode=crop&width=1520&height=1093" } },
       { component: 'Companies', props: {} },
+      { component: 'CenterInfoText', props: {} },
       { component: 'PaletteLeftImage', props: lumikelloPaletteLeftProps },
       { component: 'MiddleBanner', props: lumikelloBanner2Props },
       { component: 'ProductNewsSlider', props: { titleTop: "" } },
@@ -148,26 +150,27 @@ const CreativeMindDetailPage = async ({ params} : {params: Promise<{slug: string
   }
 
 return (
-    <main>
-      {pageData.components.map((block: any, index: number) => {
-        const Component = componentMap[block.component as ComponentName];
-  
-        if (!Component) {
-          console.error(`"${block.component}" adlı komponent "component-map.ts"-də tapılmadı.`);
-          return null;
-        }
-  
-        if (block.component === 'MiddleBanner') {
-          return (
-            <div key={index} className={pageStyles.bannerWrapper}>
-              <Component {...block.props} />
-            </div>
-          );
-        }
-  
-        return <Component key={index} {...block.props} />;
-      })}
-    </main>
+  <main>
+  {pageData.components.map((block: any, index: number) => {
+    const Component = componentMap[block.component as ComponentName];
+
+    if (!Component) {
+      console.error(`"${block.component}" adlı komponent "component-map.ts"-də tapılmadı.`);
+      return null;
+    }
+
+    // DƏYİŞİKLİK BURADADIR: `CenterInfoText`-i də şərtə əlavə edirik
+    if (['MiddleBanner', 'CenterInfoText', 'Companies', 'HomeVideo', 'PaletteLeftImage', 'ProductSlider', 'Form', 'Related'].includes(block.component)) {
+      return (
+        <div key={index} className={pageStyles.bannerWrapper}>
+          <Component {...block.props} />
+        </div>
+      );
+    }
+
+    return <Component key={index} {...block.props} />;
+  })}
+</main>
   );
 };
 
