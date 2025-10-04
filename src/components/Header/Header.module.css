@@ -415,3 +415,9 @@
   background-color: #EEE7E1;
   color: #333; /* Arxa fon açıq olduğu üçün mətn rəngini tünd edirik */
 }
+
+/* Swantje səhifəsi üçün xüsusi header stili */
+.headerAtTop.swantjeHeader {
+  background-color: #C9B176;
+  color: #333; /* Açıq fona görə mətn rəngini tünd edirik */
+}

@@ -33,8 +33,8 @@ const lumikelloHeroProps = {
   imageAlt: "Lumikello Space",
   backgroundColor: "#EEE7E1", // Lumikello üçün fərqli rəng
   textColor: "#333",
-  imageClassName: pageStyles.lumikelloHeroImage,
-  heroClassName: pageStyles.lumikelloHeroWrapper,
+  imageClassName: pageStyles.customHeroImage,
+  heroClassName: pageStyles.customHeroLayout,
 };
 
 const lumikelloBanner1Props = {
@@ -65,6 +65,59 @@ const lumikelloBanner2Props = {
   buttonText: "Learn More",
   buttonLink: "#",
   layout: "imageRight", // Reverse banner
+};
+
+const lumikelloGalleryProps = {
+  layout: 'reversed', // Şəkillərin sırasını tərs çevirir
+  images: [ // "Swantje" səhifəsi üçün xüsusi iki şəkil
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/lumikello/homestory8_p.jpg?mode=crop&width=1520&height=2027",
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/lumikello/bluna_fresko_p.jpg?mode=crop&width=1520&height=2027",
+  ] as [string, string] // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
+};
+
+const swantjeHeroProps = {
+  title: "Inside the creative minds of",
+  titleSpan: "Swantje Hinrichsen",
+  description: "Swantje Hinrichsen is an art director, graphic designer and colourist with a strong focus on creating colourful visual identities and interior design. Swantje lives with her partner in a subdivided house from 1930 in the German city of Münster. Read along for a peek inside the creative mind of Swantje Hinrichsen.", // Mətni dəyişə bilərsiniz
+  imageUrl: "https://b2c.montana-episerver.com/globalassets/inriver/product/0hilow160c/portrait_swantje_s.jpg?mode=crop&width=828&height=828", // Şəkli dəyişin
+  imageAlt: "Swantje Hinrichsen",
+  backgroundColor: "#C9B176", // İstədiyiniz rəng
+  textColor: "#333",
+  imageClassName: pageStyles.customHeroImage, // Ümumi stili tətbiq edirik
+  heroClassName: pageStyles.customHeroLayout,  // Ümumi stili tətbiq edirik
+};
+
+const swantjeHeroBanner1Props = {
+  largeImageUrl: "https://b2c.montana-episerver.com/globalassets/inriver/product/0hilow160c/circus_hallway._p.jpg?mode=crop&width=1520&height=2027",
+  smallImageUrl: "https://b2c.montana-episerver.com/globalassets/inriver/product/0hilow160c/2020-11-23-13.36.08_l.jpg?mode=crop&width=1520&height=1093",
+  title: "A happy entrance hall",
+  description: "When visiting Swantje, you get welcomed by the CARRY dresser in the energetic colour Parsley. Right beside is a clothing rack in the bold colour Monarch creating an entrance hall with a playful atmosphere.",
+  buttonText: "Shop the look Montana",
+  buttonLink: "#",
+  // "normal" ölçü üçün smallImageHeight propertisini vermirik
+};
+
+const swantjeGalleryProps = {
+  layout: 'reversed', // Şəkillərin sırasını tərs çevirir
+  images: [ // "Swantje" səhifəsi üçün xüsusi iki şəkil
+    "https://b2c.montana-episerver.com/globalassets/inriver/product/0hilow160c/kitchen_details_p.jpg?mode=crop&width=1520&height=2027",
+    "https://b2c.montana-episerver.com/globalassets/inriver/product/0hilow160c/kitchen_and_hallway_p.jpg?mode=crop&width=1520&height=2027",
+  ] as [string, string] // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
+};
+
+const swantjeGallery2Props = {
+  layout: 'reversed', // Şəkillərin sırasını tərs çevirir
+  images: [ // "Swantje" səhifəsi üçün xüsusi iki şəkil
+    "https://b2c.montana-episerver.com/contentassets/1b51ede3ba094c9199f4de18e6d1958f/living_room_p.jpg?mode=crop&width=1520&height=2027",
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/swantje/livingroom_2_p.jpg?mode=crop&width=1520&height=2027",
+  ] as [string, string] // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
+};
+
+const swantjeGallery3Props = {
+  images: [ // "Swantje" səhifəsi üçün xüsusi iki şəkil
+    "https://b2c.montana-episerver.com/globalassets/inriver/product/0hilow160c/bedroom_1_p.jpg?mode=crop&width=1520&height=2027",
+    "https://b2c.montana-episerver.com/globalassets/inriver/product/0hilow160c/img_1698_p.jpg?mode=crop&width=1520&height=2027",
+  ] as [string, string] // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
 };
 
 const mindsPageData: any = {
@@ -123,6 +176,7 @@ const mindsPageData: any = {
       { component: 'Hero', props: lumikelloHeroProps },
       { component: 'CenterInfoText', props: {} }, 
       { component: 'MiddleBanner', props: lumikelloBanner1Props },
+      { component: 'SustainabilityGallery', props: lumikelloGalleryProps },
       { component: 'HomeVideo', props: { imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/creative-minds/lumikello/homestory7_s.jpg?mode=crop&width=1520&height=1093" } },
       { component: 'Companies', props: {} },
       { component: 'CenterInfoText', props: {} },
@@ -130,8 +184,24 @@ const mindsPageData: any = {
       { component: 'MiddleBanner', props: lumikelloBanner2Props },
       { component: 'ProductNewsSlider', props: { titleTop: "" } },
       { component: 'HomeVideo', props: { imageUrl: "https://themes.muffingroup.com/be/furniturestore/wp-content/uploads/2022/06/furniturestore-slider-pic1.webp" } },
-
       { component: 'Form', props: {} },
+      { component: 'Related', props: {} }
+    ]
+  },
+  'swantje': { // YENİ SƏHİFƏ
+    components: [
+      { component: 'Hero', props: swantjeHeroProps },
+      { component: 'CenterInfoText', props: {} },
+      { component: 'MiddleBanner', props: swantjeHeroBanner1Props },
+      { component: 'SustainabilityGallery', props: swantjeGalleryProps },
+      { component: 'Companies', props: {} },
+      { component: 'CenterInfoText', props: {} },
+      { component: 'HomeVideo', props: { imageUrl: "https://b2c.montana-episerver.com/globalassets/inriver/product/0hilow160c/maw18456_l.jpg?mode=crop&width=1520&height=1093" } },
+      { component: 'SustainabilityGallery', props: swantjeGallery2Props },
+      { component: 'ProductNewsSlider', props: { titleTop: "" } },
+      { component: 'CenterInfoText', props: {} },
+      { component: 'SustainabilityGallery', props: swantjeGallery3Props },
+      {component: 'Form', props: {}},
       { component: 'Related', props: {} }
     ]
   }

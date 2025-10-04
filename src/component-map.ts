@@ -11,6 +11,7 @@ import Companies from '@/app/(public)/sustainability/components/Companies/Compan
 import HomeVideo from '@/components/HomeVideo/HomeVideo';
 import ProductNewsSlider from '@/components/ProductNewsSlider/ProductNewsSlider';
 import CenterInfoText from '@/components/CenterInfoText/CenterInfoText';
+import SustainabilityGallery from '@/app/(public)/sustainability/components/SustainabilityGallery/SustainabilityGallery';
 
 export const componentMap = {
   Hero,
@@ -26,6 +27,7 @@ export const componentMap = {
   PaletteLeftImage,
   PaletteRightImage,
   CenterInfoText,
+  SustainabilityGallery,
 };
 
 export type ComponentName = keyof typeof componentMap;
