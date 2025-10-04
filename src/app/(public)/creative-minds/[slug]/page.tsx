@@ -180,6 +180,7 @@ const mindsPageData: any = {
       { component: 'HomeVideo', props: { imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/creative-minds/lumikello/homestory7_s.jpg?mode=crop&width=1520&height=1093" } },
       { component: 'Companies', props: {} },
       { component: 'CenterInfoText', props: {} },
+      { component: 'FrameColors', props: {} },
       { component: 'PaletteLeftImage', props: lumikelloPaletteLeftProps },
       { component: 'MiddleBanner', props: lumikelloBanner2Props },
       { component: 'ProductNewsSlider', props: { titleTop: "" } },
@@ -200,6 +201,7 @@ const mindsPageData: any = {
       { component: 'SustainabilityGallery', props: swantjeGallery2Props },
       { component: 'ProductNewsSlider', props: { titleTop: "" } },
       { component: 'CenterInfoText', props: {} },
+      { component: 'FrameColors', props: {} },
       { component: 'SustainabilityGallery', props: swantjeGallery3Props },
       {component: 'Form', props: {}},
       { component: 'Related', props: {} }

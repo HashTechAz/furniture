@@ -1,0 +1,55 @@
+.frameColors {
+  width: 100%;
+  padding: 60px 80px;
+}
+
+.frameColorsMain {
+  width: max-content;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.frameColorsItem {
+  width: 250px;
+  height: 250px;
+  background-color: #000;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .frameColors {
+    padding: 40px 20px;
+  }
+  
+  .frameColorsMain {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .frameColorsItem {
+    width: 100px;
+    height: 100px;
+    flex: 0 0 auto;
+  }
+}
+
+.frameColorsItem img {
+  width: 100%;
+  height: 100%;
+}
+
+.frameColorsItem h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 10px 0px 0px;
+}
+
+.frameColorsItem p {
+  font-size: 13px;
+  font-weight: 400;
+}
