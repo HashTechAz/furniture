@@ -421,3 +421,8 @@
   background-color: #C9B176;
   color: #333; /* Açıq fona görə mətn rəngini tünd edirik */
 }
+
+.headerAtTop.cathrineHeader {
+  background-color: #D0BAE2; /* Bu rəngi istədiyiniz kimi dəyişə bilərsiniz */
+  color: #333;
+}

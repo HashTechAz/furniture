@@ -120,6 +120,18 @@ const swantjeGallery3Props = {
   ] as [string, string] // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
 };
 
+// YENİ: Cathrine səhifəsi üçün props
+const cathrineHeroProps = {
+  title: "Inside the creative minds of",
+  titleSpan: "Cathrine De Lichtenberg",
+  description: "Housing consultant Cathrine de Lichtenberg lives with her husband Anders and their two daughters in an old, divided patrician villa from 1898 in Frederiksberg, Copenhagen. Read along for a peek inside the creative mind of Cathrine de Lichtenberg.", // Mətni dəyişin
+  imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg36571.jpg?mode=crop&width=1080&height=776", // Şəkli dəyişin
+  imageAlt: "Cathrine De Lichtenberg",
+  backgroundColor: "#D0BAE2", // Header ilə eyni rəng (və ya istədiyiniz başqa rəng)
+  textColor: "#333",
+  // Fikir verin: `imageClassName` və `heroClassName` proplarını vermirik, çünki standart Hero istəyirik.
+};
+
 const mindsPageData: any = {
   'faebrik': {
     components: [
@@ -205,6 +217,13 @@ const mindsPageData: any = {
       { component: 'SustainabilityGallery', props: swantjeGallery3Props },
       {component: 'Form', props: {}},
       { component: 'Related', props: {} }
+    ]
+  },
+  'cathrine': { // YENİ SƏHİFƏ
+    components: [
+      { component: 'Hero', props: cathrineHeroProps },
+      { component: 'CenterInfoText', props: {} },
+
     ]
   }
 };
