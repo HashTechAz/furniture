@@ -129,7 +129,65 @@ const cathrineHeroProps = {
   imageAlt: "Cathrine De Lichtenberg",
   backgroundColor: "#D0BAE2", // Header ilə eyni rəng (və ya istədiyiniz başqa rəng)
   textColor: "#333",
+  heroClassName: pageStyles.customHeroLayout,
   // Fikir verin: `imageClassName` və `heroClassName` proplarını vermirik, çünki standart Hero istəyirik.
+};
+
+const cathrineGalleryProps = {
+  layout: 'reversed', // Şəkillərin sırasını tərs çevirir
+  images: [ // "Swantje" səhifəsi üçün xüsusi iki şəkil
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg19728_final.jpg?mode=crop&width=1520&height=2027",
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg19669_final.jpg?mode=crop&width=1520&height=2027",
+  ] as [string, string] // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
+};
+
+const cathrineGallery2Props = {
+  images: [ // "Swantje" səhifəsi üçün xüsusi iki şəkil
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg36661.jpg?mode=crop&width=1520&height=2027",
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg20061_final.jpg?mode=crop&width=1520&height=2027",
+  ] as [string, string] // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
+};
+
+const cathrineMiddleBanner1Props = {
+  largeImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg19859_final.jpg?mode=crop&width=1520&height=2027",
+  smallImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg19903_final_v2.jpg?mode=crop&width=1520&height=2027",
+  title: "“The pink we’ve all dreamed about”",
+  description: "The KEEP dresser is the perfect storage solution for the bedroom, living room, or hall. Cathrine has it in her bedroom in the soft pink shade, Ruby.",
+  buttonText: "Explore dressers and drawers",
+  buttonLink: "#",
+};
+
+const cathrineGallery3Props = {
+  images: [ // "Swantje" səhifəsi üçün xüsusi iki şəkil
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg36482.jpg?mode=crop&width=1520&height=2027",
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg36548.jpg?mode=crop&width=1520&height=2027",
+  ] as [string, string] // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
+};
+
+const cathrineMiddleBanner2Props = {
+  largeImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg36363.jpg?mode=crop&width=1520&height=2027",
+  smallImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg36356.jpg?mode=crop&width=1520&height=2027",
+  title: "“Cathrine's customised wardrobe”",
+  description: "Cathrine transformed a room into a stylish walk-in closet. Here, she has a custom Montana System wardrobe in deep green Pine. With drawers, open shelves, and glass shelves, it accommodates all her wardrobe favourites – from shoes to blouses and jewellery.",
+  buttonText: "Explore dressers and drawers",
+  buttonLink: "#",
+};
+
+const cathrineGallery4Props = {
+  images: [ // "Swantje" səhifəsi üçün xüsusi iki şəkil
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg36718.jpg?mode=crop&width=1520&height=2027",
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg36703.jpg?mode=crop&width=1520&height=2027",
+  ] as [string, string] // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
+};
+
+const cathrinePaletteRightImageProps = {
+  title: "Colour as therapy",
+  description: "Colours to Cathrine are both a sort of therapy and sanctuary. Whenever she throws herself at a new decoration project in her home, she works with emotions and energies, and hardly ever have a plan to begin with. Go about it as Cathrine and build your own Montana composition in our vibrant colour palette.  ",
+  buttonText: "Explore now",
+  buttonLink: "/news/palette-refresh",
+  imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg36571.jpg?mode=crop&width=540&height=720",
+  backgroundColor: "#D0BAE2",
+  
 };
 
 const mindsPageData: any = {
@@ -223,7 +281,22 @@ const mindsPageData: any = {
     components: [
       { component: 'Hero', props: cathrineHeroProps },
       { component: 'CenterInfoText', props: {} },
-
+      { component: 'SustainabilityGallery', props: cathrineGalleryProps },
+      { component: 'Companies', props: {} },
+      { component: 'SustainabilityGallery', props: cathrineGallery2Props },
+      { component: 'CenterInfoText', props: {} },
+      { component: 'FrameColors', props: {} },
+      { component: 'MiddleBanner', props: cathrineMiddleBanner1Props },
+      { component: 'CenterInfoText', props: {} },
+      { component: 'Companies', props: {} },
+      { component: 'SustainabilityGallery', props: cathrineGallery3Props },
+      { component: 'Companies', props: {} },
+      { component: 'MiddleBanner', props: cathrineMiddleBanner2Props },
+      { component: 'SustainabilityGallery', props: cathrineGallery4Props },
+      { component: 'ProductNewsSlider', props: { titleTop: "" } },
+      {component: 'PaletteRightImage', props: cathrinePaletteRightImageProps },
+      {component: 'Form', props: {}},
+      {component: 'Related', props: {}},
     ]
   }
 };
