@@ -51,7 +51,7 @@ const InspirationContent = () => {
           <li><Link href="/creative-minds/lumikello">Lumikello</Link></li>
           <li><Link href="/creative-minds/swantje">Swantje Hinrichsen</Link></li>
           <li><Link href="/creative-minds/cathrine">Cathrine De Lichtenberg</Link></li>
-          <li><Link href="#">Tekla Evelina Severin</Link></li>
+          <li><Link href="/creative-minds/tekla">Tekla Evelina Severin</Link></li>
           <li><Link href="#">Céline Hallas</Link></li>
           <li><Link href="#">Sarah Gottlieb</Link></li>
         </ul>

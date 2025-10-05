@@ -426,3 +426,8 @@
   background-color: #D0BAE2; /* Bu rəngi istədiyiniz kimi dəyişə bilərsiniz */
   color: #333;
 }
+
+.headerAtTop.teklaHeader {
+  background-color: #C9B176; /* <-- Zəhmət olmasa, istədiyiniz rəngi deyin */
+  color: #333;
+}

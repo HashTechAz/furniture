@@ -130,6 +130,7 @@ const cathrineHeroProps = {
   backgroundColor: "#D0BAE2", // Header ilə eyni rəng (və ya istədiyiniz başqa rəng)
   textColor: "#333",
   heroClassName: pageStyles.customHeroLayout,
+  imageClassName: pageStyles.customHeroImage,
   // Fikir verin: `imageClassName` və `heroClassName` proplarını vermirik, çünki standart Hero istəyirik.
 };
 
@@ -187,7 +188,55 @@ const cathrinePaletteRightImageProps = {
   buttonLink: "/news/palette-refresh",
   imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg36571.jpg?mode=crop&width=540&height=720",
   backgroundColor: "#D0BAE2",
-  
+};
+
+// YENİ: Tekla səhifəsi üçün props
+const teklaHeroProps = {
+  title: "Inside the creative minds of",
+  titleSpan: "Tekla Evelina Severin",
+  description: "Tekla is a Stockholm-based colourist, designer, and photographer, famous for her bold and unconventional colour compositions.", // Mətni dəyişin
+  imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/tekla-x-montana/montana_home_23_24_tekla_severin_acacia_camomile_rosehip_ruby_02_h.jpg?mode=crop&width=828&height=828", // Şəkli dəyişin
+  imageAlt: "Tekla Evelina Severin",
+  backgroundColor: "#C9B176", // <-- Zəhmət olmasa, istədiyiniz rəngi deyin
+  textColor: "#333",
+  // "Lumikello" kimi kiçik şəkil düzülüşü üçün bu klasları tətbiq edirik
+  imageClassName: pageStyles.customHeroImage,
+  heroClassName: pageStyles.customHeroLayout,
+};
+
+const teklaMiddleBanner1Props = {
+  largeImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/tekla/2_dsc3804-1-2.jpg?mode=crop&width=1520&height=2027",
+  smallImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/tekla/img_2124-2.jpg?mode=crop&width=1520&height=2027",
+  title: "Bring joy to the room",
+  description: "Tekla tries to decorate her home with colours as much as she can; walls, art, furniture, objects, flowers, rugs, clothing. All things are carefully selected and placed to bring joy to the room. Teklas latest addition to her kitchen is a new linoleum flooring in lilac, dark pistachio and cream yellow chess pattern. She simply placed the new floor over the original grey linoleum floor in case of the couple moving from the rental apartment. The Montana Mini modules in the colour Camomile bring rays of sunlight to Tekla's kitchen. Montana Mini is a series of uncomplicated, versatile storage modules. Available in three variants and only 10 colours, Montana Mini is the easier choice",
+  buttonText: "Explore dressers and drawers",
+  buttonLink: "#",
+  smallImageHeight: "550px",
+};
+
+const teklaPaletteRightImageProps = {
+  title: "Cheerful colours",
+  description: "Tekla describes herself as a bit too serious sometimes, and she is therefore always trying to make herself more eased, spontaneous and cheerful. Her work with colours, interior and imagery is definitely helping with this. Do you like Tekla's style? Find more inspiration on Instagram. Follow @teklan here.",
+  buttonText: "Explore now",
+  buttonLink: "/news/palette-refresh",
+  imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/tekla-x-montana/montana_home_23_24_tekla_evelina_severin_portrait_02_h.jpg?mode=crop&width=540&height=720",
+  backgroundColor: "#DD7D74",
+};
+
+const teklaPalette2RightImageProps = {
+  title: "Cheerful colours",
+  description: "There are many great colour books to be inspired by. Tekla shot the cover and has several photos represented inside the book “Who’s afraid of pink, orange and green” by Irene Schampaert. Tekla’s latest purchase is “Palette Perfect” by Lauren Wager. The book offers a wide range of palettes, so you can easily find one to suit your style. Colours are always corresponding with their surroundings and creating a constant dialogue. Tekla advices you to think in different materials and textures to create a deeper dimension; glossy, matt, hairy, woven and transparency. Play around and don’t be afraid to try things out.",
+  buttonText: "Explore now",
+  buttonLink: "/news/palette-refresh",
+  imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/tekla/img_5587.jpg?mode=crop&width=540&height=720",
+  backgroundColor: "#633730",
+};
+
+const teklaGalleryProps = {
+  images: [ // "Swantje" səhifəsi üçün xüsusi iki şəkil
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/tekla/montana_insidethecreative_mind_tekla_kevi.jpg?mode=crop&width=1520&height=2027",
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/tekla/montana_insidethecreative_mind_tekla_mini.jpg?mode=crop&width=1520&height=2027",
+  ] as [string, string] // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
 };
 
 const mindsPageData: any = {
@@ -295,6 +344,25 @@ const mindsPageData: any = {
       { component: 'SustainabilityGallery', props: cathrineGallery4Props },
       { component: 'ProductNewsSlider', props: { titleTop: "" } },
       {component: 'PaletteRightImage', props: cathrinePaletteRightImageProps },
+      {component: 'Form', props: {}},
+      {component: 'Related', props: {}},
+    ]
+  },
+  'tekla': { // YENİ SƏHİFƏ
+    components: [
+      { component: 'Hero', props: teklaHeroProps },
+      { component: 'CenterInfoText', props: {} },
+      { component: 'Companies', props: {} },
+      { component: 'MiddleBanner', props: teklaMiddleBanner1Props },
+      {component: 'PaletteRightImage', props: teklaPaletteRightImageProps },
+      { component: 'CenterInfoText', props: {} },
+      { component: 'FrameColors', props: {} },
+      { component: 'MiddleBanner', props: teklaMiddleBanner1Props },
+      { component: 'ProductNewsSlider', props: { titleTop: "" } },
+      {component: 'PaletteRightImage', props: teklaPalette2RightImageProps },
+      { component: 'CenterInfoText', props: {} },
+      { component: 'Companies', props: {} },
+      { component: 'SustainabilityGallery', props: teklaGalleryProps },
       {component: 'Form', props: {}},
       {component: 'Related', props: {}},
     ]

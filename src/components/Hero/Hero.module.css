@@ -2,12 +2,12 @@
   width: 100%;
   background-color: #EEECDD;
   color: #333;
-  padding: 120px 80px;
+  padding: 40px 80px;
 }
 
 .content {
   width: 100%;
-  margin: 0 auto;
+  margin: 50px auto;
   display: flex;
   position: relative;
 }
@@ -40,7 +40,7 @@
 
 .heroImage {
   width: 680px;
-  height: 540px;
+  height: 500px;
   overflow: hidden;
   position: absolute;
   top: 20px;
