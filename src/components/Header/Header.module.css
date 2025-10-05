@@ -436,3 +436,10 @@
   background-color: #2C3587; /* <-- Zəhmət olmasa, istədiyiniz rəngi deyin */
   color: #fff;
 }
+
+
+/* Sarah səhifəsi üçün xüsusi header stili */
+.headerAtTop.sarahHeader {
+  background-color: #EAEFD9; /* <-- Zəhmət olmasa, istədiyiniz rəngi deyin */
+  color: #000;
+}

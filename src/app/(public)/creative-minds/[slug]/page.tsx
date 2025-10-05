@@ -120,7 +120,6 @@ const swantjeGallery3Props = {
   ] as [string, string] // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
 };
 
-// YENİ: Cathrine səhifəsi üçün props
 const cathrineHeroProps = {
   title: "Inside the creative minds of",
   titleSpan: "Cathrine De Lichtenberg",
@@ -190,7 +189,6 @@ const cathrinePaletteRightImageProps = {
   backgroundColor: "#D0BAE2",
 };
 
-// YENİ: Tekla səhifəsi üçün props
 const teklaHeroProps = {
   title: "Inside the creative minds of",
   titleSpan: "Tekla Evelina Severin",
@@ -272,17 +270,29 @@ const celinePaletteLeftImageProps = {
 };
 
 const celineGalleryProps = {
-  images: [ // "Swantje" səhifəsi üçün xüsusi iki şəkil
+  images: [ 
     "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/celine-hallas/celinehallasxmontana_color_06.jpg?mode=crop&width=1520&height=2027",
     "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/celine-hallas/celinehallasxmontana_2020_1_1.jpg?mode=crop&width=1520&height=2027",
-  ] as [string, string] // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
+  ] as [string, string] 
 };
 
 const celineGallery2Props = {
-  images: [ // "Swantje" səhifəsi üçün xüsusi iki şəkil
+  images: [ 
     "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/celine-hallas/celinehallasxmontana_2019_10_3.jpg?mode=crop&width=1520&height=2027",
     "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/celine-hallas/celinehallasxmontana_2019_11_1.jpg?mode=crop&width=1520&height=2027",
-  ] as [string, string] // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
+  ] as [string, string] 
+};
+
+const sarahHeroProps = {
+  title: "Inside the creative minds of",
+  titleSpan: "Sarah Gottlieb",
+  description: "Sarah Gottlieb is an artist and scenographer who works with spatialities and objects. Her work often explores the relationship between space, color, and material.", // Mətni dəyişin
+  imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/sarah-gottlieb/01_sarahgotlib_foto-credit-karen-rosetzsky.jpg?mode=crop&width=1080&height=776", // Şəkli dəyişin
+  imageAlt: "Sarah Gottlieb",
+  backgroundColor: "#EAEFD9", // <-- Zəhmət olmasa, istədiyiniz rəngi deyin
+  textColor: "#000",
+  // "Normal" hero düzülüşü üçün bu propu istifadə edirik
+  layout: 'stacked',
 };
 
 const mindsPageData: any = {
@@ -354,7 +364,7 @@ const mindsPageData: any = {
       { component: 'Related', props: {} }
     ]
   },
-  'swantje': { // YENİ SƏHİFƏ
+  'swantje': { 
     components: [
       { component: 'Hero', props: swantjeHeroProps },
       { component: 'CenterInfoText', props: {} },
@@ -372,7 +382,7 @@ const mindsPageData: any = {
       { component: 'Related', props: {} }
     ]
   },
-  'cathrine': { // YENİ SƏHİFƏ
+  'cathrine': {
     components: [
       { component: 'Hero', props: cathrineHeroProps },
       { component: 'CenterInfoText', props: {} },
@@ -394,7 +404,7 @@ const mindsPageData: any = {
       {component: 'Related', props: {}},
     ]
   },
-  'tekla': { // YENİ SƏHİFƏ
+  'tekla': { 
     components: [
       { component: 'Hero', props: teklaHeroProps },
       { component: 'CenterInfoText', props: {} },
@@ -413,7 +423,7 @@ const mindsPageData: any = {
       {component: 'Related', props: {}},
     ]
   },
-  'celine': { // YENİ SƏHİFƏ
+  'celine': { 
     components: [
       { component: 'Hero', props: celineHeroProps },
       { component: 'CenterInfoText', props: {} },
@@ -456,7 +466,6 @@ return (
       return null;
     }
 
-    // DƏYİŞİKLİK BURADADIR: `CenterInfoText`-i də şərtə əlavə edirik
     if (['MiddleBanner', 'CenterInfoText', 'Companies', 'HomeVideo', 'PaletteLeftImage', 'ProductSlider', 'Form', 'Related'].includes(block.component)) {
       return (
         <div key={index} className={pageStyles.bannerWrapper}>
