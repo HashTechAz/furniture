@@ -11,6 +11,7 @@ interface HeroProps {
   textColor?: string;
   imageClassName?: string;
   heroClassName?: string;
+  layout?: 'default' | 'stacked';
 }
 
 const Hero = ({ 
@@ -22,7 +23,8 @@ const Hero = ({
   backgroundColor = "#2c3587",
   textColor = "#333",
   imageClassName,
-  heroClassName
+  heroClassName,
+  layout = 'default'
 }: HeroProps) => {
   return (
     <>
@@ -30,7 +32,7 @@ const Hero = ({
         className={`${styles.hero} ${heroClassName || ''}`} 
         style={{ backgroundColor, color: textColor }}
       >
-        <div className={styles.content}>
+        <div className={`${styles.content} ${layout === 'stacked' ? styles.stackedContent : ''}`}>
           <div className={styles.textContent}>
             <h1 className={styles.title}>
               {title} — <span>{titleSpan}</span>

@@ -13,6 +13,7 @@ import ProductNewsSlider from '@/components/ProductNewsSlider/ProductNewsSlider'
 import CenterInfoText from '@/components/CenterInfoText/CenterInfoText';
 import SustainabilityGallery from '@/app/(public)/sustainability/components/SustainabilityGallery/SustainabilityGallery';
 import FrameColors from '@/components/FrameColors/FrameColors';
+import AboutCompany from './app/(public)/about/components/AboutCompany/AboutCompany';
 
 export const componentMap = {
   Hero,
@@ -30,6 +31,7 @@ export const componentMap = {
   CenterInfoText,
   SustainabilityGallery,
   FrameColors,
+  AboutCompany
 };
 
 export type ComponentName = keyof typeof componentMap;

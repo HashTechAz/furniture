@@ -286,13 +286,21 @@ const celineGallery2Props = {
 const sarahHeroProps = {
   title: "Inside the creative minds of",
   titleSpan: "Sarah Gottlieb",
-  description: "Sarah Gottlieb is an artist and scenographer who works with spatialities and objects. Her work often explores the relationship between space, color, and material.", // Mətni dəyişin
+  description: "Designer Sarah Gottlieb lives in a city apartment in the vibrant Nørrebro neighborhood of Copenhagen, together with her husband and their three children. Read along for a sneak peek inside the creative mind of Sarah Gottlieb. Designer Sarah Gottlieb lives in a city apartment in the vibrant Nørrebro neighborhood of Copenhagen, together with her husband and", // Mətni dəyişin
   imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/sarah-gottlieb/01_sarahgotlib_foto-credit-karen-rosetzsky.jpg?mode=crop&width=1080&height=776", // Şəkli dəyişin
   imageAlt: "Sarah Gottlieb",
-  backgroundColor: "#EAEFD9", // <-- Zəhmət olmasa, istədiyiniz rəngi deyin
+  backgroundColor: "#EAEFD9",
   textColor: "#000",
-  // "Normal" hero düzülüşü üçün bu propu istifadə edirik
-  layout: 'stacked',
+};
+
+const sarahPaletteRightImageProps = {
+  title: "Colour as therapy",
+  description: "What exactly are colours? They are a fundamental element in art and design, capable of evoking a wide range of emotions. Together with Montana, Sarah Gottlieb will bring you insightful knowledge about colours in a series of podcast episodes throughout the year. In each episode of The Sound of Colour, host Gottlieb meets with designers, and through their conversations, you will hear about the significance and psychology of colours.",
+  buttonText: "Explore now",
+  buttonLink: "/news/palette-refresh",
+  imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/the-sound-of-colour/soc_3000x3000px_apple_2.jpg?mode=crop&width=640&height=640",
+  backgroundColor: "#EAEFD9",
+  imageSize: "custom",
 };
 
 const mindsPageData: any = {
@@ -440,6 +448,27 @@ const mindsPageData: any = {
       { component: 'SustainabilityGallery', props: celineGallery2Props },
       {component: 'Form', props: {}},
       {component: 'Related', props: {}},
+    ]
+  },
+  'sarah': { // YENİ SƏHİFƏ
+    components: [
+      { component: 'Hero', props: sarahHeroProps },
+      { component: 'CenterInfoText', props: {} },
+      { component: 'AboutCompany', props: {} },
+      { component: 'MiddleBanner', props: celineMiddleBanner1Props },
+      { component: 'CenterInfoText', props: {} },
+      { component: 'SustainabilityGallery', props: celineGalleryProps },
+      {component: 'PaletteRightImage', props: teklaPaletteRightImageProps },
+      { component: 'CenterInfoText', props: {} },
+      { component: 'FrameColors', props: {} },
+      { component: 'Companies', props: {} },
+      { component: 'SustainabilityGallery', props: cathrineGallery2Props },
+      { component: 'AboutCompany', props: {} },
+      {component: 'PaletteRightImage', props: teklaPaletteRightImageProps },
+      { component: 'ProductNewsSlider', props: { titleTop: "" } },
+      {component: 'PaletteRightImage', props: sarahPaletteRightImageProps },
+      {component: 'Related', props: {}},
+      
     ]
   }
 };
