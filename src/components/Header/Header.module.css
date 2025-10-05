@@ -431,3 +431,8 @@
   background-color: #C9B176; /* <-- Zəhmət olmasa, istədiyiniz rəngi deyin */
   color: #333;
 }
+
+.headerAtTop.celineHeader {
+  background-color: #2C3587; /* <-- Zəhmət olmasa, istədiyiniz rəngi deyin */
+  color: #fff;
+}

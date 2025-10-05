@@ -239,6 +239,52 @@ const teklaGalleryProps = {
   ] as [string, string] // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
 };
 
+const celineHeroProps = {
+  title: "Inside the creative minds of",
+  titleSpan: "Céline Hallas",
+  description: "Photographer and colour ambassador for Montana, Céline Hallas, lives with her husband Daniel, their two children Samuel and Sienna and their beloved dogs and hamster, Master Yoda, Ziggy Bob and Betty Boop. The family lives in an old, crooked apartment from 1840. Read along for a look inside the creative mind of Céline.", // Mətni dəyişin
+  imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/creative-minds/celine-hallas/celine-hallas.jpg?mode=crop&width=828&height=828", // Şəkli dəyişin
+  imageAlt: "Céline Hallas",
+  backgroundColor: "#2C3587", 
+  textColor: "#fff",
+  imageClassName: pageStyles.customHeroImage,
+  heroClassName: pageStyles.customHeroLayout,
+};
+
+const celineMiddleBanner1Props = {
+  largeImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/celine-hallas/celinehallasxmontana_color_02_2020-02-06t17-10-26_conflict.jpg?mode=crop&width=1520&height=2027",
+  smallImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/celine-hallas/celinehallasxmontana_2019_12_1.jpg?mode=crop&width=1520&height=2027",
+  title: "Colour as therapy",
+  description: "Recently, we painted the livingroom and kitchen in the same colour. We did that to create a coherent look. Our old apartment has a lot of beautifully detailed wood work, and we decided to paint it in a stronger colour to highlight it. The same colour is also used for the flooring in both rooms, creating a perfect canvas for bolder colours and eclectic interior",
+  buttonText: "Explore now",
+  buttonLink: "/news/palette-refresh",
+  smallImageHeight: "550px",
+};
+
+const celinePaletteLeftImageProps = {
+  title: "Colour as therapy",
+  description: "Colours to Céline are both a sort of therapy and sanctuary. Whenever she throws herself at a new decoration project in her home, she works with emotions and energies, and hardly ever have a plan to begin with. Go about it as Céline and build your own Montana composition in our vibrant colour palette.  ",
+  buttonText: "Explore now",
+  buttonLink: "/news/palette-refresh",
+  imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/celine-hallas/celinehallasxmontana_color_05.jpg?mode=crop&width=540&height=720",
+  backgroundColor: "#EAEFD9",
+
+};
+
+const celineGalleryProps = {
+  images: [ // "Swantje" səhifəsi üçün xüsusi iki şəkil
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/celine-hallas/celinehallasxmontana_color_06.jpg?mode=crop&width=1520&height=2027",
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/celine-hallas/celinehallasxmontana_2020_1_1.jpg?mode=crop&width=1520&height=2027",
+  ] as [string, string] // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
+};
+
+const celineGallery2Props = {
+  images: [ // "Swantje" səhifəsi üçün xüsusi iki şəkil
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/celine-hallas/celinehallasxmontana_2019_10_3.jpg?mode=crop&width=1520&height=2027",
+    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/celine-hallas/celinehallasxmontana_2019_11_1.jpg?mode=crop&width=1520&height=2027",
+  ] as [string, string] // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
+};
+
 const mindsPageData: any = {
   'faebrik': {
     components: [
@@ -363,6 +409,25 @@ const mindsPageData: any = {
       { component: 'CenterInfoText', props: {} },
       { component: 'Companies', props: {} },
       { component: 'SustainabilityGallery', props: teklaGalleryProps },
+      {component: 'Form', props: {}},
+      {component: 'Related', props: {}},
+    ]
+  },
+  'celine': { // YENİ SƏHİFƏ
+    components: [
+      { component: 'Hero', props: celineHeroProps },
+      { component: 'CenterInfoText', props: {} },
+      { component: 'MiddleBanner', props: celineMiddleBanner1Props },
+      { component: 'Companies', props: {} },
+      {component: 'HomeVideo', props: { imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/creative-minds/ceciline-hallas/celinehallasxmontana_color_03.jpg?mode=crop&width=1520&height=10933" } },
+      { component: 'CenterInfoText', props: {} },
+      { component: 'Companies', props: {} },
+      { component: 'FrameColors', props: {} },
+      { component: 'CenterInfoText', props: {} },
+      { component: 'SustainabilityGallery', props: celineGalleryProps },
+      { component: 'ProductNewsSlider', props: { titleTop: "" } },
+      {component: 'PaletteLeftImage', props: celinePaletteLeftImageProps },
+      { component: 'SustainabilityGallery', props: celineGallery2Props },
       {component: 'Form', props: {}},
       {component: 'Related', props: {}},
     ]
