@@ -55,7 +55,7 @@ const InspirationContent = () => {
           <li><Link href="/creative-minds/celine">Céline Hallas</Link></li>
           <li><Link href="/creative-minds/sarah">Sarah Gottlieb</Link></li>
         </ul>
-        <h5>Colour inspiration</h5>
+        <h5><Link href="/colours">Colour inspiration</Link></h5>
         <ul>
           <li><Link href="#">Color Connaisseur & Montana Furniture</Link></li>
           <li><Link href="#">Colours of comfort</Link></li>
