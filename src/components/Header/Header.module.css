@@ -443,3 +443,8 @@
   background-color: #EAEFD9; /* <-- Zəhmət olmasa, istədiyiniz rəngi deyin */
   color: #000;
 }
+
+.headerAtTop.colourClassHeader {
+  background-color: #BDD2DA;
+  color: #000;
+}

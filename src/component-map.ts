@@ -31,7 +31,7 @@ export const componentMap = {
   CenterInfoText,
   SustainabilityGallery,
   FrameColors,
-  AboutCompany
+  AboutCompany,
 };
 
 export type ComponentName = keyof typeof componentMap;

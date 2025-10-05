@@ -45,6 +45,7 @@ const Header: React.FC = () => {
   const isTeklaPage = pathname === "/creative-minds/tekla";
   const isCelinePage = pathname === "/creative-minds/celine";
   const isSarahPage = pathname === "/creative-minds/sarah";
+  const isColourClassPage = pathname === "/colour-inspiration/colour-class";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -188,6 +189,7 @@ const Header: React.FC = () => {
           ${isTeklaPage ? styles.teklaHeader : ""}
           ${isCelinePage ? styles.celineHeader : ""}
           ${isSarahPage ? styles.sarahHeader : ""}
+          ${isColourClassPage ? styles.colourClassHeader : ""}
         `}
       >
         <nav className={styles.navbar}>
@@ -282,6 +284,7 @@ const Header: React.FC = () => {
           </ul>
         </div>
         
+        {/* === BOTTOM NAV LINKS === */}
         <div className={styles.bottomNavWrapper}>
             <ul className={styles.supportNav}>
                 <li><Link href="/contact" onClick={handleMobileLinkClick}>Customer support</Link></li>
