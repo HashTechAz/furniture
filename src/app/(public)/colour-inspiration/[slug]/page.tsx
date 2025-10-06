@@ -17,11 +17,7 @@ const inspirationPageData: any = {
           textColor: "#000",
         }
       },
-      // YENİ KOMPONENTİ BURAYA ƏLAVƏ EDİRİK
-      {
-        component: 'ProductNewsSlider',
-        props: {} // Bu komponentin xüsusi propsları yoxdursa, boş obyekt kifayətdir
-      },
+     
     ]
   },
   // 'colours-of-comfort': { /* ... */ }
