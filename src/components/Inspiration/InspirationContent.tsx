@@ -59,8 +59,8 @@ const InspirationContent = () => {
         <ul>
           <li><Link href="/colour-inspiration/colour-class">Color Connaisseur & Montana Furniture</Link></li>
           <li><Link href="/colour-inspiration/colours-of-comfort">Colours of comfort</Link></li>
-          <li><Link href="#">Colours and surfaces</Link></li>
-          <li><Link href="#">Inspiring colour styles</Link></li>
+          <li><Link href="/colours">Colours and surfaces</Link></li>
+          <li><Link href="/colour-inspiration/inspiring-styles">Inspiring colour styles</Link></li>
         </ul>
         <h5>Find more inspiration</h5>
         <ul>

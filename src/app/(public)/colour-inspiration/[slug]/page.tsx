@@ -101,6 +101,25 @@ const inspirationPageData: any = {
        {component: "ProductSlider", props: {}}
     ],
   },
+  'inspiring-styles': {
+    components: [
+      {
+        component: 'Hero',
+        props: {
+          title: "Colour Class",
+          titleSpan: "Learn to embrace the world of colours",
+          description:
+            "Designer Sarah Gottlieb lives in a city apartment in the vibrant Nørrebro neighborhood of Copenhagen, together with her husband and their three children. Read along for a sneak peek inside the creative mind of Sarah Gottlieb. Designer Sarah Gottlieb lives in a city apartment in the vibrant Nørrebro neighborhood of Copenhagen, together with her husband and",
+          imageUrl:
+            "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/colours/montana_colourps_amber_camomile_rhubarb_flint_oat_w.jpg?mode=crop&width=1080&height=776",
+          imageAlt: "Colour Class",
+          backgroundColor: "#EAEFD9",
+          textColor: "#000",
+        },
+      },
+      {component: "ColourClassCard", props: {allCardsData: []}}
+    ]
+  }
 };
 
 const getPageData = (slug: string) => {
@@ -137,6 +156,7 @@ const ColourInspirationPage = async ({
             "Companies",
             "HomeVideo",
             "Related",
+            "ColourClassCard",
           ].includes(block.component)
         ) {
           return (
