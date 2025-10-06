@@ -62,9 +62,9 @@ const InspirationContent = () => {
           <li><Link href="/colours">Colours and surfaces</Link></li>
           <li><Link href="/colour-inspiration/inspiring-styles">Inspiring colour styles</Link></li>
         </ul>
-        <h5>Find more inspiration</h5>
+        <h5><Link href="/inspiration/find-more-inspiration">Find more inspiration</Link></h5>
         <ul>
-          <li><Link href="#">Explore our catalogues</Link></li>
+          <li><Link href="/inspiration/catalogues">Explore our catalogues</Link></li>
           <li><Link href="#">Follow us on Instagram</Link></li>
         </ul>
       </div>
