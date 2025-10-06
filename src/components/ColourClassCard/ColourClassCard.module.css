@@ -1,0 +1,66 @@
+.cardSection {
+    width: 100%;
+    padding: 60px 80px;
+}
+
+.cardMain {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.colourClassCard {
+    width: 32%;
+}   
+
+.colourClassCardImage {
+    width: 100%;
+    height: 450px;
+    object-fit: cover;
+}
+
+.colourClassCardTitle {
+    width: 100%;
+}
+
+.colourClassCardTitle h3 {
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.colourClassCardTitle p {
+    font-size: 13px;
+    font-weight: 400;
+}
+
+@media (max-width: 768px) {
+    
+
+    .cardSection {
+        padding: 40px 20px 0px;
+    }
+
+    .cardMain {
+        flex-direction: column;
+    }
+
+    .colourClassCard {
+        width: 100%;
+    }
+
+    .colourClassCardImage {
+        height: 350px;
+    }
+
+    .colourClassCardTitle h3 {
+        margin-top: 10px;
+    }
+
+    .colourClassCardTitle p {
+        font-size: 12px;
+    }
+}

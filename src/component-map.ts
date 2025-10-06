@@ -14,6 +14,8 @@ import CenterInfoText from '@/components/CenterInfoText/CenterInfoText';
 import SustainabilityGallery from '@/app/(public)/sustainability/components/SustainabilityGallery/SustainabilityGallery';
 import FrameColors from '@/components/FrameColors/FrameColors';
 import AboutCompany from './app/(public)/about/components/AboutCompany/AboutCompany';
+import SystemAbout from './app/(public)/system/components/SystemAbout/SystemAbout';
+import ColourClassCard from './components/ColourClassCard/ColourClassCard';
 
 export const componentMap = {
   Hero,
@@ -32,6 +34,8 @@ export const componentMap = {
   SustainabilityGallery,
   FrameColors,
   AboutCompany,
+  SystemAbout,
+  ColourClassCard,
 };
 
 export type ComponentName = keyof typeof componentMap;
