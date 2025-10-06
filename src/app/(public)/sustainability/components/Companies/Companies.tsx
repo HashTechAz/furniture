@@ -1,14 +1,22 @@
 import React from "react";
 import styles from "./Companies.module.css";
 
-const Companies = () => {
+interface CompaniesProps {
+  title?: string;
+  author?: string;
+  authorTitle?: string;
+}
+
+const Companies = ({ 
+  title = "Just as the modules offer infinite possibilities for combination, the colours also need to be able to be mixed and matched",
+  author = "Joakim Lassen",
+  authorTitle = "CEO"
+}: CompaniesProps) => {
   return (
     <>
       <section className={styles.companies}>
         <div className={styles.companiesTitle}>
-          <h4>
-          Just as the modules offer infinite possibilities for combination, the colours also need to be able to be mixed and matched
-          </h4>
+          <h4>{title}</h4>
           <div className={styles.companyBox}>
             <p>
               <svg
@@ -24,8 +32,7 @@ const Companies = () => {
           </div>
 
           <div className={styles.companyAuthor}>
-            <span>Joakim Lassen, CEO
-            </span>
+            <span>{author}, {authorTitle}</span>
           </div>
         </div>
       </section>

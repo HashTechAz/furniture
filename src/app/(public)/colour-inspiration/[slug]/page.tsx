@@ -3,14 +3,31 @@ import { notFound } from "next/navigation";
 import { componentMap, ComponentName } from "@/component-map";
 import pageStyles from "./page.module.css";
 
+
+
+
+
+
 const cathrinePaletteRightImageProps = {
   title: "Colour as therapy",
-  description: "Colours to Cathrine are both a sort of therapy and sanctuary. Whenever she throws herself at a new decoration project in her home, she works with emotions and energies, and hardly ever have a plan to begin with. Go about it as Cathrine and build your own Montana composition in our vibrant colour palette.  ",
+  description: "Colours to Cathrine are both a sort of therapy and sanctuary. Whenever she throws herself at a new decoration project in her home, she works with emotions and energies, and hardly ever have a plan to begin with. Go about it as Cathrine and build your own Montana composition in our vibrant colour palette.",
   buttonText: "Explore now",
   buttonLink: "/news/palette-refresh",
   imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg36571.jpg?mode=crop&width=540&height=720",
   backgroundColor: "#C9B176",
 };
+
+const cathrinePalette2RightImageProps = {
+  title: "Céline Hallas",
+  description: "Photographer and Montana colour ambassador @celinehallas has a lifelong passion for colours. Her deep knowledge of colours and how to use them enables her to offer the best advice and inspiration through her pictures. In our digital concept, Colour Class, we've partnered with Color Connaisseur by Céline Hallas to empower you to confidently embrace and transform your interior spaces with the vibrant world of colours.",
+  buttonText: "Explore Color Cannaisseur",
+  buttonLink: "/news/palette-refresh",
+  imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/creative-minds/celine-hallas/celine-hallas.jpg?mode=crop&width=540&height=720",
+  backgroundColor: "#EFC7C7",
+};
+
+
+
 const inspirationPageData: any = {
   "colour-class": {
     components: [
@@ -31,11 +48,59 @@ const inspirationPageData: any = {
         },
       },
       { component: "SystemAbout", props: {} },
+      { 
+        component: "CenterInfoText", 
+        props: {
+          title: "🎨 Master the Art of Color 🎨",
+          description: "Welcome to Montana's exclusive Colour Class, where we transform your understanding of color from basic knowledge to professional expertise. This comprehensive program is designed for anyone who wants to create stunning, harmonious spaces that reflect their personal style and enhance their daily life.",
+          secondParagraph: "Through our partnership with Color Connaisseur by Céline Hallas, you'll learn the psychology of color, discover how different hues affect mood and behavior, and master the techniques used by professional interior designers. From understanding color theory to creating mood boards, you'll gain the confidence to make bold color choices that truly transform your space."
+        }
+      },
       { component: "PaletteLeftImage", props: cathrinePaletteRightImageProps },
       { component: "ColourClassCard", props: {} },
+      { component: "PaletteRightImage", props: cathrinePalette2RightImageProps },
+      {component: 'Form', props: {}},
+      
     ],
   },
-  // 'colours-of-comfort': { /* ... */ }
+  "colours-of-comfort": {
+    components: [
+      {
+        component: 'SystemHero',
+        props: {
+          title: 'Colours of comfort - A new palette for serene spaces',
+          backgroundColor: '#EFC7C7',
+          color: '#000',
+        }
+      },
+      { 
+        component: "Companies", 
+        props: {
+          title: "The psychology of color in interior design goes far beyond mere aesthetics – curated comfort color palette draws inspiration from nature's most soothing elements, from the gentle warmth of morning sunlight to the calming depths of forest greens and ocean blues. These colors aren't just beautiful to look at; they're scientifically proven to reduce stress, promote relaxation, and create a sense of security and peace in your home environment.",
+          author: "Céline Hallas",
+          authorTitle: "Color Ambassador & Photographer"
+        }
+      },
+      {
+        component: "HomeVideo",
+        props: {
+          imageUrl:
+            "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/creative-minds/ceciline-hallas/celinehallasxmontana_color_03.jpg?mode=crop&width=1520&height=10933",
+        },
+      },
+        { 
+          component: "CenterInfoText", 
+          props: {
+            title: "🌟 Creating Comfort Through Color 🌟",
+            description: "Colors have the remarkable ability to transform not just our spaces, but our emotions and well-being. In our fast-paced world, creating a sanctuary at home has become more important than ever. The right color palette can instantly make a room feel warm and inviting, or cool and calming, depending on what you need most.",
+            secondParagraph: "Our carefully curated collection of comfort colors draws inspiration from nature's most soothing palettes – from the soft blush of a sunset to the deep, grounding tones of earth and stone. These colors aren't just beautiful; they're scientifically proven to promote relaxation, reduce stress, and create a sense of security and peace in your home."
+          }
+        },
+      { component: "FrameColors", props: {} },
+      { component: "ComfortCard", props: {} },
+       {component: "ProductSlider", props: {}}
+    ],
+  },
 };
 
 const getPageData = (slug: string) => {
@@ -66,15 +131,11 @@ const ColourInspirationPage = async ({
           return null;
         }
 
-        // --- YENİ MƏNTİQ BURADADIR ---
         if (
           [
             "CenterInfoText",
             "Companies",
             "HomeVideo",
-            "PaletteRightImage",
-            "ProductSlider",
-            "Form",
             "Related",
           ].includes(block.component)
         ) {

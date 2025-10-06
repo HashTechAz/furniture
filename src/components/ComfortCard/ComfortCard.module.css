@@ -1,0 +1,64 @@
+.comfortCard {
+  width: 100%;
+  padding: 60px 80px;
+}
+
+.comfortCardMain {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comfortCardItem {
+  width: 32%;
+  text-align: center;
+}
+
+.comfortCardItem h3 {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+  margin: 10px 0px 0px;
+}
+
+.comfortCardItemContent {
+  width: 100%;
+  padding: 0px 20px;
+}
+
+.comfortCardItem p {
+  font-size: 13px;
+  font-weight: 400;
+  color: #333;
+}
+
+.comfortCardItem img {
+  width: 100%;
+  height: 550px;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .comfortCard {
+    padding: 40px 20px;
+  }
+
+  .comfortCardMain {
+    flex-direction: column;
+  }
+
+  .comfortCardItem {
+    width: 100%;
+  }
+
+  .comfortCardItem img {
+    height: 300px;
+  }
+
+  .comfortCardItemContent {
+    padding: 0px 0px;
+    text-align: left;
+  }
+  
+}

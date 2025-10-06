@@ -16,6 +16,9 @@ import FrameColors from '@/components/FrameColors/FrameColors';
 import AboutCompany from './app/(public)/about/components/AboutCompany/AboutCompany';
 import SystemAbout from './app/(public)/system/components/SystemAbout/SystemAbout';
 import ColourClassCard from './components/ColourClassCard/ColourClassCard';
+import NewsCard from './components/NewsCard/NewsCard';
+import SystemHero from './app/(public)/system/components/SystemHero/SystemHero';
+import ComfortCard from './components/ComfortCard/ComfortCard';
 
 export const componentMap = {
   Hero,
@@ -36,6 +39,9 @@ export const componentMap = {
   AboutCompany,
   SystemAbout,
   ColourClassCard,
+  NewsCard,
+  SystemHero,
+  ComfortCard,
 };
 
 export type ComponentName = keyof typeof componentMap;

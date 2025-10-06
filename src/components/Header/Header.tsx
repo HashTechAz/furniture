@@ -46,6 +46,7 @@ const Header: React.FC = () => {
   const isCelinePage = pathname === "/creative-minds/celine";
   const isSarahPage = pathname === "/creative-minds/sarah";
   const isColourClassPage = pathname === "/colour-inspiration/colour-class";
+  const isColoursOfComfortPage = pathname === "/colour-inspiration/colours-of-comfort";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -190,6 +191,7 @@ const Header: React.FC = () => {
           ${isCelinePage ? styles.celineHeader : ""}
           ${isSarahPage ? styles.sarahHeader : ""}
           ${isColourClassPage ? styles.colourClassHeader : ""}
+          ${isColoursOfComfortPage ? styles.coloursOfComfortHeader : ""}
         `}
       >
         <nav className={styles.navbar}>

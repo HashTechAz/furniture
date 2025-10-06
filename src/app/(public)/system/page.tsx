@@ -27,7 +27,7 @@ const page = () => {
         id='header-trigger'
         style={{ height: 1, backgroundColor: "#2C3587" }}
       />
-      <SystemHero />
+      <SystemHero title="Environment and quality — Montana's environmental certifications and initiatives" />
       <SystemAbout />
       <Size />
       <ProductSlider
