@@ -39,7 +39,10 @@ const inspirationPageData: any = {
           textColor: "#fff",
         }
       },
-      // Bu səhifəyə gələcəkdə başqa komponentlər əlavə edə bilərsiniz
+      {
+        component: 'Catalogues',
+        props: {}
+      }
     ]
   }
 };

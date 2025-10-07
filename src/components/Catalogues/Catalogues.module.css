@@ -1,0 +1,58 @@
+.catalogues {
+    width: 100%;
+    padding: 60px 80px;
+}
+
+.cataloguesMain {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.catalogues h1 {
+    font-size: 32px;
+    font-weight: 400;
+    color: #020203;
+    margin-bottom: 1.2em;
+}
+
+.cataloguesItem {
+    width: auto;
+    height: auto;
+}
+
+.cataloguesItem img {
+    width: 310px;
+    height: 420px;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .catalogues {
+        padding: 40px 20px;
+    }
+
+    .catalogues h1 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .cataloguesMain {
+        gap: 20px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .cataloguesItem {
+        width: 47%;
+        height: auto;
+    }
+
+    .cataloguesItem img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        display: block;
+    }
+}
