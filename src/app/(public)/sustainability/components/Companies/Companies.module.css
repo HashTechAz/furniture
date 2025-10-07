@@ -1,96 +1,82 @@
 .companies {
-    width: 100%;
-    padding: 60px 80px;
+  width: 100%;
+  padding: 60px 80px;
 }
 
-.companies .companiesTitle {
-    width: 75%;
-    margin: 0 auto;
-    padding: 4em 6em;
-    position: relative;
+.companiesTitle {
+  width: 75%;
+  margin: 0 auto;
+  position: relative;
 }
 
 .companiesTitle h4 {
-    color: #020203;
-    font-style: italic;
-    font-weight: 500;
-    line-height: 1.6;
-    margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+  color: #020203;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.6;
+  margin: 0;
+  padding: 2.5em 5em; 
 }
 
-.companiesTitle .companyBox {
-    width: 300px;
-    min-height: 300px;
-    background-color: #EAEFD9;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    z-index: -1;
-    padding: 2.5em 3em;
+.companyBox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px; 
+  height: 100%; 
+  z-index: 1; 
+}
+
+.companyBox p {
+  padding: 1.5em 3em;
 }
 
 .companyAuthor {
-    display: flex;
-    flex-direction: row-reverse;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  position: relative;
+  z-index: 2;
 }
 
 .companyAuthor span {
-    font-size: 14px;
-    font-weight: 600;
+  font-size: 14px;
+  font-weight: 600;
 }
 
-/* --- RESPONSIVE STYLES --- */
+
+/* --- MOBİL CİHAZLAR ÜÇÜN --- */
 @media (max-width: 768px) {
-  .companies {
-    padding: 40px 0;
-  }
+.companies {
+  padding: 40px 20px;
+}
 
-  .companies .companiesTitle {
-    width: 100%;
-    margin: 0;
-    padding: 2em 20px;
-    position: relative;
-  }
+.companiesTitle {
+  width: 100%;
+}
 
-  .companiesTitle h4 {
-    padding-right: 20px;
-    font-size: 16px;
-    line-height: 1.4;
-    margin: 60px 0px 0px 30px;
-  }
+.companiesTitle h4 {
+  font-size: 16px;
+  line-height: 1.5;
+  padding: 3.5em 2em 2em 3em;
+}
 
-  .companiesTitle .companyBox {
-    width: 60%;
-    height: 250px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 2em;
-    z-index: -1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-  }
+.companyBox {
+  width: 200px; /* Mobil üçün enini bir az azaldırıq */
+}
 
-  .companyBox p {
-    position: absolute;
-    top: 10px;
-    left: 30px;
-  }
 
-  .companiesTitle span {
-    margin-left: 60px;
-    margin-top: 0;
-  }
 
-  .companyAuthor {
-    align-items: flex-start;
-    margin-left: 60px;
-    margin-top: 10px;
-  }
+.companyBox p {
+  padding: 1.5em;
+}
 
-  .companyAuthor span {
-    font-size: 12px;
-  }
+.companyAuthor {
+  justify-content: flex-end;
+  padding-right: 0;
+  padding-left: 3em;
+  margin-top: 10px;
+}
 }

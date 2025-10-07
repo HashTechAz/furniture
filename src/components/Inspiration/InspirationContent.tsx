@@ -1,9 +1,7 @@
 import React from 'react';
 import styles from './InspirationContent.module.css';
 import Link from 'next/link';
-import NavbarCategoryCard from '../NavbarMenuCards/NavbarCategoryCard'; // Mevcut kart bileşenini kullanıyoruz
 
-// Küçük kart bileşeni güncellendi: Metin resmin altına gelecek şekilde düzenlendi.
 const SmallInspirationCard = ({ title, imageUrl }: { title: string, imageUrl: string }) => (
   <Link href="#" className={styles.smallCard}>
     <div className={styles.smallCardImageWrapper}>
