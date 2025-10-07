@@ -17,6 +17,8 @@ const inspirationPageData: any = {
           variant: "productseries"
         }
       },
+      {
+        component: 'SeriesText', props: {} },
       // Bu səhifəyə gələcəkdə başqa komponentlər əlavə edə bilərsiniz
     ]
   },
