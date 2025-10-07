@@ -33,7 +33,7 @@ const lumikelloHeroProps = {
   title: "Inside the creative mind of",
   titleSpan: "Lumikello",
   description:
-    "Five years ago, when Eva Kaiser founded her creative label Lumikello, she also started sharing images on Instagram of the new interior products photographed in her home. This was the very beginning of Eva’s creative journey as an influencer, which has also led her to working with interior decoration for clients. Read along for a peek inside the creative mind of Eva Kaiser aka Lumikello.",
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus, velit saepe, est illo enim quo praesentium architecto soluta ducimus minima atque labore suscipit sit aperiam voluptates placeat vero ipsam? Unde libero facilis dolor reprehenderit laborum molestiae a accusantium impedit voluptas?",
   imageUrl:
     "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/creative-minds/lumikello/portrat_l.jpg?mode=crop&width=828&height=828",
   imageAlt: "Lumikello Space",
@@ -422,8 +422,8 @@ const mindsPageData: any = {
         component: "CenterInfoText", 
         props: {
           title: "✨ Lumikello's Creative Journey ✨",
-          description: "Eva Kaiser, the creative force behind Lumikello, has transformed her passion for interior design into a thriving brand that inspires thousands. Her journey from a small Instagram account to a recognized design influencer showcases the power of authentic creativity and genuine connection with your audience.",
-          secondParagraph: "Through her work with Montana Furniture, Eva demonstrates how personal style can be translated into functional, beautiful spaces. Her approach to color and composition teaches us that great design isn't about following trends, but about creating spaces that truly reflect who you are and how you want to live."
+          description: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. At minus, nobis porro eius suscipit dolores provident, quam cum laborum sit, officiis odio possimus reprehenderit. Voluptas, rem fugit unde vitae odit voluptate eum accusamus repellendus rerum amet, cupiditate qui distinctio laboriosam!",
+          secondParagraph: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatum debitis, deleniti ipsam magnam dolor placeat doloremque at optio vitae incidunt.  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse nesciunt itaque quo aliquam quos distinctio eligendi necessitatibus doloribus vero cumque explicabo laudantium nihil quasi facilis, saepe veniam facere ad veritatis! Dignissimos dicta similique ullam libero ducimus voluptate iusto a assumenda consectetur ea quam, nesciunt aut, eligendi asperiores! Temporibus, officia illum."
         }
       },
       { component: "MiddleBanner", props: lumikelloBanner1Props },
@@ -438,9 +438,9 @@ const mindsPageData: any = {
       { 
         component: "Companies", 
         props: {
-          title: "Eva's collaboration with Montana Furniture represents the perfect fusion of Scandinavian design principles and contemporary lifestyle needs. Her approach to modular storage solutions demonstrates how thoughtful design can transform not just spaces, but the way we live and work within them. Through her creative vision, she shows us that storage doesn't have to be hidden or purely functional – it can be a beautiful, integral part of our home's aesthetic.",
+          title: "Eva's collaboration with Montana Furniture represents the perfect fusion of Scandinavian design principles she shows us that storage doesn't have to be hidden or purely functional – it can be a beautiful, integral part of our home's aesthetic.",
           author: "Eva Kaiser",
-          authorTitle: "Creative Director, Lumikello"
+          authorTitle: "Creative Director"
         }
       },
       { 

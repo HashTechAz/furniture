@@ -7,10 +7,14 @@ const inspirationPageData: any = {
   'find-more-inspiration': {
     components: [
       {
-        component: 'SystemHero',
+        component: 'HeroSection',
         props: {
-          title: 'Find More Inspiration',
-          backgroundColor: '#EAEFD9', // Açıq rəng
+          title: "Inspiration ",
+          titleSpan: "Creative colour styles and furniture for your home",
+          buttonText: "Explore Series",
+          buttonLink: "/product",
+          backgroundImage: "https://cdn.pixabay.com/video/2023/11/25/190661-888327729_tiny.jpg",
+          variant: "productseries"
         }
       },
       // Bu səhifəyə gələcəkdə başqa komponentlər əlavə edə bilərsiniz

@@ -3,11 +3,6 @@ import { notFound } from "next/navigation";
 import { componentMap, ComponentName } from "@/component-map";
 import pageStyles from "./page.module.css";
 
-
-
-
-
-
 const cathrinePaletteRightImageProps = {
   title: "Colour as therapy",
   description: "Colours to Cathrine are both a sort of therapy and sanctuary. Whenever she throws herself at a new decoration project in her home, she works with emotions and energies, and hardly ever have a plan to begin with. Go about it as Cathrine and build your own Montana composition in our vibrant colour palette.",
@@ -25,8 +20,6 @@ const cathrinePalette2RightImageProps = {
   imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/creative-minds/celine-hallas/celine-hallas.jpg?mode=crop&width=540&height=720",
   backgroundColor: "#EFC7C7",
 };
-
-
 
 const inspirationPageData: any = {
   "colour-class": {
