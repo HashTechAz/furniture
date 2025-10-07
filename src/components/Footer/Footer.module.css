@@ -8,9 +8,13 @@
   width: 100%;
 }
 
-.footerTitle {
-  font-size: 20px;
-  color: #fff;
+
+
+.footerLogo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  background-color: #312e2e;
 }
 
 .parent {

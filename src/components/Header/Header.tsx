@@ -223,7 +223,13 @@ const Header: React.FC = () => {
              </button>
            </div>
           
-           <Link href="/" className={styles.logo}>M. Logo</Link>
+           <Link href="/" className={styles.logo}>
+             <img 
+               src="/images/logo/svlogosparro-01.png" 
+               alt="Sparro Logo" 
+               className={styles.logoImage}
+             />
+           </Link>
            
            <div className={styles.navSearch}>
               <div className={styles.desktopOnly}>

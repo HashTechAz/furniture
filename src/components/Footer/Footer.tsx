@@ -6,7 +6,15 @@ const Footer = () => {
   return (
     <footer className={styles.footer}>
       <div className={styles.footerMain}>
-        <h2 className={styles.footerTitle}>Montana Furniture</h2>
+        <div className={styles.footerTitle}>
+          <Link href="/">
+            <img 
+              src="/images/logo/svlogosparro-01.png" 
+              alt="Sparro Logo" 
+              className={styles.footerLogo}
+            />
+          </Link>
+        </div>
 
         <div className={styles.parent}>
           <div className={`${styles.footerItem} ${styles.info}`}>
