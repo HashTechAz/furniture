@@ -1,0 +1,54 @@
+ .inspiringCard {
+    width: 100%;
+    padding: 60px 80px;
+ }
+
+.inspiringCardMain {
+   width: 100%;
+   display: flex;
+   flex-wrap: wrap;
+   gap: 40px;
+}
+
+ .inspiringCardItem {
+    width: 310px;
+    height: auto;
+    align-items: center;
+ }
+ 
+ .inspiringCardItemImage {
+    object-fit: cover;
+ }
+
+ .inspiringCardItemContent {
+    width: 100%;
+ }
+
+ .inspiringCardItemContent span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+ }
+
+ @media (max-width: 768px) {
+    .inspiringCard {
+        padding: 40px 20px;
+    }
+
+    .inspiringCardMain {
+        gap: 20px;
+    }
+    
+    .inspiringCardItem {
+        width: 47%;
+    }
+    
+    .inspiringCardItemContent {
+        padding: 0px 20px;
+    }
+    .inspiringCardItemContent span {
+        font-size: 12px;
+    }
+ }
+
+ 

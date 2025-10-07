@@ -161,3 +161,15 @@
         background-color: #000 !important;
     }
 }
+
+/* Inspiration variant için özel stiller - sadece mobile'da */
+@media (max-width: 768px) {
+    .inspirationVariant .heroTop {
+        background-color: #633730 !important;
+        color: #fff !important;
+    }
+    
+    .inspirationVariant .heroTitle span::before {
+        background-color: #fff !important;
+    }
+}

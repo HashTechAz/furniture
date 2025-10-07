@@ -20,6 +20,7 @@ import NewsCard from './components/NewsCard/NewsCard';
 import SystemHero from './app/(public)/system/components/SystemHero/SystemHero';
 import ComfortCard from './components/ComfortCard/ComfortCard';
 import HeroSection from './components/HeroSection/HeroSection';
+import InspiringCard from './components/InspiringCard/InspiringCard';
 
 export const componentMap = {
   Hero,
@@ -44,6 +45,7 @@ export const componentMap = {
   SystemHero,
   ComfortCard,
   HeroSection,
+  InspiringCard,
 };
 
 export type ComponentName = keyof typeof componentMap;

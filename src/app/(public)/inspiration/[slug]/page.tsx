@@ -14,11 +14,15 @@ const inspirationPageData: any = {
           buttonText: "Explore Series",
           buttonLink: "/product",
           backgroundImage: "https://cdn.pixabay.com/video/2023/11/25/190661-888327729_tiny.jpg",
-          variant: "productseries"
+          variant: "inspiration"
         }
       },
       {
         component: 'SeriesText', props: {} },
+        {
+          component: 'InspiringCard',
+          props: {}
+        }
       // Bu səhifəyə gələcəkdə başqa komponentlər əlavə edə bilərsiniz
     ]
   },

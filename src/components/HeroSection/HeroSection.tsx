@@ -7,7 +7,7 @@ interface HeroSectionProps {
   buttonText?: string;
   buttonLink?: string;
   backgroundImage?: string;
-  variant?: 'default' | 'productseries';
+  variant?: 'default' | 'productseries' | 'inspiration';
 }
 
 const HeroSection = ({ 
@@ -19,7 +19,7 @@ const HeroSection = ({
   variant = 'default'
 }: HeroSectionProps) => {
     return (
-        <section className={`${styles.hero} ${variant === 'productseries' ? styles.productseriesVariant : ''}`}>
+        <section className={`${styles.hero} ${variant === 'productseries' ? styles.productseriesVariant : ''} ${variant === 'inspiration' ? styles.inspirationVariant : ''}`}>
             {/* Yuxarı rəngli hissə */}
             <div className={styles.heroTop}>
                 <div className={styles.heroContent}>
