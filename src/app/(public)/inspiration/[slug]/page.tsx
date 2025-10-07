@@ -23,16 +23,20 @@ const inspirationPageData: any = {
           component: 'InspiringCard',
           props: {}
         }
-      // Bu səhifəyə gələcəkdə başqa komponentlər əlavə edə bilərsiniz
     ]
   },
   'catalogues': {
     components: [
       {
-        component: 'SystemHero',
+        component: 'Hero',
         props: {
-          title: 'Explore Our Catalogues',
-          backgroundColor: '#BDD2DA', // Açıq mavi rəng
+          title: "Catalogues ",
+          titleSpan: "Find inspiration for the home and modern office environments",
+          description: "",
+          imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-home/2023/location---radiohuset/montana_home_23_24_masala_amber_acacia_camomile_w.jpg?mode=crop&width=1080&height=776",
+          imageAlt: "Catalogues",
+          backgroundColor: "#633730",
+          textColor: "#fff",
         }
       },
       // Bu səhifəyə gələcəkdə başqa komponentlər əlavə edə bilərsiniz

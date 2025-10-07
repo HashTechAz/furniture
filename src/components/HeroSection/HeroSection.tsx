@@ -20,7 +20,6 @@ const HeroSection = ({
 }: HeroSectionProps) => {
     return (
         <section className={`${styles.hero} ${variant === 'productseries' ? styles.productseriesVariant : ''} ${variant === 'inspiration' ? styles.inspirationVariant : ''}`}>
-            {/* Yuxarı rəngli hissə */}
             <div className={styles.heroTop}>
                 <div className={styles.heroContent}>
                     <h1 className={styles.heroTitle}>
@@ -31,7 +30,6 @@ const HeroSection = ({
                     </a>
                 </div>
             </div>
-            {/* Aşağı şəkil hissəsi */}
             <div 
               className={styles.heroBottom}
               style={backgroundImage ? { backgroundImage: `url(${backgroundImage})` } : {}}
