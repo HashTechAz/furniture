@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import styles from "./ProductHero.module.css";
+import useEmblaCarousel from "embla-carousel-react";
 
 // Interfaces
 interface Product {
@@ -28,8 +29,8 @@ interface ProductHeroProps {
 // --- SVG ICONS ---
 const CloseIcon = () => (
   <svg
-    width="20"
-    height="20"
+    width="24"
+    height="24"
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -70,6 +71,58 @@ const CheckmarkIcon = () => (
 );
 
 // --- PANELS ---
+
+// GalleryPanel - YENİ KOMPONENT
+const GalleryPanel = ({
+  images,
+  onClose,
+}: {
+  images: string[];
+  onClose: () => void;
+}) => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  return (
+    <div className={styles.galleryOverlay}>
+      <button onClick={onClose} className={styles.galleryCloseButton}>
+        <CloseIcon />
+      </button>
+      <div className={styles.gallerySliderContainer}>
+        <div className={styles.galleryEmbla} ref={emblaRef}>
+          <div className={styles.galleryEmblaContainer}>
+            {images.map((src, index) => (
+              <div className={styles.galleryEmblaSlide} key={index}>
+                <img src={src} alt={`Product image ${index + 1}`} />
+              </div>
+            ))}
+          </div>
+        </div>
+        <button onClick={scrollNext} className={styles.galleryNextButton}>
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 18L15 12L9 6"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const ColourPanel = ({
   currentColor,
   onSelectColor,
@@ -114,7 +167,6 @@ const ColourPanel = ({
     { name: "Parsley", hex: "#58644f" },
     { name: "Fjord", hex: "#354851" },
   ];
-
   return (
     <div className={styles.panelLayout}>
       <div className={styles.panelContent}>
@@ -164,7 +216,6 @@ const PositionPanel = ({
     "No position (used for stacked modules)",
     "Suspension rail",
   ];
-
   return (
     <div className={styles.panelContent}>
       <div className={styles.panelHeader}>
@@ -179,7 +230,8 @@ const PositionPanel = ({
             }`}
             onClick={() => onSelectPosition(option)}
           >
-            {option}
+            {" "}
+            {option}{" "}
           </li>
         ))}
       </ul>
@@ -187,7 +239,6 @@ const PositionPanel = ({
   );
 };
 
-// YENİ KOMPONENT: DepthPanel
 const DepthPanel = ({
   currentDepth,
   onSelectDepth,
@@ -201,7 +252,6 @@ const DepthPanel = ({
     "Depth 38 cm",
     "Depth 47 cm",
   ];
-
   return (
     <div className={styles.panelContent}>
       <div className={styles.panelHeader}>
@@ -216,7 +266,8 @@ const DepthPanel = ({
             }`}
             onClick={() => onSelectDepth(option)}
           >
-            {option}
+            {" "}
+            {option}{" "}
           </li>
         ))}
       </ul>
@@ -233,9 +284,14 @@ const ProductHero = ({ product }: ProductHeroProps) => {
     product.position
   );
   const [currentProductDepth, setCurrentProductDepth] = useState("Depth 38 cm");
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false); // Gallery üçün state
 
   const handleMenuClick = (menuKey: string) => {
-    setOpenMenu((prev) => (prev === menuKey ? null : menuKey));
+    if (menuKey === "gallery") {
+      setIsGalleryOpen(true);
+    } else {
+      setOpenMenu((prev) => (prev === menuKey ? null : menuKey));
+    }
   };
 
   const menuItems = [
@@ -308,7 +364,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
     {
       key: "depth",
       label: "Depth",
-      value: "currentProductDepth",
+      value: currentProductDepth,
       icon: (
         <svg
           width="20"
@@ -356,12 +412,19 @@ const ProductHero = ({ product }: ProductHeroProps) => {
           <path d="M21 15l-5-5L5 21" stroke="#333" strokeWidth="2" />
         </svg>
       ),
-      panel: <div>Gallery Content</div>,
+      panel: null,
     },
   ];
 
   return (
     <section className={styles.heroSection}>
+      {isGalleryOpen && (
+        <GalleryPanel
+          images={product.images}
+          onClose={() => setIsGalleryOpen(false)}
+        />
+      )}
+
       <div className={styles.heroMain}>
         <div className={styles.heroItem}>
           <ul className={openMenu ? styles.menuIsOpen : ""}>
@@ -382,7 +445,6 @@ const ProductHero = ({ product }: ProductHeroProps) => {
               </li>
             ))}
           </ul>
-
           {openMenu && (
             <div className={styles.panelContainer}>
               {menuItems.find((item) => item.key === openMenu)?.panel}
