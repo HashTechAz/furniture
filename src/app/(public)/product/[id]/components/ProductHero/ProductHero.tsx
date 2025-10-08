@@ -78,11 +78,41 @@ const ColourPanel = ({
   onSelectColor: (color: string) => void;
 }) => {
   const availableColors = [
-    { name: "Snow", hex: "#F0F1EC" }, { name: "White", hex: "#FFFFFF" }, { name: "Oat", hex: "#EAE5D9" }, { name: "Mushroom", hex: "#D8D1C5" }, { name: "Mist", hex: "#D1D3D2" }, { name: "Vanilla", hex: "#F2EBDD" }, { name: "Cumin", hex: "#E2C7A1" },
-    { name: "Clay", hex: "#C6BBAF" }, { name: "Fennel", hex: "#DEE0D5" }, { name: "Flint", hex: "#B7B9B8" }, { name: "Truffle", hex: "#A8A096" }, { name: "Amber", hex: "#F1B470" }, { name: "Hokkaido", hex: "#F2A057" }, { name: "Pomelo", hex: "#E5855E" },
-    { name: "Azure", hex: "#B5D6E1" }, { name: "Ice", hex: "#A2B6C0" }, { name: "Shadow", hex: "#90979E" }, { name: "Balsamic", hex: "#A99A81" }, { name: "Iris", hex: "#A89CB2" }, { name: "Rosehip", hex: "#D36E5D" }, { name: "Ruby", hex: "#B53326" },
-    { name: "Acacia", hex: "#7799D1" }, { name: "Royal", hex: "#3E578A" }, { name: "Juniper", hex: "#5E6B65" }, { name: "Oregano", hex: "#72745E" }, { name: "Truffle", hex: "#6D5F54" }, { name: "Monarch", hex: "#3B3736" }, { name: "Pine", hex: "#58644f" },
-    { name: "Coal", hex: "#4A4B4D" }, { name: "Anthracite", hex: "#3B3B3D" }, { name: "Black", hex: "#2A2A2B" }, { name: "Rhubarb", hex: "#8B2C21" }, { name: "Masala", hex: "#7A3B2E" }, { name: "Parsley", hex: "#58644f" }, { name: "Fjord", hex: "#354851" },
+    { name: "Snow", hex: "#F0F1EC" },
+    { name: "White", hex: "#FFFFFF" },
+    { name: "Oat", hex: "#EAE5D9" },
+    { name: "Mushroom", hex: "#D8D1C5" },
+    { name: "Mist", hex: "#D1D3D2" },
+    { name: "Vanilla", hex: "#F2EBDD" },
+    { name: "Cumin", hex: "#E2C7A1" },
+    { name: "Clay", hex: "#C6BBAF" },
+    { name: "Fennel", hex: "#DEE0D5" },
+    { name: "Flint", hex: "#B7B9B8" },
+    { name: "Truffle", hex: "#A8A096" },
+    { name: "Amber", hex: "#F1B470" },
+    { name: "Hokkaido", hex: "#F2A057" },
+    { name: "Pomelo", hex: "#E5855E" },
+    { name: "Azure", hex: "#B5D6E1" },
+    { name: "Ice", hex: "#A2B6C0" },
+    { name: "Shadow", hex: "#90979E" },
+    { name: "Balsamic", hex: "#A99A81" },
+    { name: "Iris", hex: "#A89CB2" },
+    { name: "Rosehip", hex: "#D36E5D" },
+    { name: "Ruby", hex: "#B53326" },
+    { name: "Acacia", hex: "#7799D1" },
+    { name: "Royal", hex: "#3E578A" },
+    { name: "Juniper", hex: "#5E6B65" },
+    { name: "Oregano", hex: "#72745E" },
+    { name: "Truffle", hex: "#6D5F54" },
+    { name: "Monarch", hex: "#3B3736" },
+    { name: "Pine", hex: "#58644f" },
+    { name: "Coal", hex: "#4A4B4D" },
+    { name: "Anthracite", hex: "#3B3B3D" },
+    { name: "Black", hex: "#2A2A2B" },
+    { name: "Rhubarb", hex: "#8B2C21" },
+    { name: "Masala", hex: "#7A3B2E" },
+    { name: "Parsley", hex: "#58644f" },
+    { name: "Fjord", hex: "#354851" },
   ];
 
   return (
@@ -157,12 +187,52 @@ const PositionPanel = ({
   );
 };
 
+// YENİ KOMPONENT: DepthPanel
+const DepthPanel = ({
+  currentDepth,
+  onSelectDepth,
+}: {
+  currentDepth: string;
+  onSelectDepth: (depth: string) => void;
+}) => {
+  const depthOptions = [
+    "Depth 20 cm",
+    "Depth 30 cm",
+    "Depth 38 cm",
+    "Depth 47 cm",
+  ];
+
+  return (
+    <div className={styles.panelContent}>
+      <div className={styles.panelHeader}>
+        <h3>Depth: {currentDepth}</h3>
+      </div>
+      <ul className={styles.positionList}>
+        {depthOptions.map((option) => (
+          <li
+            key={option}
+            className={`${styles.positionItem} ${
+              currentDepth === option ? styles.activePosition : ""
+            }`}
+            onClick={() => onSelectDepth(option)}
+          >
+            {option}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 const ProductHero = ({ product }: ProductHeroProps) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [currentProductColor, setCurrentProductColor] = useState(product.color);
-  const [currentProductPosition, setCurrentProductPosition] = useState(product.position);
+  const [currentProductPosition, setCurrentProductPosition] = useState(
+    product.position
+  );
+  const [currentProductDepth, setCurrentProductDepth] = useState("Depth 38 cm");
 
   const handleMenuClick = (menuKey: string) => {
     setOpenMenu((prev) => (prev === menuKey ? null : menuKey));
@@ -238,18 +308,53 @@ const ProductHero = ({ product }: ProductHeroProps) => {
     {
       key: "depth",
       label: "Depth",
-      value: "Depth 38 cm",
+      value: "currentProductDepth",
       icon: (
-       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18" stroke="#333" strokeWidth="2"/><path d="M3 3h18" stroke="#333" strokeWidth="2"/><path d="M3 12h4" stroke="#333" strokeWidth="2"/><path d="M9 3v4" stroke="#333" strokeWidth="2"/><path d="M15 3v4" stroke="#333" strokeWidth="2"/></svg>
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M3 3v18" stroke="#333" strokeWidth="2" />
+          <path d="M3 3h18" stroke="#333" strokeWidth="2" />
+          <path d="M3 12h4" stroke="#333" strokeWidth="2" />
+          <path d="M9 3v4" stroke="#333" strokeWidth="2" />
+          <path d="M15 3v4" stroke="#333" strokeWidth="2" />
+        </svg>
       ),
-      panel: <div>Depth Options</div>,
+      panel: (
+        <DepthPanel
+          currentDepth={currentProductDepth}
+          onSelectDepth={setCurrentProductDepth}
+        />
+      ),
     },
     {
       key: "gallery",
       label: "Gallery",
       value: "",
       icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#333" strokeWidth="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="#333"/><path d="M21 15l-5-5L5 21" stroke="#333" strokeWidth="2"/></svg>
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="3"
+            y="3"
+            width="18"
+            height="18"
+            rx="2"
+            stroke="#333"
+            strokeWidth="2"
+          />
+          <circle cx="8.5" cy="8.5" r="1.5" fill="#333" />
+          <path d="M21 15l-5-5L5 21" stroke="#333" strokeWidth="2" />
+        </svg>
       ),
       panel: <div>Gallery Content</div>,
     },
