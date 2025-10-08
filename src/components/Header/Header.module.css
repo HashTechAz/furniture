@@ -343,7 +343,6 @@
 
 /* Product details sayfası için özel styling */
 .productDetailsPage {
-  background-color: #ffffff !important;
   color: #333333 !important;
 }
 
@@ -468,3 +467,4 @@
   background-color: #EAEFD9;
   color: #000;
 }
+

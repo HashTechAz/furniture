@@ -56,7 +56,6 @@ const getProductData = (id: string): Product | undefined => {
   return products.find(product => product.id === parseInt(id));
 };
 
-// params tipi düzeltildi
 interface ProductDetailsPageProps {
   params: {
     id: string;
