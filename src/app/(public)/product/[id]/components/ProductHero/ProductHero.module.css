@@ -17,7 +17,7 @@
   display: flex;
   align-items: flex-end;
   padding-bottom: 2rem;
-  position: relative; /* DƏYİŞİKLİK: Panelin pozisiyası üçün əsas olur */
+  position: relative;
 }
 
 .heroItem ul {
@@ -70,23 +70,21 @@
   transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
-/* DƏYİŞİKLİK: Panel açıq olanda bütün yazıları gizlədir */
 .menuIsOpen .menuItemLabel {
   opacity: 0;
   visibility: hidden;
 }
 
-
-/* --- PANEL (MODAL) STİLLƏRİ - DƏYİŞİKLİKLƏR --- */
+/* --- PANEL (MODAL) STİLLƏRİ --- */
 .panelContainer {
   position: absolute;
-  left: 60px; /* İkonlardan 15px sağda */
-  top: 55%; /* Konteynerin (heroItem) şaquli mərkəzi */
-  transform: translateY(-50%); /* Paneli öz hündürlüyünün yarısı qədər yuxarı çəkərək tam mərkəzləyir */
+  left: 60px;
+  top: 55%;
+  transform: translateY(-50%);
   width: 420px;
-  /* background-color: #fff; */
+  background-color: #fff;
   border-radius: 8px;
-  /* box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15); */
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
   z-index: 10;
   animation: fadeIn 0.3s ease-out;
 }
@@ -94,35 +92,6 @@
 .panelLayout {
   display: flex;
 }
-
-/* .panelToolbar {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  gap: 0.5rem;
-  background-color: #f7f7f7;
-  border-right: 1px solid #e0e0e0;
-}
-
-.toolbarButton {
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s ease;
-  border: none;
-  background: none;
-}
-
-.toolbarButton:hover {
-  background-color: #e9e9e9;
-}
-
-.toolbarButtonActive {
-  background-color: #e0e0e0;
-} */
 
 .panelContent {
   padding: 1.5rem;
@@ -147,22 +116,19 @@
 
 .colorGrid {
   display: grid;
-  /* DƏYİŞİKLİK: Sətirdə 7 element olmasını təmin edir */
-  grid-template-columns: repeat(7, 1fr); 
-  gap: 0.75rem; /* Boşluğu bir az azaldırıq ki, səliqəli görünsün */
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.75rem;
 }
 
 .colorSwatchWrapper {
   cursor: pointer;
-  /* DƏYİŞİKLİK: Grid elementlərini mərkəzləyirik */
   display: flex;
   justify-content: center;
 }
 
 .colorSwatch {
-  /* DƏYİŞİKLİK: Ölçüləri böyüdürük */
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 4px;
   position: relative;
   display: flex;
@@ -181,11 +147,39 @@
   filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));
 }
 
-
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-50%) translateX(-10px); }
   to { opacity: 1; transform: translateY(-50%) translateX(0); }
 }
+
+/* --- POSITION PANEL STYLES --- */
+.positionList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.positionItem {
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.positionItem:hover {
+  background-color: #f5f5f5;
+}
+
+.activePosition {
+  background-color: #e9e9e9;
+  font-weight: 600;
+}
+
 
 /* --- ORTA HİSSƏ --- */
 .heroProductImage {
@@ -334,80 +328,72 @@
   font-style: italic;
 }
 
-
-
-/* --- POSITION PANEL STYLES --- */
-.positionList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.positionItem {
-  padding: 10px 12px;
-  font-size: 13px;
-  font-weight: 500;
-  color: #333;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
-}
-
-.positionItem:hover {
-  background-color: #f5f5f5;
-}
-
-.activePosition {
-  background-color: #e9e9e9;
-  font-weight: 600;
-}
-
-
-
-/* --- GALLERY PANEL STYLES --- */
+/* --- GALLERY PANEL STYLES (YENİLƏNMİŞ) --- */
 .galleryOverlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #f5f5f5;
+  background-color: #fff;
   z-index: 2000;
   display: flex;
+  flex-direction: column;
+  animation: gallerySlideUp 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes gallerySlideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.galleryHeader {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  animation: galleryFadeIn 0.3s ease;
+  padding: 1rem 2.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  flex-shrink: 0;
 }
 
-@keyframes galleryFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.galleryTitle {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
 }
 
-.galleryCloseButton {
-  position: absolute;
-  top: 40px;
-  right: 40px;
-  background: rgba(255, 255, 255, 0.8);
+.galleryNav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.galleryNavButton, .galleryCloseButton {
+  background: none;
+  border: 1px solid #ccc;
   border-radius: 50%;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border: none;
-  z-index: 2002;
+  font-size: 1.5rem;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.galleryNavButton:hover, .galleryCloseButton:hover {
+  background-color: #f0f0f0;
+  border-color: #333;
 }
 
 .gallerySliderContainer {
-  position: relative;
+  flex-grow: 1;
   width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
+  overflow: hidden;
 }
 
 .galleryEmbla {
@@ -417,34 +403,28 @@
 
 .galleryEmblaContainer {
   display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .galleryEmblaSlide {
-  flex: 0 0 70%; /* Hər slayd ekranın 70%-ni tutur */
-  min-width: 0;
-  padding: 0 20px; /* Slaydlar arası boşluq */
-  position: relative;
-}
-
-.galleryEmblaSlide img {
-  width: 100%;
-  height: 80vh; /* Şəkillərin hündürlüyü */
-  object-fit: contain;
-}
-
-.galleryNextButton {
-  position: absolute;
-  right: 5%;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(0,0,0,0.5);
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  border: none;
-  cursor: pointer;
+  flex: 0 0 auto;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2001;
+  margin-right: 2rem;
+  position: relative;
+}
+
+.galleryEmblaSlide:first-child {
+  margin-left: 2.5rem;
+}
+
+.galleryEmblaSlide img {
+  height: 100%;
+  width: auto;
+  max-height: 75vh;
+  object-fit: contain;
+  border-radius: 4px;
 }

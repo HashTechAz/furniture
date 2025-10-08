@@ -3,6 +3,8 @@
 import React, { useState, useCallback } from "react";
 import styles from "./ProductHero.module.css";
 import useEmblaCarousel from "embla-carousel-react";
+// YENİ İMPORT: System səhifəsindəki slavyderin stillərini idxal edirik
+import systemSliderStyles from "@/components/ProductSlider/ProductSliderSystem.module.css";
 
 // Interfaces
 interface Product {
@@ -51,7 +53,6 @@ const CloseIcon = () => (
     />
   </svg>
 );
-
 const CheckmarkIcon = () => (
   <svg
     width="16"
@@ -72,15 +73,24 @@ const CheckmarkIcon = () => (
 
 // --- PANELS ---
 
-// GalleryPanel - YENİ KOMPONENT
+// YENİLƏNMİŞ GalleryPanel Komponenti
 const GalleryPanel = ({
+  title,
   images,
   onClose,
 }: {
+  title: string;
   images: string[];
   onClose: () => void;
 }) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "start",
+    dragFree: true,
+  });
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
 
   const scrollNext = useCallback(() => {
     if (emblaApi) emblaApi.scrollNext();
@@ -88,36 +98,48 @@ const GalleryPanel = ({
 
   return (
     <div className={styles.galleryOverlay}>
-      <button onClick={onClose} className={styles.galleryCloseButton}>
-        <CloseIcon />
-      </button>
+      <header className={styles.galleryHeader}>
+        <h3 className={styles.galleryTitle}>{title} Gallery</h3>
+        <div className={styles.galleryNav}>
+          <button onClick={scrollPrev} className={styles.galleryNavButton}>
+            &larr;
+          </button>
+          <button onClick={scrollNext} className={styles.galleryNavButton}>
+            &rarr;
+          </button>
+          <button onClick={onClose} className={styles.galleryCloseButton}>
+            &times;
+          </button>
+        </div>
+      </header>
       <div className={styles.gallerySliderContainer}>
-        <div className={styles.galleryEmbla} ref={emblaRef}>
-          <div className={styles.galleryEmblaContainer}>
-            {images.map((src, index) => (
-              <div className={styles.galleryEmblaSlide} key={index}>
-                <img src={src} alt={`Product image ${index + 1}`} />
-              </div>
-            ))}
+        {/* System səhifəsindəki slavyderin stillərini burada istifadə edirik */}
+        <div className={systemSliderStyles.embla} ref={emblaRef}>
+          <div className={systemSliderStyles.embla__container}>
+            {images.slice(0, 3).map(
+              (
+                src,
+                index // Sadəcə 3 şəkil göstəririk
+              ) => (
+                <div className={systemSliderStyles.embla__slide} key={index}>
+                  <div
+                    className={`${systemSliderStyles.slideItem} ${
+                      index === 0
+                        ? systemSliderStyles.wide
+                        : systemSliderStyles.normal
+                    }`}
+                  >
+                    <img
+                      src={src}
+                      alt={`Product image ${index + 1}`}
+                      className={systemSliderStyles.cardImage}
+                    />
+                  </div>
+                </div>
+              )
+            )}
           </div>
         </div>
-        <button onClick={scrollNext} className={styles.galleryNextButton}>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M9 18L15 12L9 6"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
       </div>
     </div>
   );
@@ -284,11 +306,12 @@ const ProductHero = ({ product }: ProductHeroProps) => {
     product.position
   );
   const [currentProductDepth, setCurrentProductDepth] = useState("Depth 38 cm");
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false); // Gallery üçün state
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
 
   const handleMenuClick = (menuKey: string) => {
     if (menuKey === "gallery") {
       setIsGalleryOpen(true);
+      setOpenMenu(null);
     } else {
       setOpenMenu((prev) => (prev === menuKey ? null : menuKey));
     }
@@ -420,6 +443,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
     <section className={styles.heroSection}>
       {isGalleryOpen && (
         <GalleryPanel
+          title={product.title}
           images={product.images}
           onClose={() => setIsGalleryOpen(false)}
         />
