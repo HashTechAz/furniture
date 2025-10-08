@@ -28,8 +28,7 @@ export interface Product {
   };
 }
 
-// ProductDetailsPage içinde ProductHero'yu çağırırken güncelleme gerek yok
-// Sadece product verisinde depth alanı eklemeniz gerekebilir
+
 
 const getProductData = (id: string): Product | undefined => {
   const products: Product[] = [

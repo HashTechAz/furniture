@@ -55,7 +55,6 @@
     right: -8em;
 }
 
-/* Custom image styles - 460x460 */
 .customImage .paletteOneColor {
     width: 530px;
     height: 530px;
@@ -184,7 +183,6 @@
         z-index: 2;
     }
 
-    /* Custom image responsive styles */
     .customImage .paletteOneColor {
         width: 280px !important;
         height: 380px !important;
