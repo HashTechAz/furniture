@@ -78,103 +78,15 @@ const ColourPanel = ({
   onSelectColor: (color: string) => void;
 }) => {
   const availableColors = [
-    { name: "Snow", hex: "#F0F1EC" },
-    { name: "White", hex: "#FFFFFF" },
-    { name: "Oat", hex: "#EAE5D9" },
-    { name: "Mushroom", hex: "#D8D1C5" },
-    { name: "Mist", hex: "#D1D3D2" },
-    { name: "Vanilla", hex: "#F2EBDD" },
-    { name: "Cumin", hex: "#E2C7A1" },
-    { name: "Clay", hex: "#C6BBAF" },
-    { name: "Fennel", hex: "#DEE0D5" },
-    { name: "Flint", hex: "#B7B9B8" },
-    { name: "Truffle", hex: "#A8A096" },
-    { name: "Amber", hex: "#F1B470" },
-    { name: "Hokkaido", hex: "#F2A057" },
-    { name: "Pomelo", hex: "#E5855E" },
-    { name: "Azure", hex: "#B5D6E1" },
-    { name: "Ice", hex: "#A2B6C0" },
-    { name: "Shadow", hex: "#90979E" },
-    { name: "Balsamic", hex: "#A99A81" },
-    { name: "Iris", hex: "#A89CB2" },
-    { name: "Rosehip", hex: "#D36E5D" },
-    { name: "Ruby", hex: "#B53326" },
-    { name: "Acacia", hex: "#7799D1" },
-    { name: "Royal", hex: "#3E578A" },
-    { name: "Juniper", hex: "#5E6B65" },
-    { name: "Oregano", hex: "#72745E" },
-    { name: "Truffle", hex: "#6D5F54" },
-    { name: "Monarch", hex: "#3B3736" },
-    { name: "Pine", hex: "#58644f" },
-    { name: "Coal", hex: "#4A4B4D" },
-    { name: "Anthracite", hex: "#3B3B3D" },
-    { name: "Black", hex: "#2A2A2B" },
-    { name: "Rhubarb", hex: "#8B2C21" },
-    { name: "Masala", hex: "#7A3B2E" },
-    { name: "Parsley", hex: "#58644f" },
-    { name: "Fjord", hex: "#354851" },
-    { name: "Hokkaido", hex: "#F2A057" },
-    { name: "Pomelo", hex: "#E5855E" },
-    { name: "Azure", hex: "#B5D6E1" },
+    { name: "Snow", hex: "#F0F1EC" }, { name: "White", hex: "#FFFFFF" }, { name: "Oat", hex: "#EAE5D9" }, { name: "Mushroom", hex: "#D8D1C5" }, { name: "Mist", hex: "#D1D3D2" }, { name: "Vanilla", hex: "#F2EBDD" }, { name: "Cumin", hex: "#E2C7A1" },
+    { name: "Clay", hex: "#C6BBAF" }, { name: "Fennel", hex: "#DEE0D5" }, { name: "Flint", hex: "#B7B9B8" }, { name: "Truffle", hex: "#A8A096" }, { name: "Amber", hex: "#F1B470" }, { name: "Hokkaido", hex: "#F2A057" }, { name: "Pomelo", hex: "#E5855E" },
+    { name: "Azure", hex: "#B5D6E1" }, { name: "Ice", hex: "#A2B6C0" }, { name: "Shadow", hex: "#90979E" }, { name: "Balsamic", hex: "#A99A81" }, { name: "Iris", hex: "#A89CB2" }, { name: "Rosehip", hex: "#D36E5D" }, { name: "Ruby", hex: "#B53326" },
+    { name: "Acacia", hex: "#7799D1" }, { name: "Royal", hex: "#3E578A" }, { name: "Juniper", hex: "#5E6B65" }, { name: "Oregano", hex: "#72745E" }, { name: "Truffle", hex: "#6D5F54" }, { name: "Monarch", hex: "#3B3736" }, { name: "Pine", hex: "#58644f" },
+    { name: "Coal", hex: "#4A4B4D" }, { name: "Anthracite", hex: "#3B3B3D" }, { name: "Black", hex: "#2A2A2B" }, { name: "Rhubarb", hex: "#8B2C21" }, { name: "Masala", hex: "#7A3B2E" }, { name: "Parsley", hex: "#58644f" }, { name: "Fjord", hex: "#354851" },
   ];
 
   return (
     <div className={styles.panelLayout}>
-      {/* <div className={styles.panelToolbar}>
-        <button
-          className={`${styles.toolbarButton} ${styles.toolbarButtonActive}`}
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M21.5 9.5C21.5 16.5 12 21.5 12 21.5C12 21.5 2.5 16.5 2.5 9.5C2.5 5.35786 6.85786 1 12 1C17.1421 1 21.5 5.35786 21.5 9.5Z"
-              stroke="#333"
-              strokeWidth="1.5"
-            />
-          </svg>
-        </button>
-        <button className={styles.toolbarButton}>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect
-              x="3"
-              y="3"
-              width="18"
-              height="18"
-              rx="1"
-              stroke="#333"
-              strokeWidth="1.5"
-            />
-          </svg>
-        </button>
-        <button className={styles.toolbarButton}>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M11 2L20 11L11 20"
-              stroke="#333"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-      </div> */}
       <div className={styles.panelContent}>
         <div className={styles.panelHeader}>
           <h3>Colour: {currentColor}</h3>
@@ -207,11 +119,50 @@ const ColourPanel = ({
   );
 };
 
+const PositionPanel = ({
+  currentPosition,
+  onSelectPosition,
+}: {
+  currentPosition: string;
+  onSelectPosition: (position: string) => void;
+}) => {
+  const positionOptions = [
+    "Plinth H3 cm",
+    "Plinth H7 cm",
+    "Castors H6.8 cm",
+    "Legs H12.6 cm",
+    "No position (used for stacked modules)",
+    "Suspension rail",
+  ];
+
+  return (
+    <div className={styles.panelContent}>
+      <div className={styles.panelHeader}>
+        <h3>Position: {currentPosition}</h3>
+      </div>
+      <ul className={styles.positionList}>
+        {positionOptions.map((option) => (
+          <li
+            key={option}
+            className={`${styles.positionItem} ${
+              currentPosition === option ? styles.activePosition : ""
+            }`}
+            onClick={() => onSelectPosition(option)}
+          >
+            {option}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 const ProductHero = ({ product }: ProductHeroProps) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [currentProductColor, setCurrentProductColor] = useState(product.color);
+  const [currentProductPosition, setCurrentProductPosition] = useState(product.position);
 
   const handleMenuClick = (menuKey: string) => {
     setOpenMenu((prev) => (prev === menuKey ? null : menuKey));
@@ -251,7 +202,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
     {
       key: "position",
       label: "Position",
-      value: product.position,
+      value: currentProductPosition,
       icon: (
         <svg
           width="20"
@@ -277,26 +228,19 @@ const ProductHero = ({ product }: ProductHeroProps) => {
           />
         </svg>
       ),
-      panel: <div>Position Options</div>,
+      panel: (
+        <PositionPanel
+          currentPosition={currentProductPosition}
+          onSelectPosition={setCurrentProductPosition}
+        />
+      ),
     },
     {
       key: "depth",
       label: "Depth",
       value: "Depth 38 cm",
       icon: (
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M3 3v18" stroke="#333" strokeWidth="2" />
-          <path d="M3 3h18" stroke="#333" strokeWidth="2" />
-          <path d="M3 12h4" stroke="#333" strokeWidth="2" />
-          <path d="M9 3v4" stroke="#333" strokeWidth="2" />
-          <path d="M15 3v4" stroke="#333" strokeWidth="2" />
-        </svg>
+       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18" stroke="#333" strokeWidth="2"/><path d="M3 3h18" stroke="#333" strokeWidth="2"/><path d="M3 12h4" stroke="#333" strokeWidth="2"/><path d="M9 3v4" stroke="#333" strokeWidth="2"/><path d="M15 3v4" stroke="#333" strokeWidth="2"/></svg>
       ),
       panel: <div>Depth Options</div>,
     },
@@ -305,25 +249,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
       label: "Gallery",
       value: "",
       icon: (
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect
-            x="3"
-            y="3"
-            width="18"
-            height="18"
-            rx="2"
-            stroke="#333"
-            strokeWidth="2"
-          />
-          <circle cx="8.5" cy="8.5" r="1.5" fill="#333" />
-          <path d="M21 15l-5-5L5 21" stroke="#333" strokeWidth="2" />
-        </svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#333" strokeWidth="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="#333"/><path d="M21 15l-5-5L5 21" stroke="#333" strokeWidth="2"/></svg>
       ),
       panel: <div>Gallery Content</div>,
     },
@@ -352,7 +278,6 @@ const ProductHero = ({ product }: ProductHeroProps) => {
             ))}
           </ul>
 
-          {/* DƏYİŞİKLİK: Panel `ul`-dan kənara, `heroItem`-in içinə çıxarıldı */}
           {openMenu && (
             <div className={styles.panelContainer}>
               {menuItems.find((item) => item.key === openMenu)?.panel}
