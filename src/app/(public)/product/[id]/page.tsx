@@ -2,7 +2,6 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import styles from './page.module.css';
 
-// Bileşenleri import ediyoruz
 import ProductHero from './components/ProductHero/ProductHero';
 import SystemAbout from '@/app/(public)/system/components/SystemAbout/SystemAbout';
 import SystemPalette from '@/components/Palette/SystemPalette';
@@ -11,7 +10,6 @@ import ProductNewsSlider from '@/components/ProductNewsSlider/ProductNewsSlider'
 import ProductSlider from '@/components/ProductSlider/ProductSlider';
 
 
-// DƏYİŞİKLİK: Interfeys yeniləndi
 export interface Product {
   id: number;
   title: string;
@@ -20,8 +18,8 @@ export interface Product {
   position: string;
   description: string;
   price: string;
-  mainImage: string; // Əsas şəkil üçün yeni xüsusiyyət
-  galleryImages: string[]; // Qalereya şəkilləri üçün yeni xüsusiyyət
+  mainImage: string; 
+  galleryImages: string[]; 
   specifications: {
     material: string;
     finish: string;
@@ -42,7 +40,6 @@ const getProductData = (id: string): Product | undefined => {
       position: "Legs H12.6 cm",
       description: "A modern and functional shelf that combines style with practicality. Perfect for organizing your space with elegance.",
       price: "€299",
-      // DƏYİŞİKLİK: Şəkillər ayrıldı
       mainImage: "https://artist.v2.londondynamics.com/image/28d24461-579e-4156-99c4-ca336f4369db/23e6ae32-2859-4e99-bbdd-5ed6eabfc6e9/11afc59b-7ecf-64b5-39a2-875021883793/1.jpg?width=720&height=720&bgcolour=f5f5f5",
       galleryImages: [
         "https://b2c.montana-episerver.com/globalassets/inriver/product/001112/montana_home19_20_bcstudio_livingroom_system_amber_caribe_iris_masala_oregano_rosehip_parsley_detail02_w.jpg?mode=crop&width=1520&height=1093",

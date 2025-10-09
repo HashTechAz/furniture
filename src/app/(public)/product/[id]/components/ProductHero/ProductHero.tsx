@@ -4,7 +4,6 @@ import React, { useState, useCallback } from "react";
 import styles from "./ProductHero.module.css";
 import useEmblaCarousel from "embla-carousel-react";
 
-// Interfaces
 interface Product {
   id: number;
   title: string;
@@ -27,7 +26,6 @@ interface ProductHeroProps {
   product: Product;
 }
 
-// --- SVG ICONS ---
 const CloseIcon = () => (
   <svg
     width="24"
@@ -70,9 +68,7 @@ const CheckmarkIcon = () => (
   </svg>
 );
 
-// --- PANELS ---
 
-// DÜZƏLDİLMİŞ GalleryPanel Komponenti
 const GalleryPanel = ({
   title,
   images,
@@ -450,7 +446,6 @@ const ProductHero = ({ product }: ProductHeroProps) => {
         <div className={styles.heroItemIcons}>
           {openMenu === item.key ? <CloseIcon /> : item.icon}
         </div>
-        {/* DƏYİŞİKLİK BURADADIR */}
         <span className={styles.menuItemLabel}>
           {item.label}
           {item.value && <span className={styles.menuItemValue}>: {item.value}</span>}
