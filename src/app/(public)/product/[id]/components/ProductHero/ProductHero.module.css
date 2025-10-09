@@ -82,9 +82,7 @@
   top: 55%;
   transform: translateY(-50%);
   width: 420px;
-  background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
   z-index: 10;
   animation: fadeIn 0.3s ease-out;
 }
@@ -451,13 +449,16 @@
 
 /* Panelin mobil görünüşü */
 .panelContainer {
-  position: absolute; /* DƏYİŞİKLİK: Pozisiyanı absolute edirik */
-  top: calc(100% + 15px); /* Kliklənən elementin 15px aşağısında */
+  position: absolute;
+  top: calc(100% + 10px); /* İkonun tam altında, 10px boşluqla başlayır */
   left: 50%;
-  transform: translateX(-50%); /* Paneli elementə görə mərkəzləyir */
-  width: 90vw; /* Ekranın 90%-i qədər en */
-  max-width: 420px; /* Maksimum eni məhdudlaşdırırıq */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transform: translateX(-50%); /* Öz eninə görə mərkəzlənir */
+  width: 90vw;
+  max-width: 420px; /* Çox böyük ekranlarda çox genişlənməsinin qarşısını alır */
+  z-index: 20; /* Digər elementlərin üzərində qalması üçün */
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.3s ease-out; /* Animasiyanı saxlayırıq */
+  background-color: #fff;
 }
 
   .menuIsOpen .menuItemLabel {
@@ -487,17 +488,17 @@
     padding-left: 1.5rem;
   }
   .galleryEmblaSlide.wide {
-    width: 80vw; /* Mobil üçün daha kiçik ölçü */
+    width: 1000px; /* Mobil üçün daha kiçik ölçü */
   }
   .galleryEmblaSlide.normal {
-    width: 70vw; /* Mobil üçün daha kiçik ölçü */
+    width: 500px; /* Mobil üçün daha kiçik ölçü */
   }
 
   /* MOBİL ÜÇÜN SOL MENYU DÜZƏLİŞLƏRİ */
   .menuItemWrapper {
     flex-direction: column; /* İkonu və yazını alt-alta düzür */
     gap: 6px; /* Aralarındakı boşluq */
-    padding: 8px;
+    padding: 4px;
   }
 
   .menuItemLabel {
@@ -513,9 +514,39 @@
     width: 80px;
   }
 
+  /* Panel içeriklerinin mobil düzeni */
+  .colorGrid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.5rem;
+  }
+
+  .positionList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .positionItem {
+    padding: 8px 6px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .depthList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .depthItem {
+    padding: 8px 6px;
+    font-size: 12px;
+    text-align: center;
+  }
+
   
 
-  .heroItem ul li:last-child {
+.heroItem ul li:last-child {
     margin-top: 0 !important;
   }
 
