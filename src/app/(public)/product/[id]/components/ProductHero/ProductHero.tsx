@@ -2,9 +2,8 @@
 
 import React, { useState, useCallback } from "react";
 import styles from "./ProductHero.module.css";
+// DÜZƏLİŞ: Lazım olan kitabxananı import edirik
 import useEmblaCarousel from "embla-carousel-react";
-// YENİ İMPORT: System səhifəsindəki slavyderin stillərini idxal edirik
-import systemSliderStyles from "@/components/ProductSlider/ProductSliderSystem.module.css";
 
 // Interfaces
 interface Product {
@@ -53,6 +52,7 @@ const CloseIcon = () => (
     />
   </svg>
 );
+
 const CheckmarkIcon = () => (
   <svg
     width="16"
@@ -72,8 +72,6 @@ const CheckmarkIcon = () => (
 );
 
 // --- PANELS ---
-
-// YENİLƏNMİŞ GalleryPanel Komponenti
 const GalleryPanel = ({
   title,
   images,
@@ -113,31 +111,22 @@ const GalleryPanel = ({
         </div>
       </header>
       <div className={styles.gallerySliderContainer}>
-        {/* System səhifəsindəki slavyderin stillərini burada istifadə edirik */}
-        <div className={systemSliderStyles.embla} ref={emblaRef}>
-          <div className={systemSliderStyles.embla__container}>
-            {images.slice(0, 3).map(
-              (
-                src,
-                index // Sadəcə 3 şəkil göstəririk
-              ) => (
-                <div className={systemSliderStyles.embla__slide} key={index}>
-                  <div
-                    className={`${systemSliderStyles.slideItem} ${
-                      index === 0
-                        ? systemSliderStyles.wide
-                        : systemSliderStyles.normal
-                    }`}
-                  >
-                    <img
-                      src={src}
-                      alt={`Product image ${index + 1}`}
-                      className={systemSliderStyles.cardImage}
-                    />
-                  </div>
-                </div>
-              )
-            )}
+        <div className={styles.galleryEmbla} ref={emblaRef}>
+          <div className={styles.galleryEmblaContainer}>
+            {images.slice(0, 3).map((src, index) => (
+              <div
+                key={index}
+                className={`${styles.galleryEmblaSlide} ${
+                  index === 0 ? styles.wide : styles.normal
+                }`}
+              >
+                <img
+                  src={src}
+                  alt={`Product image ${index + 1}`}
+                  className={styles.galleryImage}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -454,18 +443,20 @@ const ProductHero = ({ product }: ProductHeroProps) => {
           <ul className={openMenu ? styles.menuIsOpen : ""}>
             {menuItems.map((item) => (
               <li key={item.key}>
+                {" "}
                 <div
                   className={styles.menuItemWrapper}
                   onClick={() => handleMenuClick(item.key)}
                 >
+                  {" "}
                   <div className={styles.heroItemIcons}>
                     {openMenu === item.key ? <CloseIcon /> : item.icon}
-                  </div>
+                  </div>{" "}
                   <span className={styles.menuItemLabel}>
                     {item.label}
                     {item.value && `: ${item.value}`}
-                  </span>
-                </div>
+                  </span>{" "}
+                </div>{" "}
               </li>
             ))}
           </ul>
@@ -475,7 +466,6 @@ const ProductHero = ({ product }: ProductHeroProps) => {
             </div>
           )}
         </div>
-
         <div className={styles.heroProductImage}>
           <img src={product.images[selectedImage]} alt={product.title} />
           <div className={styles.zoomIcon}>

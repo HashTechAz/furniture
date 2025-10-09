@@ -40,10 +40,13 @@ const getProductData = (id: string): Product | undefined => {
       position: "Legs H12.6 cm",
       description: "A modern and functional shelf that combines style with practicality. Perfect for organizing your space with elegance.",
       price: "€299",
+      // --- DƏYİŞİKLİK BURADADIR ---
       images: [
-        "https://artist.v2.londondynamics.com/image_by_config/28d24461-579e-4156-99c4-ca336f4369db/001222/31.jpg?feature=CASE%20FINISH:152%20Parsley&feature=FRONT%20FINISH:152%20Parsley&feature=LEG%20FINISH:152%20PARSLEY&feature=BASE%20TYPE:Legs&bgcolour=f5f5f5&height=280&width=280",
-        "https://artist.v2.londondynamics.com/image_by_config/28d24461-579e-4156-99c4-ca336f4369db/001223/31.jpg?feature=CASE%20FINISH:168%20Clay&feature=FRONT%20FINISH:168%20Clay&feature=BASE%20TYPE:Castor&bgcolour=f5f5f5&height=280&width=280"
+        "https://b2c.montana-episerver.com/globalassets/inriver/product/001112/montana_home19_20_bcstudio_livingroom_system_amber_caribe_iris_masala_oregano_rosehip_parsley_detail02_w.jpg?mode=crop&width=1520&height=1093",
+        "https://b2c.montana-episerver.com/globalassets/inriver/product/001112/montana_home19_20_bcstudio_livingroom_system_amber_caribe_iris_masala_oregano_rosehip_parsley_h.jpg?mode=crop&width=1520&height=2027",
+        "https://b2c.montana-episerver.com/globalassets/inriver/product/001112/montana_home20_21_rest_shadow_show_whiteoak_parsley_detail_h.jpg?mode=crop&width=1520&height=2027"
       ],
+      // --- DƏYİŞİKLİK BİTDİ ---
       specifications: {
         material: "Solid wood",
         finish: "Matte",
