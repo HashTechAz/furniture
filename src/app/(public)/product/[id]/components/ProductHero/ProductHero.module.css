@@ -402,3 +402,126 @@
   height: 100%;
   object-fit: contain; 
 }
+
+
+
+
+
+/* --- RESPONSIVE STYLES (MOBILE) --- */
+@media (max-width: 768px) {
+  .heroSection {
+    padding: 100px 20px 40px 20px;
+  }
+
+  .heroMain {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 0;
+  }
+
+  /* Elementlərin sırasını dəyişirik */
+  .heroProductImage {
+    order: 1; /* Şəkil ən yuxarıda */
+  }
+
+  .heroItem {
+    order: 2; /* Seçimlər ortada */
+    height: auto; /* Hündürlüyü avtomatlaşdırırıq */
+    padding-bottom: 0;
+    align-items: flex-start; /* Elementləri yuxarıdan başlayır */
+  }
+
+  .heroProductDescription {
+    order: 3; /* Təsvir ən aşağıda */
+  }
+
+ /* Sol menyunun mobil düzülüşü */
+ .heroItem ul {
+  flex-direction: row; /* DƏYİŞİKLİK: Elementləri üfüqi düzür */
+  justify-content: space-around; /* Aralarında bərabər məsafə saxlayır */
+  width: 100%;
+  align-items: center;
+}
+
+.heroItem ul li {
+  width: auto; /* DƏYİŞİKLİK: Eni avtomatik olur */
+  position: relative; 
+}
+
+/* Panelin mobil görünüşü */
+.panelContainer {
+  position: absolute; /* DƏYİŞİKLİK: Pozisiyanı absolute edirik */
+  top: calc(100% + 15px); /* Kliklənən elementin 15px aşağısında */
+  left: 50%;
+  transform: translateX(-50%); /* Paneli elementə görə mərkəzləyir */
+  width: 90vw; /* Ekranın 90%-i qədər en */
+  max-width: 420px; /* Maksimum eni məhdudlaşdırırıq */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+  .menuIsOpen .menuItemLabel {
+    /* Mobil dizaynda yazılar heç vaxt gizlənməsin */
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .menuItemWrapper:hover .heroItemIcons {
+    /* Mobil cihazlarda hover effekti olmadığı üçün ləğv edirik */
+    background-color: #e8e8e8;
+  }
+
+  /* Qalereya panelinin mobil düzülüşü */
+  .galleryHeader {
+    padding: 1rem 1.5rem;
+    grid-template-columns: auto 1fr; /* Başlıq və düymələr üçün yer */
+  }
+  .galleryTitle {
+    grid-column: 1 / 2;
+    justify-self: start; /* Başlığı sola yaslayırıq */
+  }
+  .galleryNav {
+    grid-column: 2 / 3;
+  }
+  .galleryEmbla {
+    padding-left: 1.5rem;
+  }
+  .galleryEmblaSlide.wide {
+    width: 80vw; /* Mobil üçün daha kiçik ölçü */
+  }
+  .galleryEmblaSlide.normal {
+    width: 70vw; /* Mobil üçün daha kiçik ölçü */
+  }
+
+  /* MOBİL ÜÇÜN SOL MENYU DÜZƏLİŞLƏRİ */
+  .menuItemWrapper {
+    flex-direction: column; /* İkonu və yazını alt-alta düzür */
+    gap: 6px; /* Aralarındakı boşluq */
+    padding: 8px;
+  }
+
+  .menuItemLabel {
+    padding-top: 0; /* Artıq ehtiyac yoxdur */
+    font-size: 11px; /* Yazını bir az kiçildiririk */
+  }
+
+  .menuItemValue {
+    display: none; /* Açıqlama hissəsini mobildə gizlədirik */
+  }
+
+  .heroItemIcons {
+    width: 80px;
+  }
+
+  
+
+  .heroItem ul li:last-child {
+    margin-top: 0 !important;
+  }
+
+  .heroItem ul li:last-child .menuItemWrapper {
+    align-items: center;
+    justify-content: center;
+    margin-top: -2px; /* Gallery ikonunu yukarı kaydırır */
+  }
+}

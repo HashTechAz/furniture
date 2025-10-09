@@ -440,26 +440,25 @@ const ProductHero = ({ product }: ProductHeroProps) => {
 
       <div className={styles.heroMain}>
         <div className={styles.heroItem}>
-          <ul className={openMenu ? styles.menuIsOpen : ""}>
-            {menuItems.map((item) => (
-              <li key={item.key}>
-                {" "}
-                <div
-                  className={styles.menuItemWrapper}
-                  onClick={() => handleMenuClick(item.key)}
-                >
-                  {" "}
-                  <div className={styles.heroItemIcons}>
-                    {openMenu === item.key ? <CloseIcon /> : item.icon}
-                  </div>{" "}
-                  <span className={styles.menuItemLabel}>
-                    {item.label}
-                    {item.value && `: ${item.value}`}
-                  </span>{" "}
-                </div>{" "}
-              </li>
-            ))}
-          </ul>
+        <ul className={openMenu ? styles.menuIsOpen : ""}>
+  {menuItems.map((item) => (
+    <li key={item.key}>
+      <div
+        className={styles.menuItemWrapper}
+        onClick={() => handleMenuClick(item.key)}
+      >
+        <div className={styles.heroItemIcons}>
+          {openMenu === item.key ? <CloseIcon /> : item.icon}
+        </div>
+        {/* DƏYİŞİKLİK BURADADIR */}
+        <span className={styles.menuItemLabel}>
+          {item.label}
+          {item.value && <span className={styles.menuItemValue}>: {item.value}</span>}
+        </span>
+      </div>
+    </li>
+  ))}
+</ul>
           {openMenu && (
             <div className={styles.panelContainer}>
               {menuItems.find((item) => item.key === openMenu)?.panel}
