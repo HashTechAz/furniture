@@ -11,6 +11,7 @@ import ProductNewsSlider from '@/components/ProductNewsSlider/ProductNewsSlider'
 import ProductSlider from '@/components/ProductSlider/ProductSlider';
 
 
+// DƏYİŞİKLİK: Interfeys yeniləndi
 export interface Product {
   id: number;
   title: string;
@@ -19,7 +20,8 @@ export interface Product {
   position: string;
   description: string;
   price: string;
-  images: string[];
+  mainImage: string; // Əsas şəkil üçün yeni xüsusiyyət
+  galleryImages: string[]; // Qalereya şəkilləri üçün yeni xüsusiyyət
   specifications: {
     material: string;
     finish: string;
@@ -40,13 +42,13 @@ const getProductData = (id: string): Product | undefined => {
       position: "Legs H12.6 cm",
       description: "A modern and functional shelf that combines style with practicality. Perfect for organizing your space with elegance.",
       price: "€299",
-      // --- DƏYİŞİKLİK BURADADIR ---
-      images: [
+      // DƏYİŞİKLİK: Şəkillər ayrıldı
+      mainImage: "https://artist.v2.londondynamics.com/image/28d24461-579e-4156-99c4-ca336f4369db/23e6ae32-2859-4e99-bbdd-5ed6eabfc6e9/11afc59b-7ecf-64b5-39a2-875021883793/1.jpg?width=720&height=720&bgcolour=f5f5f5",
+      galleryImages: [
         "https://b2c.montana-episerver.com/globalassets/inriver/product/001112/montana_home19_20_bcstudio_livingroom_system_amber_caribe_iris_masala_oregano_rosehip_parsley_detail02_w.jpg?mode=crop&width=1520&height=1093",
         "https://b2c.montana-episerver.com/globalassets/inriver/product/001112/montana_home19_20_bcstudio_livingroom_system_amber_caribe_iris_masala_oregano_rosehip_parsley_h.jpg?mode=crop&width=1520&height=2027",
         "https://b2c.montana-episerver.com/globalassets/inriver/product/001112/montana_home20_21_rest_shadow_show_whiteoak_parsley_detail_h.jpg?mode=crop&width=1520&height=2027"
       ],
-      // --- DƏYİŞİKLİK BİTDİ ---
       specifications: {
         material: "Solid wood",
         finish: "Matte",
@@ -75,27 +77,14 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
 
   return (
     <main>
-
-       
-      {/* Product Hero */}
       <ProductHero product={product} />
-
-      {/* İlgili Ürünler Slider'ı */}
-      <div className={styles.sliderSection}>
-        <ProductNewsSlider />
-      </div>
-
-      {/* Product Slider System */}
+      <div className={styles.sliderSection}> <ProductNewsSlider /> </div>
       <ProductSlider 
         variant="system" 
         titleTop="Bookcase and shelving inspiration"
         titleBottom=""
       />
-
-      {/* System About */}
       <SystemAbout />
-
-      {/* System Palette */}
       <SystemPalette
         category=""
         title="Find a Montana retailer near you"
@@ -111,11 +100,7 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
         backgroundColor="#EFC7C7"
         layout="textLeft"
       />
-
-      {/* Trust Badges */}
       <TrustBadges />
-
-      
     </main>
   );
 };

@@ -304,6 +304,7 @@
 
 /* --- GALLERY PANEL STYLES (YENİ) --- */
 /* --- GALLERY PANEL STYLES (YENİLƏNMİŞ) --- */
+/* --- GALLERY PANEL STYLES (DÜZƏLDİLMİŞ) --- */
 .galleryOverlay {
   position: fixed;
   top: 0;
@@ -323,8 +324,8 @@
 }
 
 .galleryHeader {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   padding: 1rem 2.5rem;
   border-bottom: 1px solid #e0e0e0;
@@ -332,12 +333,17 @@
 }
 
 .galleryTitle {
+  grid-column: 2 / 3;
+  justify-self: center;
   font-size: 1.1rem;
   font-weight: 500;
   color: #333;
+  margin: 10px 0 0;
 }
 
 .galleryNav {
+  grid-column: 3 / 4;
+  justify-self: end;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -345,7 +351,6 @@
 
 .galleryNavButton, .galleryCloseButton {
   background: none;
-  border: 1px solid #ccc;
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -366,39 +371,34 @@
 .gallerySliderContainer {
   flex-grow: 1;
   width: 100%;
-  overflow: hidden; /* Bu, üfüqi scroll-u gizlədir */
+  overflow: hidden;
   display: flex;
   align-items: center;
 }
 
-/* YENİ STİLLƏR BURADADIR */
-
 .galleryEmbla {
   overflow: hidden;
-  padding-left: 2.5rem; /* Başlanğıc boşluğu */
+  padding-left: 2.5rem;
 }
 
 .galleryEmblaContainer {
   display: flex;
-  align-items: center; /* Şəkilləri şaquli mərkəzləyir */
-  height: 80vh; /* Konteynerin hündürlüyü ekranın 80%-i qədər */
+  align-items: center;
+  height: 80vh; /* Konteynerin hündürlüyünü təyin edirik */
 }
 
 .galleryEmblaSlide {
-  flex: 0 0 auto;
+  flex-shrink: 0;
+  min-width: 0;
+  position: relative;
+  margin-right: 1.5rem; /* Şəkillər arası məsafə */
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-right: 1.5rem;
-  /* DƏYİŞİKLİK: Şəkillər arası məsafəni azaldırıq */
-  position: relative;
 }
-
-/* Fərqli ölçülər üçün en */
 
 .galleryImage {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Şəkli kəsmədən konteynerə sığdırır */
+  object-fit: contain; 
 }

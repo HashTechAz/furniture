@@ -2,7 +2,6 @@
 
 import React, { useState, useCallback } from "react";
 import styles from "./ProductHero.module.css";
-// DÜZƏLİŞ: Lazım olan kitabxananı import edirik
 import useEmblaCarousel from "embla-carousel-react";
 
 // Interfaces
@@ -14,7 +13,8 @@ interface Product {
   position: string;
   description: string;
   price: string;
-  images: string[];
+  mainImage: string;
+  galleryImages: string[];
   specifications: {
     material: string;
     finish: string;
@@ -52,7 +52,6 @@ const CloseIcon = () => (
     />
   </svg>
 );
-
 const CheckmarkIcon = () => (
   <svg
     width="16"
@@ -72,6 +71,8 @@ const CheckmarkIcon = () => (
 );
 
 // --- PANELS ---
+
+// DÜZƏLDİLMİŞ GalleryPanel Komponenti
 const GalleryPanel = ({
   title,
   images,
@@ -113,7 +114,7 @@ const GalleryPanel = ({
       <div className={styles.gallerySliderContainer}>
         <div className={styles.galleryEmbla} ref={emblaRef}>
           <div className={styles.galleryEmblaContainer}>
-            {images.slice(0, 3).map((src, index) => (
+            {images.map((src, index) => (
               <div
                 key={index}
                 className={`${styles.galleryEmblaSlide} ${
@@ -287,7 +288,6 @@ const DepthPanel = ({
 };
 
 const ProductHero = ({ product }: ProductHeroProps) => {
-  const [selectedImage, setSelectedImage] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [currentProductColor, setCurrentProductColor] = useState(product.color);
@@ -433,7 +433,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
       {isGalleryOpen && (
         <GalleryPanel
           title={product.title}
-          images={product.images}
+          images={product.galleryImages}
           onClose={() => setIsGalleryOpen(false)}
         />
       )}
@@ -467,7 +467,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
           )}
         </div>
         <div className={styles.heroProductImage}>
-          <img src={product.images[selectedImage]} alt={product.title} />
+          <img src={product.mainImage} alt={product.title} />
           <div className={styles.zoomIcon}>
             <svg
               width="24"
