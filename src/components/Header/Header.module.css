@@ -304,44 +304,40 @@
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.4s ease-in-out;
-  padding-left: 20px; /* Alt menyunu bir az içəri çəkir */
+  padding-left: 20px; 
 }
 
 /* Alt menyu açıq olduqda */
 .mobileSubMenu.subMenuOpen {
-  max-height: 500px; /* Ehtiyac olarsa daha da artırın */
-  margin-top: 10px; /* Üstdən kiçik boşluq */
+  max-height: 500px; 
+  margin-top: 10px; 
 }
 
 /* Alt menyu linkləri */
 .mobileSubMenu ul li a {
-  font-size: 13px; /* --- DƏYİŞİKLİK --- */
+  font-size: 13px; 
   font-weight: 700;
   color: #555;
   display: block;
-  padding: 6px 0; /* --- DƏYİŞİKLİK (boşluq azaldıldı) --- */
+  padding: 6px 0; 
 }
 
-/* Ox ikonu üçün stil */
 .arrowIcon {
   transition: transform 0.3s ease-out;
 }
 
-/* Ox ikonu menyu açıq olduqda 180 dərəcə fırlanır */
 .arrowIcon.arrowIconOpen {
   transform: rotate(180deg);
 }
 
-/* mainNav içindəki Link-lərin stilini dəyişmək lazım ola bilər */
 .mainNav a {
   font-size: 22px;
   font-weight: 700;
   color: #333;
   text-decoration: none;
-  display: block; /* Bu, klik sahəsini genişləndirir */
+  display: block; 
 }
 
-/* Product details sayfası için özel styling */
 .productDetailsPage {
   color: #333333 !important;
 }
@@ -366,7 +362,6 @@
   background-color: #333333 !important;
 }
 
-/* Mobile'da da aynı styling */
 @media (max-width: 1024px) {
   .productDetailsPage {
     background-color: #ffffff !important;
@@ -394,19 +389,18 @@
   }
 }
 
-/* YENİ STİLİ BURA ƏLAVƏ EDİN */
 .headerAtTop.designersHeader {
   background-color: #275138;
 }
 
 .headerAtTop.coloursHeader {
   background-color: #EEECDD;
-  color: #333; /* Arxa fon açıq olduğu üçün mətnin rəngini tünd edirik */
+  color: #333; 
 }
 
 .headerAtTop.productSeriesHeader {
   background-color: #FEF4BD;
-  color: #333; /* Siyahı text rengi */
+  color: #333; 
 }
 
 .headerAtTop.creativeMindsHeader {
@@ -418,38 +412,35 @@
   background-color: #5F90CA;
   color: #000;
 }
-
-/* Lumikello səhifəsi üçün xüsusi header stili */
+  
 .headerAtTop.lumikelloHeader {
   background-color: #EEE7E1;
-  color: #333; /* Arxa fon açıq olduğu üçün mətn rəngini tünd edirik */
+  color: #333; 
 }
 
-/* Swantje səhifəsi üçün xüsusi header stili */
 .headerAtTop.swantjeHeader {
   background-color: #C9B176;
-  color: #333; /* Açıq fona görə mətn rəngini tünd edirik */
+  color: #333; 
 }
 
 .headerAtTop.cathrineHeader {
-  background-color: #D0BAE2; /* Bu rəngi istədiyiniz kimi dəyişə bilərsiniz */
+  background-color: #D0BAE2; 
   color: #333;
 }
 
 .headerAtTop.teklaHeader {
-  background-color: #C9B176; /* <-- Zəhmət olmasa, istədiyiniz rəngi deyin */
+  background-color: #C9B176; 
   color: #333;
 }
 
 .headerAtTop.celineHeader {
-  background-color: #2C3587; /* <-- Zəhmət olmasa, istədiyiniz rəngi deyin */
+  background-color: #2C3587; 
   color: #fff;
 }
 
 
-/* Sarah səhifəsi üçün xüsusi header stili */
 .headerAtTop.sarahHeader {
-  background-color: #EAEFD9; /* <-- Zəhmət olmasa, istədiyiniz rəngi deyin */
+  background-color: #EAEFD9; 
   color: #000;
 }
 
@@ -468,18 +459,17 @@
   color: #000;
 }
 
-/* --- YENİ TABLET STİLLƏRİ (769px - 1024px) --- */
 @media (min-width: 769px) and (max-width: 1024px) {
   .mobileActions .searchButton {
-    display: none; /* Soldakı axtarış ikonunu gizlədirik */
+    display: none; 
   }
   .mobileActions {
-    width: auto; /* Sol tərəfin enini avtomatik edirik ki, ancaq hamburger qalsın */
+    width: auto; 
   }
   .navSearch .mobileOnly {
-    display: none; /* Sağdakı boşluğu (placeholder) gizlədirik */
+    display: none; 
   }
   .navSearch .desktopOnly {
-    display: flex; /* Sağdakı əsl axtarış ikonunu göstəririk */
+    display: flex; 
   }
 }
