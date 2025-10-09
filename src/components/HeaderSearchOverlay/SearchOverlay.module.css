@@ -80,13 +80,12 @@
 }
 
 /* --- RESPONSIVE STYLES --- */
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .overlayContainer {
     width: 100%;
     height: 100%;
     transform: translateY(-100%);
     z-index: 1000;
-    /* Desktop stillərini ləğv edirik */
     right: auto;
     left: 0;
     box-shadow: none;

@@ -468,3 +468,18 @@
   color: #000;
 }
 
+/* --- YENİ TABLET STİLLƏRİ (769px - 1024px) --- */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .mobileActions .searchButton {
+    display: none; /* Soldakı axtarış ikonunu gizlədirik */
+  }
+  .mobileActions {
+    width: auto; /* Sol tərəfin enini avtomatik edirik ki, ancaq hamburger qalsın */
+  }
+  .navSearch .mobileOnly {
+    display: none; /* Sağdakı boşluğu (placeholder) gizlədirik */
+  }
+  .navSearch .desktopOnly {
+    display: flex; /* Sağdakı əsl axtarış ikonunu göstəririk */
+  }
+}
