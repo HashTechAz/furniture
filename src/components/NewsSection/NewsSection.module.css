@@ -43,3 +43,19 @@
       gap: 20px; /* Sütunlar arası boşluğu bir az azaldırıq */
   }
 }
+
+/* === TABLET EKRANLARI ÜÇÜN (768px - 1024px) === */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .newsSection {
+    padding: 60px 40px;
+  }
+
+  /* Kartları bir sırada 3 ədəd edirik */
+  .newsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .newsTitle {
+    font-size: 24px;
+  }
+}

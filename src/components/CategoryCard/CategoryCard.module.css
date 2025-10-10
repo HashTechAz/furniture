@@ -42,3 +42,10 @@
   height: 240px;
 }
 }
+
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .slideItem {
+      width: 100%; /* Kartın enini öz valideyninə (280px-lik .embla__slide) uyğunlaşdırır */
+    }
+  }

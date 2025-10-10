@@ -173,3 +173,82 @@
         background-color: #fff !important;
     }
 }
+
+
+
+
+
+/* === TABLET EKRANLARI ÜÇÜN DÜZƏLİŞ EDİLMİŞ KOD === */
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* 1. Ana konteynerdən yan boşluqları (padding) yığışdırırıq */
+    .hero {
+        background-color: #633730;
+        /* Yalnız yuxarı-aşağı padding saxlayırıq */
+        padding: 80px 0 60px 0;
+        height: auto;
+        display: block;
+        position: relative; /* .heroTop-un buna nəzərən mövqelənməsi üçün */
+    }
+
+    /* 2. Şəkli saxlayan .heroBottom artıq təbii olaraq 100% enində olacaq */
+    .heroBottom {
+        position: relative;
+        width: 100%;
+        height: 55vh;
+        min-height: 450px;
+        z-index: 1;
+    }
+
+    .heroBottom::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    /* 3. Mətn və düyməni saxlayan .heroTop-u şəklin üzərinə çıxardırıq */
+    .heroTop {
+        position: absolute;
+        /* Düzəliş: Ana konteynerin yuxarı padding-i qədər aşağı salırıq */
+        top: 120px;
+        left: 0;
+        width: 100%;
+        /* Hündürlüyü .heroBottom ilə eyni edirik ki, tam üzərini örtsün */
+        height: calc(55vh + 60px); 
+        min-height: 450px;
+        display: flex;
+        align-items: flex-start;
+        /* Padding-i buradan yığışdırıb birbaşa .heroContent-ə veririk */
+        padding: 0;
+        z-index: 2;
+        pointer-events: none; /* Üstdəki qatın kliklənməsinin qarşısını alır */
+    }
+
+    /* YAN BOŞLUQLARI (PADDING) MƏHZ BU BLOKA VERİRİK */
+    .heroContent {
+        width: 100%; /* enini 100% edib, padding ilə idarə edirik */
+        padding: 10px 60px; /* Mətnin kənarlardan və yuxarıdan boşluğu */
+        pointer-events: all; /* Mətn və düymənin kliklənə bilməsi üçün */
+    }
+
+    .heroTitle {
+        font-size: 32px;
+    }
+
+    .hero::before {
+        display: none;
+    }
+
+    .heroButton {
+        padding: 8px 40px;
+        font-size: 15px;
+        font-weight: 600;
+        position: relative;
+        z-index: 2;
+        overflow: hidden;
+        transition: color 0.3s ease-in-out;
+    }
+}

@@ -212,3 +212,37 @@
   }
 }
 
+/* === TABLET EKRANLARI ÜÇÜN (768px - 1024px) === */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .sliderSection {
+    padding: 60px 0;
+  }
+
+  .sliderHeader {
+    padding: 0 40px;
+    margin-bottom: 25px;
+  }
+
+ 
+  .sectionTitle {
+    font-size: 24px;
+  }
+
+  .categoryLinks {
+    gap: 25px;
+    margin-top: 20px;
+  }
+
+  .categoryLink {
+    font-size: 11px;
+  }
+
+  .embla {
+    padding-left: 40px;
+  }
+
+  .embla__slide {
+    flex: 0 0 300px;
+    margin-right: 20px;
+  }
+}

@@ -92,3 +92,37 @@
       margin: 40px 20px 0 20px;
   }
 }
+
+
+
+
+/* === TABLET ÜÇÜN DÜZƏLİŞ EDİLMİŞ KOD (ProductSlider) === */
+@media (min-width: 768px) and (max-width: 1024px) {
+
+  .container {
+    padding: 0 40px;
+  }
+  
+  .sliderTitle {
+    align-items: center;
+  }
+  .sliderTitleText{
+    font-size: 22px !important;
+  }
+ 
+  
+  .embla {
+    padding-left: 40px;
+  }
+
+  /* DƏYİŞİKLİK 1: Kartları saxlayan konteynerə aralarında boşluq yaratmaq üçün "gap" veririk */
+  .embla__container {
+    gap: 20px;
+  }
+
+  /* DƏYİŞİKLİK 2: Slaydın enini təyin edirik və köhnə margin-i silirik */
+  .embla__slide {
+    flex: 0 0 280px;
+    margin-right: 0; /* Artıq gap istifadə etdiyimiz üçün bu lazımsızdır */
+  }
+}

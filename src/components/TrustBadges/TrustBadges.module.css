@@ -58,3 +58,29 @@
         font-size: 14px; /* Təsvir mətni kiçildildi */
     }
 }
+
+
+
+/* === TABLET EKRANLARI ÜÇÜN (768px - 1024px) === */
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Ana konteynerin boşluqlarını tənzimləyirik */
+    .badges {
+      padding: 50px 40px;
+    }
+  
+    /* Məzmun blokunu "flex" yox, "grid" olaraq təyin edirik */
+    .badges .badgesContent {
+      display: grid;
+      /* 2 bərabər sütun yaradırıq */
+      grid-template-columns: repeat(2, 1fr);
+      /* Sütunlar və sətirlər arasına boşluq veririk */
+      gap: 40px;
+      padding: 3rem;
+    }
+  
+    /* Hər bir elementin enini grid-ə uyğunlaşdırırıq */
+    .badgesContent .badgesItem {
+      width: 100%; /* Artıq eni grid təyin edəcək */
+      padding-right: 0;
+    }
+  }

@@ -64,3 +64,12 @@
   padding-right: 20px;
 }
 }
+
+
+
+/* === TABLET EKRANLARI ÜÇÜN (768px - 1024px) === */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .imageWrapper {
+    height: 250px; /* Şəklin hündürlüyünü 250px edirik */
+  }
+}
