@@ -34,7 +34,7 @@
 }
 
 .paletteJpg {
-  width: 340px;
+  width: 300px;
   height: 400px;
   position: absolute;
   top: 60px;
@@ -49,7 +49,6 @@
   left: -8em;
 }
 
-/* Custom image styles - 460x460 */
 .customImage .paletteOneColor {
   width: 530px;
   height: 530px;
@@ -101,7 +100,7 @@
   transform: translateX(0);
 }
 
-/* --- RESPONSIVE STYLES (DƏYİŞİKLİKLƏR BURADADIR) --- */
+/* --- RESPONSIVE STYLES --- */
 @media (max-width: 768px) {
   .paletteMain {
     padding: 40px 20px;
@@ -143,7 +142,6 @@
     border-radius: 8px;
   }
 
-  /* Normal ölçü üçün stillər (dəyişməz qalır) */
   .paletteOneColor {
     width: 265px !important;
     height: 340px !important;
@@ -171,7 +169,6 @@
     display: block;
   }
 
-  /* YENİ: Large ölçü üçün xüsusi stillər (PaletteLeftImage ilə eyni) */
   .largeImage .paletteOneColor {
     width: 240px !important;
     height: 330px !important;
@@ -188,7 +185,6 @@
     z-index: 2;
   }
 
-  /* Custom image responsive styles */
   .customImage .paletteOneColor {
     width: 280px !important;
     height: 380px !important;
@@ -209,8 +205,6 @@
 
 /* === TABLET: NORMAL PALETTE RIGHT IMAGE ÜÇÜN === */
 @media (min-width: 768px) and (max-width: 1024px) {
-  /* Bu blok yalnız imageSize="normal" (default) olanlara aiddir */
-  /* Bu, ilk düzəltdiyimiz, sağa yaslanmış versiyadır */
   .paletteContainer {
     flex-direction: column-reverse;
     gap: 50px;
@@ -230,10 +224,14 @@
   .paletteImgBox .paletteJpg,
   .paletteImgBox .paletteJpgLarge,
   .paletteImgBox .paletteJpgCustom {
-    left: 70%;
+    left: 65%;
     top: 50%;
     transform: translate(-50%, -50%);
     margin-left: 0;
+  }
+
+  .paletteTextBoxTitle {
+    font-size: 26px;
   }
 
   .paletteTextBox {
@@ -244,26 +242,26 @@
 
   .paletteTextBox p {
     max-width: 80%;
+    font-size: 14px;
   }
 }
 
 /* === TABLET: imageSize="large" OLAN PALETTE RIGHT IMAGE ÜÇÜN === */
 @media (min-width: 768px) and (max-width: 1024px) {
   .paletteContainer:has(.largeImage) {
-    align-items: center; /* Elementləri ortalayır */
+    align-items: center; 
   }
   
-  /* Yalnız .largeImage olan bloku və onun yanındakı mətn blokunu hədəf alırıq */
   .largeImage {
-    justify-content: center; /* Rəngli div-i mərkəzə gətirir */
+    justify-content: center; 
   }
   
   .largeImage .paletteOneColor {
-    width: 90%; /* Eni daha böyük edirik */
+    width: 90%;
     height: 450px;
   }
 
-  .largeImage + .paletteTextBox { /* .largeImage-dən sonrakı mətn bloku */
+  .largeImage + .paletteTextBox { 
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -275,7 +273,7 @@
   }
 
   .largeImage .paletteJpgLarge {
-    width: 80%; /* Rəngli div-ə nisbətdə eni azaldırıq */
+    width: 80%; 
     height: auto;
    
   }
