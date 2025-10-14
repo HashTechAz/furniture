@@ -250,7 +250,7 @@
   display: inline-block;
   text-decoration: none;
   color: white;
-  background-color: #2c3587;
+  background-color: #3a3126;
   padding: 10px 42px;
   font-size: 14px;
   font-weight: 600;
@@ -280,6 +280,62 @@
 }
 
 /* --- RESPONSIVE STYLES --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .formSection {
+        padding: 40px 40px;
+    }
+
+    .formSection .formMain {
+        padding: 40px 60px;
+    }
+
+    .formMain .formTitle {
+        width: 100%;
+    }
+
+    .formTitle h1 {
+        font-size: 24px;
+    }
+
+    .formMain .formContentBox {
+        flex-direction: column;
+        gap: 30px;
+        margin-top: 30px;
+    }
+
+    .formContentBox .formLeftContent {
+        width: 100%;
+        padding-right: 0;
+    }
+
+    .formContentBox .formRightContent {
+        width: 100%;
+        padding: 0;
+    }
+
+    .form {
+        max-width: 70%;
+    }
+
+    .form input {
+        height: 38px;
+        font-size: 13px;
+    }
+
+    .form input::placeholder {
+        font-size: 13px;
+    }
+
+    .checkboxLabel {
+        font-size: 15px;
+    }
+
+    .submitButton {
+        font-size: 15px;
+        padding: 11px 36px;
+    }
+}
+
 @media (max-width: 768px) {
     .formSection {
         padding: 0 0 40px 0;
@@ -338,3 +394,5 @@
         padding-right: 0;
     }
 }
+
+

@@ -26,7 +26,6 @@
     margin-left: 0;
 }
 
-/* Şəkillərin özləri üçün ümumi stillər */
 .leftBanner img,
 .rightImg {
     width: 100%;
@@ -67,7 +66,7 @@
     display: inline-block;
     text-decoration: none;
     color: white;
-    background-color: #2c3587;
+    background-color: #3a3126;
     padding: 8px 30px;
     font-size: 14px;
     font-weight: 600;
@@ -95,7 +94,6 @@
     transform: translateX(0);
 }
 
-/* === MOBİL DƏYİŞİKLİKLƏR === */
 @media (max-width: 768px) {
     .mBanner {
         flex-direction: column !important;
@@ -104,7 +102,6 @@
         align-items: flex-start;
     }
 
-    /* DƏYİŞİKLİK: Ümumi en qaydası sadələşdirilib */
     .rightBanner,
     .mBanner.reversed .rightBanner {
         width: 100%;
@@ -112,7 +109,6 @@
         margin-left: 0;
     }
     
-    /* DƏYİŞİKLİK: Böyük şəkil üçün xüsusi qayda */
     .leftBanner,
     .mBanner.reversed .leftBanner {
         width: 85%;
@@ -120,12 +116,10 @@
         margin-left: 0;
     }
 
-    /* DƏYİŞİKLİK: Mətn və kiçik şəkli saxlayan blok 100% enində */
     .rightBanner {
         width: 100%;
     }
     
-    /* DƏYİŞİKLİK: Kiçik şəkil 85% enində */
     .rightImgContainer {
         width: 85%;
         height: 250px !important;
@@ -154,3 +148,42 @@
     }
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+    .mBanner {
+      gap: 10px;
+    }
+  
+    .leftBanner {
+      width: 45% !important;
+      height: 480px !important;
+    }
+  
+    .rightBanner {
+      width: 40% !important;
+    }
+  
+    
+    
+    .rightImgContainer[style*="height"] {
+        height: 250px !important;
+    }
+  
+    .rightText h1 {
+      font-size: 20px;
+    }
+  
+    .rightText p {
+      font-size: 13px;
+      padding-right: 0;
+    }
+    
+    .mBanner.reversed .rightText {
+      padding-right: 1.5rem;
+    }
+
+    .heroButton {
+        font-size: 12px;
+        padding: 8px 20px; /* Padding-i bir az azaltdım, amma saxlaya da bilərsiniz */
+        white-space: nowrap;
+  }
+}
