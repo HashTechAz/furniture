@@ -1,17 +1,14 @@
-/* --- DESKTOP (DEFAULT) STYLES --- */
-/* Bu stillər 768px-dən böyük ekranlarda aktiv olacaq */
 
 .hero {
     width: 100%;
     height: 100vh;
-    position: relative; /* Məzmunun üzərinə yerləşməsi üçün */
+    position: relative; 
     display: flex;
     align-items: center;
     padding: 30px 80px;
     color: white;
 }
 
-/* Orijinal dizayndakı arxa fon şəklini .heroBottom-a veririk */
 .heroBottom {
     background-image: url("https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
     background-position: center;
@@ -25,7 +22,6 @@
     z-index: 1;
 }
 
-/* Orijinal dizayndakı tündləşdirici qatı .hero::before ilə qaytarırıq */
 .hero::before {
     content: '';
     position: absolute;
@@ -37,12 +33,11 @@
     z-index: 2;
 }
 
-/* Mətnin olduğu yuxarı blok desktop-da şəffaf olur */
 .heroTop {
     position: relative;
     z-index: 3;
     background-color: transparent;
-    padding: 0; /* Desktopda əlavə padding lazım deyil */
+    padding: 0;
 }
 
 .heroContent {
@@ -103,18 +98,15 @@
 }
 
 
-/* --- RESPONSIVE STYLES (MOBILE-ONLY) --- */
-/* Bu stillər yalnız 768px və daha kiçik ekranlarda aktiv olacaq */
 @media (max-width: 768px) {
     .hero {
         height: 600px;
         display: flex;
         flex-direction: column;
-        padding: 0; /* Padding-i ləğv edirik, çünki .heroTop-da var */
+        padding: 0; 
         background-color: #633730;
     }
 
-    /* Mobildə tünd qatı ləğv edirik */
     .hero::before {
         display: none;
     }
@@ -122,13 +114,13 @@
     .heroTop {
         padding: 120px 20px 30px 20px;
         flex-shrink: 0;
-        background-color: #633730; /* Mobil üçün rəngli arxa fon */
-        position: static; /* Absolute pozisiyanı ləğv edirik */
+        background-color: #633730; 
+        position: static; 
     }
 
     .heroBottom {
-        position: static; /* Absolute pozisiyanı ləğv edirik */
-        flex-grow: 1; /* Qalan bütün boşluğu doldurur */
+        position: static; 
+        flex-grow: 1;
     }
 
     .heroContent {
@@ -150,7 +142,6 @@
     }
 }
 
-/* ProductSeries variant için özel stiller - sadece mobile'da */
 @media (max-width: 768px) {
     .productseriesVariant .heroTop {
         background-color: #FEF4BD !important;
@@ -162,7 +153,6 @@
     }
 }
 
-/* Inspiration variant için özel stiller - sadece mobile'da */
 @media (max-width: 768px) {
     .inspirationVariant .heroTop {
         background-color: #633730 !important;
@@ -178,19 +168,18 @@
 
 
 
-/* === TABLET EKRANLARI ÜÇÜN DÜZƏLİŞ EDİLMİŞ KOD === */
 @media (min-width: 768px) and (max-width: 1024px) {
-    /* 1. Ana konteynerdən yan boşluqları (padding) yığışdırırıq */
     .hero {
         background-color: #633730;
-        /* Yalnız yuxarı-aşağı padding saxlayırıq */
         padding: 80px 0 60px 0;
         height: auto;
         display: block;
-        position: relative; /* .heroTop-un buna nəzərən mövqelənməsi üçün */
+        position: relative; 
     }
 
-    /* 2. Şəkli saxlayan .heroBottom artıq təbii olaraq 100% enində olacaq */
+    .productseriesVariant {
+        background-color: #FEF4BD !important;
+    }
     .heroBottom {
         position: relative;
         width: 100%;
@@ -209,29 +198,23 @@
         background-color: rgba(0, 0, 0, 0.3);
     }
 
-    /* 3. Mətn və düyməni saxlayan .heroTop-u şəklin üzərinə çıxardırıq */
     .heroTop {
         position: absolute;
-        /* Düzəliş: Ana konteynerin yuxarı padding-i qədər aşağı salırıq */
         top: 120px;
         left: 0;
         width: 100%;
-        /* Hündürlüyü .heroBottom ilə eyni edirik ki, tam üzərini örtsün */
         height: calc(55vh + 60px); 
         min-height: 450px;
         display: flex;
         align-items: flex-start;
-        /* Padding-i buradan yığışdırıb birbaşa .heroContent-ə veririk */
         padding: 0;
         z-index: 2;
-        pointer-events: none; /* Üstdəki qatın kliklənməsinin qarşısını alır */
     }
 
-    /* YAN BOŞLUQLARI (PADDING) MƏHZ BU BLOKA VERİRİK */
     .heroContent {
-        width: 100%; /* enini 100% edib, padding ilə idarə edirik */
-        padding: 10px 60px; /* Mətnin kənarlardan və yuxarıdan boşluğu */
-        pointer-events: all; /* Mətn və düymənin kliklənə bilməsi üçün */
+        width: 100%; 
+        padding: 10px 60px;
+        pointer-events: all; 
     }
 
     .heroTitle {
