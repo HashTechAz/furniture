@@ -39,6 +39,43 @@
 }
 
 /* --- RESPONSIVE STYLES --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .aboutCompany {
+    padding: 80px 40px 50px 40px;
+  }
+
+  .aboutCompany .aboutCompanyTitle {
+    width: 85%;
+    margin: 0 auto;
+    padding: 2.5em 3em;
+  }
+
+  .aboutCompanyTitle h4 {
+    font-size: 16px;
+    line-height: 1.5;
+    padding-right: 30px;
+  }
+
+  .aboutCompanyTitle .companyBox {
+    width: 350px;
+    height: 220px;
+    padding: 2.5em 3em;
+  }
+
+  .companyBox p {
+    display: none;
+  }
+
+  .companyAuthor {
+    margin-left: 40px;
+    margin-top: 15px;
+  }
+
+  .companyAuthor span {
+    font-size: 13px;
+  }
+}
+
 @media (max-width: 768px) {
   .aboutCompany {
     padding: 40px 0;

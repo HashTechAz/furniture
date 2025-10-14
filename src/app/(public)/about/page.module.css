@@ -91,6 +91,47 @@
   line-height: 1.6;
 }
 
+/* Tablet styles for About MiddleBanner */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .aboutMiddleBanner .mBanner {
+    gap: 20px;
+    padding: 50px 40px;
+  }
+
+  .aboutMiddleBanner .leftBanner {
+    width: 420px !important;
+    height: 560px !important;
+  }
+
+  .aboutMiddleBanner .rightBanner {
+    width: 300px !important;
+  }
+
+  .aboutMiddleBanner .rightImgContainer {
+    width: 300px !important;
+    height: 400px !important;
+  }
+
+  .aboutMiddleBanner .rightText h1 {
+    font-size: 20px;
+  }
+
+  .aboutMiddleBanner .rightText p {
+    font-size: 13px;
+    padding-right: 0;
+  }
+  
+  .aboutMiddleBanner .mBanner.reversed .rightText {
+    padding-right: 1.5rem;
+  }
+
+  .aboutMiddleBanner .heroButton {
+    font-size: 12px;
+    padding: 8px 20px;
+    white-space: nowrap;
+  }
+}
+
 /* Mobile styles */
 @media (max-width: 768px) {
   .pageHeader {

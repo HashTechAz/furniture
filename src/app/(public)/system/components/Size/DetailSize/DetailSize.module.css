@@ -48,6 +48,39 @@
 }
 
 /* --- RESPONSIVE STYLES --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .detailHeader h1 {
+    font-size: 20px;
+    font-weight: 500;
+  }
+  
+  .detailHeader p {
+    font-size: 14px;
+  }
+
+  .detailGrid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    width: 100%;
+    margin: 4em auto 0;
+  }
+
+  .detailCard img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+  }
+
+  .detailCard h3 {
+    font-size: 13px;
+    margin-top: 10px;
+  }
+
+  .detailCard span {
+    font-size: 12px;
+  }
+}
+
 @media (max-width: 768px) {
   .detailSize {
     padding: 40px 0px;

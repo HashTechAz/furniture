@@ -80,3 +80,25 @@
     font-size: 14px;
   }
 }
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .systemAbout {
+    padding: 60px 40px;
+    margin-top: 0;
+  }
+
+  .aboutMain .aboutTitle {
+    width: 100%;
+    padding: 0;
+  }
+
+  .aboutTitle h1 {
+    font-size: 40px;
+    line-height: 1.3;
+  }
+
+  .aboutMain .aboutDescription {
+    width: 100%;
+    padding: 0 0 0 2em;
+  }
+}

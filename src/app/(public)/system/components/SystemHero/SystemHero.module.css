@@ -19,6 +19,23 @@
   }
 
 /* --- RESPONSIVE STYLES --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .systemHero {
+    padding: 120px 40px 20px;
+  }
+  
+  .content {
+    width: 100%;
+    padding-right: 4em;
+  }
+  
+  .title {
+    font-size: 24px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+}
+
 @media (max-width: 768px) {
   .systemHero {
     padding: 40px 20px;

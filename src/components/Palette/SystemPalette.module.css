@@ -127,6 +127,54 @@
 }
 
 /* --- RESPONSIVE STYLES --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .paletteMain {
+    padding: 50px 40px;
+    flex-direction: column;
+  }
+
+  .paletteImgBox {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto 30px auto;
+    order: 1;
+  }
+
+  .paletteOneColor {
+    width: 700px;
+    height: 500px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .paletteJpg {
+    width: 500px !important;
+    height: 400px !important;
+    top: -calc(50% - 200px);
+    left: 50% !important;
+    transform: translateX(-50%);
+    z-index: 3;
+    object-fit: cover;
+  }
+
+  .paletteTextBox {
+    width: 100%;
+    padding: 0;
+    order: 2;
+  }
+
+  .paletteTextBox h2 span {
+    font-size: 20px !important;
+    font-weight: 500;
+  }
+
+  .paletteDescription {
+    font-size: 14px;
+    margin: 15px 0px;
+  }
+}
+
 @media (max-width: 768px) {
   .paletteMain {
     display: none; /* Mobile'da gizle */

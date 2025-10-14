@@ -148,24 +148,25 @@
     }
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
+  
+@media (min-width: 768px) and (max-width: 1024px) {
     .mBanner {
-      gap: 10px;
+      gap: 20px;
+      padding: 50px 0;
     }
   
     .leftBanner {
-      width: 45% !important;
+      width: 350px !important;
       height: 480px !important;
     }
   
     .rightBanner {
-      width: 40% !important;
+      width: 370px !important;
     }
   
-    
-    
-    .rightImgContainer[style*="height"] {
-        height: 250px !important;
+    .rightImgContainer {
+      width: 370px !important;
+      height: 250px !important;
     }
   
     .rightText h1 {
@@ -183,7 +184,7 @@
 
     .heroButton {
         font-size: 12px;
-        padding: 8px 20px; /* Padding-i bir az azaltdım, amma saxlaya da bilərsiniz */
+        padding: 8px 20px;
         white-space: nowrap;
-  }
+    }
 }

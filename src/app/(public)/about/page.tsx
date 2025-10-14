@@ -33,7 +33,9 @@ export default function About() {
       />
       <AboutCompany/>
       <AboutBigImage/>
-      <MiddleBanner {...aboutBannerData} />
+      <div className={styles.aboutMiddleBanner}>
+        <MiddleBanner {...aboutBannerData} />
+      </div>
       <PaletteRightImage
         title='A poetic range of 41 Montana colours'
         description='Montana’s functional and flexible system is featured in a range of 41 poetic and complex colours developed in close collaboration with the award-winning Danish designer and colour expert Margrethe Odgaard.

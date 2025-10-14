@@ -59,7 +59,7 @@ const page = () => {
         buttonLink='#'
         imageUrl='https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/studio/montana_home_23_24_a05_kevilounge_ara_azure_read_acacia_detail_h.jpg?mode=crop&width=828&height=1104'
         backgroundColor='#E6E8EF'
-        layout='textLeft' /* text left, image right */
+        layout='textLeft'
         variant='default'
         imagePosition={{
           width: "370px",

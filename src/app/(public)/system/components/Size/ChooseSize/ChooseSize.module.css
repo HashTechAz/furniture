@@ -27,6 +27,21 @@
     object-fit: cover;
 }
 
+@media (min-width: 768px) and (max-width: 1024px) {
+  .chooseHeader h1 {
+    font-size: 20px;
+    font-weight: 500;
+  }
+  
+  .chooseHeader p {
+    font-size: 14px;
+  }
+
+  .chooseImage img {
+    height: 400px;
+  }
+}
+
 /* --- RESPONSIVE STYLES --- */
 @media (max-width: 768px) {
   .chooseSize {

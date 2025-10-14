@@ -52,23 +52,51 @@
 }
 
 
-/* --- RESPONSIVE STYLES --- */
-@media (max-width: 1024px) {
+
+/* === TABLET EKRANLARI ÜÇÜN (769px - 1024px) === */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero {
+    padding: 120px 40px 60px;
+    /* Şəklin kənara çıxması üçün overflow-u ləğv edirik (əgər varsa) */
+    padding-bottom: 60px; /* Şəklin çıxacağı hissə qədər aşağıdan əlavə boşluq */
+  }
+
   .content {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 30px;
+    margin: 0 auto;
   }
-  
+
   .textContent {
     margin-top: 0;
   }
 
+  .title {
+    font-size: 32px;
+    max-width: 680px;
+
+  }
+  
+  .title span {
+    font-size: 28px;
+  }
+
+  .description {
+    font-size: 15px;
+    max-width: 680px;
+    margin-bottom: 50px;
+  }
+
   .heroImage {
     width: 100%;
-    max-width: 680px;
-    height: 400px;
+    max-width: 800px;
+    height: 450px;
     margin: 0 auto;
-    margin-bottom: 0; /* Mobildə mənfi boşluğu sıfırlayırıq */
+    margin-bottom: -80px;
+  }
+
+  .companyBox p {
+    padding: 0;
   }
 }
 

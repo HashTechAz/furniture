@@ -15,7 +15,22 @@
   object-fit: cover;
 }
 
-/* --- RESPONSIVE STYLES --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .aboutBigImage {
+    padding: 50px 0px 50px 40px;
+  }
+
+  .aboutBigImageMain {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .aboutBigImageMain img {
+    height: 500px;
+    width: 80%;
+  }
+}
+
 @media (max-width: 768px) {
   .aboutBigImage {
     padding: 40px 50px 40px 0px;

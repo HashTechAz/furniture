@@ -39,6 +39,27 @@
 }
 
 /* --- RESPONSIVE STYLES --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .fav {
+    padding: 50px 40px;
+  }
+
+  .fav .favMain {
+    width: 100%;
+    margin: 0;
+    padding-right: 4em;
+  }
+
+  .favMain h2 {
+    font-size: 20px;
+    font-weight: 500;
+  }
+  
+  .favText {
+    font-size: 14px;
+  }
+}
+
 @media (max-width: 768px) {
   .fav {
     padding: 40px 0px;
