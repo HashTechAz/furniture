@@ -46,6 +46,31 @@
   font-weight: 600;
 }
 
+@media (min-width: 768px) and (max-width: 1024px) {
+  .companies {
+    padding: 50px 40px;
+  }
+
+  .companiesTitle {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .companiesTitle h4 {
+    font-size: 16px;
+    line-height: 1.6;
+    padding: 4em 3em 2em;
+  }
+
+  .companyBox {
+    width: 200px;
+  }
+  
+}
+  
+
+
+
 
 /* --- MOBİL CİHAZLAR ÜÇÜN --- */
 @media (max-width: 768px) {

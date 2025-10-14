@@ -34,6 +34,45 @@
 }
 
 /* --- RESPONSIVE STYLES --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .history {
+    padding: 50px 40px;
+  }
+
+  .history .historyMain {
+    display: flex;
+  }
+
+  .historyMain .historyLeftTitle {
+    width: 50%;
+    padding-right: 40px;
+  }
+
+  .historyMain .historyList {
+    width: 40%;
+    padding-left: 20px;
+  }
+
+  .historyLeftTitle h1 {
+    font-size: 32px;
+    line-height: 1.2;
+  }
+
+  .historyList ul li {
+    padding-bottom: 18px;
+  }
+
+  .historyList ul li h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .historyList ul li p {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+}
+
 @media (max-width: 768px) {
   .history {
     padding: 40px 20px;
