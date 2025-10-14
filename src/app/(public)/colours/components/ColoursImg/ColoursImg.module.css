@@ -12,6 +12,25 @@
 }
 
 /* --- RESPONSIVE STYLES --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .coloursImg {
+        padding: 50px 40px;
+    }
+    
+    .coloursImgMain {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .coloursImgMain img {
+        width: 90%;
+        max-width: 800px;
+        height: auto;
+        object-fit: cover;
+    }
+}
+
 @media (max-width: 768px) {
     .coloursImg {
         padding: 40px 20px;

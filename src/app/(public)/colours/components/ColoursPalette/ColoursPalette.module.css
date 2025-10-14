@@ -115,6 +115,62 @@
 }
 
 /* --- RESPONSIVE STYLES --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .paletteMain {
+    padding: 50px 40px;
+    flex-direction: column;
+  }
+
+  .paletteMain .paletteImgBox {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto 30px auto;
+    order: 1;
+  }
+
+  .paletteOneColor {
+    width: 600px;
+    height: 500px;
+    padding: 20px;
+  }
+
+  .paletteJpg {
+    width: 500px !important;
+    height: 400px !important;
+    top: 50%;
+    left: 30% !important;
+    z-index: 3;
+    object-fit: cover;
+  }
+
+  .paletteMain .paletteTextBox {
+    width: 100%;
+    padding: 0;
+    order: 2;
+    max-width: 400px;
+  }
+
+  .paletteTextBox h2 span {
+    font-size: 20px !important;
+    font-weight: 500;
+  }
+
+  .paletteDescription {
+    font-size: 14px;
+    margin: 15px 0px;
+  }
+
+  .paletteDescription p + p {
+    margin-top: 15px;
+  }
+
+  .heroButton {
+    font-size: 12px;
+    padding: 8px 20px;
+  }
+}
+
 @media (max-width: 768px) {
   .paletteMain {
     padding: 40px 20px;
