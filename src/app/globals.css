@@ -44,7 +44,6 @@ img {
   padding: 0 20px;
 }
 
-/* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
@@ -59,7 +58,6 @@ h4 { font-size: 1.25rem; }
 h5 { font-size: 1.125rem; }
 h6 { font-size: 1rem; }
 
-/* Typography Classes */
 .font-poppins {
   font-family: 'Poppins', sans-serif;
 }
@@ -92,7 +90,6 @@ h6 { font-size: 1rem; }
   line-height: 1.5;
 }
 
-/* Estetik Italic Stiller */
 .text-italic-elegant {
   font-family: 'Poppins', sans-serif;
   font-style: italic;
@@ -113,7 +110,6 @@ p {
   margin-bottom: 1rem;
 }
 
-/* Responsive breakpoints */
 @media (max-width: 768px) {
   .container {
     padding: 0 15px;
@@ -125,15 +121,12 @@ p {
 }
 
 
-/* === RESPONSIVE GÖRÜNÜRLÜK ÜÇÜN YARDIMÇI KLASSLAR === */
 
-/* Yalnız 768px və daha kiçik ekranlarda göstərir */
 .showOnlyOnMobile {
   display: none;
 }
 
-@media (max-width: 768px) {
-  /* Yalnız 768px və daha kiçik ekranlarda gizlədir */
+@media (max-width: 1024px) {
   .hideOnMobile {
     display: none;
   }
@@ -142,26 +135,22 @@ p {
   }
 }
 
-/* Creative Minds custom grid */
 .creative-minds-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(430px, 1fr));
   gap: 20px;
 }
 
-/* Creative Minds responsive grid */
 @media (max-width: 768px) {
   .creative-minds-grid {
     grid-template-columns: 1fr;
     gap: 15px;
   }
   
-  /* NewsSection padding mobile için */
   .newsSection {
     padding: 40px 20px !important;
   }
   
-  /* Mobile'da text'in sağından padding */
   .creative-minds-grid .newsCard {
     padding-right: 20px;
   }

@@ -42,3 +42,24 @@
     line-height: 1.5;
   }
 }
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .section {
+    width: 100%;
+    padding: 120px 30px 20px;
+  }
+  
+  .content {
+    width: 100%;
+    padding-right: 4em;
+  }
+  
+  .title {
+    font-size: 22px;
+    width: 100%;
+  }
+  
+  .description {
+    width: 100%;
+  }
+}

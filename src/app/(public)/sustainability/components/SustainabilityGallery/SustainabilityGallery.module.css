@@ -18,6 +18,20 @@
 }
 
 /* --- RESPONSIVE STYLES --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .susImgBox {
+    gap: 10px;
+    margin: 50px 0;
+  }
+
+  .susImgBox .leftImg img {
+    width: 360px;
+    height: 470px;
+    object-fit: cover;
+    display: block;
+  }
+}
+
 @media (max-width: 768px) {
   .susImgBox {
     flex-direction: column;

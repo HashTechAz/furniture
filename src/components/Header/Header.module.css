@@ -463,6 +463,9 @@
   .mobileActions .searchButton {
     display: none; 
   }
+  .header {
+    padding: 25px 30px;
+  }
   .mobileActions {
     width: auto; 
   }
