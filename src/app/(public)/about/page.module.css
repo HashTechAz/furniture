@@ -94,7 +94,7 @@
 /* Tablet styles for About MiddleBanner */
 @media (min-width: 768px) and (max-width: 1024px) {
   .aboutMiddleBanner .mBanner {
-    gap: 20px;
+    gap: 10px;
     padding: 50px 40px;
   }
 
