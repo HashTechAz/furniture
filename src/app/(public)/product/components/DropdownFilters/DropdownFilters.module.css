@@ -141,6 +141,131 @@
 }
 
 /* --- RESPONSIVE STYLES --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .filtersWrapper {
+    padding: 20px 40px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .leftFilters {
+    display: none; /* Tablet'te desktop filtreleri gizle */
+  }
+
+  .rightFilters {
+    width: 100%;
+    justify-content: space-between;
+    position: relative;
+    align-items: center;
+    display: flex;
+  }
+
+  /* Tablet filter button (hamburger) */
+  .mobileFilterButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background-color: transparent;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .mobileFilterButton .filterIcon {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .mobileFilterButton .filterIcon span {
+    width: 18px;
+    height: 2px;
+    background-color: #333;
+    border-radius: 1px;
+  }
+
+  /* Items count */
+  .itemsCount {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    padding: 12px 0;
+    flex: 1;
+    text-align: center;
+  }
+
+  /* Sort dropdown */
+  .dropdown {
+    width: 200px;
+  }
+
+  .dropdownButton {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  /* Mobile dropdown menu */
+  .mobileDropdownMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .mobileDropdownMenu.open {
+    max-height: 400px;
+    padding: 20px;
+  }
+
+  .mobileDropdownMenu .filterSection {
+    margin-bottom: 20px;
+  }
+
+  .mobileDropdownMenu .filterSection:last-child {
+    margin-bottom: 0;
+  }
+
+  .mobileDropdownMenu .filterSection h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .mobileDropdownMenu .filterSection .filterOptions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .mobileDropdownMenu .filterSection .filterOptions label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #666;
+    cursor: pointer;
+  }
+
+  .mobileDropdownMenu .filterSection .filterOptions input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+  }
+}
+
 @media (max-width: 768px) {
   .filtersWrapper {
     padding: 10px;

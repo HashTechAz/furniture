@@ -118,7 +118,7 @@ const DropdownFilters = () => {
         {/* Mobile Filter Button */}
         <button 
           className={styles.mobileFilterButton}
-          onClick={() => setIsMobileFilterOpen(true)}
+          onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
         >
           <div className={styles.filterIcon}>
             <span></span>
@@ -127,6 +127,9 @@ const DropdownFilters = () => {
           </div>
           Filter
         </button>
+
+        {/* Items count */}
+        <span className={styles.itemsCount}>14 items</span>
 
         {/* Mobile Filter Modal */}
         <div className={`${styles.mobileDropdownMenu} ${isMobileFilterOpen ? styles.open : ''}`}>
@@ -231,9 +234,6 @@ const DropdownFilters = () => {
         </div>
         </div>
 
-        {/* Items count */}
-        <span className={styles.itemsCount}>12 items</span>
-        
         {/* Seçici Dropdown */}
         <Dropdown options={sortOptions} initialSelected={sortOptions[0]} />
       </div>

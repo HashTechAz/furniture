@@ -218,6 +218,44 @@
   margin-bottom: 2rem;
   color: #333;
 }
+
+/* --- RESPONSIVE STYLES --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .heroSection {
+    padding: 80px 40px 50px 40px;
+  }
+
+  .heroMain {
+    grid-template-columns: 200px auto 300px;
+    gap: 2rem;
+  }
+
+  .heroProductDescription h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+
+  .tabList {
+    gap: 20px;
+    margin-bottom: 1rem;
+  }
+
+  .tabList span {
+    font-size: 13px;
+    padding-bottom: 10px;
+  }
+
+  .heroProductDescription p {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .heroButton {
+    padding: 10px 25px;
+    font-size: 13px;
+  }
+}
 .tabList {
   display: flex;
   gap: 30px;
