@@ -127,14 +127,13 @@
     font-size: 14px;
   }
 
-  /* DƏYİŞİKLİK BURADADIR */
   .imageContent {
-    order: 2; /* Şəklin aşağıda gəlməsi üçün */
-    width: 100%; /* Bu sətri əlavə edərək eni tam olmağa məcbur edirik */
+    order: 2;
+    width: 100%; 
   }
 
   .heroImage {
-    width: 100%; /* Artıq "!important" ehtiyac deyil */
+    width: 100%; 
     height: 450px;
     padding: 0;
     margin: 0;
