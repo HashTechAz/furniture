@@ -219,41 +219,128 @@
   color: #333;
 }
 
-/* --- RESPONSIVE STYLES --- */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 769px) and (max-width: 1024px) {
   .heroSection {
-    padding: 80px 40px 50px 40px;
+    padding: 100px 40px 60px 40px;
   }
 
   .heroMain {
-    grid-template-columns: 200px auto 300px;
-    gap: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 2.5rem;
+  }
+
+  .heroProductImage {
+    order: 1;
+    width: 100%;
+  }
+
+  .heroProductImage img {
+    max-width: 400px; 
+  }
+
+  .heroItem {
+    order: 2;
+    height: auto;
+    padding-bottom: 0;
+    width: 100%;
+    max-width: 700px;
+  }
+
+  .heroItem ul {
+    flex-direction: row;
+    justify-content: space-around;
+    width: 50%;
+    margin: 0 auto;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  .heroItem ul li:last-child {
+    margin-top: 0;
+  }
+
+  .menuItemWrapper {
+    flex-direction: column; 
+    gap: 6px;
+    justify-content: center;
+    height: 100%; 
+  }
+
+  .heroItemIcons {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .menuItemLabel {
+    display: block !important; 
+    opacity: 1 !important;
+    visibility: visible !important;
+    font-size: 11px;
+    text-align: center;
+  }
+
+  .menuItemValue {
+    display: none;
+  }
+
+  .panelContainer {
+    top: calc(100% + 15px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90vw;
+    max-width: 450px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    z-index: 20;
+    animation: fadeIn 0.3s ease-out;
+    border: 1px solid #eee;
+  }
+
+  .heroProductDescription {
+    order: 3;
+    display: grid;
+    grid-template-columns: 40% 60%; 
+    width: 100%;
+    margin-top: 20px;
   }
 
   .heroProductDescription h2 {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-  }
-
-  .tabList {
-    gap: 20px;
+    grid-column: 1 / 2;
+    grid-row: 1;
+    font-size: 22px;
     margin-bottom: 1rem;
   }
 
-  .tabList span {
-    font-size: 13px;
-    padding-bottom: 10px;
-  }
-
-  .heroProductDescription p {
-    font-size: 13px;
-    line-height: 1.5;
-  }
-
   .heroButton {
-    padding: 10px 25px;
-    font-size: 13px;
+    
+   height: max-content;
+  }
+
+  .productInfo {
+    grid-column: 1 / 2;
+    grid-row: 3;
+    margin-top: 1rem;
+  }
+  
+  .tabList {
+    grid-column: 2 / 3;
+    grid-row: 1;
+  }
+  
+  .tabContent {
+    grid-column: 2 / 3;
+    grid-row: 2;
+  }
+
+  .tabMore {
+    grid-column: 2 / 3;
+    grid-row: 3;
+    margin-top: 1rem;
   }
 }
 .tabList {
