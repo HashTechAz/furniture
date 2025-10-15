@@ -104,15 +104,17 @@
     padding: 0;
   }
 
-  .textContent {
-    width: 100%;
-    padding: 30px 20px 10px;
-  }
-
   .content {
     display: flex;
     flex-direction: column;
     gap: 0;
+    margin: 0;
+  }
+
+  .textContent {
+    width: 100%;
+    padding: 30px 20px 10px;
+    order: 1; /* Mətnin yuxarıda gəlməsi üçün */
   }
 
   .title {
@@ -125,16 +127,17 @@
     font-size: 14px;
   }
 
+  /* DƏYİŞİKLİK BURADADIR */
+  .imageContent {
+    order: 2; /* Şəklin aşağıda gəlməsi üçün */
+    width: 100%; /* Bu sətri əlavə edərək eni tam olmağa məcbur edirik */
+  }
+
   .heroImage {
-    height: 300px;
+    width: 100%; /* Artıq "!important" ehtiyac deyil */
+    height: 450px;
     padding: 0;
-    margin: 0 auto;
-    margin-bottom: 0; 
-    width: 100%;
-    max-width: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin: 0;
   }
 
   .heroImageImg {
