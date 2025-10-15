@@ -155,3 +155,13 @@ p {
     padding-right: 20px;
   }
 }
+
+
+/* === TABLET: CREATIVE MINDS GRID ÜÇÜN === */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .creative-minds-grid {
+    /* Bir sırada 3 bərabər ölçülü sütun yaradır */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px; /* Kartlar arası boşluq */
+  }
+}

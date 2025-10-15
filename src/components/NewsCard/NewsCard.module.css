@@ -10,7 +10,6 @@
 }
 
 .imageWrapper {
-  /* DƏYİŞİKLİK: Sabit eni ləğv edirik ki, responsiv olsun */
   width: 100%; 
   height: 430px;
   overflow: hidden;
@@ -43,10 +42,8 @@
   padding-right: 20px;
 }
 
-/* --- YENİ RESPONSİV STİLLƏR --- */
 @media (max-width: 768px) {
 .imageWrapper {
-  /* Mobil üçün şəklin hündürlüyünü azaldırıq */
   height: 220px;
 }
 
@@ -59,17 +56,13 @@
   font-size: 12px;
 }
 
-/* Creative Minds sayfası için özel padding */
 .creative-minds-grid .cardDescription {
   padding-right: 20px;
 }
 }
 
-
-
-/* === TABLET EKRANLARI ÜÇÜN (768px - 1024px) === */
 @media (min-width: 768px) and (max-width: 1024px) {
   .imageWrapper {
-    height: 250px; /* Şəklin hündürlüyünü 250px edirik */
+    height: 220px; 
   }
 }

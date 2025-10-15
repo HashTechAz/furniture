@@ -57,8 +57,7 @@
 @media (min-width: 769px) and (max-width: 1024px) {
   .hero {
     padding: 120px 40px 60px;
-    /* Şəklin kənara çıxması üçün overflow-u ləğv edirik (əgər varsa) */
-    padding-bottom: 60px; /* Şəklin çıxacağı hissə qədər aşağıdan əlavə boşluq */
+    padding-bottom: 60px; 
   }
 
   .content {
@@ -111,6 +110,8 @@
   }
 
   .content {
+    display: flex;
+    flex-direction: column;
     gap: 0;
   }
 
@@ -127,6 +128,19 @@
   .heroImage {
     height: 300px;
     padding: 0;
-    margin-bottom: 0; /* Mobildə mənfi boşluğu sıfırlayırıq */
+    margin: 0 auto;
+    margin-bottom: 0; 
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .heroImageImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 }
