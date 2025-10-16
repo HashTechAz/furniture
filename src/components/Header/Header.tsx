@@ -131,7 +131,6 @@ const Header: React.FC = () => {
     setIsMobileMenuOpen(false);
   };
 
-  // --- ALT MENYU LİNKLƏRİ (Məzmunu buradan dəyişə bilərsiniz) ---
   const inspirationSubLinks = [
     { label: "View all inspiration", href: "/inspiration" },
     { label: "Bedroom", href: "/inspiration/bedroom" },
@@ -155,7 +154,6 @@ const Header: React.FC = () => {
     { label: "Panton Wire", href: "/series/panton-wire" },
   ];
 
-  // --- MOBİL MENYU AÇIB-BAĞLAMA FUNKSİYASI ---
   const toggleMobileSubMenu = (menu: 'inspiration' | 'products' | 'series') => {
     setIsMobileInspirationOpen(menu === 'inspiration' ? !isMobileInspirationOpen : false);
     setIsMobileProductsOpen(menu === 'products' ? !isMobileProductsOpen : false);
