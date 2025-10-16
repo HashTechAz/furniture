@@ -2,15 +2,29 @@
   margin-top: 50px;
 }
 
-/* DƏYİŞİKLİK BURADADIR */
-@media (min-width: 769px) {
+@media (min-width: 768px) and (max-width: 1024px) {
   .customHeroImage {
-    width: 480px;
-    height: 480px;
+    width: 400px;
+    height: 400px;
+    position: absolute;
+    right: 50px;
+    top: 50%; 
+    transform: translateY(-10%); 
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+@media (min-width: 1025px) {
+  .customHeroImage {
+    width: 550px;
+    height: 550px;
     position: absolute;
     right: 120px;
-    top: 50%; /* Konteynerin ortasına çəkir */
-    transform: translateY(-30%); /* Şəkli yuxarıdan deyil, aşağıdan mövqeləndiririk */
+    top: 50%; 
+    transform: translateY(-50%); 
+    object-fit: cover;
+    object-position: center;
   }
 }
 
