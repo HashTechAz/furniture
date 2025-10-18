@@ -37,30 +37,97 @@
     font-weight: 400;
 }
 
-@media (max-width: 768px) {
-    
-
+@media (min-width: 769px) and (max-width: 1024px) {
     .cardSection {
-        padding: 40px 20px 0px;
+        padding: 40px 20px;
     }
 
     .cardMain {
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        align-items: start;
     }
 
     .colourClassCard {
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .colourClassCardImage {
-        height: 350px;
+        width: 210px;
+        height: 290px;
+        object-fit: cover;
+    }
+
+    .colourClassCardImage img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .colourClassCardTitle {
+        width: 210px;
+        text-align: center;
     }
 
     .colourClassCardTitle h3 {
-        margin-top: 10px;
+        margin-top: 15px;
+        font-size: 14px;
+        margin-bottom: 8px;
     }
 
     .colourClassCardTitle p {
         font-size: 12px;
+        line-height: 1.4;
+    }
+}
+
+@media (max-width: 768px) {
+    .cardSection {
+        padding: 40px 25px;
+    }
+
+    .cardMain {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .colourClassCard {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .colourClassCardImage {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+    }
+
+    .colourClassCardImage img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .colourClassCardTitle {
+        width: 100%;
+        text-align: center;
+    }
+
+    .colourClassCardTitle h3 {
+        margin-top: 15px;
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+
+    .colourClassCardTitle p {
+        font-size: 14px;
+        line-height: 1.4;
     }
 }

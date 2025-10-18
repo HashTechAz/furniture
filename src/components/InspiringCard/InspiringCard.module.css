@@ -1,6 +1,6 @@
  .inspiringCard {
     width: 100%;
-    padding: 60px 80px;
+    padding: 40px 20px;
  }
 
 .inspiringCardMain {
@@ -29,6 +29,49 @@
     font-weight: 600;
     color: #333;
  }
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .inspiringCard {
+        padding: 40px 20px;
+    }
+
+    .inspiringCardMain {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        align-items: start;
+    }
+    
+    .inspiringCardItem {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .inspiringCardItemImage {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+    
+    .inspiringCardItemImage img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .inspiringCardItemContent {
+        width: 100%;
+        text-align: center;
+        padding: 10px 0px;
+    }
+    
+    .inspiringCardItemContent span {
+        font-size: 14px;
+        font-weight: 600;
+    }
+}
 
  @media (max-width: 768px) {
     .inspiringCard {

@@ -36,8 +36,6 @@ const inspirationPageData: any = {
           imageAlt: "Colour Class",
           backgroundColor: "#BDD2DA",
           textColor: "#000",
-          imageClassName: pageStyles.customHeroImage,
-          heroClassName: pageStyles.customHeroLayout,
         },
       },
       { component: "SystemAbout", props: {} },

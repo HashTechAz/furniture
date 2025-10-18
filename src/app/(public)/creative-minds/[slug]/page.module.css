@@ -15,13 +15,13 @@
   }
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 1300px) {
   .customHeroImage {
-    width: 550px;
-    height: 550px;
+    width: 500px;
+    height: 500px;
     position: absolute;
     right: 120px;
-    top: 50%; 
+    top: 65%; 
     transform: translateY(-50%); 
     object-fit: cover;
     object-position: center;

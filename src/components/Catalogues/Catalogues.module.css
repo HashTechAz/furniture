@@ -1,6 +1,6 @@
 .catalogues {
     width: 100%;
-    padding: 60px 80px;
+    padding: 40px 20px;
 }
 
 .cataloguesMain {
@@ -26,6 +26,38 @@
     width: 310px;
     height: 420px;
     object-fit: cover;
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .catalogues {
+        padding: 120px 20px 40px 20px;
+    }
+
+    .catalogues h1 {
+        font-size: 28px;
+        margin: 0 0 30px 20px;
+        grid-column: 1 / -1;
+    }
+
+    .cataloguesMain {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        align-items: center;
+        justify-items: center;
+    }
+
+    .cataloguesItem {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .cataloguesItem img {
+        width: 200px;
+        height: 280px;
+        object-fit: cover;
+    }
 }
 
 @media (max-width: 768px) {

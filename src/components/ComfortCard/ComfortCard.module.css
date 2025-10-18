@@ -1,6 +1,6 @@
 .comfortCard {
   width: 100%;
-  padding: 60px 80px;
+  padding: 40px 20px;
 }
 
 .comfortCardMain {
@@ -37,6 +37,48 @@
   width: 100%;
   height: 550px;
   object-fit: cover;
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .comfortCard {
+    padding: 40px 20px;
+  }
+
+  .comfortCardMain {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    align-items: start;
+  }
+
+  .comfortCardItem {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .comfortCardItem img {
+    width: 240px;
+    height: 280px;
+    object-fit: cover;
+  }
+
+  .comfortCardItemContent {
+    width: 100%;
+    padding: 15px 10px 0px;
+    text-align: center;
+  }
+
+  .comfortCardItem h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .comfortCardItem p {
+    font-size: 14px;
+    line-height: 1.4;
+  }
 }
 
 @media (max-width: 768px) {

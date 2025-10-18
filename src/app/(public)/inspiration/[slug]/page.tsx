@@ -35,7 +35,7 @@ const inspirationPageData: any = {
           description: "",
           imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-home/2023/location---radiohuset/montana_home_23_24_masala_amber_acacia_camomile_w.jpg?mode=crop&width=1080&height=776",
           imageAlt: "Catalogues",
-          backgroundColor: "#633730",
+          backgroundColor: "#3A3126",
           textColor: "#fff",
         }
       },

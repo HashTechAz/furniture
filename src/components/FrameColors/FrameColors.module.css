@@ -19,6 +19,25 @@
   text-align: center;
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+  .frameColors {
+    padding: 40px 20px;
+  }
+  
+  .frameColorsMain {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .frameColorsItem {
+    width: 180px;
+    height: 180px;
+    flex: 0 0 auto;
+  }
+}
+
 @media (max-width: 768px) {
   .frameColors {
     padding: 40px 20px;
