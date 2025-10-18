@@ -141,6 +141,29 @@
   display: flex;
   flex-direction: column;
 }
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .positionList {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+  }
+  
+  .positionItem {
+    padding: 6px 4px !important;
+    font-size: 12px !important;
+    text-align: center !important;
+    margin: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .positionList {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+  }
+}
 .positionItem {
   padding: 10px 12px;
   font-size: 14px;
@@ -539,6 +562,13 @@
 
   .heroProductImage {
     order: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .heroProductImage img {
+    max-width: 500px;
   }
 
   .heroItem {
@@ -546,6 +576,7 @@
     height: auto; 
     padding-bottom: 0;
     align-items: flex-start; 
+    margin: 0 auto;
   }
 
   .heroProductDescription {
@@ -554,9 +585,10 @@
 
  .heroItem ul {
   flex-direction: row; 
-  justify-content: space-around; 
+  justify-content: center; 
   width: 100%;
   align-items: center;
+  gap: 10px;
 }
 
 .heroItem ul li {
@@ -628,7 +660,8 @@
   }
 
   .heroItemIcons {
-    width: 80px;
+    width: 50px;
+    height: 50px;
   }
 
   .colorGrid {
@@ -637,9 +670,10 @@
   }
 
   .positionList {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 0.5rem;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+    flex-direction: unset !important;
   }
 
   .positionItem {
