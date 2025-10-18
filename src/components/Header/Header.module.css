@@ -459,6 +459,11 @@
   color: #000;
 }
 
+.headerAtTop.seriesHeader {
+  background-color: #2D303B;
+  color: #fff;
+}
+
 @media (min-width: 769px) and (max-width: 1024px) {
   .mobileActions .searchButton {
     display: none; 

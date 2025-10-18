@@ -81,19 +81,19 @@ const SeriesContent = () => {
     <>
       <section className={styles.seriesCategoryMain}>
         <div className={styles.seriesCategoryText}>
-          <h5>Learn more about</h5>
+          <h5><Link href="/series/learn-more-about">Learn more about</Link></h5>
           <ul>
             <li>
-              <Link href="/">Guarantees</Link>
+              <Link href="/series/guarantees">Guarantees</Link>
             </li>
             <li>
-              <Link href="/">Assembly guides</Link>
+              <Link href="/series/assembly">Assembly guides</Link>
             </li>
             <li>
-              <Link href="/">Materials and care</Link>
+              <Link href="/series/materials-and-care">Materials and care</Link>
             </li>
             <li>
-              <Link href="/">Retailers and showrooms</Link>
+              <Link href="/series/showrooms">Retailers and showrooms</Link>
             </li>
           </ul>
         </div>

@@ -22,6 +22,8 @@ import ComfortCard from './components/ComfortCard/ComfortCard';
 import HeroSection from './components/HeroSection/HeroSection';
 import InspiringCard from './components/InspiringCard/InspiringCard';
 import Catalogues from './components/Catalogues/Catalogues';
+import SeriesAbout from './components/SeriesAbout/SeriesAbout';
+import TrustBadges from './components/TrustBadges/TrustBadges';
 
 export const componentMap = {
   Hero,
@@ -48,6 +50,8 @@ export const componentMap = {
   HeroSection,
   InspiringCard,
   Catalogues,
+  SeriesAbout,
+  TrustBadges,
 };
 
 export type ComponentName = keyof typeof componentMap;

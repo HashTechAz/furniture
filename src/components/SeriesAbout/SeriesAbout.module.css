@@ -1,0 +1,158 @@
+.seriesAbout {
+  width: 100%;
+  padding: 60px 80px 0px;
+  background-color: #fff;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.card {
+  flex: 1;
+  height: 550px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover effects removed */
+
+.cardImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.cardContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 30px;
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+  color: #fff;
+  z-index: 2;
+}
+
+.cardContent h3 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 15px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.cardContent p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #fff;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.cardFeatures {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #555;
+}
+
+.featureIcon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+/* Responsive */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .seriesAbout {
+    padding: 40px 20px;
+  }
+  
+  .container {
+    gap: 15px;
+  }
+  
+  .cardContent {
+    padding: 25px;
+  }
+  
+  .cardContent h3 {
+    font-size: 18px;
+  }
+  
+  .cardContent p {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .seriesAbout {
+    padding: 40px 20px;
+    display: block;
+  }
+  
+  .container {
+    flex-direction: column;
+    gap: 20px;
+    display: flex;
+    width: 100%;
+  }
+  
+  .card {
+    height: 400px;
+    width: 100%;
+    flex: none;
+    display: block;
+    position: relative;
+  }
+  
+  .cardContent {
+    padding: 30px 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .cardContent h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .cardContent p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  .feature {
+    font-size: 12px;
+  }
+}
