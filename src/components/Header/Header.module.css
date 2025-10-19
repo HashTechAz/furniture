@@ -459,6 +459,16 @@
   color: #000;
 }
 
+.headerAtTop.guaranteesHeader {
+  background-color: #3B7840 !important;
+  color: #fff !important;
+}
+
+.headerAtTop.assemblyHeader {
+  background-color: #F4F4F1 !important;
+  color: #000 !important;
+}
+
 .headerAtTop.seriesHeader {
   background-color: #2D303B;
   color: #fff;

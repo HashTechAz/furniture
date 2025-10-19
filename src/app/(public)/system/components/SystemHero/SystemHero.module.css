@@ -18,6 +18,11 @@
     margin-bottom: 30px;
   }
 
+  .description {
+    line-height: 1.6;
+    font-size: 16px;
+  }
+
 /* --- RESPONSIVE STYLES --- */
 @media (min-width: 768px) and (max-width: 1024px) {
   .systemHero {

@@ -40,6 +40,8 @@ const Header: React.FC = () => {
   const isCreativeMindsPage = pathname === "/creative-minds";
   const isFaebrikPage = pathname === "/creative-minds/faebrik";
   const isSeriesPage = pathname.startsWith("/series"); 
+  const isGuaranteesPage = pathname === "/series/guarantees";
+  const isAssemblyPage = pathname === "/series/assembly";
   const isLumikelloPage = pathname === "/creative-minds/lumikello";
   const isSwantjePage = pathname === "/creative-minds/swantje";
   const isCathrinePage = pathname === "/creative-minds/cathrine";
@@ -193,7 +195,9 @@ const Header: React.FC = () => {
           ${isColourClassPage ? styles.colourClassHeader : ""}
           ${isColoursOfComfortPage ? styles.coloursOfComfortHeader : ""}
           ${isInspiringStylesPage ? styles.inspiringStylesHeader : ""}
-          ${isSeriesPage ? styles.seriesHeader : ""}
+          ${isGuaranteesPage ? styles.guaranteesHeader : ""}
+          ${isAssemblyPage ? styles.assemblyHeader : ""}
+          ${isSeriesPage && !isGuaranteesPage && !isAssemblyPage ? styles.seriesHeader : ""}
         `}
       >
         <nav className={styles.navbar}>

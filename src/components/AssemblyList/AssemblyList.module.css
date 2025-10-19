@@ -1,0 +1,86 @@
+.assemblyListContainer {
+  padding: 60px 80px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 40px;
+  text-align: left;
+}
+
+.listsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.listWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.listTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style-type: square;
+}
+
+.listItem {
+  font-size: 16px;
+  font-weight: 500;
+  color: #666;
+  padding: 2px 0;
+  position: relative;
+  padding-left: 20px;
+}
+
+
+
+.listItem:last-child {
+  border-bottom: none;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .assemblyListContainer {
+    padding: 40px;
+  }
+  
+  .title {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+  
+  .listsContainer {
+    gap: 30px;
+  }
+  
+  .listTitle {
+    font-size: 20px;
+  }
+  
+  .listItem {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .assemblyListContainer {
+    padding: 50px 30px;
+  }
+}

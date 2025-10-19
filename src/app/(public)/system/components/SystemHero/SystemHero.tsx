@@ -4,11 +4,12 @@ import styles from "./SystemHero.module.css";
 // Komponentin qəbul edəcəyi propları təyin edirik
 interface SystemHeroProps {
   title: string;
+  description?: string;
   backgroundColor?: string;
   color?: string;
 }
 
-const SystemHero = ({ title, backgroundColor, color }: SystemHeroProps) => {
+const SystemHero = ({ title, description, backgroundColor, color }: SystemHeroProps) => {
   // Prop-dan gələn arxa fon rəngini tətbiq etmək üçün
   const sectionStyle = backgroundColor ? { backgroundColor } : {};
   const titleStyle = color ? { color } : {};
@@ -20,6 +21,11 @@ const SystemHero = ({ title, backgroundColor, color }: SystemHeroProps) => {
           <h1 className={styles.title} style={titleStyle}>
             {title}
           </h1>
+          {description && (
+            <p className={styles.description} style={titleStyle}>
+              {description}
+            </p>
+          )}
         </div>
       </section>
     </>
