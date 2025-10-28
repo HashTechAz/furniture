@@ -59,7 +59,6 @@ interface PaletteData {
 }
 
 export default function Home() {
-  // Palit məlumatlarını, yüklənmə və xəta vəziyyətlərini saxlamaq üçün state əlavə edirik
   const [homePalettes, setHomePalettes] = useState<PaletteData[]>([]);
   const [loadingPalettes, setLoadingPalettes] = useState(true);
   const [paletteError, setPaletteError] = useState<string | null>(null);
