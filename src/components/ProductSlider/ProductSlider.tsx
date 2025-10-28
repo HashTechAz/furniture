@@ -5,8 +5,8 @@ import useEmblaCarousel from "embla-carousel-react";
 import styles from "./ProductSlider.module.css";
 import systemStyles from "./ProductSliderSystem.module.css";
 import CategoryCard from "../CategoryCard/CategoryCard";
+import slideData from "../../mock/productSliderData.json";
 
-// TypeScript üçün məlumat strukturu
 interface SlideData {
   id: number;
   label: string;
@@ -14,59 +14,12 @@ interface SlideData {
   size?: "wide" | "normal" | "default";
 }
 
-// Komponentin qəbul edəcəyi proplara `slideDataProp` əlavə edildi
 interface ProductSliderProps {
   variant?: "default" | "system";
   titleTop?: string;
   titleBottom?: string;
-  slideDataProp?: SlideData[]; // Kənardan data qəbul etmək üçün
+  slideDataProp?: SlideData[]; 
 }
-
-// Daxili, ehtiyat məlumatlar
-const internalSlideData: SlideData[] = [
-  {
-    id: 1,
-    label: "Modern Chair",
-    imageUrl:
-      "https://profine.pk/wp-content/uploads/2024/12/WhatsApp-Image-2025-03-06-at-2.06.38-PM-1.webp",
-    size: "wide",
-  },
-  {
-    id: 2,
-    label: "Minimalist Sofa",
-    imageUrl:
-      "https://www.coxandcox.co.uk/media/catalog/product/a/w/aw16-k-ratchair.png?quality=80&fit=bounds&height=800&width=800",
-    size: "default",
-  },
-  {
-    id: 3,
-    label: "Modern Chair",
-    imageUrl:
-      "https://profine.pk/wp-content/uploads/2024/12/WhatsApp-Image-2025-03-06-at-2.06.38-PM-1.webp",
-    size: "default",
-  },
-  {
-    id: 4,
-    label: "Minimalist Sofa",
-    imageUrl:
-      "https://www.coxandcox.co.uk/media/catalog/product/a/w/aw16-k-ratchair.png?quality=80&fit=bounds&height=800&width=800",
-    size: "wide",
-  },
-  {
-    id: 5,
-    label: "Modern Chair",
-    imageUrl:
-      "https://profine.pk/wp-content/uploads/2024/12/WhatsApp-Image-2025-03-06-at-2.06.38-PM-1.webp",
-    size: "default",
-  },
-  {
-    id: 6,
-    label: "Minimalist Sofa",
-    imageUrl:
-      "https://www.coxandcox.co.uk/media/catalog/product/a/w/aw16-k-ratchair.png?quality=80&fit=bounds&height=800&width=800",
-    size: "default",
-  },
-];
 
 const ProductSlider: React.FC<ProductSliderProps> = ({
   variant = "default",
@@ -74,8 +27,7 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
   titleBottom,
   slideDataProp,
 }) => {
-  // Dəyişiklik: Əgər kənardan data gəlibsə onu, yoxsa daxili datanı istifadə et
-  const slideData = slideDataProp || internalSlideData;
+  const currentSlideData = slideDataProp || slideData;
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
@@ -154,13 +106,13 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
 
       <div className={currentStyles.embla} ref={emblaRef}>
         <div className={currentStyles.embla__container}>
-          {slideData.map((slide) => (
+          {currentSlideData.map((slide) => (
             <div className={currentStyles.embla__slide} key={slide.id}>
               <CategoryCard
                 label={slide.label}
                 imageUrl={slide.imageUrl}
                 variant={variant}
-                size={slide.size}
+                size={slide.size as "wide" | "normal" | "default"}
               />
             </div>
           ))}
