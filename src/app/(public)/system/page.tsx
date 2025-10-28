@@ -1,4 +1,6 @@
-import React from "react";
+'use client'; // Client komponenti
+
+import React, { useState, useEffect } from "react"; 
 import SystemHero from "./components/SystemHero/SystemHero";
 import SystemAbout from "./components/SystemAbout/SystemAbout";
 import Size from "./components/Size/Size";
@@ -6,21 +8,78 @@ import ProductSlider from "../../../components/ProductSlider/ProductSlider";
 import SystemPalette from "../../../components/Palette/SystemPalette";
 import PaletteLeftImage from "../../../components/Palette/PaletteLeftImage/PaletteLeftImage";
 
-const thirdPaletteData = {
-  category: "",
-  title: "Creating good design demands honesty and respect",
-  description:
-    "Montana Furniture is a family-owned company, established in 1982, leading within storage and furniture for private homes and contemporary office spaces. The company is founded by Peter J. Lassen, who is also the designer of the Montana system.",
-  description2:
-    "All Montana modules are designed, developed and made in Denmark. Every day, in a small town on the island of Funen over 140 professionals work hard to uphold the highest standards of processing, painting and assembling – making sure that your Montana furniture will last a lifetime.",
-  buttonText: "Learn more",
-  buttonLink: "/design/balance",
-  imageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/designer-portraits/montana_peter_joakim_lassen_01.jpg?mode=crop&width=828&height=595",
-  backgroundColor: "#2C3587",
-} as const;
+interface PaletteProps {
+  title: string;
+  description: string;
+  buttonText: string;
+  buttonLink: string;
+  imageUrl: string;
+  backgroundColor: string;
+  imageSize?: 'normal' | 'large' | 'custom';
+  category?: string;
+  description2?: string;
+  features?: string[];
+  layout?: 'textLeft' | 'textRight';
+  variant?: 'default' | 'third';
+  imagePosition?: {
+    width: string;
+    height: string;
+    top: string;
+    left?: string;
+    right?: string;
+  };
+}
 
-const page = () => {
+interface PaletteData {
+  id: string;
+  componentType: 'PaletteRightImage' | 'PaletteLeftImage' | 'SystemPalette';
+  props: PaletteProps;
+}
+
+
+const SystemPage = () => { 
+  // State əlavə edirik
+  const [systemPalettes, setSystemPalettes] = useState<PaletteData[]>([]);
+  const [loadingPalettes, setLoadingPalettes] = useState(true);
+  const [paletteError, setPaletteError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPalettes = async () => {
+      try {
+        setLoadingPalettes(true);
+        setPaletteError(null);
+        const response = await fetch('/api/palettes');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const allPaletteData: { systemPage?: PaletteData[] } = await response.json();
+        setSystemPalettes(allPaletteData.systemPage || []); 
+      } catch (err) {
+         if (err instanceof Error) {
+            setPaletteError(err.message);
+        } else {
+            setPaletteError('An unknown error occurred while fetching palettes');
+        }
+        console.error("Failed to fetch palettes:", err);
+      } finally {
+        setLoadingPalettes(false);
+      }
+    };
+
+    fetchPalettes();
+  }, []);
+
+  const renderPalette = (palette: PaletteData) => {
+    if (palette.componentType === 'PaletteLeftImage') {
+      const props: React.ComponentProps<typeof PaletteLeftImage> = palette.props;
+      return <PaletteLeftImage key={palette.id} {...props} />;
+    } else if (palette.componentType === 'SystemPalette') {
+      const props: React.ComponentProps<typeof SystemPalette> = palette.props;
+      return <SystemPalette key={palette.id} {...props} />;
+    }
+    return null;
+  };
+
   return (
     <>
       <div
@@ -35,50 +94,23 @@ const page = () => {
         titleTop='Montana System inspiration'
         titleBottom=''
       />
-      <PaletteLeftImage
-        title='Renew – your Montana'
-        description='Do you feel like something new? Change a shelf, get a new back panel, switch the castors, revamp your modules with striking handles in a complementary colour or add a brand new set of colourful legs.
 
-'
-        buttonText='Discover Colour Classes here'
-        buttonLink='/collections/summer'
-        imageUrl='https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/celine-hallas/celinehallasxmontana_color_05.jpg?mode=crop&width=580&height=400'
-        backgroundColor='#B48451'
-        imageSize='large'
-      />
-      <SystemPalette
-        category=''
-        title='System – customization options'
-        description='Tailor your Montana system with these quick customizations and accessories.'
-        features={[
-          'Swap shelves and back panels',
-          'Add coloured handles and legs',
-          'Optional castors for mobility',
-        ]}
-        buttonText='Discover accessories'
-        buttonLink='#'
-        imageUrl='https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/studio/montana_home_23_24_a05_kevilounge_ara_azure_read_acacia_detail_h.jpg?mode=crop&width=828&height=1104'
-        backgroundColor='#E6E8EF'
-        layout='textLeft'
-        variant='default'
-        imagePosition={{
-          width: "370px",
-          height: "500px",
-          top: "40px",
-          left: "0px",
-        }}
-      />
-      <PaletteLeftImage
-        title='Creating good design demands honesty and respect'
-        description='Montana Furniture is a family-owned company, established in 1982, leading within storage and furniture for private homes and contemporary office spaces. The company is founded by Peter J. Lassen, who is also the designer of the Montana system.
+      {/* PaletteLeftImage 1 */}
+      {loadingPalettes ? <p>Loading palettes...</p> : paletteError ? <p>Error: {paletteError}</p> :
+        systemPalettes.find(p => p.id === 'systemPaletteLeft1') && renderPalette(systemPalettes.find(p => p.id === 'systemPaletteLeft1')!)
+      }
 
-All Montana modules are designed, developed and made in Denmark. Every day, in a small town on the island of Funen over 140 professionals work hard to uphold the highest standards of processing, painting and assembling – making sure that your Montana furniture will last a lifetime.'
-        buttonText='Discover Colour Classes here'
-        buttonLink='/collections/summer'
-        imageUrl='https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/designer-portraits/montana_peter_joakim_lassen_01.jpg?mode=crop&width=828&height=595'
-        backgroundColor='#2C3587'
-        imageSize='large'
-      />
+      {/* SystemPalette */}
+       {loadingPalettes ? null : paletteError ? null :
+        systemPalettes.find(p => p.id === 'systemPaletteSystem1') && renderPalette(systemPalettes.find(p => p.id === 'systemPaletteSystem1')!)
+      }
+
+       {/* PaletteLeftImage 2 */}
+       {loadingPalettes ? null : paletteError ? null :
+        systemPalettes.find(p => p.id === 'systemPaletteLeft2') && renderPalette(systemPalettes.find(p => p.id === 'systemPaletteLeft2')!)
+      }
+
+
       <div style={{ marginBottom: '40px' }}>
         <ProductSlider
           titleTop='Montana System inspiration'
@@ -89,4 +121,4 @@ All Montana modules are designed, developed and made in Denmark. Every day, in a
   );
 };
 
-export default page;
+export default SystemPage; 
