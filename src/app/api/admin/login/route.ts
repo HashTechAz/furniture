@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authenticateUser, generateToken } from '@/lib/auth';
+import { loginUser } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
     try {
@@ -12,25 +12,41 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const user = await authenticateUser(email, password);
+        try {
+            const loginResponse = await loginUser(email, password);
 
-        if (!user) {
+            // Set HTTP-only cookies for security
+            const response = NextResponse.json({
+                message: 'Login successful',
+                user: loginResponse.user,
+            });
+
+            // Set access token as HTTP-only cookie
+            response.cookies.set('accessToken', loginResponse.accessToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                maxAge: 60 * 60 * 24, // 24 hours
+                path: '/',
+            });
+
+            // Set refresh token as HTTP-only cookie
+            response.cookies.set('refreshToken', loginResponse.refreshToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                maxAge: 60 * 60 * 24 * 7, // 7 days
+                path: '/',
+            });
+
+            return response;
+        } catch (apiError: unknown) {
+            const errorMessage = apiError instanceof Error ? apiError.message : 'Login failed';
             return NextResponse.json(
-                { error: 'Invalid email or password' },
+                { error: errorMessage },
                 { status: 401 }
             );
         }
-
-        const token = generateToken(user);
-
-        return NextResponse.json({
-            message: 'Login successful',
-            token,
-            user: {
-                id: user.id,
-                email: user.email,
-            },
-        });
     } catch (error) {
         console.error('Login error:', error);
         return NextResponse.json(

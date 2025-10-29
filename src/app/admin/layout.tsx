@@ -17,24 +17,33 @@ export default function AdminLayout({
   const router = useRouter();
 
   useEffect(() => {
-    // Get user info from token (in a real app, you'd verify the token)
-    const token = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('admin-token='))
-      ?.split('=')[1];
-    
-    if (token) {
-      // In a real app, you'd decode and verify the token
-      setUser({ email: 'admin@montanafurniture.com' });
+    // Get user info from localStorage
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        const userData = JSON.parse(storedUser);
+        setUser(userData);
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        // Clear invalid user data
+        localStorage.removeItem('user');
+      }
     }
   }, []);
 
   const handleLogout = async () => {
     try {
       await fetch('/api/admin/logout', { method: 'POST' });
-      router.push('/admin/login');
+      // Clear user data from localStorage
+      localStorage.removeItem('user');
+      setUser(null);
+      router.push('/login');
     } catch (error) {
       console.error('Logout error:', error);
+      // Even if logout fails, clear local data and redirect
+      localStorage.removeItem('user');
+      setUser(null);
+      router.push('/login');
     }
   };
 
@@ -69,6 +78,9 @@ export default function AdminLayout({
           </Link>
           <Link href="/admin/users" className={styles.navLink}>
             Users
+          </Link>
+          <Link href="/admin/change-password" className={styles.navLink}>
+            Change Password
           </Link>
         </nav>
         <div style={{width:"100%",display:'flex',justifyContent:"center"}}>

@@ -17,25 +17,25 @@ export default function AdminLogin() {
     setIsLoading(true);
     setError('');
 
+
     try {
-      const response = await fetch('/api/admin/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      // Mock user data for testing
+      const mockUser = {
+        id: '1',
+        email: email || 'test@admin.com',
+        firstName: 'Admin',
+        lastName: 'User'
+      };
 
-      const data = await response.json();
-
-      if (response.ok) {
-        // Set the token in cookies
-        document.cookie = `admin-token=${data.token}; path=/; max-age=86400; secure; samesite=strict`;
-        router.push('/admin');
-      } else {
-        setError(data.error || 'Login failed');
-      }
-    } catch (error) {
+      // Simulate successful login
+      localStorage.setItem('user', JSON.stringify(mockUser));
+      
+      // Set mock cookies (for development only)
+      document.cookie = `accessToken=mock-access-token; path=/; max-age=86400; secure; samesite=strict`;
+      document.cookie = `refreshToken=mock-refresh-token; path=/; max-age=604800; secure; samesite=strict`;
+      
+      router.push('/admin');
+    } catch {
       setError('An error occurred. Please try again.');
     } finally {
       setIsLoading(false);
@@ -47,7 +47,7 @@ export default function AdminLogin() {
       <div className={styles.loginCard}>
         <div className={styles.loginHeader}>
           <h1>Admin Login</h1>
-          <p>Sign in to access the admin panel</p>
+          <p>test login password</p>
         </div>
 
         {error && (
@@ -64,8 +64,7 @@ export default function AdminLogin() {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="admin@montanafurniture.com"
+              placeholder="test email"
             />
           </div>
 
@@ -76,8 +75,7 @@ export default function AdminLogin() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Enter your password"
+              placeholder="test password"
             />
           </div>
 

@@ -1,54 +1,149 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+// Swagger API base URL
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
 
 export interface User {
     id: string;
     email: string;
+    firstName?: string;
+    lastName?: string;
+}
+
+export interface LoginRequest {
+    email: string;
     password: string;
 }
 
-// In a real application, this would be stored in a database
-const ADMIN_USER: User = {
-    id: '1',
-    email: 'admin@montanafurniture.com',
-    password: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password: password
-};
-
-export async function hashPassword(password: string): Promise<string> {
-    return bcrypt.hash(password, 10);
+export interface LoginResponse {
+    accessToken: string;
+    refreshToken: string;
+    user: User;
 }
 
-export async function verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
-    return bcrypt.compare(password, hashedPassword);
+export interface ChangePasswordRequest {
+    currentPassword: string;
+    newPassword: string;
 }
 
-export function generateToken(user: Omit<User, 'password'>): string {
-    return jwt.sign(
-        { id: user.id, email: user.email },
-        JWT_SECRET,
-        { expiresIn: '24h' }
-    );
+export interface RefreshTokenRequest {
+    refreshToken: string;
 }
 
-export function verifyToken(token: string): { id: string; email: string; iat?: number; exp?: number } | null {
-    try {
-        return jwt.verify(token, JWT_SECRET) as { id: string; email: string; iat?: number; exp?: number };
-    } catch (error) {
-        return null;
+export interface RefreshTokenResponse {
+    accessToken: string;
+    refreshToken: string;
+}
+
+// API calls to Swagger backend
+export async function loginUser(email: string, password: string): Promise<LoginResponse> {
+    const response = await fetch(`${API_BASE_URL}/api/account/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Login failed');
+    }
+
+    return response.json();
+}
+
+export async function changePassword(currentPassword: string, newPassword: string, accessToken: string): Promise<void> {
+    const response = await fetch(`${API_BASE_URL}/api/account/change-password`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ currentPassword, newPassword }),
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Password change failed');
     }
 }
 
-export async function authenticateUser(email: string, password: string): Promise<Omit<User, 'password'> | null> {
-    if (email === ADMIN_USER.email) {
-        const isValid = await verifyPassword(password, ADMIN_USER.password);
-        if (isValid) {
-            return {
-                id: ADMIN_USER.id,
-                email: ADMIN_USER.email,
-            };
-        }
+export async function refreshAccessToken(refreshToken: string): Promise<RefreshTokenResponse> {
+    const response = await fetch(`${API_BASE_URL}/api/account/refresh`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${refreshToken}`,
+        },
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Token refresh failed');
+    }
+
+    return response.json();
+}
+
+export async function logoutUser(accessToken: string): Promise<void> {
+    const response = await fetch(`${API_BASE_URL}/api/account/logout`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+        },
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Logout failed');
+    }
+}
+
+// Token management utilities
+export function setTokens(accessToken: string, refreshToken: string): void {
+    if (typeof window !== 'undefined') {
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+    }
+}
+
+export function getAccessToken(): string | null {
+    if (typeof window !== 'undefined') {
+        return localStorage.getItem('accessToken');
     }
     return null;
+}
+
+export function getRefreshToken(): string | null {
+    if (typeof window !== 'undefined') {
+        return localStorage.getItem('refreshToken');
+    }
+    return null;
+}
+
+export function clearTokens(): void {
+    if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+    }
+}
+
+export function getStoredUser(): User | null {
+    if (typeof window !== 'undefined') {
+        const userStr = localStorage.getItem('user');
+        return userStr ? JSON.parse(userStr) : null;
+    }
+    return null;
+}
+
+export function setStoredUser(user: User): void {
+    if (typeof window !== 'undefined') {
+        localStorage.setItem('user', JSON.stringify(user));
+    }
+}
+
+export function clearStoredUser(): void {
+    if (typeof window !== 'undefined') {
+        localStorage.removeItem('user');
+    }
 }
