@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-
-
+import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Footer';
 export const metadata: Metadata = {
   title: 'Montana Furniture - Modern Design Solutions',
   description: 'Discover Montana Furniture\'s innovative design solutions for modern living and working spaces.',
@@ -13,6 +13,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>{children}</>
+    <> <Header />  <main>{children}</main> <Footer /></>
   );
 }
