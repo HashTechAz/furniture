@@ -148,6 +148,21 @@ const Header: React.FC = () => {
     { label: "Home office", href: "/inspiration/home-office" },
     { label: "Childrens room", href: "/inspiration/childrens-room" },
     { label: "Kids room", href: "/inspiration/kids-room" },
+    { label: "Creative Minds", href: "/creative-minds" },
+    { label: "Faebrik", href: "/creative-minds/faebrik" },
+    { label: "Lumikello", href: "/creative-minds/lumikello" },
+    { label: "Swantje Hinrichsen", href: "/creative-minds/swantje" },
+    { label: "Cathrine De Lichtenberg", href: "/creative-minds/cathrine" },
+    { label: "Tekla Evelina Severin", href: "/creative-minds/tekla" },
+    { label: "Céline Hallas", href: "/creative-minds/celine" },
+    { label: "Sarah Gottlieb", href: "/creative-minds/sarah" },
+    { label: "Colour inspiration", href: "/colours" },
+    { label: "Color Connaisseur & Montana Furniture", href: "/colour-inspiration/colour-class" },
+    { label: "Colours of comfort", href: "/colour-inspiration/colours-of-comfort" },
+    { label: "Colours and surfaces", href: "/colours" },
+    { label: "Inspiring colour styles", href: "/colour-inspiration/inspiring-styles" },
+    { label: "Find more inspiration", href: "/inspiration/find-more-inspiration" },
+    { label: "Explore our catalogues", href: "/inspiration/catalogues" },
   ];
 
   const productsSubLinks = [
@@ -155,7 +170,17 @@ const Header: React.FC = () => {
     { label: "Shelving systems", href: "/product/shelving" },
     { label: "Bookcases", href: "/product/bookcases" },
     { label: "Tables & Chairs", href: "/product/tables-chairs" },
-    { label: "View all inspiration", href: "/inspiration" },
+    { label: "About Montana", href: "/about" },
+    { label: "Customize your solution", href: "/system" },
+    { label: "41 colors & 2 veneers", href: "/colours" },
+    { label: "Sustainability", href: "/sustainability" },
+    { label: "Designers", href: "/designers" },
+    { label: "Product Series", href: "/productseries" },
+    { label: "Montana Selection", href: "/product" },
+    { label: "Montana Mini", href: "/product" },
+    { label: "Montana Mega", href: "/product" },
+    { label: "Kevi Chairs", href: "/product" },
+    { label: "All product series", href: "/product" },
   ];
 
   const seriesSubLinks = [
@@ -163,6 +188,11 @@ const Header: React.FC = () => {
     { label: "Montana System", href: "/series/montana-system" },
     { label: "Montana Mini", href: "/series/montana-mini" },
     { label: "Panton Wire", href: "/series/panton-wire" },
+    { label: "Learn more about", href: "/series/learn-more-about" },
+    { label: "Guarantees", href: "/series/guarantees" },
+    { label: "Assembly guides", href: "/series/assembly" },
+    { label: "Materials and care", href: "/series/materials-and-care" },
+    { label: "Retailers and showrooms", href: "/series/showrooms" },
   ];
 
   const toggleMobileSubMenu = (menu: 'inspiration' | 'products' | 'series') => {
