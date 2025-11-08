@@ -27,10 +27,10 @@ const Footer = () => {
           <div className={`${styles.footerItem} ${styles.montanaLinks}`}>
             <h3>Montana</h3>
             <ul>
-              <li><Link className={styles.footerLink} href={"/"}>About Montana</Link></li>
-              <li><Link className={styles.footerLink} href={"/"}>The Montana system</Link></li>
-              <li><Link className={styles.footerLink} href={"/"}>The Montana colors</Link></li>
-              <li><Link className={styles.footerLink} href={"/"}>Environment and quality</Link></li>
+              <li><Link className={styles.footerLink} href={"/about"}>About Montana</Link></li>
+              <li><Link className={styles.footerLink} href={"/system"}>The Montana system</Link></li>
+              <li><Link className={styles.footerLink} href={"/colours"}>The Montana colors</Link></li>
+              <li><Link className={styles.footerLink} href={"/sustainability"}>Environment and quality</Link></li>
               <li><Link className={styles.footerLink} href={"/"}>Store locator</Link></li>
               <li><Link className={styles.footerLink} href={"/"}>Showrooms</Link></li>
               <li><Link className={styles.footerLink} href={"/"}>Career</Link></li>
@@ -43,7 +43,7 @@ const Footer = () => {
               <li><Link className={styles.footerLink} href={"/"}>Digital Showroom</Link></li>
               <li><Link className={styles.footerLink} href={"/"}>Downloads</Link></li>
               <li><Link className={styles.footerLink} href={"/"}>Press</Link></li>
-              <li><Link className={styles.footerLink} href={"/"}>Assembly guides</Link></li>
+              <li><Link className={styles.footerLink} href={"/series/assembly"}>Assembly guides</Link></li>
               <li><Link className={styles.footerLink} href={"/"}>Montana Academy</Link></li>
               <li><Link className={styles.footerLink} href={"/"}>Catalogues</Link></li>
             </ul>
@@ -52,8 +52,8 @@ const Footer = () => {
           <div className={`${styles.footerItem} ${styles.serviceLinks}`}>
             <h3>Customer service</h3>
             <ul>
-              <li><Link className={styles.footerLink} href={"/"}>Customer support</Link></li>
-              <li><Link className={styles.footerLink} href={"/"}>Guarantees</Link></li>
+              <li><Link className={styles.footerLink} href={"/contact"}>Customer support</Link></li>
+              <li><Link className={styles.footerLink} href={"/series/guarantees"}>Guarantees</Link></li>
               <li><Link className={styles.footerLink} href={"/"}>Materials and care</Link></li>
               <li><Link className={styles.footerLink} href={"/"}>Competition terms and conditions</Link></li>
               <li><Link className={styles.footerLink} href={"/"}>Privacy policy</Link></li>
