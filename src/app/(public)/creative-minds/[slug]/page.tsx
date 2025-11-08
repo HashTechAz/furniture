@@ -360,7 +360,16 @@ const sarahPaletteRightImageProps = {
   imageSize: "custom",
 };
 
-const mindsPageData: any = {
+interface PageComponent {
+  component: string;
+  props: Record<string, unknown>;
+}
+
+interface PageData {
+  components: PageComponent[];
+}
+
+const mindsPageData: Record<string, PageData> = {
   faebrik: {
     components: [
       {
@@ -597,7 +606,7 @@ const CreativeMindDetailPage = async ({
 
   return (
     <main>
-      {pageData.components.map((block: any, index: number) => {
+      {pageData.components.map((block: PageComponent, index: number) => {
         const Component = componentMap[block.component as ComponentName];
 
         if (!Component) {

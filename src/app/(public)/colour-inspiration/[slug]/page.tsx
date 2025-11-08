@@ -21,7 +21,16 @@ const cathrinePalette2RightImageProps = {
   backgroundColor: "#EFC7C7",
 };
 
-const inspirationPageData: any = {
+interface PageComponent {
+  component: string;
+  props: Record<string, unknown>;
+}
+
+interface PageData {
+  components: PageComponent[];
+}
+
+const inspirationPageData: Record<string, PageData> = {
   "colour-class": {
     components: [
       {
@@ -131,7 +140,7 @@ const ColourInspirationPage = async ({
 
   return (
     <main>
-      {pageData.components.map((block: any, index: number) => {
+      {pageData.components.map((block: PageComponent, index: number) => {
         const Component = componentMap[block.component as ComponentName];
 
         if (!Component) {

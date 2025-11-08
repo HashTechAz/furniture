@@ -11,7 +11,7 @@ const ColoursAbout = () => {
           </div>
           <div className={styles.aboutDescription}>
             <p>
-              Create the Montana composition of your dreams with Montana's
+              Create the Montana composition of your dreams with Montana&apos;s
               colour palette. The palette features a range of poetic and complex
               colours – all created to appeal to both your visual sense and your
               emotions. Choose between 41 lacquer colours and two veneers: a

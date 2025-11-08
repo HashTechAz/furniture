@@ -10,7 +10,7 @@ const AboutCompany = () => {
             As a sculptor starts with an abstract stone, I started with an
             abstract square box. I removed all the unnecessary parts of the box
             so that it eventually featured rounded edges, missing corners and
-            retracted fronts, Montana's design DNA. Lorem ipsum dolor sit amet.
+            retracted fronts, Montana&apos;s design DNA. Lorem ipsum dolor sit amet.
           </h4>
           <div className={styles.companyBox}>
             <p>

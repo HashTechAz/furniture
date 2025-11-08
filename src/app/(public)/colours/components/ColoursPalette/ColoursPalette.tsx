@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import styles from "./ColoursPalette.module.css";
 
 interface ColoursPaletteProps {
@@ -24,9 +25,9 @@ const ColoursPalette = ({ reversed = false }: ColoursPaletteProps) => {
           </p>
         </div>
         <div>
-          <a href='/product' className={styles.heroButton}>
+          <Link href='/product' className={styles.heroButton}>
             View all colours
-          </a>
+          </Link>
         </div>
       </div>
 
