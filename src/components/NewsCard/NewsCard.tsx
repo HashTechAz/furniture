@@ -12,8 +12,8 @@ const NewsCard = ({ imageSrc, title, description }: NewsCardProps) => {
   return (
     <Link href="#" className={styles.cardLink}>
       <div className={styles.card}>
-        <div className={styles.imageWrapper}>
-          <Image
+        <div className={styles.imageWrapper} style={{position:"relative"}}>
+          <Image fill
             src={imageSrc}
             alt={title}
             className={styles.image}

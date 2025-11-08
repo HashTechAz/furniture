@@ -69,7 +69,7 @@ const InspiringCard = () => {
           {inspiringCardData.map((card) => (
             <div className={styles.inspiringCardItem} key={card.id}>
               <div className={styles.inspiringCardItemImage}>
-                <Image src={card.imageUrl} alt={card.title} />
+                 <Image  fill src={card.imageUrl} alt={card.title} />
               </div>
               <div className={styles.inspiringCardItemContent}>
                 <span>{card.title}</span>

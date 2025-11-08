@@ -25,8 +25,11 @@ const DetailSize = ({ title, description, items }: DetailSizeProps) => {
 
           <div className={styles.detailGrid}>
             {items.map((item, idx) => (
-              <div className={styles.detailCard} key={idx}>
-                <Image src={item.image} alt={item.title} />
+              <div className={styles.detailCard}  key={idx}>
+
+                    <div   style={{position:"relative",width:"100%", height:"auto" }}>
+                     <Image width={100} height={100} src={item.image} alt={item.title} />
+                  </div>
                 <h3>{item.title}</h3>
               </div>
             ))}

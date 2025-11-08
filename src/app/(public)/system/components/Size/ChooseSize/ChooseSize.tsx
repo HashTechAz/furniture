@@ -14,8 +14,10 @@ const ChooseSize = () => {
             suit your home.</p>
           </div>
 
-          <div className={styles.chooseImage}>
-            <Image src="https://b2c.montana-episerver.com/globalassets/icons/montana-system/montana_12mm_system_w_ny.jpg?mode=crop&width=1520&height=1093" alt="" />
+          <div className={styles.chooseImage} >
+            <div style={{position:"relative", width:"100%", height:"100%" }}>
+              <Image  fill src="https://b2c.montana-episerver.com/globalassets/icons/montana-system/montana_12mm_system_w_ny.jpg?mode=crop&width=1520&height=1093" alt="" />
+            </div>
           </div>
         </div>
       </section>

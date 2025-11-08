@@ -40,10 +40,18 @@ interface PaletteData {
 const SystemPage = () => { 
   // State əlavə edirik
   const [systemPalettes, setSystemPalettes] = useState<PaletteData[]>([]);
-  const [loadingPalettes, setLoadingPalettes] = useState(true);
+  const [loadingPalettes, setLoadingPalettes] = useState(false);
   const [paletteError, setPaletteError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure component is mounted on client before rendering dynamic content
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     const fetchPalettes = async () => {
       try {
         setLoadingPalettes(true);
@@ -67,7 +75,7 @@ const SystemPage = () => {
     };
 
     fetchPalettes();
-  }, []);
+  }, [mounted]);
 
   const renderPalette = (palette: PaletteData) => {
     if (palette.componentType === 'PaletteLeftImage') {
@@ -96,19 +104,19 @@ const SystemPage = () => {
       />
 
       {/* PaletteLeftImage 1 */}
-      {loadingPalettes ? <p>Loading palettes...</p> : paletteError ? <p>Error: {paletteError}</p> :
+      {mounted && (loadingPalettes ? <p>Loading palettes...</p> : paletteError ? <p>Error: {paletteError}</p> :
         systemPalettes.find(p => p.id === 'systemPaletteLeft1') && renderPalette(systemPalettes.find(p => p.id === 'systemPaletteLeft1')!)
-      }
+      )}
 
       {/* SystemPalette */}
-       {loadingPalettes ? null : paletteError ? null :
+       {mounted && (loadingPalettes ? null : paletteError ? null :
         systemPalettes.find(p => p.id === 'systemPaletteSystem1') && renderPalette(systemPalettes.find(p => p.id === 'systemPaletteSystem1')!)
-      }
+      )}
 
        {/* PaletteLeftImage 2 */}
-       {loadingPalettes ? null : paletteError ? null :
+       {mounted && (loadingPalettes ? null : paletteError ? null :
         systemPalettes.find(p => p.id === 'systemPaletteLeft2') && renderPalette(systemPalettes.find(p => p.id === 'systemPaletteLeft2')!)
-      }
+      )}
 
 
       <div style={{ marginBottom: '40px' }}>

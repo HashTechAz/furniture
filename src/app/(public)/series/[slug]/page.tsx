@@ -105,51 +105,59 @@
    return seriesPageData[slug];
  };
  
- const SeriesDetailPage = () => { // async və params silinir
-   const params = useParams(); // Hook ilə parametrləri alırıq
-   const slug = params?.slug as string;
- 
-   // Palit məlumatları üçün state
-   const [pagePalettes, setPagePalettes] = useState<PaletteData[]>([]);
-   const [loadingPalettes, setLoadingPalettes] = useState(true); // Başlanğıcda true
-   const [paletteError, setPaletteError] = useState<string | null>(null);
- 
-   // useEffect ilə data çəkirik
-   useEffect(() => {
-     // Yalnız guarantees slug-ı üçün palitləri çəkək
-     if (slug === 'guarantees') {
-       const fetchPalettes = async () => {
-         // Sorğu başlamadan əvvəl state-ləri sıfırlayaq (slug dəyişərsə deyə)
-         setLoadingPalettes(true);
-         setPaletteError(null);
-         setPagePalettes([]); // Köhnə datanı təmizləyək
-         try {
-           const response = await fetch('/api/palettes');
-           if (!response.ok) {
-             throw new Error(`Network response was not ok (${response.status})`);
-           }
-           // Gələn JSON-dan yalnız seriesGuaranteesPage hissəsini götürürük
-           const allPaletteData: { seriesGuaranteesPage?: PaletteData[] } = await response.json();
-           setPagePalettes(allPaletteData.seriesGuaranteesPage || []);
-         } catch (err) {
-            if (err instanceof Error) {
-               setPaletteError(err.message);
-           } else {
-               setPaletteError('An unknown error occurred while fetching palettes');
-           }
-           console.error("Failed to fetch palettes for guarantees:", err);
-         } finally {
-           setLoadingPalettes(false);
-         }
-       };
-       fetchPalettes();
-     } else {
-       // guarantees slug-ı deyilsə, yüklənməni bitiririk və data olmadığını bildiririk
-       setLoadingPalettes(false);
-       setPagePalettes([]); // Palit datası olmadığını təmin edirik
-       setPaletteError(null);
-     }
-   }, [slug]); // slug dəyişdikdə useEffect yenidən işləsin
+const SeriesDetailPage = () => { // async və params silinir
+  const params = useParams(); // Hook ilə parametrləri alırıq
+  const slug = params?.slug as string;
+
+  // Palit məlumatları üçün state
+  const [pagePalettes, setPagePalettes] = useState<PaletteData[]>([]);
+  const [loadingPalettes, setLoadingPalettes] = useState(false);
+  const [paletteError, setPaletteError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure component is mounted on client before rendering dynamic content
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // useEffect ilə data çəkirik
+  useEffect(() => {
+    if (!mounted) return;
+    
+    // Yalnız guarantees slug-ı üçün palitləri çəkək
+    if (slug === 'guarantees') {
+      const fetchPalettes = async () => {
+        // Sorğu başlamadan əvvəl state-ləri sıfırlayaq (slug dəyişərsə deyə)
+        setLoadingPalettes(true);
+        setPaletteError(null);
+        setPagePalettes([]); // Köhnə datanı təmizləyək
+        try {
+          const response = await fetch('/api/palettes');
+          if (!response.ok) {
+            throw new Error(`Network response was not ok (${response.status})`);
+          }
+          // Gələn JSON-dan yalnız seriesGuaranteesPage hissəsini götürürük
+          const allPaletteData: { seriesGuaranteesPage?: PaletteData[] } = await response.json();
+          setPagePalettes(allPaletteData.seriesGuaranteesPage || []);
+        } catch (err) {
+           if (err instanceof Error) {
+              setPaletteError(err.message);
+          } else {
+              setPaletteError('An unknown error occurred while fetching palettes');
+          }
+          console.error("Failed to fetch palettes for guarantees:", err);
+        } finally {
+          setLoadingPalettes(false);
+        }
+      };
+      fetchPalettes();
+    } else {
+      // guarantees slug-ı deyilsə, yüklənməni bitiririk və data olmadığını bildiririk
+      setLoadingPalettes(false);
+      setPagePalettes([]); // Palit datası olmadığını təmin edirik
+      setPaletteError(null);
+    }
+  }, [slug, mounted]); // slug dəyişdikdə useEffect yenidən işləsin
  
   // Dinamik Palit Render Funksiyası
   const renderPalette = (palette: PaletteData) => {
@@ -209,19 +217,19 @@
          return <Component key={index} {...block.props} />;
        })}
  
-       {/* Guarantees səhifəsi üçün Palit komponentini burada dinamik əlavə edirik */}
-       {slug === 'guarantees' && (
-         <div className={pageStyles.bannerWrapper}>
-           {loadingPalettes ? <p>Loading palette...</p> :
-            paletteError ? <p>Error loading palette: {paletteError}</p> :
-            pagePalettes.length > 0 ? (
-              // API-dan gələn palit(lər)i render edirik
-              pagePalettes.map(palette => renderPalette(palette))
-            ) :
-            <p>Palette data not found for guarantees.</p> // Data tapılmasa mesaj
-           }
-         </div>
-       )}
+      {/* Guarantees səhifəsi üçün Palit komponentini burada dinamik əlavə edirik */}
+      {slug === 'guarantees' && mounted && (
+        <div className={pageStyles.bannerWrapper}>
+          {loadingPalettes ? <p>Loading palette...</p> :
+           paletteError ? <p>Error loading palette: {paletteError}</p> :
+           pagePalettes.length > 0 ? (
+             // API-dan gələn palit(lər)i render edirik
+             pagePalettes.map(palette => renderPalette(palette))
+           ) :
+           <p>Palette data not found for guarantees.</p> // Data tapılmasa mesaj
+          }
+        </div>
+      )}
      </main>
    );
  };

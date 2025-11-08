@@ -34,7 +34,7 @@ const Catalogues = ({ cataloguesData: propCataloguesData }: CataloguesProps) => 
         <div className={styles.cataloguesMain}> 
             {data.map((catalogue) => (
                 <div className={styles.cataloguesItem} key={catalogue.id}>
-                    <Image src={catalogue.imageUrl} alt={catalogue.alt} />
+                     <Image  fill src={catalogue.imageUrl} alt={catalogue.alt} />
                 </div>
             ))}
         </div>

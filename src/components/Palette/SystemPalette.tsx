@@ -76,9 +76,7 @@ export default function SystemPalette({
           className={styles.paletteOneColor}
           style={{ backgroundColor: backgroundColor }}
         ></div>
-        <Image
-          src={imageUrl}
-          alt={title}
+        <div
           className={styles.paletteJpg}
           style={{
             ...(imagePosition && {
@@ -89,7 +87,13 @@ export default function SystemPalette({
               ...(imagePosition.right ? { right: imagePosition.right } : {}),
             })
           }}
-        />
+        >
+          <Image fill
+            src={imageUrl}
+            alt={title}
+            style={{ objectFit: 'cover' }}
+          />
+        </div>
       </div>
     </section>
   );

@@ -60,11 +60,19 @@ interface PaletteData {
 
 export default function Home() {
   const [homePalettes, setHomePalettes] = useState<PaletteData[]>([]);
-  const [loadingPalettes, setLoadingPalettes] = useState(true);
+  const [loadingPalettes, setLoadingPalettes] = useState(false);
   const [paletteError, setPaletteError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure component is mounted on client before rendering dynamic content
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Palit məlumatlarını çəkmək üçün useEffect istifadə edirik
   useEffect(() => {
+    if (!mounted) return;
+    
     const fetchPalettes = async () => {
       try {
         setLoadingPalettes(true);
@@ -90,7 +98,7 @@ export default function Home() {
     };
 
     fetchPalettes();
-  }, []); // Komponent yüklənəndə bir dəfə çalışır
+  }, [mounted]); // Komponent yüklənəndə bir dəfə çalışır
 
   // Dinamik Palit Render Funksiyası
   const renderPalette = (palette: PaletteData) => {
@@ -108,9 +116,9 @@ export default function Home() {
       <div id="header-trigger" style={{ height: 1 }} />
       <ProductSlider />
       {/* PaletteRightImage 1 */}
-      {loadingPalettes ? <p>Loading palettes...</p> : paletteError ? <p>Error: {paletteError}</p> :
+      {mounted && (loadingPalettes ? <p>Loading palettes...</p> : paletteError ? <p>Error: {paletteError}</p> :
         homePalettes.find(p => p.id === 'homePaletteRight1') && renderPalette(homePalettes.find(p => p.id === 'homePaletteRight1')!)
-      }
+      )}
       <NewsSection limit={4} />
       <ProductNewsSlider />
       <div className="hideOnMobile">
@@ -121,21 +129,21 @@ export default function Home() {
       </div>
       <TrustBadges />
       {/* PaletteRightImage 2 */}
-       {loadingPalettes ? null : paletteError ? null :
+       {mounted && (loadingPalettes ? null : paletteError ? null :
         homePalettes.find(p => p.id === 'homePaletteRight2') && renderPalette(homePalettes.find(p => p.id === 'homePaletteRight2')!)
-      }
+      )}
       <MiddleBanner {...bannerDataReversed} />
       {/* PaletteLeftImage 1 */}
-      {loadingPalettes ? null : paletteError ? null :
+      {mounted && (loadingPalettes ? null : paletteError ? null :
         homePalettes.find(p => p.id === 'homePaletteLeft1') && renderPalette(homePalettes.find(p => p.id === 'homePaletteLeft1')!)
-      }
+      )}
       <div className="hideOnMobile">
         <HomeVideo />
       </div>
        {/* PaletteRightImage 3 */}
-       {loadingPalettes ? null : paletteError ? null :
+       {mounted && (loadingPalettes ? null : paletteError ? null :
         homePalettes.find(p => p.id === 'homePaletteRight3') && renderPalette(homePalettes.find(p => p.id === 'homePaletteRight3')!)
-      }
+      )}
       <Form />
     </>
   );

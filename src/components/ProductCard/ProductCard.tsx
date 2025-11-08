@@ -31,7 +31,7 @@ const ProductCard = ({ id, imageSrc, imageSrcHover, title, color, measurements, 
     >
       <div className={styles.card}>
         <div className={styles.imageWrapper}>
-          <Image
+          <Image fill
             src={isHovered ? imageSrcHover : imageSrc}
             alt={title}
             className={styles.image}

@@ -12,7 +12,7 @@ const NavbarCategoryCard: React.FC<NavbarCategoryCardProps> = ({ imageUrl, label
   return (
     <Link href={href} className={styles.cardLink}>
       <div className={styles.imageWrapper}>
-        <Image src={imageUrl} alt={label} className={styles.cardImage} />
+         <Image  fill src={imageUrl} alt={label} className={styles.cardImage} />
       </div>
       <h3 className={styles.cardTitle}>{label}</h3>
     </Link>

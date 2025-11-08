@@ -4,8 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image'; 
 const SmallInspirationCard = ({ title, imageUrl }: { title: string, imageUrl: string }) => (
   <Link href="#" className={styles.smallCard}>
-    <div className={styles.smallCardImageWrapper}>
-      <Image src={imageUrl} alt={title} />
+    <div className={styles.smallCardImageWrapper} style={{position:"relative"}}>
+       <Image  fill src={imageUrl} alt={title} />
     </div>
     <span className={styles.smallCardTitle}>{title}</span>
   </Link>

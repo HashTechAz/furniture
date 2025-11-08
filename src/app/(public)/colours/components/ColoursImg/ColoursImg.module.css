@@ -5,11 +5,10 @@
 
 .coloursImgMain {
     width: 100%;
+    position: relative; 
 }
 
-.coloursImgMain img {
-    width: 100%;
-}
+
 
 /* --- RESPONSIVE STYLES --- */
 @media (min-width: 768px) and (max-width: 1024px) {

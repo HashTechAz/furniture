@@ -27,10 +27,10 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ imageUrl, label, variant = 
     <div className={currentStyles.slideContainer}>
       
       {/* Şəklin konteyneri. Hover effekti bu elementə tətbiq olunur. */}
-      <div className={getSizeClass()}>
+      <div className={getSizeClass()} style={{position:"relative"}}>
         
         {/* Standart <img> teqi. Şəkil burada göstərilir. */}
-        <Image 
+         <Image  fill 
           src={imageUrl} 
           alt={label} 
           className={currentStyles.cardImage} 

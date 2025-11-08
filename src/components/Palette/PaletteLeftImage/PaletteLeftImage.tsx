@@ -34,7 +34,7 @@ const PaletteLeftImage = ({
                 imageSize === 'custom' ? styles.paletteJpgCustom : 
                 styles.paletteJpg
               }>
-                <Image src={imageUrl} alt="" />
+                 <Image  fill src={imageUrl} alt="" />
               </div>
             </div>
           </div>

@@ -44,10 +44,18 @@ interface PaletteData {
 
 const SustainabilityPage = () => { 
   const [sustainabilityPalettes, setSustainabilityPalettes] = useState<PaletteData[]>([]);
-  const [loadingPalettes, setLoadingPalettes] = useState(true);
+  const [loadingPalettes, setLoadingPalettes] = useState(false);
   const [paletteError, setPaletteError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure component is mounted on client before rendering dynamic content
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     const fetchPalettes = async () => {
       try {
         setLoadingPalettes(true);
@@ -71,7 +79,7 @@ const SustainabilityPage = () => {
     };
 
     fetchPalettes();
-  }, []);
+  }, [mounted]);
 
   const renderPalette = (palette: PaletteData) => {
     if (palette.componentType === 'PaletteRightImage') {
@@ -98,16 +106,16 @@ const SustainabilityPage = () => {
       <Ecolabel />
 
       {/* PaletteLeftImage */}
-      {loadingPalettes ? <p>Loading palettes...</p> : paletteError ? <p>Error: {paletteError}</p> :
+      {mounted && (loadingPalettes ? <p>Loading palettes...</p> : paletteError ? <p>Error: {paletteError}</p> :
         sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteLeft1') && renderPalette(sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteLeft1')!)
-      }
+      )}
 
       <HomeVideo />
 
       {/* PaletteRightImage */}
-      {loadingPalettes ? null : paletteError ? null :
+      {mounted && (loadingPalettes ? null : paletteError ? null :
         sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteRight1') && renderPalette(sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteRight1')!)
-      }
+      )}
 
       <Related/>
     </>

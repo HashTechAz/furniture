@@ -25,9 +25,15 @@ const Header: React.FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(true);
   const [isAtTop, setIsAtTop] = useState<boolean>(true);
   const [isExiting, setIsExiting] = useState<boolean>(false);
+  const [mounted, setMounted] = useState<boolean>(false);
   
   const lastScrollY = useRef<number>(0);
   const pathname = usePathname();
+
+  // Ensure component is mounted on client before using pathname-dependent logic
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const isSustainabilityPage = pathname === "/sustainability";
   const isSystemPage = pathname === "/system";
   const isAboutPage = pathname === "/about";
@@ -53,6 +59,8 @@ const Header: React.FC = () => {
   const isInspiringStylesPage = pathname === "/colour-inspiration/inspiring-styles";
 
   useEffect(() => {
+    if (!mounted) return;
+    
     const handleScroll = () => {
       if (isMobileMenuOpen || isSearchOpen) return;
       const currentScrollY = window.scrollY;
@@ -87,7 +95,7 @@ const Header: React.FC = () => {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isAtTop, isMobileMenuOpen, isSearchOpen]);
+  }, [isAtTop, isMobileMenuOpen, isSearchOpen, mounted]);
 
   const toggleSearch = () => setIsSearchOpen(prev => !prev);
 
@@ -228,7 +236,7 @@ const Header: React.FC = () => {
            </div>
           
            <Link href="/" className={styles.logo}>
-             <Image 
+              <Image  fill 
                src="/images/logo/svlogosparro-01.png" 
                alt="Sparro Logo" 
                className={styles.logoImage}

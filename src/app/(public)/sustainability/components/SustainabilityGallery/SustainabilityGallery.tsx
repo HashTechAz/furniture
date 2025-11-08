@@ -17,11 +17,11 @@ const SustainabilityGallery = ({ images, layout = 'default' }: GalleryProps) => 
   return (
     // `layout` propuna görə `.reversed` klası əlavə olunur
     <section className={`${styles.susImgBox} ${layout === 'reversed' ? styles.reversed : ''}`}>
-      <div className={styles.leftImg}>
-        <Image src={galleryImages[0]} alt="Gallery image 1" />
+      <div className={styles.leftImg} style={{position:"relative"}}>
+         <Image  fill src={galleryImages[0]} alt="Gallery image 1" />
       </div>
-      <div className={styles.leftImg}>
-        <Image src={galleryImages[1]} alt="Gallery image 2" />
+      <div className={styles.leftImg} style={{position:"relative"}}>
+         <Image  fill src={galleryImages[1]} alt="Gallery image 2" />
       </div>
     </section>
   );

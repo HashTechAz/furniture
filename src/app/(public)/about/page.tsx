@@ -37,10 +37,18 @@ const aboutBannerData = {
 
 export default function About() {
   const [aboutPalettes, setAboutPalettes] = useState<PaletteData[]>([]);
-  const [loadingPalettes, setLoadingPalettes] = useState(true);
+  const [loadingPalettes, setLoadingPalettes] = useState(false);
   const [paletteError, setPaletteError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure component is mounted on client before rendering dynamic content
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     const fetchPalettes = async () => {
       try {
         setLoadingPalettes(true);
@@ -64,7 +72,7 @@ export default function About() {
     };
 
     fetchPalettes();
-  }, []);
+  }, [mounted]);
 
   const renderPalette = (palette: PaletteData) => {
     // Bu səhifədə yalnız PaletteRightImage var
@@ -96,16 +104,20 @@ export default function About() {
       </div>
 
       {/* PaletteRightImage 1 */}
-      {loadingPalettes && <p>Loading palettes...</p>}
-      {paletteError && <p>Error loading palettes: {paletteError}</p>}
-      {!loadingPalettes && !paletteError &&
-        aboutPalettes.find(p => p.id === 'aboutPaletteRight1') && renderPalette(aboutPalettes.find(p => p.id === 'aboutPaletteRight1')!)
-      }
+      {mounted && (
+        <>
+          {loadingPalettes && <p>Loading palettes...</p>}
+          {paletteError && <p>Error loading palettes: {paletteError}</p>}
+          {!loadingPalettes && !paletteError &&
+            aboutPalettes.find(p => p.id === 'aboutPaletteRight1') && renderPalette(aboutPalettes.find(p => p.id === 'aboutPaletteRight1')!)
+          }
+        </>
+      )}
 
       <HomeVideo imageUrl="https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/location---radiohuset/montana_home_23_24_ruby_hokkaido_iris_cumin_02_h.jpg?mode=crop&width=828&height=1104" />
 
        {/* PaletteRightImage 2 */}
-       {!loadingPalettes && !paletteError &&
+       {mounted && !loadingPalettes && !paletteError &&
         aboutPalettes.find(p => p.id === 'aboutPaletteRight2') && renderPalette(aboutPalettes.find(p => p.id === 'aboutPaletteRight2')!)
       }
 

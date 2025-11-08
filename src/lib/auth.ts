@@ -99,51 +99,82 @@ export async function logoutUser(accessToken: string): Promise<void> {
     }
 }
 
+// Helper function to safely check if we're in browser
+const isBrowser = () => typeof window !== 'undefined';
+
 // Token management utilities
 export function setTokens(accessToken: string, refreshToken: string): void {
-    if (typeof window !== 'undefined') {
+    if (!isBrowser()) return;
+    
+    try {
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
+    } catch (error) {
+        console.error('Error setting tokens:', error);
     }
 }
 
 export function getAccessToken(): string | null {
-    if (typeof window !== 'undefined') {
+    if (!isBrowser()) return null;
+    
+    try {
         return localStorage.getItem('accessToken');
+    } catch (error) {
+        console.error('Error getting access token:', error);
+        return null;
     }
-    return null;
 }
 
 export function getRefreshToken(): string | null {
-    if (typeof window !== 'undefined') {
+    if (!isBrowser()) return null;
+    
+    try {
         return localStorage.getItem('refreshToken');
+    } catch (error) {
+        console.error('Error getting refresh token:', error);
+        return null;
     }
-    return null;
 }
 
 export function clearTokens(): void {
-    if (typeof window !== 'undefined') {
+    if (!isBrowser()) return;
+    
+    try {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
+    } catch (error) {
+        console.error('Error clearing tokens:', error);
     }
 }
 
 export function getStoredUser(): User | null {
-    if (typeof window !== 'undefined') {
+    if (!isBrowser()) return null;
+    
+    try {
         const userStr = localStorage.getItem('user');
         return userStr ? JSON.parse(userStr) : null;
+    } catch (error) {
+        console.error('Error getting stored user:', error);
+        return null;
     }
-    return null;
 }
 
 export function setStoredUser(user: User): void {
-    if (typeof window !== 'undefined') {
+    if (!isBrowser()) return;
+    
+    try {
         localStorage.setItem('user', JSON.stringify(user));
+    } catch (error) {
+        console.error('Error setting stored user:', error);
     }
 }
 
 export function clearStoredUser(): void {
-    if (typeof window !== 'undefined') {
+    if (!isBrowser()) return;
+    
+    try {   
         localStorage.removeItem('user');
+    } catch (error) {
+        console.error('Error clearing stored user:', error);
     }
 }

@@ -12,8 +12,9 @@ const HomeVideo = ({ variant = 'default', imageUrl }: HomeVideoProps) => {
   return (
     <>
       <section className={containerClass}>
-        <div className={styles.videoContent}>
+        <div className={styles.videoContent} style={{position:"relative"}}>
           <Image
+            fill
             src={imageUrl || 'https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/fairs-and-showrooms/skindergade-showroom/montana_showroom_skindergade_09_w.jpg?mode=crop&width=1520&height=1093'}
             alt='Montana'
           />

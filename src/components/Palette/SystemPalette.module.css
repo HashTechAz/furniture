@@ -121,9 +121,9 @@
   top: 40px;
   left: 0;
   right: auto;
-  background-size: cover;
   transition: transform 0.4s ease-in-out;
   z-index: 2;
+  overflow: hidden;
 }
 
 /* --- RESPONSIVE STYLES --- */

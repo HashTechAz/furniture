@@ -42,8 +42,9 @@ const Hero = ({
             </p>
           </div>
           <div className={styles.imageContent}>
-          <div className={`${styles.heroImage} ${imageClassName || ''}`}>
+          <div className={`${styles.heroImage} ${imageClassName || ''}`} >
               <Image
+                 fill
                 src={imageUrl}
                 alt={imageAlt}
                 className={styles.heroImageImg}

@@ -30,6 +30,7 @@ const ComfortCard = () => {
           {comfortCardData.map((card) => (
             <div className={styles.comfortCardItem} key={card.id}>
             <Image
+                 fill
                 src={card.imageUrl}
                 alt={card.title}
             />

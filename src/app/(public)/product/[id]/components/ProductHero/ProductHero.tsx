@@ -118,6 +118,7 @@ const GalleryPanel = ({
                 }`}
               >
                 <Image
+                   fill
                   src={src}
                   alt={`Product image ${index + 1}`}
                   className={styles.galleryImage}
@@ -461,7 +462,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
           )}
         </div>
         <div className={styles.heroProductImage}>
-          <Image src={product.mainImage} alt={product.title} />
+           <Image  fill src={product.mainImage} alt={product.title} />
           <div className={styles.zoomIcon}>
             <svg
               width="24"
