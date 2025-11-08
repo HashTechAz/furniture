@@ -138,6 +138,31 @@ const Header: React.FC = () => {
     };
   }, [isSeriesOpen, isProductsOpen, isInspirationOpen, isMobileMenuOpen, isSearchOpen]);
 
+
+  // Hide mobile menu when screen is resized to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 1024) {
+        setIsMobileMenuOpen(false);
+        setIsMobileInspirationOpen(false);
+        setIsMobileProductsOpen(false);
+        setIsMobileSeriesOpen(false);
+
+        setIsSearchOpen(false);
+        setIsSeriesOpen(false);
+        setIsProductsOpen(false);
+        setIsInspirationOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []); 
+
+
   const handleMobileLinkClick = () => {
     setIsMobileMenuOpen(false);
   };
