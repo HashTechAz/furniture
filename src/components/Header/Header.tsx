@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import styles from "./Header.module.css";
-
+import Image from "next/image";
 import SearchOverlay from "../HeaderSearchOverlay/SearchOverlay";
 import SeriesContent from "../SeriesContent/SeriesContent";
 import ProductsContent from "../ProductsContent/ProductsContent";
@@ -219,7 +219,7 @@ const Header: React.FC = () => {
                     {!isMobileMenuOpen && <path d="M4 18h16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>}
                 </svg>
               </button>
-              <button type="button" className={`${styles.searchButton} ${isSearchOpen ? styles.searchButtonActive : ''}`} onClick={toggleSearch}>
+              <button title="mebel" type="button" className={`${styles.searchButton} ${isSearchOpen ? styles.searchButtonActive : ''}`} onClick={toggleSearch}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -228,7 +228,7 @@ const Header: React.FC = () => {
            </div>
           
            <Link href="/" className={styles.logo}>
-             <img 
+             <Image 
                src="/images/logo/svlogosparro-01.png" 
                alt="Sparro Logo" 
                className={styles.logoImage}
@@ -237,7 +237,7 @@ const Header: React.FC = () => {
            
            <div className={styles.navSearch}>
               <div className={styles.desktopOnly}>
-                <button type="button" className={`${styles.searchButton} ${isSearchOpen ? styles.searchButtonActive : ''}`} onClick={toggleSearch}>
+                <button title="mebel" type="button" className={`${styles.searchButton} ${isSearchOpen ? styles.searchButtonActive : ''}`} onClick={toggleSearch}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>

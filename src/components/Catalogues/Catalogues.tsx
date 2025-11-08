@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './Catalogues.module.css'
-
+import Image from 'next/image'  
 interface CataloguesProps {
   cataloguesData?: Array<{
     id: number;
@@ -34,7 +34,7 @@ const Catalogues = ({ cataloguesData: propCataloguesData }: CataloguesProps) => 
         <div className={styles.cataloguesMain}> 
             {data.map((catalogue) => (
                 <div className={styles.cataloguesItem} key={catalogue.id}>
-                    <img src={catalogue.imageUrl} alt={catalogue.alt} />
+                    <Image src={catalogue.imageUrl} alt={catalogue.alt} />
                 </div>
             ))}
         </div>

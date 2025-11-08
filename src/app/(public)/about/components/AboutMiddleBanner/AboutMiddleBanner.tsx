@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./AboutMiddleBanner.module.css";
-
+import Image from 'next/image'
 interface AboutMiddleBannerProps {
   largeImageUrl: string;
   smallImageUrl: string;
@@ -23,14 +23,14 @@ const AboutMiddleBanner = ({
 
   const LargeImageBlock = (
     <div className={styles.leftBanner}>
-      <img src={largeImageUrl} alt={title} />
+      <Image src={largeImageUrl} alt={title} />
     </div>
   );
 
   const TextAndSmallImageBlock = (
     <div className={styles.rightBanner}>
       <div className={styles.rightImgContainer}>
-        <img src={smallImageUrl} alt={title} className={styles.rightImg} />
+        <Image src={smallImageUrl} alt={title} className={styles.rightImg} />
       </div>
       <div className={styles.rightText}>
         <h1 className={styles.title}>{title}</h1>

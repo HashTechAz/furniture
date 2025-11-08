@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./ChooseSize.module.css";
-
+import Image from "next/image"; 
 const ChooseSize = () => {
   return (
     <>
@@ -15,7 +15,7 @@ const ChooseSize = () => {
           </div>
 
           <div className={styles.chooseImage}>
-            <img src="https://b2c.montana-episerver.com/globalassets/icons/montana-system/montana_12mm_system_w_ny.jpg?mode=crop&width=1520&height=1093" alt="" />
+            <Image src="https://b2c.montana-episerver.com/globalassets/icons/montana-system/montana_12mm_system_w_ny.jpg?mode=crop&width=1520&height=1093" alt="" />
           </div>
         </div>
       </section>

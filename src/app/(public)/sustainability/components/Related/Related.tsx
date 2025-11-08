@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Related.module.css";
-
+import Image from "next/image"; 
 const Related = () => {
   const relatedItems = [
     {
@@ -34,7 +34,7 @@ const Related = () => {
         <div className={styles.relatedMain}>
           {relatedItems.map((item, index) => (
             <div className={styles.relatedItems} key={index}>
-              <img src={item.image} alt={item.title} />
+              <Image src={item.image} alt={item.title} />
               <h3>{item.title}</h3>
               <p>{item.description}</p>
             </div>

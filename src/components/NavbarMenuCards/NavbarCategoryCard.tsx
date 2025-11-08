@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from './NavbarCategoryCard.module.css';
-
+import Image from 'next/image'; 
 interface NavbarCategoryCardProps {
   imageUrl: string;
   label: string;
@@ -12,7 +12,7 @@ const NavbarCategoryCard: React.FC<NavbarCategoryCardProps> = ({ imageUrl, label
   return (
     <Link href={href} className={styles.cardLink}>
       <div className={styles.imageWrapper}>
-        <img src={imageUrl} alt={label} className={styles.cardImage} />
+        <Image src={imageUrl} alt={label} className={styles.cardImage} />
       </div>
       <h3 className={styles.cardTitle}>{label}</h3>
     </Link>

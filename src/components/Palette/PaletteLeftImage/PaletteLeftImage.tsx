@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./PaletteLeftImage.module.css";
-
+import Image from 'next/image'  
 interface PaletteLeftImageProps {
   title: string;
   description: string;
@@ -34,7 +34,7 @@ const PaletteLeftImage = ({
                 imageSize === 'custom' ? styles.paletteJpgCustom : 
                 styles.paletteJpg
               }>
-                <img src={imageUrl} alt="" />
+                <Image src={imageUrl} alt="" />
               </div>
             </div>
           </div>

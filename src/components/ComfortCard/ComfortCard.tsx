@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./ComfortCard.module.css";
-
+import Image from 'next/image'
 const comfortCardData = [
   {
     id: 1,
@@ -29,7 +29,7 @@ const ComfortCard = () => {
         <div className={styles.comfortCardMain}>
           {comfortCardData.map((card) => (
             <div className={styles.comfortCardItem} key={card.id}>
-            <img
+            <Image
                 src={card.imageUrl}
                 alt={card.title}
             />

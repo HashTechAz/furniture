@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./InspiringCard.module.css";
-
+import Image from 'next/image'
 const inspiringCardData = [
   {
     id: 1,
@@ -69,7 +69,7 @@ const InspiringCard = () => {
           {inspiringCardData.map((card) => (
             <div className={styles.inspiringCardItem} key={card.id}>
               <div className={styles.inspiringCardItemImage}>
-                <img src={card.imageUrl} alt={card.title} />
+                <Image src={card.imageUrl} alt={card.title} />
               </div>
               <div className={styles.inspiringCardItemContent}>
                 <span>{card.title}</span>

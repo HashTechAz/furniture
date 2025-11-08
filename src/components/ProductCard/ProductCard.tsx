@@ -1,5 +1,5 @@
 'use client';
-
+import Image from "next/image"; 
 import { useState } from "react";
 import Link from "next/link";
 import styles from "./ProductCard.module.css";
@@ -31,7 +31,7 @@ const ProductCard = ({ id, imageSrc, imageSrcHover, title, color, measurements, 
     >
       <div className={styles.card}>
         <div className={styles.imageWrapper}>
-          <img
+          <Image
             src={isHovered ? imageSrcHover : imageSrc}
             alt={title}
             className={styles.image}

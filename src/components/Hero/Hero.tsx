@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Hero.module.css";
-
+import Image from 'next/image'  
 interface HeroProps {
   title: string;
   titleSpan: string;
@@ -43,7 +43,7 @@ const Hero = ({
           </div>
           <div className={styles.imageContent}>
           <div className={`${styles.heroImage} ${imageClassName || ''}`}>
-              <img
+              <Image
                 src={imageUrl}
                 alt={imageAlt}
                 className={styles.heroImageImg}

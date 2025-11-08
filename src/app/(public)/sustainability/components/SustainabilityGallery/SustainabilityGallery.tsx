@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./SustainabilityGallery.module.css";
-
+import Image from "next/image";
 // Komponentin qəbul edəcəyi propları təyin edirik
 interface GalleryProps {
   images?: [string, string]; // Həmişə iki şəkil linki gözləyir
@@ -18,10 +18,10 @@ const SustainabilityGallery = ({ images, layout = 'default' }: GalleryProps) => 
     // `layout` propuna görə `.reversed` klası əlavə olunur
     <section className={`${styles.susImgBox} ${layout === 'reversed' ? styles.reversed : ''}`}>
       <div className={styles.leftImg}>
-        <img src={galleryImages[0]} alt="Gallery image 1" />
+        <Image src={galleryImages[0]} alt="Gallery image 1" />
       </div>
       <div className={styles.leftImg}>
-        <img src={galleryImages[1]} alt="Gallery image 2" />
+        <Image src={galleryImages[1]} alt="Gallery image 2" />
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./SustainabilityCertifications.module.css";
-
+import Image from "next/image"; 
 const SustainabilityCertifications = () => {
   return (
     <section className={styles.certifications}>
@@ -21,25 +21,25 @@ const SustainabilityCertifications = () => {
 
         <div className={styles.certificationsLogo}>
           <div className={styles.certificationsLogoItems}>
-            <img 
+            <Image 
               src="https://b2c.montana-episerver.com/globalassets/icons/certifications/thumb_montana_ecolabel.png?mode=crop&width=540&height=540" 
               alt="EU Ecolabel" 
             />
           </div>
           <div className={styles.certificationsLogoItems}>
-            <img 
+            <Image 
               src="https://b2c.montana-episerver.com/globalassets/icons/certifications/thumb_montana_indoorclimate.png?mode=crop&width=540&height=540" 
               alt="Danish Indoor Climate Label" 
             />
           </div>
           <div className={styles.certificationsLogoItems}>
-            <img 
+            <Image 
               src="https://b2c.montana-episerver.com/globalassets/icons/certifications/iso_14001.png?mode=crop&width=540&height=540" 
               alt="ISO 14001" 
             />
           </div>
           <div className={styles.certificationsLogoItems}>
-            <img 
+            <Image 
               src="https://b2c.montana-episerver.com/globalassets/icons/certifications/pefc-label-pefc09-31-172-landscape-uk-text-pefc-label.jpg?mode=crop&width=540&height=540" 
               alt="PEFC Certification" 
             />

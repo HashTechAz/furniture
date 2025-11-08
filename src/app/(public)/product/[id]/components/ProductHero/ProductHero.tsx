@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image"; 
 import React, { useState, useCallback } from "react";
 import styles from "./ProductHero.module.css";
 import useEmblaCarousel from "embla-carousel-react";
@@ -117,7 +117,7 @@ const GalleryPanel = ({
                   index === 0 ? styles.wide : styles.normal
                 }`}
               >
-                <img
+                <Image
                   src={src}
                   alt={`Product image ${index + 1}`}
                   className={styles.galleryImage}
@@ -461,7 +461,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
           )}
         </div>
         <div className={styles.heroProductImage}>
-          <img src={product.mainImage} alt={product.title} />
+          <Image src={product.mainImage} alt={product.title} />
           <div className={styles.zoomIcon}>
             <svg
               width="24"

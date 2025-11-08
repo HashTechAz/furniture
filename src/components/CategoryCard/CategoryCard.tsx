@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './CategoryCard.module.css';
 import systemStyles from '../ProductSlider/ProductSliderSystem.module.css';
-
+import Image from 'next/image'; 
 // Komponentin qəbul etdiyi props-lar (artıq Link olmadığı üçün "id" yoxdur)
 interface CategoryCardProps {
   imageUrl: string;
@@ -30,7 +30,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ imageUrl, label, variant = 
       <div className={getSizeClass()}>
         
         {/* Standart <img> teqi. Şəkil burada göstərilir. */}
-        <img 
+        <Image 
           src={imageUrl} 
           alt={label} 
           className={currentStyles.cardImage} 

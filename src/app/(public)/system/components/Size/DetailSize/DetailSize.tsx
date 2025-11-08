@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from "./DetailSize.module.css"
-
+import Image from 'next/image'
 interface DetailItem {
   image: string;
   title: string;
@@ -26,7 +26,7 @@ const DetailSize = ({ title, description, items }: DetailSizeProps) => {
           <div className={styles.detailGrid}>
             {items.map((item, idx) => (
               <div className={styles.detailCard} key={idx}>
-                <img src={item.image} alt={item.title} />
+                <Image src={item.image} alt={item.title} />
                 <h3>{item.title}</h3>
               </div>
             ))}

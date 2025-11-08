@@ -1,5 +1,5 @@
 import styles from "./SystemPalette.module.css";
-
+import Image from 'next/image'  
 
 interface SystemPaletteProps {
   category?: string;
@@ -76,7 +76,7 @@ export default function SystemPalette({
           className={styles.paletteOneColor}
           style={{ backgroundColor: backgroundColor }}
         ></div>
-        <img
+        <Image
           src={imageUrl}
           alt={title}
           className={styles.paletteJpg}

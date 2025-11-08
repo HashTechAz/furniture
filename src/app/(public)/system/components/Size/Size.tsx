@@ -3,7 +3,7 @@ import styles from "./Size.module.css";
 import ChooseSize from "./ChooseSize/ChooseSize";
 import DetailSize from "./DetailSize/DetailSize";
 import FavouriteColors from "./FavouriteColors/FavouriteColors";
-
+import Image from "next/image"; 
 const Size = () => {
   return (
     <>
@@ -27,7 +27,7 @@ const Size = () => {
             },
           ].map((item, idx) => (
             <div className={styles.sizeItems} key={idx}>
-              <img src={item.img} alt={item.title} />
+              <Image src={item.img} alt={item.title} />
               <h3>{item.title}</h3>
             </div>
           ))}

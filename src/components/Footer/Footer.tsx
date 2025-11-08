@@ -1,14 +1,14 @@
 import Link from "next/link";
 import styles from "./Footer.module.css";
 import { FaFacebookF, FaInstagram, FaYoutube, FaPinterestP, FaLinkedinIn } from "react-icons/fa";
-
+import Image from "next/image"; 
 const Footer = () => {
   return (
     <footer className={styles.footer}>
       <div className={styles.footerMain}>
         <div className={styles.footerTitle}>
           <Link href="/">
-            <img 
+            <Image 
               src="/images/logo/svlogosparro-01.png" 
               alt="Sparro Logo" 
               className={styles.footerLogo}

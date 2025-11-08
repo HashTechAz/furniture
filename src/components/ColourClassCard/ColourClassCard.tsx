@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './ColourClassCard.module.css';
-
+import Image from 'next/image'; 
 const allCardsData = [
   {
     imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/colours/colour-class/cc-01/Montana_Colour_Class_1_DREAM_amber_2024.jpg?mode=crop&width=640&height=640",
@@ -114,7 +114,7 @@ const ColourClassCard = () => {
         {allCardsData.map((card, index) => (
           <div className={styles.colourClassCard} key={index}>
             <div className={styles.colourClassCardImage}>
-              <img src={card.imageUrl} alt={card.title} />
+              <Image src={card.imageUrl} alt={card.title} />
             </div>
             <div className={styles.colourClassCardTitle}>
               <h3>{card.title}</h3>
