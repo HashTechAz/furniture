@@ -311,33 +311,57 @@
 }
 
 /* Alt menyunu saxlayan konteyner */
+/* --- MOBİL ALT MENYU ÜÇÜN YENİLƏNMİŞ KOD --- */
+
 .mobileSubMenu {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
-  opacity: 0;
-  padding-left: 0;
-  padding-top: 0;
-  padding-bottom: 0;
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden; 
+  padding-left: 20px;
+  margin-top: 0;
+
+  /* BAĞLANARKƏN: Qutunun yığılmasını 0.1s gecikdiririk ki,
+    içindəki yazılar əvvəlcə yox olsun.
+  */
+  transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s,
+              margin-top 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
 }
 
 /* Alt menyu açıq olduqda */
 .mobileSubMenu.subMenuOpen {
-  max-height: 2000px; 
+  grid-template-rows: 1fr;
   margin-top: 10px;
-  padding-left: 20px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  opacity: 1;
+  
+  /* AÇILARKƏN: Gecikməni sıfırlayırıq ki, dərhal başlasın */
+  transition-delay: 0s;
 }
 
-/* Alt menyu linkləri */
 .mobileSubMenu ul {
   list-style: none;
-  padding: 0;
+  padding: 8px 0;
   margin: 0;
+  min-height: 0; 
+  overflow: hidden;
+  
+  /* Başlanğıc vəziyyəti: görünməz və yuxarıda */
+  opacity: 0;
+  transform: translateY(-10px);
+
+  /* BAĞLANARKƏN: Yazılar dərhal (0s gecikmə) və sürətlə (0.2s) yox olsun 
+  */
+  transition: opacity 0.3s ease-out 0s, 
+              transform 0.3s ease-out 0s;
 }
 
+/* Alt menyu açıq olduqda İÇİNDƏKİ YAZILAR */
+.mobileSubMenu.subMenuOpen ul {
+  opacity: 1;
+  transform: translateY(0);
+
+  transition-delay: 0.10s;
+}
+
+/* Link stilləri (bunlar dəyişməyib) */
 .mobileSubMenu ul li {
   margin-bottom: 4px;
 }

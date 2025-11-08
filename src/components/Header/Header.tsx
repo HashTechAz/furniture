@@ -168,11 +168,6 @@ const Header: React.FC = () => {
   };
 
   const inspirationSubLinks = [
-    { label: "View all inspiration", href: "/inspiration" },
-    { label: "Bedroom", href: "/inspiration/bedroom" },
-    { label: "Home office", href: "/inspiration/home-office" },
-    { label: "Childrens room", href: "/inspiration/childrens-room" },
-    { label: "Kids room", href: "/inspiration/kids-room" },
     { label: "Creative Minds", href: "/creative-minds" },
     { label: "Faebrik", href: "/creative-minds/faebrik" },
     { label: "Lumikello", href: "/creative-minds/lumikello" },
