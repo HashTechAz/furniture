@@ -57,6 +57,11 @@ const nextConfig: NextConfig = {
         hostname: 'b2c.montana-episerver.com',
         pathname: '/contentassets/**',
       },
+        {
+        protocol: 'https',
+        hostname: 'themes.muffingroup.com',
+        pathname: '/**',
+      },
     ],
   },
 };

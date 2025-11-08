@@ -28,7 +28,7 @@ const ComfortCard = () => {
       <section className={styles.comfortCard}>
         <div className={styles.comfortCardMain}>
           {comfortCardData.map((card) => (
-            <div className={styles.comfortCardItem} key={card.id}>
+            <div className={styles.comfortCardItem} key={card.id} style={{position:"relative"}}>
             <Image
                  fill
                 src={card.imageUrl}

@@ -113,7 +113,7 @@ const ColourClassCard = () => {
       <div className={styles.cardMain}>
         {allCardsData.map((card, index) => (
           <div className={styles.colourClassCard} key={index}>
-            <div className={styles.colourClassCardImage}>
+            <div className={styles.colourClassCardImage} style={{position:'relative'}}>
                <Image  fill src={card.imageUrl} alt={card.title ?? ""} />
             </div>
             <div className={styles.colourClassCardTitle}>

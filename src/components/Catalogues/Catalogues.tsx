@@ -33,7 +33,7 @@ const Catalogues = ({ cataloguesData: propCataloguesData }: CataloguesProps) => 
 
         <div className={styles.cataloguesMain}> 
             {data.map((catalogue) => (
-                <div className={styles.cataloguesItem} key={catalogue.id}>
+                <div className={styles.cataloguesItem} key={catalogue.id} style={{position:"relative"}}>
                      <Image  fill src={catalogue.imageUrl} alt={catalogue.alt ?? ""} />
                 </div>
             ))}
