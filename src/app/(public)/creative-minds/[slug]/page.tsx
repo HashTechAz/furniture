@@ -626,16 +626,18 @@ const CreativeMindDetailPage = async ({
             "ProductSlider",
           ].includes(block.component)
         ) {
+
+          
           return (
             <div key={index} className={pageStyles.bannerWrapper}>
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              <Component {...(block.props as any)} />
+              <Component  {...(block.props as any)} />
             </div>
           );
         }
 
         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-        return <Component key={index} {...(block.props as any)} />;
+        return <Component key={index}  {...(block.props as any)} />;
       })}
     </main>
   );
