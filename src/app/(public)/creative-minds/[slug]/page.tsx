@@ -628,12 +628,14 @@ const CreativeMindDetailPage = async ({
         ) {
           return (
             <div key={index} className={pageStyles.bannerWrapper}>
-              <Component {...block.props} />
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              <Component {...(block.props as any)} />
             </div>
           );
         }
 
-        return <Component key={index} {...block.props} />;
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        return <Component key={index} {...(block.props as any)} />;
       })}
     </main>
   );
