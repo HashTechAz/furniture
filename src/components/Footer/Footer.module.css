@@ -10,11 +10,19 @@
 
 
 
-.footerLogo {
+.footerTitle {
+  width: 100px;
   height: 40px;
-  width: auto;
+  background-color: black;
+  padding: 2px 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footerLogo {
   object-fit: contain;
-  background-color: #312e2e;
 }
 
 .parent {

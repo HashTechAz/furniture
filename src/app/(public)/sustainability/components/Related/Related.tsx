@@ -34,8 +34,8 @@ const Related = () => {
         <div className={styles.relatedMain}>
           {relatedItems.map((item, index) => (
             <div className={styles.relatedItems} key={index}>
-              <div style={{position:"relative",width:"100%" ,height:"100%"}}>
-               <Image  fill src={item.image} alt={item.title ?? ""} />
+              <div className={styles.imageContainer}>
+               <Image  fill src={item.image} alt={item.title ?? ""} className={styles.relatedImage} />
               </div>
               <h3>{item.title}</h3>
               <p>{item.description}</p>
