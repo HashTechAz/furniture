@@ -42,7 +42,7 @@ const Hero = ({
             </p>
           </div>
           <div className={styles.imageContent}>
-          <div className={`${styles.heroImage} ${imageClassName || ''}`} >
+          <div className={`${styles.heroImage} ${imageClassName || ''}`} style={{position:"relative"}} >
               <Image
                  fill
                 src={imageUrl}

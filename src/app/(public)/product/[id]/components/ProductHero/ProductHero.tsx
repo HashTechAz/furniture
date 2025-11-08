@@ -116,6 +116,7 @@ const GalleryPanel = ({
                 className={`${styles.galleryEmblaSlide} ${
                   index === 0 ? styles.wide : styles.normal
                 }`}
+                style={{position:"relative"}}
               >
                 <Image
                    fill
