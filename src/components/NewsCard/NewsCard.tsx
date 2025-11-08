@@ -15,7 +15,7 @@ const NewsCard = ({ imageSrc, title, description }: NewsCardProps) => {
         <div className={styles.imageWrapper} style={{position:"relative"}}>
           <Image fill
             src={imageSrc}
-            alt={title}
+            alt={title ?? ""}
             className={styles.image}
           />
         </div>

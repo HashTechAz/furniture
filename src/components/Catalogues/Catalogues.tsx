@@ -5,7 +5,7 @@ interface CataloguesProps {
   cataloguesData?: Array<{
     id: number;
     imageUrl: string;
-    alt: string;
+    alt?: string;
   }>;
 }
 
@@ -34,7 +34,7 @@ const Catalogues = ({ cataloguesData: propCataloguesData }: CataloguesProps) => 
         <div className={styles.cataloguesMain}> 
             {data.map((catalogue) => (
                 <div className={styles.cataloguesItem} key={catalogue.id}>
-                     <Image  fill src={catalogue.imageUrl} alt={catalogue.alt} />
+                     <Image  fill src={catalogue.imageUrl} alt={catalogue.alt ?? ""} />
                 </div>
             ))}
         </div>

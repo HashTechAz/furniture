@@ -46,7 +46,7 @@ const Hero = ({
               <Image
                  fill
                 src={imageUrl}
-                alt={imageAlt}
+                alt={imageAlt ?? ""}
                 className={styles.heroImageImg}
               />
             </div>

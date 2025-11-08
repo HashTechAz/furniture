@@ -462,7 +462,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
           )}
         </div>
         <div className={styles.heroProductImage}>
-           <Image  fill src={product.mainImage} alt={product.title} />
+           <Image  fill src={product.mainImage} alt={product.title ?? ""} />
           <div className={styles.zoomIcon}>
             <svg
               width="24"

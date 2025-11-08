@@ -25,14 +25,14 @@ const MiddleBanner = ({
 
   const LargeImageBlock = (
     <div className={styles.leftBanner} style={{position:"relative"}}>
-       <Image  fill src={largeImageUrl} alt={title} />
+       <Image  fill src={largeImageUrl} alt={title ?? ""} />
     </div>
   );
 
   const TextAndSmallImageBlock = (
     <div className={styles.rightBanner}>
       <div className={styles.rightImgContainer} style={{ height: smallImageHeight, position:"relative"   }}>
-         <Image  fill src={smallImageUrl} alt={title} className={styles.rightImg} />
+         <Image  fill src={smallImageUrl} alt={title ?? ""} className={styles.rightImg} />
       </div>
       <div className={styles.rightText}>
         <h1 className={styles.title}>{title}</h1>

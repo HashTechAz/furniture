@@ -33,7 +33,7 @@ const ProductCard = ({ id, imageSrc, imageSrcHover, title, color, measurements, 
         <div className={styles.imageWrapper}>
           <Image fill
             src={isHovered ? imageSrcHover : imageSrc}
-            alt={title}
+            alt={title ?? ""}
             className={styles.image}
           />
           <button type="button" className={styles.productButton}>

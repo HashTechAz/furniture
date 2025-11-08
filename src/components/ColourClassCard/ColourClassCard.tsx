@@ -114,7 +114,7 @@ const ColourClassCard = () => {
         {allCardsData.map((card, index) => (
           <div className={styles.colourClassCard} key={index}>
             <div className={styles.colourClassCardImage}>
-               <Image  fill src={card.imageUrl} alt={card.title} />
+               <Image  fill src={card.imageUrl} alt={card.title ?? ""} />
             </div>
             <div className={styles.colourClassCardTitle}>
               <h3>{card.title}</h3>

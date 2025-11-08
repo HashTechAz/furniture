@@ -28,7 +28,7 @@ const Size = () => {
           ].map((item, idx) => (
             <div className={styles.sizeItems} style={{position:"relative"}} key={idx}>
                 <div style={{position:"relative", width:"100%", height:"250px" }}>
-                   <Image  fill src={item.img} alt={item.title} />
+                   <Image  fill src={item.img} alt={item.title ?? ""} />
                 </div>
               <h3>{item.title}</h3>
             </div>
