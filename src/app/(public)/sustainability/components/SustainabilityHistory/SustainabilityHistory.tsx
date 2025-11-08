@@ -7,7 +7,7 @@ const SustainabilityHistory = () => {
      <section className={styles.history}>
         <div className={styles.historyMain}>
             <div className={styles.historyLeftTitle}>
-                <h1>Montana's environmental history — A timeline</h1>
+                <h1>Montana&apos;s environmental history — A timeline</h1>
             </div>
 
             <div className={styles.historyList}>
@@ -46,7 +46,7 @@ const SustainabilityHistory = () => {
                     </li>
                     <li>
                         <h3>2014</h3>
-                        <p>Montana's production in Funen transitions to district heating and achievies a significant annual CO2 reduction</p>
+                        <p>Montana&apos;s production in Funen transitions to district heating and achievies a significant annual CO2 reduction</p>
                     </li>
                     <li>
                         <h3>2022</h3>

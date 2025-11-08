@@ -50,7 +50,7 @@ const TrustBadges = () => {
               EU Ecolabel certified
             </h3>
             <p>
-              A label of environmental excellence that focuses on a product's
+              A label of environmental excellence that focuses on a product&apos;s
               entire lifecycle, from raw material extraction to production,
               distribution and disposal.
             </p>

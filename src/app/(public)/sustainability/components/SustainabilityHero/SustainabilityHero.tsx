@@ -6,7 +6,7 @@ const SustainabilityHero = () => {
     <section className={styles.section}>
       <div className={styles.content}>
         <h1 className={styles.title}>
-          Environment and quality — Montana's environmental certifications and
+          Environment and quality — Montana&apos;s environmental certifications and
           initiatives
         </h1>
         <p className={styles.description}>

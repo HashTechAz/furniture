@@ -12,14 +12,6 @@ const SmallInspirationCard = ({ title, imageUrl }: { title: string, imageUrl: st
 );
 
 const InspirationContent = () => {
-  // Örnek veriler
-  const mainCardData = {
-    id: 1,
-    label: "Creative Spaces",
-    imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2025/location--creative-studio/montana_home_25_26_montanamega_pine_ruby_oregano_balsamic_hazelnut_h.jpg?mode=crop&width=1520&height=2027",
-    href: "/inspiration/creative-spaces",
-  };
-
   const smallCardsData = [
     { id: 1, title: "Living Rooms", imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-home/2023/studio/montana_home_23_24_a02_octave_ii_acacia_couple_iris_w.jpg?mode=crop&width=1520&height=1093" },
     { id: 2, title: "Bedrooms", imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-home/2020/montana_home20_21_bathroom_iris_look_mushroom_w.jpg?mode=crop&width=1520&height=1093" },
