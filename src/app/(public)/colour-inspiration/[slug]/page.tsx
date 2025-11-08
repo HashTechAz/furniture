@@ -161,12 +161,12 @@ const ColourInspirationPage = async ({
         ) {
           return (
             <div key={index} className={pageStyles.bannerWrapper}>
-              <Component {...block.props} />
+              <Component {...(block.props as any)} />
             </div>
           );
         }
 
-        return <Component key={index} {...block.props} />;
+        return <Component key={index} {...(block.props as any)} />;
       })}
     </main>
   );
