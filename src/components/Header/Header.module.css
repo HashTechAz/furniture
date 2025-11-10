@@ -252,6 +252,21 @@
   }
 }
 
+/* === Kiçik Desktop / MacBook Düzəlişi === */
+@media (min-width: 1025px) and (max-width: 1300px) {
+  .header {
+    padding: 30px 40px;
+  }
+  
+  .navigationMenu ul {
+    gap: 20px !important;
+  }
+
+  .navLinks {
+     font-size: 13px !important;
+  }
+}
+
 @media (max-width: 1024px) {
   .header {
     padding: 15px 20px;

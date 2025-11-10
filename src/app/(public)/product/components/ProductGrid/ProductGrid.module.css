@@ -102,7 +102,7 @@
 }
 
 /* Desktop için responsive ayar */
-@media (min-width: 1025px) and (max-width: 1200px) {
+@media (min-width: 1025px) and (max-width: 1300px) {
   .grid {
     grid-template-columns: repeat(3, 1fr);
   }
