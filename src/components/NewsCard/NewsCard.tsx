@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styles from "./NewsCard.module.css";
-import Image from "next/image"; 
+import Image from "next/image";
 interface NewsCardProps {
   imageSrc: string;
   title: string;
@@ -10,13 +10,15 @@ interface NewsCardProps {
 
 const NewsCard = ({ imageSrc, title, description }: NewsCardProps) => {
   return (
-    <Link href="#" className={styles.cardLink}>
+    <Link href='#' className={styles.cardLink}>
       <div className={styles.card}>
-        <div className={styles.imageWrapper} style={{position:"relative"}}>
-          <Image fill
+        <div className={styles.imageWrapper} style={{ position: "relative" }}>
+          <Image
+            fill
             src={imageSrc}
             alt={title ?? ""}
             className={styles.image}
+            sizes='(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw'
           />
         </div>
         <h3 className={styles.cardTitle}>{title}</h3>

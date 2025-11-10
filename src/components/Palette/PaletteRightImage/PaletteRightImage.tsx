@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./PaletteRightImage.module.css";
-import Image from 'next/image'  
+import Image from "next/image";
 interface PaletteRightImageProps {
   title: string;
   description: string;
@@ -8,7 +8,7 @@ interface PaletteRightImageProps {
   buttonLink: string;
   imageUrl: string;
   backgroundColor: string;
-  imageSize?: 'normal' | 'large' | 'custom';
+  imageSize?: "normal" | "large" | "custom";
 }
 
 const PaletteRightImage = ({
@@ -18,7 +18,7 @@ const PaletteRightImage = ({
   buttonLink,
   imageUrl,
   backgroundColor,
-  imageSize = 'normal'
+  imageSize = "normal",
 }: PaletteRightImageProps) => {
   return (
     <>
@@ -34,17 +34,30 @@ const PaletteRightImage = ({
             </div>
           </div>
           {/* BU HİSSƏDƏ DƏYİŞİKLİK EDİLİB */}
-          <div className={`${styles.paletteImgBox} ${imageSize === 'large' ? styles.largeImage : ''} ${imageSize === 'custom' ? styles.customImage : ''}`}>
-            <div 
+          <div
+            className={`${styles.paletteImgBox} ${
+              imageSize === "large" ? styles.largeImage : ""
+            } ${imageSize === "custom" ? styles.customImage : ""}`}
+          >
+            <div
               className={styles.paletteOneColor}
               style={{ backgroundColor: backgroundColor }}
             >
-              <div className={
-                imageSize === 'large' ? styles.paletteJpgLarge : 
-                imageSize === 'custom' ? styles.paletteJpgCustom : 
-                styles.paletteJpg
-              }>
-                 <Image  fill src={imageUrl} alt="" />
+              <div
+                className={
+                  imageSize === "large"
+                    ? styles.paletteJpgLarge
+                    : imageSize === "custom"
+                    ? styles.paletteJpgCustom
+                    : styles.paletteJpg
+                }
+              >
+                <Image
+                  fill
+                  src={imageUrl}
+                  alt=''
+                  sizes='(max-width: 1024px) 100vw, 50vw'
+                />
               </div>
             </div>
           </div>

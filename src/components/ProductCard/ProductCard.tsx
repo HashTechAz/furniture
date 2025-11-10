@@ -1,5 +1,5 @@
-'use client';
-import Image from "next/image"; 
+"use client";
+import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
 import styles from "./ProductCard.module.css";
@@ -15,7 +15,15 @@ interface ProductCardProps {
   position: string;
 }
 
-const ProductCard = ({ id, imageSrc, imageSrcHover, title, color, measurements, position }: ProductCardProps) => {
+const ProductCard = ({
+  id,
+  imageSrc,
+  imageSrcHover,
+  title,
+  color,
+  measurements,
+  position,
+}: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   if (!imageSrc) {
@@ -31,24 +39,27 @@ const ProductCard = ({ id, imageSrc, imageSrcHover, title, color, measurements, 
     >
       <div className={styles.card}>
         <div className={styles.imageWrapper}>
-          <Image fill
+          <Image
+            fill
             src={isHovered ? imageSrcHover : imageSrc}
             alt={title ?? ""}
             className={styles.image}
+            sizes='(max-width: 768px) 260px, (max-width: 1024px) 300px, 350px'
           />
-          <button type="button" className={styles.productButton}>
+          <button type='button' className={styles.productButton}>
             Configure product
           </button>
         </div>
 
         {/* --- DEĞİŞİKLİK BURADA --- */}
         <div className={styles.cardInfo}>
-            <h3 className={styles.cardTitle}>{title}</h3>
-            <p className={styles.cardColor}>Color: {color}</p>
-            <p className={styles.cardMeasurements}>Measurements: {measurements}</p>
-            <p className={styles.cardPosition}>Position: {position}</p>
+          <h3 className={styles.cardTitle}>{title}</h3>
+          <p className={styles.cardColor}>Color: {color}</p>
+          <p className={styles.cardMeasurements}>
+            Measurements: {measurements}
+          </p>
+          <p className={styles.cardPosition}>Position: {position}</p>
         </div>
-
       </div>
     </Link>
   );

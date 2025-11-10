@@ -2,32 +2,36 @@
   margin-top: 50px;
 }
 
+/* === TABLET ÜÇÜN DÜZƏLİŞ === */
 @media (min-width: 768px) and (max-width: 1024px) {
   .customHeroImage {
-    width: 400px;
+    /* Ölçüləri saxlayırıq */
+    width: 450px;
     height: 400px;
-    position: absolute;
-    right: 50px;
-    top: 50%; 
-    transform: translateY(-10%); 
+    
+    margin: 0 auto; /* Tablet-də ortalansın */
+    margin-bottom: -80px; /* Şəkli aşağıdan çıxarmaq üçün */
+
+    /* Bunlar qala bilər */
     object-fit: cover;
     object-position: center;
   }
 }
 
+/* === DESKTOP ÜÇÜN DÜZƏLİŞ === */
 @media (min-width: 1300px) {
   .customHeroImage {
+    /* Ölçüləri saxlayırıq */
     width: 500px;
     height: 500px;
-    position: absolute;
-    right: 120px;
-    top: 65%; 
-    transform: translateY(-50%); 
     object-fit: cover;
     object-position: center;
+    bottom: -3em;
+    right: -5em;
   }
 }
 
+/* Bu hissəyə dəymirik, bu düzgündür */
 @media (min-width: 769px) {
   .customHeroLayout {
     min-height: 620px;
