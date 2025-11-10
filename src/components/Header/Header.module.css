@@ -246,24 +246,34 @@
 .mobileOnly { display: none; }
 .mobileActions { display: none; }
 
-@media (min-width: 1025px) {
-  .header {
-    padding: 30px 80px;
-  }
-}
-
-/* === Kiçik Desktop / MacBook Düzəlişi === */
-@media (min-width: 1025px) and (max-width: 1300px) {
+/* === Kiçik Desktop / MacBook (1025px - 1299px) === */
+@media (min-width: 1025px) and (max-width: 1299px) {
   .header {
     padding: 30px 40px;
   }
   
   .navigationMenu ul {
-    gap: 20px !important;
+    gap: 30px !important;
+    width: 450px;
   }
 
   .navLinks {
      font-size: 13px !important;
+  }
+}
+
+/* === Böyük Desktop (1300px+) === */
+@media (min-width: 1300px) {
+  .header {
+    padding: 30px 80px;
+  }
+  
+  .navigationMenu ul {
+    gap: 35px;
+  }
+
+  .navLinks {
+     font-size: 13px;
   }
 }
 

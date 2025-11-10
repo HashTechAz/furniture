@@ -279,3 +279,105 @@
   }
 }
 
+/* === KIÇİK DESKTOP (1025px - 1299px) === */
+@media (min-width: 1025px) and (max-width: 1299px) {
+  .paletteMain {
+    padding: 60px 40px;
+  }
+
+  .paletteTextBox {
+    width: 50%;
+    padding: 4em 6em 0 0;
+  }
+
+  .paletteTextBoxTitle {
+    font-size: 36px;
+  }
+
+  .paletteTextBox p {
+    font-size: 16px;
+  }
+
+  .paletteOneColor {
+    width: 350px;
+    height: 450px;
+  }
+
+  .paletteJpg {
+    width: 260px;
+    height: 350px;
+    top: 50px;
+    left: -7em;
+  }
+
+  .paletteJpgLarge {
+    width: 550px;
+    height: 380px;
+    top: 50px;
+    left: -7em;
+  }
+
+  .customImage .paletteOneColor {
+    width: 480px;
+    height: 480px;
+  }
+
+  .paletteJpgCustom {
+    width: 410px;
+    height: 410px;
+    top: 35px;
+    left: -7em;
+  }
+}
+
+/* === BÖYÜK DESKTOP (1300px+) === */
+@media (min-width: 1300px) {
+  .paletteMain {
+    padding: 60px 80px;
+  }
+
+  .paletteTextBox {
+    width: 50%;
+    padding: 5em 10em 0 0;
+  }
+
+  .paletteTextBoxTitle {
+    font-size: 40px;
+  }
+
+  .paletteTextBox p {
+    font-size: 18px;
+  }
+
+  .paletteOneColor {
+    width: 510px;
+    height: 580px;
+  }
+
+  .paletteJpg {
+    width: 300px;
+    height: 400px;
+    top: 60px;
+    left: -8em;
+  }
+
+  .paletteJpgLarge {
+    width: 620px;
+    height: 430px;
+    top: 60px;
+    left: -8em;
+  }
+
+  .customImage .paletteOneColor {
+    width: 530px;
+    height: 530px;
+  }
+
+  .paletteJpgCustom {
+    width: 460px;
+    height: 460px;
+    top: 40px;
+    left: -8em;
+  }
+}
+
