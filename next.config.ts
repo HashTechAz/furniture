@@ -45,7 +45,7 @@ const nextConfig: NextConfig = {
        {
         protocol: 'https',
         hostname: 'artist.v2.londondynamics.com',
-        pathname: '/image_by_config/**',
+        pathname: '/**',
       },
        {
         protocol: 'https',
