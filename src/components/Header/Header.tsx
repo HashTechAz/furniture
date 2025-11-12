@@ -432,11 +432,11 @@ const Header: React.FC = () => {
 
           <Link href='/' className={styles.logo}>
             <Image
-              fill
               src='/images/logo/svlogosparro-01.png'
               alt='Sparro Logo'
               className={styles.logoImage}
-              sizes='100px' 
+              width={100}
+              height={40}
               priority 
             />
           </Link>
