@@ -188,7 +188,7 @@ const Header: React.FC = () => {
   };
 
   const inspirationSubLinks = [
-    { label: "Creative Minds", href: "/creative-minds" },
+    { label: "Creative Minds", href: "/creative-minds", isMain: true },
     { label: "Faebrik", href: "/creative-minds/faebrik" },
     { label: "Lumikello", href: "/creative-minds/lumikello" },
     { label: "Swantje Hinrichsen", href: "/creative-minds/swantje" },
@@ -196,7 +196,7 @@ const Header: React.FC = () => {
     { label: "Tekla Evelina Severin", href: "/creative-minds/tekla" },
     { label: "Céline Hallas", href: "/creative-minds/celine" },
     { label: "Sarah Gottlieb", href: "/creative-minds/sarah" },
-    { label: "Colour inspiration", href: "/colours" },
+    { label: "Colour inspiration", href: "/colours", isMain: true },
     {
       label: "Color Connaisseur & Montana Furniture",
       href: "/colour-inspiration/colour-class",
@@ -213,21 +213,18 @@ const Header: React.FC = () => {
     {
       label: "Find more inspiration",
       href: "/inspiration/find-more-inspiration",
+      isMain: true,
     },
     { label: "Explore our catalogues", href: "/inspiration/catalogues" },
   ];
 
   const productsSubLinks = [
-    { label: "View all products", href: "/product" },
-    { label: "Shelving systems", href: "/product/shelving" },
-    { label: "Bookcases", href: "/product/bookcases" },
-    { label: "Tables & Chairs", href: "/product/tables-chairs" },
-    { label: "About Montana", href: "/about" },
+    { label: "About Montana", href: "/about", isMain: true },
     { label: "Customize your solution", href: "/system" },
     { label: "41 colors & 2 veneers", href: "/colours" },
-    { label: "Sustainability", href: "/sustainability" },
+    { label: "Susainability", href: "/sustainability" },
     { label: "Designers", href: "/designers" },
-    { label: "Product Series", href: "/productseries" },
+    { label: "Product Series", href: "/productseries", isMain: true },
     { label: "Montana Selection", href: "/product" },
     { label: "Montana Mini", href: "/product" },
     { label: "Montana Mega", href: "/product" },
@@ -236,15 +233,9 @@ const Header: React.FC = () => {
   ];
 
   const seriesSubLinks = [
-    { label: "View all series", href: "/series" },
-    { label: "Montana System", href: "/series/montana-system" },
-    { label: "Montana Mini", href: "/series/montana-mini" },
-    { label: "Panton Wire", href: "/series/panton-wire" },
-    { label: "Learn more about", href: "/series/learn-more-about" },
+    { label: "Learn more about", href: "/series/learn-more-about", isMain: true },
     { label: "Guarantees", href: "/series/guarantees" },
     { label: "Assembly guides", href: "/series/assembly" },
-    { label: "Materials and care", href: "/series/materials-and-care" },
-    { label: "Retailers and showrooms", href: "/series/showrooms" },
   ];
 
   const toggleMobileSubMenu = (menu: "inspiration" | "products" | "series") => {
