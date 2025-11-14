@@ -113,8 +113,8 @@
 
   .textContent {
     width: 100%;
-    padding: 30px 20px 10px;
-    order: 1; /* Mətnin yuxarıda gəlməsi üçün */
+    padding: 70px 20px 10px;
+    order: 1; 
   }
 
   .title {
