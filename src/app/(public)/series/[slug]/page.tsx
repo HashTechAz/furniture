@@ -5,6 +5,7 @@
  import { componentMap, ComponentName } from "@/component-map";
  import pageStyles from "./page.module.css";
  import SystemHero, { SystemHeroProps } from "../../system/components/SystemHero/SystemHero";
+ import PageBuilder from '@/components/PageBuilder/PageBuilder';
 
 interface PageComponent {
   component: ComponentName;
@@ -113,8 +114,8 @@ interface SeriesPageData {
    return seriesPageData[slug];
  };
  
-const SeriesDetailPage = () => { // async və params silinir
-  const params = useParams(); // Hook ilə parametrləri alırıq
+const SeriesDetailPage = () => { 
+  const params = useParams(); 
   const slug = params?.slug as string;
 
   const [pagePalettes, setPagePalettes] = useState<PaletteData[]>([]);
@@ -161,14 +162,13 @@ const SeriesDetailPage = () => { // async və params silinir
   }, [slug, mounted]);
  
   const renderPalette = (palette: PaletteData) => {
-    const Component = componentMap[palette.componentType as ComponentName]; // Tipi düzgün təyin edirik
+    const Component = componentMap[palette.componentType as ComponentName]; 
 
     if (!Component) {
       console.error(`"${palette.componentType}" komponenti tapılmadı.`);
       return null;
     }
 
-    // Props-ları düzgün şəkildə spread edirik
     return <Component key={palette.id} {...(palette.props as any)} />;
   };
  
@@ -184,38 +184,12 @@ const SeriesDetailPage = () => { // async və params silinir
  
    return (
      <main>
-       {pageData.heroProps && (
-          <SystemHero {...(pageData.heroProps as SystemHeroProps)} />
-       )}
-       {/* Statik komponentləri render edirik */}
-       {pageData.components.map((block: PageComponent, index: number) => {
- 
-         const Component = componentMap[block.component as ComponentName];
- 
-         if (!Component) {
-           console.error(
-             `"${block.component}" adlı komponent "component-map.ts"-də tapılmadı.`
-           );
-           return null;
-         }
- 
-         // Stil tətbiqi üçün yoxlama
-         if (
-           [
-             "SeriesAbout",
-             "TrustBadges",
-           ].includes(block.component)
-         ) {
-           return (
-             <div key={index} className={pageStyles.bannerWrapper}>
-               <Component {...(block.props as any)} />
-             </div>
-           );
-         }
- 
-         return <Component key={index} {...(block.props as any)} />;
-       })}
- 
+      {pageData.heroProps && (
+         <SystemHero {...(pageData.heroProps as SystemHeroProps)} />
+      )}
+      <PageBuilder components={pageData.components} />
+      {/* --------------------------- */}
+
       {slug === 'guarantees' && mounted && (
         <div className={pageStyles.bannerWrapper}>
           {loadingPalettes ? <p>Loading palette...</p> :
@@ -227,7 +201,7 @@ const SeriesDetailPage = () => { // async və params silinir
           }
         </div>
       )}
-     </main>
+    </main>
    );
  };
  
