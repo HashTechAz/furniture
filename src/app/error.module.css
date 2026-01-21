@@ -1,0 +1,167 @@
+/* Error.module.css */
+.container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2D303B;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dekoratif Arxa Plan Elementləri */
+.decorationLine {
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.glowEffect {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Kart Dizaynı */
+.errorCard {
+  position: relative;
+  z-index: 10;
+  background: rgba(30, 32, 40, 0.6); /* Daha tünd şüşə */
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4rem;
+  max-width: 550px;
+  width: 90%;
+  text-align: center;
+  border-radius: 4px; /* Mobilya stili kəskin künclər */
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Kartın üstündəki incə xətt (Accent) */
+.errorCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+}
+
+.iconContainer {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.icon {
+  width: 56px;
+  height: auto;
+  color: #fff;
+  opacity: 0.9;
+}
+
+/* Diqqət çəkən qırmızımsı parıltı (Error olduğu üçün incə detal) */
+.errorGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: rgba(231, 76, 60, 0.15);
+  filter: blur(20px);
+  border-radius: 50%;
+  animation: pulseError 3s infinite ease-in-out;
+}
+
+.title {
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: -0.5px;
+  margin: 0 0 1rem 0;
+  color: #fff;
+}
+
+.description {
+  font-family: var(--font-poppins), sans-serif;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0 0 2.5rem 0;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.retryButton, .homeButton {
+  padding: 14px 32px;
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.retryButton {
+  background-color: #fff;
+  color: #2D303B;
+  border: 1px solid #fff;
+}
+
+.retryButton:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+}
+
+.homeButton {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.homeButton:hover {
+  border-color: #fff;
+  background-color: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+@keyframes pulseError {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+@media (max-width: 600px) {
+  .buttonGroup {
+    flex-direction: column;
+    width: 100%;
+  }
+  .retryButton, .homeButton {
+    width: 100%;
+  }
+}
