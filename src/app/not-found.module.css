@@ -1,0 +1,137 @@
+/* NotFound.module.css */
+.container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2D303B; /* Brand Dark Color */
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Arxa Planda Böyük Dekorativ 404 */
+.bigTextBg {
+  position: absolute;
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 35vw;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.03); /* Çok silik */
+  line-height: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Sol ve Sağ Dekoratif Daireler (Spotlight etkisi) */
+.circleOne, .circleTwo {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+}
+
+.circleOne {
+  width: 500px;
+  height: 500px;
+  background: rgba(255, 255, 255, 0.05); /* Agimtir parilti */
+  top: -100px;
+  left: -100px;
+}
+
+.circleTwo {
+  width: 400px;
+  height: 400px;
+  background: rgba(0, 0, 0, 0.2); /* Tund kolge */
+  bottom: -50px;
+  right: -50px;
+}
+
+/* Esas Mezmun Kutusu (Glassmorphism) */
+.contentCard {
+  position: relative;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 4rem;
+  border-radius: 2px; /* Keskin küncler, mobilya stili */
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.iconWrapper {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  animation: float 4s ease-in-out infinite;
+}
+
+.icon {
+  width: 64px;
+  height: auto;
+  color: #fff; /* Ikon rengi ag */
+}
+
+/* Baslik ve Yazi */
+.title {
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 3rem;
+  font-weight: 300; /* İnce ve zarif */
+  margin: 0 0 1rem 0;
+  letter-spacing: -1px;
+}
+
+.description {
+  font-family: var(--font-poppins), sans-serif;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0 0 2.5rem 0;
+  font-weight: 300;
+}
+
+/* Premium Buton */
+.homeButton {
+  display: inline-block;
+  padding: 16px 48px;
+  background-color: #fff;
+  color: #2D303B;
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.homeButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  background-color: #f1f1f1;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+  .contentCard {
+    padding: 2rem;
+  }
+}
