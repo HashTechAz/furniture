@@ -4,9 +4,18 @@
  import { notFound, useParams } from "next/navigation"; 
  import { componentMap, ComponentName } from "@/component-map";
  import pageStyles from "./page.module.css";
- import SystemHero from "../../system/components/SystemHero/SystemHero";
+ import SystemHero, { SystemHeroProps } from "../../system/components/SystemHero/SystemHero";
+
+interface PageComponent {
+  component: ComponentName;
+  props: Record<string, any>;
+}
+
+interface SeriesPageData {
+  heroProps?: SystemHeroProps;
+  components: PageComponent[];
+}
  
- // --- Palette üçün Tiplər (əvvəlki kimi) ---
  interface PaletteProps {
    title: string;
    description: string;
@@ -35,7 +44,7 @@
    props: PaletteProps;
  }
  
- const seriesPageData: any = {
+ const seriesPageData: Record<string, SeriesPageData> = {
    "learn-more-about": {
      heroProps: {
        title: "Customer support — We are ready to help private and professional customers",
@@ -101,7 +110,6 @@
  };
  
  const getPageData = (slug: string) => {
-   // Bu funksiya artıq yalnız statik komponent məlumatlarını qaytaracaq
    return seriesPageData[slug];
  };
  
@@ -109,34 +117,28 @@ const SeriesDetailPage = () => { // async və params silinir
   const params = useParams(); // Hook ilə parametrləri alırıq
   const slug = params?.slug as string;
 
-  // Palit məlumatları üçün state
   const [pagePalettes, setPagePalettes] = useState<PaletteData[]>([]);
   const [loadingPalettes, setLoadingPalettes] = useState(false);
   const [paletteError, setPaletteError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
 
-  // Ensure component is mounted on client before rendering dynamic content
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // useEffect ilə data çəkirik
   useEffect(() => {
     if (!mounted) return;
     
-    // Yalnız guarantees slug-ı üçün palitləri çəkək
     if (slug === 'guarantees') {
       const fetchPalettes = async () => {
-        // Sorğu başlamadan əvvəl state-ləri sıfırlayaq (slug dəyişərsə deyə)
         setLoadingPalettes(true);
         setPaletteError(null);
-        setPagePalettes([]); // Köhnə datanı təmizləyək
+        setPagePalettes([]);
         try {
           const response = await fetch('/api/palettes');
           if (!response.ok) {
             throw new Error(`Network response was not ok (${response.status})`);
           }
-          // Gələn JSON-dan yalnız seriesGuaranteesPage hissəsini götürürük
           const allPaletteData: { seriesGuaranteesPage?: PaletteData[] } = await response.json();
           setPagePalettes(allPaletteData.seriesGuaranteesPage || []);
         } catch (err) {
@@ -152,14 +154,12 @@ const SeriesDetailPage = () => { // async və params silinir
       };
       fetchPalettes();
     } else {
-      // guarantees slug-ı deyilsə, yüklənməni bitiririk və data olmadığını bildiririk
       setLoadingPalettes(false);
-      setPagePalettes([]); // Palit datası olmadığını təmin edirik
+      setPagePalettes([]); 
       setPaletteError(null);
     }
-  }, [slug, mounted]); // slug dəyişdikdə useEffect yenidən işləsin
+  }, [slug, mounted]);
  
-  // Dinamik Palit Render Funksiyası
   const renderPalette = (palette: PaletteData) => {
     const Component = componentMap[palette.componentType as ComponentName]; // Tipi düzgün təyin edirik
 
@@ -185,10 +185,10 @@ const SeriesDetailPage = () => { // async və params silinir
    return (
      <main>
        {pageData.heroProps && (
-         <SystemHero {...pageData.heroProps} />
+          <SystemHero {...(pageData.heroProps as SystemHeroProps)} />
        )}
        {/* Statik komponentləri render edirik */}
-       {pageData.components.map((block: any, index: number) => {
+       {pageData.components.map((block: PageComponent, index: number) => {
  
          const Component = componentMap[block.component as ComponentName];
  
@@ -204,29 +204,26 @@ const SeriesDetailPage = () => { // async və params silinir
            [
              "SeriesAbout",
              "TrustBadges",
-             // PaletteLeftImage artıq burada yoxdur, stil tətbiqi də lazım deyil
            ].includes(block.component)
          ) {
            return (
              <div key={index} className={pageStyles.bannerWrapper}>
-               <Component {...block.props} />
+               <Component {...(block.props as any)} />
              </div>
            );
          }
  
-         return <Component key={index} {...block.props} />;
+         return <Component key={index} {...(block.props as any)} />;
        })}
  
-      {/* Guarantees səhifəsi üçün Palit komponentini burada dinamik əlavə edirik */}
       {slug === 'guarantees' && mounted && (
         <div className={pageStyles.bannerWrapper}>
           {loadingPalettes ? <p>Loading palette...</p> :
            paletteError ? <p>Error loading palette: {paletteError}</p> :
            pagePalettes.length > 0 ? (
-             // API-dan gələn palit(lər)i render edirik
              pagePalettes.map(palette => renderPalette(palette))
            ) :
-           <p>Palette data not found for guarantees.</p> // Data tapılmasa mesaj
+           <p>Palette data not found for guarantees.</p>
           }
         </div>
       )}

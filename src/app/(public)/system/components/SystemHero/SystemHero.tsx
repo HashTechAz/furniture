@@ -1,8 +1,7 @@
 import React from "react";
 import styles from "./SystemHero.module.css";
 
-// Komponentin qəbul edəcəyi propları təyin edirik
-interface SystemHeroProps {
+export interface SystemHeroProps {
   title: string;
   description?: string;
   backgroundColor?: string;
@@ -10,7 +9,6 @@ interface SystemHeroProps {
 }
 
 const SystemHero = ({ title, description, backgroundColor, color }: SystemHeroProps) => {
-  // Prop-dan gələn arxa fon rəngini tətbiq etmək üçün
   const sectionStyle = backgroundColor ? { backgroundColor } : {};
   const titleStyle = color ? { color } : {};
 

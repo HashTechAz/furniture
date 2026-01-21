@@ -1,5 +1,6 @@
 // Swagger API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+// Swagger API base URL removed (handled in api-client)
+import { apiRequest } from './api-client';
 
 export interface User {
     id: string;
@@ -33,82 +34,63 @@ export interface RefreshTokenResponse {
     refreshToken: string;
 }
 
-// API calls to Swagger backend
 export async function loginUser(email: string, password: string): Promise<LoginResponse> {
-    const response = await fetch(`${API_BASE_URL}/api/account/login`, {
+    return apiRequest<LoginResponse>('/api/account/login', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+        body: { email, password },
     });
-
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Login failed');
-    }
-
-    return response.json();
 }
 
 export async function changePassword(currentPassword: string, newPassword: string, accessToken: string): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/api/account/change-password`, {
+    return apiRequest<void>('/api/account/change-password', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ currentPassword, newPassword }),
+        body: { currentPassword, newPassword },
+        token: accessToken,
     });
-
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Password change failed');
-    }
 }
 
 export async function refreshAccessToken(refreshToken: string): Promise<RefreshTokenResponse> {
-    const response = await fetch(`${API_BASE_URL}/api/account/refresh`, {
+    return apiRequest<RefreshTokenResponse>('/api/account/refresh', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${refreshToken}`,
-        },
+        headers: {},
+        token: refreshToken, 
     });
-
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Token refresh failed');
-    }
-
-    return response.json();
 }
 
 export async function logoutUser(accessToken: string): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/api/account/logout`, {
+    return apiRequest<void>('/api/account/logout', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`,
-        },
+        token: accessToken,
     });
-
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Logout failed');
-    }
 }
 
-// Helper function to safely check if we're in browser
 const isBrowser = () => typeof window !== 'undefined';
 
-// Token management utilities
+function setCookie(name: string, value: string, days: number) {
+    if (!isBrowser()) return;
+    let expires = "";
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/; Secure; SameSite=Strict";
+}
+
+function deleteCookie(name: string) {
+    if (!isBrowser()) return;
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
 export function setTokens(accessToken: string, refreshToken: string): void {
     if (!isBrowser()) return;
     
     try {
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
+        
+        setCookie('accessToken', accessToken, 1); 
+        setCookie('refreshToken', refreshToken, 7); 
     } catch (error) {
         console.error('Error setting tokens:', error);
     }
@@ -142,6 +124,10 @@ export function clearTokens(): void {
     try {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
+        
+        // Clear cookies
+        deleteCookie('accessToken');
+        deleteCookie('refreshToken');
     } catch (error) {
         console.error('Error clearing tokens:', error);
     }

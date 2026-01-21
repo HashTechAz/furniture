@@ -2,8 +2,17 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import { componentMap, ComponentName } from '@/component-map';
 
+interface PageComponent {
+  component: ComponentName;
+  props: Record<string, any>;
+}
+
+interface InspirationPageData {
+  components: PageComponent[];
+}
+
 // Yeni səhifələrimiz üçün məlumatları burada saxlayırıq
-const inspirationPageData: any = {
+const inspirationPageData: Record<string, InspirationPageData> = {
   'find-more-inspiration': {
     components: [
       {
@@ -61,7 +70,7 @@ const InspirationDynamicPage = async ({ params }: { params: Promise<{ slug: stri
 
   return (
     <main>
-      {pageData.components.map((block: any, index: number) => {
+      {pageData.components.map((block: PageComponent, index: number) => {
         const Component = componentMap[block.component as ComponentName];
 
         if (!Component) {
@@ -69,7 +78,7 @@ const InspirationDynamicPage = async ({ params }: { params: Promise<{ slug: stri
           return null;
         }
 
-        return <Component key={index} {...block.props} />;
+        return <Component key={index} {...(block.props as any)} />;
       })}
     </main>
   );
