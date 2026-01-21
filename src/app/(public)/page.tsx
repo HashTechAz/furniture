@@ -64,12 +64,10 @@ export default function Home() {
   const [paletteError, setPaletteError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
 
-  // Ensure component is mounted on client before rendering dynamic content
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Palit məlumatlarını çəkmək üçün useEffect istifadə edirik
   useEffect(() => {
     if (!mounted) return;
     
@@ -81,9 +79,7 @@ export default function Home() {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        // Gələn JSON-un bütün strukturunu alırıq
         const allPaletteData: { homePage?: PaletteData[] } = await response.json();
-        // Yalnız 'homePage' hissəsini götürürük (əgər varsa)
         setHomePalettes(allPaletteData.homePage || []);
       } catch (err) {
          if (err instanceof Error) {
@@ -100,7 +96,6 @@ export default function Home() {
     fetchPalettes();
   }, [mounted]); // Komponent yüklənəndə bir dəfə çalışır
 
-  // Dinamik Palit Render Funksiyası
   const renderPalette = (palette: PaletteData) => {
     if (palette.componentType === 'PaletteRightImage') {
       return <PaletteRightImage key={palette.id} {...palette.props} />;

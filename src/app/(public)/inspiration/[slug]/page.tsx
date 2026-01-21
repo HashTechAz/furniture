@@ -51,6 +51,7 @@ const getPageData = (slug: string) => {
   return inspirationPageData[slug];
 }
 
+
 const InspirationDynamicPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
   const pageData = getPageData(slug);
