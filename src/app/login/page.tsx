@@ -43,8 +43,10 @@ export default function AdminLogin() {
     try {
       const response = await loginUser(email, password);
       
-      setTokens(response.accessToken, response.refreshToken);
-      setStoredUser(response.user);
+      setTokens(response.accessToken, response.refreshToken || '');
+      if (response.user) {
+        setStoredUser(response.user);
+      }
       
       router.push('/admin');
     } catch (err: any) {

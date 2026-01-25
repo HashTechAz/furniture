@@ -16,8 +16,9 @@ export interface LoginRequest {
 
 export interface LoginResponse {
     accessToken: string;
-    refreshToken: string;
-    user: User;
+    refreshToken?: string;
+    user?: User;
+    expiration?: string;
 }
 
 export interface ChangePasswordRequest {
@@ -34,11 +35,61 @@ export interface RefreshTokenResponse {
     refreshToken: string;
 }
 
+// JWT token'dan payload'u decode et (hem browser hem Node.js'de çalışır)
+function decodeJWT(token: string): any {
+    try {
+        const tokenParts = token.split('.');
+        if (tokenParts.length !== 3) return null;
+        
+        const payload = tokenParts[1];
+        // Browser'da atob, Node.js'de Buffer kullan
+        const decoded = typeof window !== 'undefined' 
+            ? atob(payload) 
+            : Buffer.from(payload, 'base64').toString('utf-8');
+        return JSON.parse(decoded);
+    } catch (e) {
+        return null;
+    }
+}
+
 export async function loginUser(email: string, password: string): Promise<LoginResponse> {
-    return apiRequest<LoginResponse>('/api/account/login', {
+    const response = await apiRequest<{ accessToken: string; expiration?: string }>('/api/Account/login', {
         method: 'POST',
-        body: { email, password },
+        body: { username: email, password },
     });
+    
+    // Backend'den sadece accessToken geliyor, refreshToken ve user yok
+    // Token'dan email'i çıkarıp user objesi oluşturuyoruz
+    let user: User | undefined;
+    try {
+        const payload = decodeJWT(response.accessToken);
+        if (payload) {
+            const emailFromToken = payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || email;
+            user = {
+                id: payload.jti || '',
+                email: emailFromToken,
+            };
+        } else {
+            // Decode başarısız olursa sadece email kullan
+            user = {
+                id: '',
+                email: email,
+            };
+        }
+    } catch (e) {
+        // Hata durumunda sadece email kullan
+        user = {
+            id: '',
+            email: email,
+        };
+    }
+    
+    return {
+        accessToken: response.accessToken,
+        refreshToken: '', // Backend refreshToken döndürmüyor
+        user: user,
+        expiration: response.expiration,
+    };
 }
 
 export async function changePassword(currentPassword: string, newPassword: string, accessToken: string): Promise<void> {

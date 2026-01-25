@@ -30,14 +30,16 @@ export async function POST(request: NextRequest) {
                 path: '/',
             });
 
-            // Set refresh token as HTTP-only cookie
-            response.cookies.set('refreshToken', loginResponse.refreshToken, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'strict',
-                maxAge: 60 * 60 * 24 * 7, // 7 days
-                path: '/',
-            });
+            // Set refresh token as HTTP-only cookie (if available)
+            if (loginResponse.refreshToken) {
+                response.cookies.set('refreshToken', loginResponse.refreshToken, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'strict',
+                    maxAge: 60 * 60 * 24 * 7, // 7 days
+                    path: '/',
+                });
+            }
 
             return response;
         } catch (apiError: unknown) {

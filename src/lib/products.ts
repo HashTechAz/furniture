@@ -108,3 +108,37 @@ export async function getProductById(id: string): Promise<FrontendProduct | null
     return null;
   }
 }
+
+// src/lib/products.ts faylının içinə əlavə et:
+
+// --- 5. MƏHSUL YARATMAQ ÜÇÜN TİP (POST DATA) ---
+export interface CreateProductPayload {
+  name: string;
+  sku: string;
+  description: string;
+  shortDescription: string;
+  price: number;
+  isFeatured: boolean;
+  height: number;
+  width: number;
+  depth: number;
+  weight: number;
+  categoryId: number;
+  designerId: number;
+  collectionId: number;
+  colorIds: number[];
+  materialIds: number[];
+  roomIds: number[];
+  tagIds: number[];
+  specifications: { key: string; value: string }[];
+}
+
+// --- 6. MƏHSUL YARATMA FUNKSİYASI (POST) ---
+export async function createProduct(data: CreateProductPayload, token: string) {
+  // apiRequest funksiyası 'token' qəbul edir, onu istifadə edirik
+  return apiRequest('/api/Products', {
+    method: 'POST',
+    body: data,
+    token: token // Admin tokeni mütləqdir!
+  });
+}
