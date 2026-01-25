@@ -1,3 +1,11 @@
+
+// --- BU HİSSƏNİ ƏLAVƏ ET ---
+// Yalnız development rejimində SSL xətalarını görməzdən gəlirik
+if (process.env.NODE_ENV === 'development') {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
+// ----------------------------
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
