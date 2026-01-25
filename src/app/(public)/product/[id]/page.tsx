@@ -1,3 +1,4 @@
+// src/app/(public)/product/[id]/page.tsx
 
 import React from 'react';
 import { notFound } from 'next/navigation';
@@ -9,7 +10,8 @@ import SystemPalette from '@/components/Palette/SystemPalette';
 import TrustBadges from '@/components/TrustBadges/TrustBadges';
 import ProductNewsSlider from '@/components/ProductNewsSlider/ProductNewsSlider';
 import ProductSlider from '@/components/ProductSlider/ProductSlider';
-import { getProductById } from '@/lib/products'; 
+// getProducts (hamısı) funksiyasını da import edirik
+import { getProductById, getProducts } from '@/lib/products'; 
 
 interface ProductDetailsPageProps {
   params: {
@@ -17,10 +19,22 @@ interface ProductDetailsPageProps {
   };
 }
 
+export const dynamic = 'force-dynamic';
+
 const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
-  const { id } = await params; 
-  
+  const { id } = await params;
+
+  // 1. Tək məhsulu gətir
   const product = await getProductById(id);
+
+  // 2. Slider üçün digər məhsulları gətir (news kimi istifadə edəcəyik)
+  // Əslində burada "News" API-si olmadığı üçün bütün məhsulları gətirib ilk 8-ni kəsirik
+  const allProducts = await getProducts();
+  
+  // Hazırkı məhsulu siyahıdan çıxarırıq (slider-də özü görünməsin)
+  const relatedProducts = allProducts
+    .filter(p => p.id !== parseInt(id))
+    .slice(0, 8); // Sadəcə ilk 8 dənəsini göstəririk
 
   if (!product) {
     notFound();
@@ -30,7 +44,10 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
     <main>
       <ProductHero product={product} />
       
-      <div className={styles.sliderSection}> <ProductNewsSlider /> </div>
+      {/* 3. Slider-ə real datanı ötürürük */}
+      <div className={styles.sliderSection}> 
+        <ProductNewsSlider products={relatedProducts} /> 
+      </div>
       
       <ProductSlider 
         variant="system" 
@@ -38,15 +55,14 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
         titleBottom=""
       />
       <SystemAbout />
-      
       <SystemPalette
         category=""
         title="Find a Montana retailer near you"
         description="The Montana range offers endless possibilities..."
         features={[
           "Montana retailers are trained in Montana products",
-          "They are experts in advising you on style...", 
-          "They can help you draw up a Montana storage solution..."
+          "They are experts in advising you on style, colours and interior design for the home or office environments", 
+          "They can help you draw up a Montana storage solution, so you can get exactly the design you want"
         ]}
         buttonText="Go to retailer map"
         buttonLink="/contact"

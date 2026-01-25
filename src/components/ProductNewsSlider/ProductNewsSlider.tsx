@@ -1,3 +1,4 @@
+// src/components/ProductNewsSlider/ProductNewsSlider.tsx
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
@@ -5,10 +6,14 @@ import Link from 'next/link';
 import useEmblaCarousel from 'embla-carousel-react';
 import styles from './ProductNewsSlider.module.css';
 import ProductCard from '../ProductCard/ProductCard';
-import productNewsData from '../../mock/productNewsData.json';
+import { FrontendProduct } from '@/lib/products'; // Tipi import edirik
 
+// Komponent artıq props qəbul edir
+interface ProductNewsSliderProps {
+  products: FrontendProduct[];
+}
 
-const ProductNewsSlider = () => {
+const ProductNewsSlider = ({ products }: ProductNewsSliderProps) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, dragFree: true });
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -53,6 +58,11 @@ const ProductNewsSlider = () => {
     setDropdownOpen(false);
   };
 
+  // Əgər məhsul gəlməyibsə, boş qaytarırıq (xəta verməsin)
+  if (!products || products.length === 0) {
+    return null; 
+  }
+
   return (
     <section className={styles.sliderSection}>
       <div className={styles.sliderHeader}>
@@ -76,7 +86,6 @@ const ProductNewsSlider = () => {
         </div>
       </div>
       
-      {/* --- YENİ MOBİL KONTROL KONTEYNERİ --- */}
       <div className={styles.mobileControls}>
         <div className={styles.mobileCategoryDropdown} ref={dropdownRef}>
           <button className={styles.dropdownButton} onClick={() => setDropdownOpen(!isDropdownOpen)}>
@@ -98,16 +107,17 @@ const ProductNewsSlider = () => {
 
       <div className={styles.embla} ref={emblaRef}>
         <div className={styles.embla__container}>
-          {productNewsData.map((product) => (
+          {/* MOCK DATA YOX, REAL DATANI MAP EDİRİK */}
+          {products.map((product) => (
             <div className={styles.embla__slide} key={product.id}>
               <ProductCard
                 id={product.id}
-                imageSrc={product.image}
-                imageSrcHover={product.imageHover}
+                imageSrc={product.imageSrc}       // Düzəldilmiş adlar
+                imageSrcHover={product.imageSrcHover} // Düzəldilmiş adlar
                 title={product.title}
                 color={product.color}
-                measurements={product.size}
-                position="Standard"
+                measurements={product.measurements}
+                position={product.position}
               />
             </div>
           ))}
@@ -125,4 +135,3 @@ const ProductNewsSlider = () => {
 };
 
 export default ProductNewsSlider;
-
