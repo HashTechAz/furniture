@@ -1,8 +1,9 @@
 "use client";
-import Image from "next/image"; 
+import Image from "next/image";
 import React, { useState, useCallback } from "react";
 import styles from "./ProductHero.module.css";
 import useEmblaCarousel from "embla-carousel-react";
+import { FrontendProduct } from "@/lib/products";
 
 interface Product {
   id: number;
@@ -23,7 +24,7 @@ interface Product {
 }
 
 interface ProductHeroProps {
-  product: Product;
+  product: FrontendProduct;
 }
 
 const CloseIcon = () => (
@@ -113,13 +114,12 @@ const GalleryPanel = ({
             {images.map((src, index) => (
               <div
                 key={index}
-                className={`${styles.galleryEmblaSlide} ${
-                  index === 0 ? styles.wide : styles.normal
-                }`}
-                style={{position:"relative"}}
+                className={`${styles.galleryEmblaSlide} ${index === 0 ? styles.wide : styles.normal
+                  }`}
+                style={{ position: "relative" }}
               >
                 <Image
-                   fill
+                  fill
                   src={src}
                   alt={`Product image ${index + 1}`}
                   className={styles.galleryImage}
@@ -235,9 +235,8 @@ const PositionPanel = ({
         {positionOptions.map((option) => (
           <li
             key={option}
-            className={`${styles.positionItem} ${
-              currentPosition === option ? styles.activePosition : ""
-            }`}
+            className={`${styles.positionItem} ${currentPosition === option ? styles.activePosition : ""
+              }`}
             onClick={() => onSelectPosition(option)}
           >
             {" "}
@@ -271,9 +270,8 @@ const DepthPanel = ({
         {depthOptions.map((option) => (
           <li
             key={option}
-            className={`${styles.positionItem} ${
-              currentDepth === option ? styles.activePosition : ""
-            }`}
+            className={`${styles.positionItem} ${currentDepth === option ? styles.activePosition : ""
+              }`}
             onClick={() => onSelectDepth(option)}
           >
             {" "}
@@ -438,24 +436,24 @@ const ProductHero = ({ product }: ProductHeroProps) => {
 
       <div className={styles.heroMain}>
         <div className={styles.heroItem}>
-        <ul className={openMenu ? styles.menuIsOpen : ""}>
-  {menuItems.map((item) => (
-    <li key={item.key}>
-      <div
-        className={styles.menuItemWrapper}
-        onClick={() => handleMenuClick(item.key)}
-      >
-        <div className={styles.heroItemIcons}>
-          {openMenu === item.key ? <CloseIcon /> : item.icon}
-        </div>
-        <span className={styles.menuItemLabel}>
-          {item.label}
-          {item.value && <span className={styles.menuItemValue}>: {item.value}</span>}
-        </span>
-      </div>
-    </li>
-  ))}
-</ul>
+          <ul className={openMenu ? styles.menuIsOpen : ""}>
+            {menuItems.map((item) => (
+              <li key={item.key}>
+                <div
+                  className={styles.menuItemWrapper}
+                  onClick={() => handleMenuClick(item.key)}
+                >
+                  <div className={styles.heroItemIcons}>
+                    {openMenu === item.key ? <CloseIcon /> : item.icon}
+                  </div>
+                  <span className={styles.menuItemLabel}>
+                    {item.label}
+                    {item.value && <span className={styles.menuItemValue}>: {item.value}</span>}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
           {openMenu && (
             <div className={styles.panelContainer}>
               {menuItems.find((item) => item.key === openMenu)?.panel}
@@ -463,7 +461,12 @@ const ProductHero = ({ product }: ProductHeroProps) => {
           )}
         </div>
         <div className={styles.heroProductImage}>
-           <Image  fill src={product.mainImage} alt={product.title ?? ""} />
+          <Image
+            fill
+            src={product.mainImage}
+            alt={product.title ?? ""}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
           <div className={styles.zoomIcon}>
             <svg
               width="24"
@@ -511,7 +514,8 @@ const ProductHero = ({ product }: ProductHeroProps) => {
           {activeTab === "description" && (
             <div className={styles.tabContent}>
               <p>{product.description}</p>
-              <p>Designer: Peter J. Lassen</p>
+              {/* DİNAMİK DİZAYNER ADI */}
+              <p>Designer: {product.designer}</p>
             </div>
           )}
           {activeTab === "specifications" && (

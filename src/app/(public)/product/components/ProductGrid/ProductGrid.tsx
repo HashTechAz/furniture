@@ -1,22 +1,18 @@
-"use client"; // "Load more" düyməsi gələcəkdə işləsin deyə client component edirik
+"use client"; 
 
 import React from "react";
 import styles from "./ProductGrid.module.css";
 import ProductCard from "@/components/ProductCard/ProductCard";
-import { FrontendProduct } from "@/lib/products"; // Yaratdığımız tipi import edirik
+import { FrontendProduct } from "@/lib/products"; 
 
 interface ProductGridProps {
   products: FrontendProduct[];
 }
 
 const ProductGrid = ({ products }: ProductGridProps) => {
-  // --- STATİK DATANI SİLDİK ---
-  // Artıq datanı yuxarıdan (props-dan) alırıq
+  const totalItems = products.length; 
+  const shownItems = products.length; 
 
-  const totalItems = products.length; // Real say
-  const shownItems = products.length; // Hələlik hamısını göstəririk
-
-  // Əgər məhsul yoxdursa
   if (!products || products.length === 0) {
     return (
       <div className={styles.gridContainer}>
@@ -40,8 +36,8 @@ const ProductGrid = ({ products }: ProductGridProps) => {
             color={product.color}
             measurements={product.measurements}
             position={product.position}
-            imageSrc={product.imageSrc}       // Mapper-də adını 'imageSrc' qoymuşduq
-            imageSrcHover={product.imageSrcHover} // Mapper-də adını 'imageSrcHover' qoymuşduq
+            imageSrc={product.imageSrc}       
+            imageSrcHover={product.imageSrcHover} 
           />
         ))}
       </div>
@@ -50,12 +46,6 @@ const ProductGrid = ({ products }: ProductGridProps) => {
         <p className={styles.itemCount}>
           Showing {shownItems} out of {totalItems} items
         </p>
-        
-        {/* Backend pagination hələ yoxdur deyə bu düyməni sadəcə vizual saxlayırıq */}
-        {/* <button className={styles.loadMoreButton}>
-             Show more
-        </button> 
-        */}
       </div>
     </div>
   );

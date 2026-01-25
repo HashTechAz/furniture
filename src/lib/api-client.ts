@@ -1,10 +1,7 @@
 
-// --- BU HİSSƏNİ ƏLAVƏ ET ---
-// Yalnız development rejimində SSL xətalarını görməzdən gəlirik
 if (process.env.NODE_ENV === 'development') {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 }
-// ----------------------------
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
 
@@ -40,11 +37,9 @@ export async function apiRequest<T>(endpoint: string, options: RequestOptions = 
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    // Eger errorData.message varsa onu istifade edirik, yoxsa default mesaj
     throw new Error(errorData.message || 'API request failed');
   }
 
-  // Bezi endpoint-ler bos done biler (meselen 204 No Content), bunu handle etmek lazimdir
   if (response.status === 204) {
       return {} as T;
   }
