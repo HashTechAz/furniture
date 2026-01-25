@@ -1,0 +1,162 @@
+/* src/app/admin/products/admin-products.module.css */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: sans-serif;
+}
+
+/* Başlıq və Düymə hissəsi */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  background-color: #000;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.addButton:hover {
+  background-color: #333;
+}
+
+.plusIcon {
+  font-size: 20px;
+  margin-right: 8px;
+  line-height: 1;
+}
+
+/* Cədvəl Dizaynı */
+.tableWrapper {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden; /* Künclərin yumru qalması üçün */
+  overflow-x: auto; /* Mobil üçün scroll */
+}
+
+.table {
+  min-width: 100%;
+  border-collapse: collapse; /* Xətlər birləşsin */
+  width: 100%;
+}
+
+.table thead th {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 16px 24px;
+  text-align: left;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s;
+}
+
+.table tbody tr:hover {
+  background-color: #f9fafb; /* Hover effekti */
+}
+
+.table td {
+  padding: 16px 24px;
+  vertical-align: middle;
+  color: #374151;
+  font-size: 14px;
+}
+
+/* Şəkil */
+.productImageWrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Qiymət Etiketi (Badge) */
+.priceBadge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: #dcfce7; /* Açıq yaşıl */
+  color: #166534; /* Tünd yaşıl */
+}
+
+/* Əməliyyat Düymələri */
+.actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  transition: transform 0.2s;
+}
+
+.iconButton:hover {
+  transform: scale(1.1);
+}
+
+.editIcon {
+  color: #2563eb; /* Göy */
+}
+
+.deleteIcon {
+  color: #dc2626; /* Qırmızı */
+}
+
+/* Loading Spinner */
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

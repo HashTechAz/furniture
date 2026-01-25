@@ -177,3 +177,10 @@ export async function updateProduct(id: number | string, data: CreateProductPayl
     token: token
   });
 }
+
+export async function deleteProduct(id: number | string, token: string) {
+  return apiRequest(`/api/Products/${id}`, {
+    method: 'DELETE',
+    token: token // Token mütləqdir!
+  });
+}

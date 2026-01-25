@@ -1,77 +1,130 @@
+"use client";
+import React, { useState, useEffect } from 'react';
+import { getProducts, deleteProduct, FrontendProduct } from '@/lib/products';
 import Link from 'next/link';
-import styles from './page.module.css';
+import styles from './admin-products.module.css'; // CSS-i import edirik
 
-export default function ProductsPage() {
-  const products = [
-    { id: 1, name: 'Montana System Storage Unit', category: 'Storage', price: '$299', status: 'Active' },
-    { id: 2, name: 'Montana Mini Desk', category: 'Tables', price: '$199', status: 'Active' },
-    { id: 3, name: 'Panton Wire Chair', category: 'Chairs', price: '$149', status: 'Active' },
-    { id: 4, name: 'Montana Free Coffee Table', category: 'Tables', price: '$249', status: 'Draft' },
-    { id: 5, name: 'Storage Accessories Set', category: 'Accessories', price: '$49', status: 'Active' },
-  ];
+export default function AdminProductsList() {
+  const [products, setProducts] = useState<FrontendProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadProducts = async () => {
+    setLoading(true);
+    const data = await getProducts();
+    setProducts(data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
+
+  const handleDelete = async (id: number) => {
+    if (!window.confirm("Bu məhsulu silməyə əminsiniz?")) return;
+
+    try {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        alert("Token yoxdur!");
+        return;
+      }
+      await deleteProduct(id, token);
+      setProducts(prev => prev.filter(p => p.id !== id));
+      alert("✅ Məhsul silindi!");
+    } catch (error: any) {
+      alert("Xəta: " + error.message);
+    }
+  };
+
+  if (loading) return (
+    <div className={styles.loadingContainer}>
+      <div className={styles.spinner}></div>
+    </div>
+  );
 
   return (
-    <div className={styles.productsPage}>
-      <div className={styles.pageHeader}>
-        <div>
-          <h1>Products</h1>
-          <p>Manage your product catalog and inventory</p>
-        </div>
+    <div className={styles.container}>
+      
+      {/* BAŞLIQ */}
+      <div className={styles.header}>
+        <h2 className={styles.title}>Məhsullar</h2>
         <Link href="/admin/products/new" className={styles.addButton}>
-          Add New Product
+          <span className={styles.plusIcon}>+</span> Yeni Məhsul
         </Link>
       </div>
 
-      <div className={styles.filters}>
-        <select className={styles.filterSelect}>
-          <option value="">All Categories</option>
-          <option value="storage">Storage</option>
-          <option value="tables">Tables</option>
-          <option value="chairs">Chairs</option>
-          <option value="accessories">Accessories</option>
-        </select>
-        <select className={styles.filterSelect}>
-          <option value="">All Status</option>
-          <option value="active">Active</option>
-          <option value="draft">Draft</option>
-          <option value="archived">Archived</option>
-        </select>
-        <input
-          type="text"
-          placeholder="Search products..."
-          className={styles.searchInput}
-        />
-      </div>
+      {/* CƏDVƏL */}
+      <div className={styles.tableWrapper}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Şəkil</th>
+              <th>Məhsul Adı</th>
+              <th>Qiymət</th>
+              <th>Kateqoriya</th>
+              <th style={{textAlign: 'center'}}>Əməliyyatlar</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.length === 0 ? (
+               <tr>
+                 <td colSpan={5} style={{textAlign: 'center', padding: '30px', color: '#888'}}>
+                    Heç bir məhsul tapılmadı.
+                 </td>
+               </tr>
+            ) : (
+              products.map((product) => (
+                <tr key={product.id}>
+                  {/* Şəkil */}
+                  <td>
+                    <div className={styles.productImageWrapper}>
+                      <img 
+                        className={styles.productImage}
+                        src={product.mainImage}
+                        alt={product.title}
+                      />
+                    </div>
+                  </td>
+                  
+                  {/* Ad və ID */}
+                  <td>
+                    <div style={{fontWeight: 'bold'}}>{product.title}</div>
+                    <div style={{fontSize: '12px', color: '#999'}}>ID: {product.id}</div>
+                  </td>
 
-      <div className={styles.productsTable}>
-        <div className={styles.tableHeader}>
-          <div>Name</div>
-          <div>Category</div>
-          <div>Price</div>
-          <div>Status</div>
-          <div>Actions</div>
-        </div>
-        
-        {products.map((product) => (
-          <div key={product.id} className={styles.tableRow}>
-            <div className={styles.productName}>{product.name}</div>
-            <div className={styles.productCategory}>{product.category}</div>
-            <div className={styles.productPrice}>{product.price}</div>
-            <div>
-              <span className={`${styles.status} ${styles[product.status.toLowerCase()]}`}>
-                {product.status}
-              </span>
-            </div>
-            <div className={styles.actions}>
-              <Link href={`/admin/products/${product.id}/edit`} className={styles.editButton}>
-                Edit
-              </Link>
-              <button className={styles.deleteButton}>
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
+                  {/* Qiymət */}
+                  <td>
+                    <span className={styles.priceBadge}>
+                      {product.price}
+                    </span>
+                  </td>
+
+                  {/* Kateqoriya */}
+                  <td>
+                    {product.position}
+                  </td>
+
+                  {/* Düymələr */}
+                  <td className={styles.actions}>
+                    <Link href={`/admin/products/${product.id}`} className={`${styles.iconButton} ${styles.editIcon}`} title="Redaktə et">
+                      {/* Qələm İkonu (SVG) */}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </Link>
+
+                    <button onClick={() => handleDelete(product.id)} className={`${styles.iconButton} ${styles.deleteIcon}`} title="Sil">
+                      {/* Zibil qutusu İkonu (SVG) */}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
