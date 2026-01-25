@@ -184,3 +184,5 @@ export async function deleteProduct(id: number | string, token: string) {
     token: token // Token mütləqdir!
   });
 }
+
+

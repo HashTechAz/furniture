@@ -7,6 +7,7 @@ import { createProduct, CreateProductPayload } from '@/lib/products';
 export default function CreateProductPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
 
   // Formun başlanğıc dəyərləri
   const [formData, setFormData] = useState<CreateProductPayload>({
