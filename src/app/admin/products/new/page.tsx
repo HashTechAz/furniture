@@ -83,9 +83,37 @@ export default function CreateProductPage() {
 
       console.log("Göndərilən Data:", formData); // Konsolda baxmaq üçün
 
-      await createProduct(formData, token);
+      // 1. Ürünü oluştur
+      const response: any = await createProduct(formData, token);
       
+      // Backend'den dönen ürün ID'sini al
+      const productId = response?.id || response?.data?.id;
+      
+      if (!productId) {
+        throw new Error('Ürün oluşturuldu ama ID alınamadı!');
+      }
+      
+      setCreatedProductId(productId);
       setMessage('✅ Məhsul uğurla yaradıldı!');
+      
+      // 2. Eğer resim seçildiyse, resimleri yükle
+      if (selectedFiles && selectedFiles.length > 0) {
+        try {
+          setUploading(true);
+          await uploadProductImages(productId, selectedFiles, token);
+          setMessage('✅ Məhsul və şəkillər uğurla yükləndi!');
+        } catch (uploadError: any) {
+          console.error('Resim yükleme hatası:', uploadError);
+          setMessage(`✅ Məhsul yaradıldı, amma şəkillər yüklənmədi: ${uploadError.message}`);
+        } finally {
+          setUploading(false);
+        }
+      }
+      
+      // 3. Başarılı olursa products list sayfasına yönlendir
+      setTimeout(() => {
+        router.push('/admin/products');
+      }, 1500);
       
     } catch (error: any) {
       console.error(error);
@@ -162,12 +190,44 @@ export default function CreateProductPage() {
           </label>
         </div>
 
+        {/* Resim Yükleme Bölümü */}
+        <div style={{ marginTop: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f9' }}>
+          <h3 style={{ marginTop: 0, marginBottom: '10px' }}>Şəkillər</h3>
+          <label style={{ display: 'block', marginBottom: '10px' }}>
+            <input 
+              type="file" 
+              multiple 
+              accept="image/*"
+              onChange={handleFileSelect}
+              style={{ padding: '8px', width: '100%', border: '1px solid #ccc', borderRadius: '4px' }}
+            />
+            <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>
+              Bir və ya bir neçə şəkil seçə bilərsiniz (JPG, PNG, vb.)
+            </small>
+          </label>
+          {selectedFiles && selectedFiles.length > 0 && (
+            <div style={{ marginTop: '10px', padding: '10px', backgroundColor: '#e8f5e9', borderRadius: '4px' }}>
+              <strong>Seçilmiş şəkillər:</strong> {selectedFiles.length} fayl
+            </div>
+          )}
+        </div>
+
         <button 
           type="submit" 
-          disabled={loading}
-          style={{ padding: '15px', backgroundColor: 'black', color: 'white', cursor: 'pointer', marginTop: '20px', border: 'none', borderRadius: '4px' }}
+          disabled={loading || uploading}
+          style={{ 
+            padding: '15px', 
+            backgroundColor: loading || uploading ? '#666' : 'black', 
+            color: 'white', 
+            cursor: loading || uploading ? 'not-allowed' : 'pointer', 
+            marginTop: '20px', 
+            border: 'none', 
+            borderRadius: '4px',
+            fontSize: '16px',
+            fontWeight: '600'
+          }}
         >
-          {loading ? 'Göndərilir...' : 'Məhsulu Yarat'}
+          {loading ? 'Məhsul yaradılır...' : uploading ? 'Şəkillər yüklənir...' : 'Məhsulu Yarat'}
         </button>
 
         {message && <p style={{ marginTop: '10px', fontWeight: 'bold' }}>{message}</p>}

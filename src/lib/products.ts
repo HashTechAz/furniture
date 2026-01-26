@@ -133,7 +133,7 @@ const mapBackendToFrontend = (item: BackendProduct): FrontendProduct => {
 
 // 2. getProducts funksiyasını gücləndiririk
 export async function getProducts(params?: ProductQueryParams, retryCount = 0): Promise<FrontendProduct[]> {
-  const maxRetries = 2;
+  const maxRetries = 3; // Rate limit için daha fazla retry
   
   try {
     // Parametrləri URL Query String-ə çeviririk
@@ -178,6 +178,19 @@ export async function getProducts(params?: ProductQueryParams, retryCount = 0): 
   } catch (error: any) {
     console.error(`❌ Products List Error (attempt ${retryCount + 1}/${maxRetries + 1}):`, error);
     
+    // 429 Rate Limit hatası - özel handling
+    if (error.message?.startsWith('RATE_LIMIT:') || (error as any).status === 429 || (error as any).isRateLimit) {
+      const waitTime = error.message?.startsWith('RATE_LIMIT:') 
+        ? parseInt(error.message.split(':')[1]) || 5000
+        : Math.pow(2, retryCount) * 2000; // Exponential backoff: 2s, 4s, 8s
+      
+      if (retryCount < maxRetries) {
+        console.log(`⏳ Rate limit (429) - waiting ${waitTime/1000}s before retry (${retryCount + 1}/${maxRetries + 1})...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+        return getProducts(params, retryCount + 1);
+      }
+    }
+    
     // Retry mekanizması - network hatalarında tekrar dene
     if (retryCount < maxRetries && (
       error.message?.includes('fetch') || 
@@ -185,8 +198,10 @@ export async function getProducts(params?: ProductQueryParams, retryCount = 0): 
       error.message?.includes('ECONNREFUSED') ||
       error.message?.includes('timeout')
     )) {
-      console.log(`🔄 Retrying products fetch in 1 second...`);
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Exponential backoff: 1s, 2s, 4s
+      const waitTime = Math.pow(2, retryCount) * 1000;
+      console.log(`🔄 Retrying products fetch in ${waitTime/1000}s...`);
+      await new Promise(resolve => setTimeout(resolve, waitTime));
       return getProducts(params, retryCount + 1);
     }
     
@@ -202,7 +217,7 @@ export async function getProducts(params?: ProductQueryParams, retryCount = 0): 
 }
 
 export async function getProductById(id: string, retryCount = 0): Promise<FrontendProduct | null> {
-  const maxRetries = 2;
+  const maxRetries = 3; // Rate limit için daha fazla retry
   
   try {
     console.log(`📦 Fetching product by ID: ${id}`);
@@ -219,6 +234,19 @@ export async function getProductById(id: string, retryCount = 0): Promise<Fronte
   } catch (error: any) {
     console.error(`❌ Product Detail Error (ID: ${id}, attempt ${retryCount + 1}/${maxRetries + 1}):`, error);
     
+    // 429 Rate Limit hatası - özel handling
+    if (error.message?.startsWith('RATE_LIMIT:') || (error as any).status === 429 || (error as any).isRateLimit) {
+      const waitTime = error.message?.startsWith('RATE_LIMIT:') 
+        ? parseInt(error.message.split(':')[1]) || 5000
+        : Math.pow(2, retryCount) * 2000; // Exponential backoff: 2s, 4s, 8s
+      
+      if (retryCount < maxRetries) {
+        console.log(`⏳ Rate limit (429) - waiting ${waitTime/1000}s before retry (${retryCount + 1}/${maxRetries + 1})...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+        return getProductById(id, retryCount + 1);
+      }
+    }
+    
     // Retry mekanizması
     if (retryCount < maxRetries && (
       error.message?.includes('fetch') || 
@@ -226,8 +254,10 @@ export async function getProductById(id: string, retryCount = 0): Promise<Fronte
       error.message?.includes('ECONNREFUSED') ||
       error.message?.includes('timeout')
     )) {
-      console.log(`🔄 Retrying product fetch in 1 second...`);
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Exponential backoff: 1s, 2s, 4s
+      const waitTime = Math.pow(2, retryCount) * 1000;
+      console.log(`🔄 Retrying product fetch in ${waitTime/1000}s...`);
+      await new Promise(resolve => setTimeout(resolve, waitTime));
       return getProductById(id, retryCount + 1);
     }
     

@@ -5,6 +5,10 @@ if (process.env.NODE_ENV === 'development') {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 }
 
+// Rate limiting için request queue
+let lastRequestTime = 0;
+const MIN_REQUEST_INTERVAL = 1000; // İstekler arası minimum 1000ms bekle (saniyede max 1 istek)
+
 interface RequestOptions extends RequestInit {
   token?: string;
   data?: any;
@@ -44,6 +48,15 @@ export async function apiRequest<T>(endpoint: string, options: RequestOptions = 
   // URL-i düzəldirik (Bəzən / işarəsi qarışır)
   const url = `${baseUrl}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
 
+  // Rate limiting - istekler arası minimum bekleme
+  const now = Date.now();
+  const timeSinceLastRequest = now - lastRequestTime;
+  if (timeSinceLastRequest < MIN_REQUEST_INTERVAL) {
+    const waitTime = MIN_REQUEST_INTERVAL - timeSinceLastRequest;
+    await new Promise(resolve => setTimeout(resolve, waitTime));
+  }
+  lastRequestTime = Date.now();
+
   console.log(`📡 Requesting: ${url}${token ? ' (with token)' : ' (public)'}`); // Terminalda görmək üçün
 
   try {
@@ -52,8 +65,20 @@ export async function apiRequest<T>(endpoint: string, options: RequestOptions = 
     // Timeout'u temizle
     clearTimeout(timeoutId);
 
-    // Əgər cavab uğursuzdursa (400, 401, 500)
+    // Əgər cavab uğursuzdursa (400, 401, 429, 500)
     if (!response.ok) {
+      // 429 Rate Limit hatası - özel handling
+      if (response.status === 429) {
+        const retryAfter = response.headers.get('Retry-After');
+        const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : 5000; // 5 saniye default
+        
+        console.warn(`⏳ Rate limit reached (429). Waiting ${waitTime/1000}s before retry...`);
+        const rateLimitError: any = new Error(`RATE_LIMIT:${waitTime}`);
+        rateLimitError.status = 429;
+        rateLimitError.isRateLimit = true;
+        throw rateLimitError;
+      }
+      
       // Xətanı oxumağa çalışırıq (JSON və ya Text)
       const errorText = await response.text();
       let errorMessage = 'API request failed';
@@ -69,7 +94,10 @@ export async function apiRequest<T>(endpoint: string, options: RequestOptions = 
       }
 
       console.error(`❌ API Error (${response.status}):`, errorMessage);
-      throw new Error(errorMessage);
+      const apiError: any = new Error(errorMessage);
+      apiError.status = response.status;
+      apiError.isRateLimit = response.status === 429;
+      throw apiError;
     }
 
     // 204 No Content (Boş uğurlu cavab)

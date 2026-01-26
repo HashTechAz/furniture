@@ -7,12 +7,33 @@ import styles from './admin-products.module.css'; // CSS-i import edirik
 export default function AdminProductsList() {
   const [products, setProducts] = useState<FrontendProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const loadProducts = async () => {
-    setLoading(true);
-    const data = await getProducts();
-    setProducts(data);
-    setLoading(false);
+  const loadProducts = async (retryCount = 0) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getProducts();
+      setProducts(data);
+    } catch (err: any) {
+      console.error('Products load error:', err);
+      
+      // Rate limit hatası için özel mesaj
+      if (err.message?.includes('RATE_LIMIT') || err.message?.includes('429')) {
+        setError('Çox sayda sorğu göndərilir. Bir az gözləyin və yenidən cəhd edin...');
+        
+        // 5 saniye sonra otomatik tekrar dene
+        if (retryCount < 2) {
+          setTimeout(() => {
+            loadProducts(retryCount + 1);
+          }, 5000);
+        }
+      } else {
+        setError(`Xəta: ${err.message || 'Məhsullar yüklənə bilmədi'}`);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -31,6 +52,11 @@ export default function AdminProductsList() {
       await deleteProduct(id, token);
       setProducts(prev => prev.filter(p => p.id !== id));
       alert("✅ Məhsul silindi!");
+      
+      // Silme sonrası listeyi yenile (rate limit için biraz bekle)
+      setTimeout(() => {
+        loadProducts();
+      }, 1000);
     } catch (error: any) {
       alert("Xəta: " + error.message);
     }
@@ -53,6 +79,33 @@ export default function AdminProductsList() {
         </Link>
       </div>
 
+      {/* Hata mesajı */}
+      {error && (
+        <div style={{ 
+          padding: '15px', 
+          marginBottom: '20px', 
+          backgroundColor: '#fff3cd', 
+          border: '1px solid #ffc107',
+          borderRadius: '8px',
+          color: '#856404'
+        }}>
+          <strong>⚠️ {error}</strong>
+          <button 
+            onClick={() => loadProducts()} 
+            style={{ 
+              marginLeft: '15px', 
+              padding: '5px 15px', 
+              backgroundColor: '#ffc107', 
+              border: 'none', 
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Yenidən yoxla
+          </button>
+        </div>
+      )}
+
       {/* CƏDVƏL */}
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
@@ -66,10 +119,10 @@ export default function AdminProductsList() {
             </tr>
           </thead>
           <tbody>
-            {products.length === 0 ? (
+            {products.length === 0 && !loading ? (
                <tr>
                  <td colSpan={5} style={{textAlign: 'center', padding: '30px', color: '#888'}}>
-                    Heç bir məhsul tapılmadı.
+                    {error ? 'Xəta baş verdi. Yenidən yoxlayın.' : 'Heç bir məhsul tapılmadı.'}
                  </td>
                </tr>
             ) : (
