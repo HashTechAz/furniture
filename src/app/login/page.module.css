@@ -1,116 +1,173 @@
-.loginContainer {
-  min-height: 100vh;
+/* src/app/login/page.module.css */
+
+.container {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f8f9fa;
-  padding: 2rem;
+  height: 100vh;
+  width: 100%;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  overflow: hidden;
 }
 
-.loginCard {
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  padding: 3rem;
+/* --- SOL TƏRƏF (ŞƏKİL) --- */
+.imageSection {
+  flex: 1.2; /* Sol tərəf biraz daha geniş olsun */
+  background-image: url('https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=2700&auto=format&fit=crop'); /* Mebel şəkli */
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 60px;
+  color: white;
+}
+
+/* Şəklin üzərinə tünd pərdə atırıq ki, yazı oxunsun */
+.imageOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.7));
+}
+
+.brandText {
+  position: relative;
+  z-index: 2;
+  max-width: 400px;
+}
+
+.brandTitle {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  line-height: 1.1;
+}
+
+.brandSubtitle {
+  font-size: 18px;
+  opacity: 0.9;
+  font-weight: 300;
+}
+
+/* --- SAĞ TƏRƏF (FORM) --- */
+.formSection {
+  flex: 0.8;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  position: relative;
+}
+
+.formWrapper {
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.loginHeader {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.loginHeader h1 {
-  font-size: 1.5rem;
+.title {
+  font-size: 32px;
   font-weight: 700;
-  color: #333;
-  margin-bottom: 0.5rem;
+  color: #111;
+  margin-bottom: 10px;
+  text-align: left;
 }
 
-.loginHeader p {
+.subtitle {
+  font-size: 14px;
   color: #666;
-  font-size: 0.875rem;
+  margin-bottom: 40px;
+  text-align: left;
 }
 
-.formGroup {
-  margin-bottom: 1.5rem;
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.formGroup label {
-  display: block;
-  font-weight: 500;
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 600;
   color: #333;
-  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.formGroup input {
+.input {
   width: 100%;
-  padding: 0.75rem;
+  padding: 16px;
   border: 1px solid #e5e5e5;
-  border-radius: 4px;
-  font-size: 1rem;
-  transition: border-color 0.2s ease;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #fafafa;
+  transition: all 0.3s ease;
+  color: #000;
 }
 
-.formGroup input:focus {
+.input:focus {
   outline: none;
-  border-color: #333;
+  border-color: #000;
+  background-color: #fff;
+  box-shadow: 0 0 0 4px rgba(0,0,0,0.05);
 }
 
-.loginButton {
-  width: 100%;
-  background: #333;
+.button {
+  margin-top: 10px;
+  padding: 18px;
+  background-color: #000;
   color: #fff;
-  padding: 0.75rem;
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: 8px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s;
 }
 
-.loginButton:hover {
-  background: #555;
+.button:hover {
+  background-color: #333;
 }
 
-.loginButton:disabled {
-  background: #ccc;
+.button:active {
+  transform: scale(0.98);
+}
+
+.button:disabled {
+  background-color: #ccc;
   cursor: not-allowed;
 }
 
-.errorMessage {
-  background: #fee;
-  color: #c33;
-  padding: 0.75rem;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
-  text-align: center;
+.errorBox {
+  padding: 15px;
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  color: #dc2626;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
 }
 
-.backLink {
-  display: inline-block;
-  color: #666;
-  text-decoration: none;
-  font-size: 0.875rem;
-  margin-top: 1rem;
-  transition: color 0.2s ease;
-}
-
-.backLink:hover {
-  color: #333;
-}
-
-/* Mobile styles */
+/* Mobil Uyğunluq */
 @media (max-width: 768px) {
-  .loginContainer {
-    padding: 1rem;
+  .container {
+    flex-direction: column;
   }
-  
-  .loginCard {
-    padding: 32px;
+  .imageSection {
+    display: none; /* Mobildə şəkli gizlədirik ki, rahat olsun */
+  }
+  .formSection {
+    flex: 1;
+    padding: 20px;
   }
 }

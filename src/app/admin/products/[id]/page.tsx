@@ -1,11 +1,10 @@
-// src/app/admin/products/[id]/page.tsx
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { getProductById, updateProduct, CreateProductPayload } from '@/lib/products';
-import { apiRequest } from '@/lib/api-client'; // Bu vacibdir, kateqoriyaları çəkmək üçün
+import { getProductById, updateProduct, uploadProductImages, CreateProductPayload, BackendImage, deleteProductImage, setProductCoverImage } from '@/lib/products';
+import { apiRequest } from '@/lib/api-client';
+import styles from '../product-form.module.css'; // CSS faylını qoşuruq
 
-// Dropdown üçün sadə tip
 interface SimpleItem {
   id: number;
   name: string;
@@ -19,38 +18,29 @@ interface EditProductPageProps {
 
 export default function EditProductPage({ params }: EditProductPageProps) {
   const [resolvedParams, setResolvedParams] = useState<{ id: string } | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [message, setMessage] = useState('');
 
-  // Dropdown dataları (Kateqoriyalar, Designerlər, Kolleksiyalar)
+  // Data State-ləri
+  const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState<BackendImage[]>([]); // Şəkilləri ayrıca saxlayırıq ki, anında yeniləyək
+
+  // Dropdownlar
   const [categories, setCategories] = useState<SimpleItem[]>([]);
   const [designers, setDesigners] = useState<SimpleItem[]>([]);
   const [collections, setCollections] = useState<SimpleItem[]>([]);
-  
-  // Form datası
+
+  // Form State
   const [formData, setFormData] = useState<CreateProductPayload>({
-    name: '',
-    sku: '',
-    description: '',
-    shortDescription: '',
-    price: 0,
-    isFeatured: false,
-    height: 0,
-    width: 0,
-    depth: 0,
-    weight: 0,
-    categoryId: 0,
-    designerId: 0,
-    collectionId: 0,
-    colorIds: [],
-    materialIds: [],
-    roomIds: [],
-    tagIds: [],
-    specifications: []
+    name: '', sku: '', description: '', shortDescription: '', price: 0,
+    isFeatured: false, height: 0, width: 0, depth: 0, weight: 0,
+    categoryId: 0, designerId: 0, collectionId: 0,
+    colorIds: [], materialIds: [], roomIds: [], tagIds: [], specifications: []
   });
 
-  // 1. Params-ı həll et (Next.js 15 üçün)
+  // Şəkil Yükləmə State
+  const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
+  const [uploading, setUploading] = useState(false);
+
+  // 1. Params-ı həll et
   useEffect(() => {
     const unwrapParams = async () => {
       const p = await params;
@@ -59,179 +49,296 @@ export default function EditProductPage({ params }: EditProductPageProps) {
     unwrapParams();
   }, [params]);
 
-  // 2. BÜTÜN DATALARI GƏTİR VƏ UYĞUNLAŞDIR
-  useEffect(() => {
+  // 2. Datanı Gətir
+  const fetchData = async () => {
     if (!resolvedParams?.id) return;
+    try {
+      setLoading(true);
+      const [productBackend, catsData, desData, colData] = await Promise.all([
+        apiRequest<any>(`/api/Products/${resolvedParams.id}`), // BackendProduct strukturunu birbaşa alırıq
+        apiRequest<SimpleItem[]>('/api/Categories').catch(() => []),
+        apiRequest<SimpleItem[]>('/api/Designers').catch(() => []),
+        apiRequest<SimpleItem[]>('/api/Collections').catch(() => [])
+      ]);
 
-    const fetchData = async () => {
-      try {
-        // Paralel olaraq həm məhsulu, həm də bütün siyahıları çəkirik
-        const [product, catsData, desData, colData] = await Promise.all([
-          getProductById(resolvedParams.id),
-          apiRequest<SimpleItem[]>('/api/Categories').catch(() => []),
-          apiRequest<SimpleItem[]>('/api/Designers').catch(() => []),
-          apiRequest<SimpleItem[]>('/api/Collections').catch(() => [])
-        ]);
+      setCategories(catsData);
+      setDesigners(desData);
+      setCollections(colData);
 
-        setCategories(catsData);
-        setDesigners(desData);
-        setCollections(colData);
+      if (productBackend) {
+        // Şəkilləri state-ə atırıq (Göstərmək üçün)
+        setImages(productBackend.images || []);
 
-        if (product) {
-          // --- ID TAPMA MƏNTİQİ (SMART FIX) ---
-          // Əgər ID 0 gəlibsə, AD-a (Name) görə siyahıdan tapırıq
-          
-          let realCategoryId = product.categoryId;
-          // Əgər ID yoxdursa və ya 0-dırsa, amma adı ("Sofas") varsa, siyahıdan onun ID-sini tap
-          if (!realCategoryId || realCategoryId === 0) {
-             const found = catsData.find(c => c.name === product.position); 
-             if (found) realCategoryId = found.id;
-          }
-
-          let realDesignerId = product.designerId;
-          if (!realDesignerId || realDesignerId === 0) {
-             const found = desData.find(d => d.name === product.designer);
-             if (found) realDesignerId = found.id;
-          }
-          
-          let realCollectionId = product.collectionId;
-          // Kolleksiya üçün ad saxlamamışıqsa və 0 gəlibsə, siyahıdan birincini seç (Xəta verməsin deyə)
-          if ((!realCollectionId || realCollectionId === 0) && colData.length > 0) {
-             realCollectionId = colData[0].id; 
-          }
-
-          setFormData({
-            name: product.title,
-            sku: product.sku,  
-            shortDescription: product.shortDescription, 
-            description: product.description,
-            price: parseFloat(product.price.replace(' AZN', '')),
-            isFeatured: false, 
-            
-            // --- ARTIQ 0 YOX, REAL RƏQƏMLƏRİ QOYURUQ ---
-            height: product.height, 
-            width: product.width,
-            depth: product.depth,
-            weight: product.weight,
-            // ------------------------------------------
-            
-            categoryId: realCategoryId || 0,     
-            designerId: realDesignerId || 0,      
-            collectionId: realCollectionId || 0,  
-            
-            colorIds: [],
-            materialIds: [],
-            roomIds: [],
-            tagIds: [],
-            specifications: []
-          });
-        }
-      } catch (error) {
-        console.error("Məlumat gəlmədi:", error);
-      } finally {
-        setLoading(false);
+        // Formu doldururuq
+        setFormData({
+          name: productBackend.name,
+          sku: productBackend.sku || '',
+          description: productBackend.description || '',
+          shortDescription: productBackend.shortDescription || '',
+          price: productBackend.price,
+          isFeatured: false,
+          height: productBackend.height,
+          width: productBackend.width,
+          depth: productBackend.depth,
+          weight: productBackend.weight,
+          categoryId: productBackend.categoryId || 0,
+          designerId: productBackend.designerId || 0,
+          collectionId: productBackend.collectionId || 0,
+          colorIds: [], materialIds: [], roomIds: [], tagIds: [], specifications: []
+        });
       }
-    };
+    } catch (error) {
+      console.error("Data error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, [resolvedParams]);
 
-  // Input dəyişikliyi
+  // --- HANDLERS ---
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    // Select və Number tipləri üçün rəqəmə çeviririk
     if (type === 'number' || e.target.tagName === 'SELECT') {
-      const numValue = value === '' ? 0 : parseFloat(value);
-      setFormData(prev => ({ ...prev, [name]: numValue }));
+      setFormData(prev => ({ ...prev, [name]: value === '' ? 0 : parseFloat(value) }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Məhsulu Update Etmək
+  const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!resolvedParams?.id) return;
-    setSubmitting(true);
-    setMessage('');
-
-    // Son yoxlama: ID-lər 0 olmamalıdır
-    if (formData.categoryId === 0 || formData.designerId === 0 || formData.collectionId === 0) {
-        alert("Xəbərdarlıq: Category, Designer və ya Collection seçilməyib (0). Update xəta verəcək!");
-        setSubmitting(false);
-        return;
-    }
 
     try {
       const token = localStorage.getItem('accessToken');
-      if (!token) {
-        alert("Token yoxdur! Zəhmət olmasa yenidən giriş edin.");
-        return;
-      }
+      if (!token) return alert("Token yoxdur!");
 
       await updateProduct(resolvedParams.id, formData, token);
-      setMessage('✅ Məhsul uğurla yeniləndi!');
-      
+      alert('✅ Məlumatlar yeniləndi!');
     } catch (error: any) {
-      console.error(error);
-      setMessage(`❌ Xəta: ${error.message}`);
-    } finally {
-      setSubmitting(false);
+      alert('Xəta: ' + error.message);
     }
   };
 
-  if (loading) return <div>Yüklənir...</div>;
+  // --- COVER ETMƏK ---
+  const handleSetCover = async (imageId: number) => {
+    if (!resolvedParams?.id) return;
+
+    try {
+      const token = localStorage.getItem('accessToken');
+      if (!token) return alert("Token yoxdur!");
+
+      // API-yə sorğu göndəririk
+      await setProductCoverImage(resolvedParams.id, imageId, token);
+
+      alert("✅ Əsas şəkil dəyişdirildi!");
+
+      // State-i yeniləyirik ki, yaşıl "Cover" yazısı dərhal yerini dəyişsin
+      setImages(prev => prev.map(img => ({
+        ...img,
+        isCover: img.id === imageId // Kliklənən şəkil true olur, qalanları false
+      })));
+
+    } catch (error: any) {
+      console.error(error);
+      alert("Xəta: " + error.message);
+    }
+  };
+
+  // --- ŞƏKİL SİLMƏK ---
+  const handleDeleteImage = async (imageId: number) => {
+    if (!resolvedParams?.id) return;
+
+    const confirmDelete = window.confirm("Bu şəkli silməyə əminsiniz?");
+    if (!confirmDelete) return;
+
+    try {
+      const token = localStorage.getItem('accessToken');
+      if (!token) return alert("Token yoxdur!");
+
+      // API çağırışı
+      await deleteProductImage(resolvedParams.id, imageId, token);
+
+      alert("✅ Şəkil silindi!");
+
+      // State-dən silirik ki, səhifəni yeniləməyə ehtiyac qalmasın (Anında yox olsun)
+      setImages(prev => prev.filter(img => img.id !== imageId));
+
+    } catch (error: any) {
+      console.error(error);
+      alert("❌ Silinmədi: " + error.message);
+    }
+  };
+
+  // --- ŞƏKİL YÜKLƏMƏ MƏNTİQİ ---
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) setSelectedFiles(e.target.files);
+  };
+
+  const handleUploadImages = async () => {
+    if (!selectedFiles || !resolvedParams?.id) return;
+
+    try {
+      setUploading(true);
+      const token = localStorage.getItem('accessToken');
+      if (!token) return alert("Token yoxdur!");
+
+      await uploadProductImages(resolvedParams.id, selectedFiles, token);
+
+      alert("✅ Şəkillər yükləndi!");
+      setSelectedFiles(null); // Inputu təmizlə
+
+      // Səhifəni yeniləmədən şəkilləri təzələmək üçün datanı yenidən çəkirik
+      fetchData();
+
+    } catch (error: any) {
+      alert("Xəta: " + error.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  if (loading) return <div className={styles.container}>Yüklənir...</div>;
+
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
 
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto', color: 'black' }}>
-      <h1>Məhsulu Redaktə Et (ID: {resolvedParams?.id})</h1>
-      
-      <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '15px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-          <label>Ad: <input type="text" name="name" value={formData.name} onChange={handleChange} className="border p-2 w-full" /></label>
-          <label>Qiymət: <input type="number" name="price" value={formData.price} onChange={handleChange} className="border p-2 w-full" /></label>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Məhsulu Redaktə Et (ID: {resolvedParams?.id})</h1>
+
+      {/* 1. UPDATE FORMU */}
+      <form onSubmit={handleUpdate} className={styles.formGrid}>
+
+        <div className={styles.row}>
+          <div>
+            <label className={styles.label}>Ad <span className={styles.required}>*</span></label>
+            <input className={styles.input} type="text" name="name" value={formData.name} onChange={handleChange} required />
+          </div>
+          <div>
+            <label className={styles.label}>SKU <span className={styles.required}>*</span></label>
+            <input className={styles.input} type="text" name="sku" value={formData.sku} onChange={handleChange} required />
+          </div>
         </div>
 
-        <label>Təsvir: <textarea name="description" value={formData.description} onChange={handleChange} className="border p-2 w-full" rows={4} /></label>
-
-        {/* --- VACİB HİSSƏ: DROPDOWN SEÇİMLƏRİ --- */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
-          
-          <label>
-             Category: <span style={{color:'red'}}>*</span>
-             <select name="categoryId" value={formData.categoryId} onChange={handleChange} className="border p-2 w-full">
-                <option value={0}>Seçin...</option>
-                {categories.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
-             </select>
-          </label>
-
-          <label>
-             Designer: <span style={{color:'red'}}>*</span>
-             <select name="designerId" value={formData.designerId} onChange={handleChange} className="border p-2 w-full">
-                <option value={0}>Seçin...</option>
-                {designers.map(des => <option key={des.id} value={des.id}>{des.name}</option>)}
-             </select>
-          </label>
-
-          <label>
-             Collection: <span style={{color:'red'}}>*</span>
-             <select name="collectionId" value={formData.collectionId} onChange={handleChange} className="border p-2 w-full">
-                <option value={0}>Seçin...</option>
-                {collections.map(col => <option key={col.id} value={col.id}>{col.name}</option>)}
-             </select>
-          </label>
-
+        <div className={styles.row}>
+          <div>
+            <label className={styles.label}>Qiymət</label>
+            <input className={styles.input} type="number" name="price" value={formData.price} onChange={handleChange} required />
+          </div>
+          <div>
+            <label className={styles.label}>Qısa Təsvir</label>
+            <input className={styles.input} type="text" name="shortDescription" value={formData.shortDescription} onChange={handleChange} />
+          </div>
         </div>
 
-        <button 
-          type="submit" 
-          disabled={submitting}
-          style={{ padding: '15px', backgroundColor: 'blue', color: 'white', cursor: 'pointer', marginTop: '20px' }}
-        >
-          {submitting ? 'Yenilənir...' : 'Yadda Saxla (Update)'}
-        </button>
+        <div>
+          <label className={styles.label}>Ətraflı Təsvir</label>
+          <textarea className={styles.textarea} name="description" value={formData.description} onChange={handleChange} rows={4} />
+        </div>
 
-        {message && <p style={{ fontWeight: 'bold' }}>{message}</p>}
+        <div className={styles.rowThree}>
+          <label>
+            <span className={styles.label}>Category <span className={styles.required}>*</span></span>
+            <select className={styles.select} name="categoryId" value={formData.categoryId} onChange={handleChange}>
+              <option value={0}>Seçin...</option>
+              {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+            </select>
+          </label>
+          <label>
+            <span className={styles.label}>Designer <span className={styles.required}>*</span></span>
+            <select className={styles.select} name="designerId" value={formData.designerId} onChange={handleChange}>
+              <option value={0}>Seçin...</option>
+              {designers.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+            </select>
+          </label>
+          <label>
+            <span className={styles.label}>Collection <span className={styles.required}>*</span></span>
+            <select className={styles.select} name="collectionId" value={formData.collectionId} onChange={handleChange}>
+              <option value={0}>Seçin...</option>
+              {collections.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+            </select>
+          </label>
+        </div>
+
+        {/* Ölçülər */}
+        <div className={styles.row}>
+          <div><label className={styles.label}>En</label><input className={styles.input} type="number" name="width" value={formData.width} onChange={handleChange} /></div>
+          <div><label className={styles.label}>Hündürlük</label><input className={styles.input} type="number" name="height" value={formData.height} onChange={handleChange} /></div>
+          <div><label className={styles.label}>Dərinlik</label><input className={styles.input} type="number" name="depth" value={formData.depth} onChange={handleChange} /></div>
+          <div><label className={styles.label}>Çəki</label><input className={styles.input} type="number" name="weight" value={formData.weight} onChange={handleChange} /></div>
+        </div>
+
+        <button type="submit" className={styles.submitButton}>Yadda Saxla (Update)</button>
       </form>
+
+      {/* 2. ŞƏKİL BÖLMƏSİ (GALLERY & UPLOAD) */}
+      <div className={styles.imageSection}>
+        <h3 className={styles.label} style={{ fontSize: '18px' }}>Məhsulun Şəkilləri</h3>
+
+        {/* A) Yeni Şəkil Yükləmə */}
+        <div className={styles.fileInputWrapper}>
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleFileSelect}
+            className={styles.fileInput}
+          />
+          <button
+            onClick={handleUploadImages}
+            disabled={!selectedFiles || uploading}
+            className={styles.uploadButton}
+          >
+            {uploading ? 'Yüklənir...' : 'Yüklə (+)'}
+          </button>
+        </div>
+
+        {/* B) Mövcud Şəkillər */}
+        <div className={styles.gallery}>
+          {images.length === 0 ? (
+            <p style={{ color: '#999' }}>Şəkil yoxdur.</p>
+          ) : (
+            images.map((img) => (
+              <div key={img.id} className={styles.imageCard}>
+                {img.isCover && <span className={styles.coverBadge}>Cover</span>}
+                <img
+                  src={`${baseUrl}${img.imageUrl}`}
+                  alt="Product"
+                  className={styles.productImg}
+                />
+                <div className={styles.imageActions}>
+                  {/* COVER DÜYMƏSİ */}
+                  <button
+                    type="button"
+                    className={styles.actionBtn}
+                    onClick={() => handleSetCover(img.id)} // <--- BU SƏTİRİ ƏLAVƏ ET
+                    // Əgər artıq coverdirsə, düyməni gizlət və ya rəngini dəyiş (Optional)
+                    style={{ opacity: img.isCover ? 0.5 : 1 }}
+                    disabled={img.isCover}
+                  >
+                    {img.isCover ? 'Coverdir' : 'Cover Et'}
+                  </button>
+
+                  {/* Delete Düyməsi (Bayaq yazmışdıq) */}
+                  <button
+                    type="button"
+                    className={styles.actionBtn}
+                    style={{ color: '#f87171' }}
+                    onClick={() => handleDeleteImage(img.id)}
+                  >
+                    Sil
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
     </div>
   );
 }

@@ -1,217 +1,114 @@
-// Swagger API base URL
-// Swagger API base URL removed (handled in api-client)
+// src/lib/auth.ts
 import { apiRequest } from './api-client';
 
 export interface User {
-    id: string;
-    email: string;
-    firstName?: string;
-    lastName?: string;
-}
-
-export interface LoginRequest {
-    email: string;
-    password: string;
+  id: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 export interface LoginResponse {
-    accessToken: string;
-    refreshToken?: string;
-    user?: User;
-    expiration?: string;
+  accessToken: string;
+  refreshToken?: string;
+  user?: User;
+  expiration?: string;
 }
 
-export interface ChangePasswordRequest {
-    currentPassword: string;
-    newPassword: string;
-}
-
-export interface RefreshTokenRequest {
-    refreshToken: string;
-}
-
-export interface RefreshTokenResponse {
-    accessToken: string;
-    refreshToken: string;
-}
-
-// JWT token'dan payload'u decode et (hem browser hem Node.js'de çalışır)
+// Tokeni oxumaq üçün köməkçi funksiya
 function decodeJWT(token: string): any {
-    try {
-        const tokenParts = token.split('.');
-        if (tokenParts.length !== 3) return null;
-        
-        const payload = tokenParts[1];
-        // Browser'da atob, Node.js'de Buffer kullan
-        const decoded = typeof window !== 'undefined' 
-            ? atob(payload) 
-            : Buffer.from(payload, 'base64').toString('utf-8');
-        return JSON.parse(decoded);
-    } catch (e) {
-        return null;
-    }
-}
-
-export async function loginUser(email: string, password: string): Promise<LoginResponse> {
-    const response = await apiRequest<{ accessToken: string; expiration?: string }>('/api/Account/login', {
-        method: 'POST',
-        body: { username: email, password },
-    });
+  try {
+    const tokenParts = token.split('.');
+    if (tokenParts.length !== 3) return null;
     
-    // Backend'den sadece accessToken geliyor, refreshToken ve user yok
-    // Token'dan email'i çıkarıp user objesi oluşturuyoruz
-    let user: User | undefined;
-    try {
-        const payload = decodeJWT(response.accessToken);
-        if (payload) {
-            const emailFromToken = payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || email;
-            user = {
-                id: payload.jti || '',
-                email: emailFromToken,
-            };
-        } else {
-            // Decode başarısız olursa sadece email kullan
-            user = {
-                id: '',
-                email: email,
-            };
-        }
-    } catch (e) {
-        // Hata durumunda sadece email kullan
-        user = {
-            id: '',
-            email: email,
-        };
+    const payload = tokenParts[1];
+    const decoded = typeof window !== 'undefined' 
+      ? atob(payload) 
+      : Buffer.from(payload, 'base64').toString('utf-8');
+    return JSON.parse(decoded);
+  } catch (e) {
+    return null;
+  }
+}
+
+// --- 1. LOGIN USER ---
+export async function loginUser(username: string, password: string): Promise<LoginResponse> {
+  console.log("📡 Login sorğusu göndərilir: /api/Account/login");
+
+  const response: any = await apiRequest('/api/Account/login', {
+    method: 'POST',
+    data: {
+      username: username, 
+      password: password  
     }
-    
-    return {
-        accessToken: response.accessToken,
-        refreshToken: '', // Backend refreshToken döndürmüyor
-        user: user,
-        expiration: response.expiration,
-    };
+  });
+
+  const accessToken = response.accessToken || (typeof response === 'string' ? response : null);
+
+  if (!accessToken) {
+     console.error("❌ Token tapılmadı. Cavab:", response);
+     throw new Error("Login uğursuz oldu. Token gəlmədi.");
+  }
+
+  // User məlumatlarını tokendən oxuyuruq
+  let user: User = { id: '0', email: username };
+  
+  try {
+    const payload = decodeJWT(accessToken);
+    if (payload) {
+      const emailFromToken = payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] 
+                          || payload.email 
+                          || payload.sub 
+                          || username;
+      user = {
+        id: payload.jti || payload.sub || '0',
+        email: emailFromToken,
+      };
+    }
+  } catch (e) {
+    console.warn("⚠️ Token decode edilə bilmədi:", e);
+  }
+
+  return {
+    accessToken: accessToken,
+    refreshToken: '', 
+    user: user,
+    expiration: response.expiration
+  };
 }
 
-export async function changePassword(currentPassword: string, newPassword: string, accessToken: string): Promise<void> {
-    return apiRequest<void>('/api/account/change-password', {
-        method: 'POST',
-        body: { currentPassword, newPassword },
-        token: accessToken,
-    });
-}
-
-export async function refreshAccessToken(refreshToken: string): Promise<RefreshTokenResponse> {
-    return apiRequest<RefreshTokenResponse>('/api/account/refresh', {
-        method: 'POST',
-        headers: {},
-        token: refreshToken, 
-    });
-}
-
+// --- 2. LOGOUT USER (Backend üçün) ---
+// Server-side (route.ts) bunu axtarır
 export async function logoutUser(accessToken: string): Promise<void> {
-    return apiRequest<void>('/api/account/logout', {
-        method: 'POST',
-        token: accessToken,
+  try {
+    await apiRequest<void>('/api/Account/logout', { 
+       method: 'POST',
+       token: accessToken,
     });
+  } catch (e) {
+    console.log("Logout API xətası (əhəmiyyətsizdir):", e);
+  }
 }
 
-const isBrowser = () => typeof window !== 'undefined';
+// --- 3. LOGOUT (Frontend üçün) ---
+// Brauzer (Login səhifəsi) bunu axtarır
+export function logout() {
+    if (typeof window === 'undefined') return;
+    
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+    
+    document.cookie = 'accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'admin-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
 
-function setCookie(name: string, value: string, days: number) {
-    if (!isBrowser()) return;
-    let expires = "";
-    if (days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/; Secure; SameSite=Strict";
+    window.location.href = '/login';
 }
 
-function deleteCookie(name: string) {
-    if (!isBrowser()) return;
-    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-}
-
+// --- Digər funksiyalar ---
 export function setTokens(accessToken: string, refreshToken: string): void {
-    if (!isBrowser()) return;
-    
-    try {
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        
-        setCookie('accessToken', accessToken, 1); 
-        setCookie('refreshToken', refreshToken, 7); 
-    } catch (error) {
-        console.error('Error setting tokens:', error);
-    }
-}
-
-export function getAccessToken(): string | null {
-    if (!isBrowser()) return null;
-    
-    try {
-        return localStorage.getItem('accessToken');
-    } catch (error) {
-        console.error('Error getting access token:', error);
-        return null;
-    }
-}
-
-export function getRefreshToken(): string | null {
-    if (!isBrowser()) return null;
-    
-    try {
-        return localStorage.getItem('refreshToken');
-    } catch (error) {
-        console.error('Error getting refresh token:', error);
-        return null;
-    }
-}
-
-export function clearTokens(): void {
-    if (!isBrowser()) return;
-    
-    try {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        
-        // Clear cookies
-        deleteCookie('accessToken');
-        deleteCookie('refreshToken');
-    } catch (error) {
-        console.error('Error clearing tokens:', error);
-    }
-}
-
-export function getStoredUser(): User | null {
-    if (!isBrowser()) return null;
-    
-    try {
-        const userStr = localStorage.getItem('user');
-        return userStr ? JSON.parse(userStr) : null;
-    } catch (error) {
-        console.error('Error getting stored user:', error);
-        return null;
-    }
-}
-
-export function setStoredUser(user: User): void {
-    if (!isBrowser()) return;
-    
-    try {
-        localStorage.setItem('user', JSON.stringify(user));
-    } catch (error) {
-        console.error('Error setting stored user:', error);
-    }
-}
-
-export function clearStoredUser(): void {
-    if (!isBrowser()) return;
-    
-    try {   
-        localStorage.removeItem('user');
-    } catch (error) {
-        console.error('Error clearing stored user:', error);
-    }
+    if (typeof window === 'undefined') return;
+    localStorage.setItem('accessToken', accessToken);
+    if(refreshToken) localStorage.setItem('refreshToken', refreshToken);
 }

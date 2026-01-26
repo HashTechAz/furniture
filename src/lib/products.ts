@@ -163,7 +163,7 @@ export interface CreateProductPayload {
 export async function createProduct(data: CreateProductPayload, token: string) {
   return apiRequest('/api/Products', {
     method: 'POST',
-    body: data,
+    data: data,
     token: token 
   });
 }
@@ -172,8 +172,8 @@ export async function createProduct(data: CreateProductPayload, token: string) {
 export async function updateProduct(id: number | string, data: CreateProductPayload, token: string) {
   return apiRequest(`/api/Products/${id}`, {
     method: 'PUT',
-    // ID-ni body-ə əlavə edirik
-    body: { ...data, id: parseInt(id.toString()) }, 
+    // ID-ni data-ya əlavə edirik
+    data: { ...data, id: parseInt(id.toString()) }, 
     token: token
   });
 }
@@ -186,3 +186,44 @@ export async function deleteProduct(id: number | string, token: string) {
 }
 
 
+// --- 9. ÇOXLU ŞƏKİL YÜKLƏMƏK (UPLOAD) ---
+export async function uploadProductImages(id: number | string, files: FileList, token: string) {
+  const formData = new FormData();
+  for (let i = 0; i < files.length; i++) {
+    formData.append('files', files[i]);
+  }
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+  const response = await fetch(`${baseUrl}/api/Products/${id}/images`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
+    body: formData
+  });
+  if (!response.ok) {
+    throw new Error('Şəkillər yüklənmədi. Formatı və ya ölçünü yoxlayın.');
+  }
+  return true;
+}
+
+
+// src/lib/products.ts sonuna əlavə et:
+
+// --- 10. MƏHSULUN ŞƏKLİNİ SİLMƏK ---
+export async function deleteProductImage(productId: number | string, imageId: number, token: string) {
+  // Ehtimal olunan yol: /api/Products/{id}/images/{imageId}
+  return apiRequest(`/api/Products/${productId}/images/${imageId}`, {
+    method: 'DELETE',
+    token: token
+  });
+}
+
+// src/lib/products.ts sonuna əlavə et:
+
+// --- 11. ŞƏKLİ COVER (ƏSAS) ETMƏK ---
+export async function setProductCoverImage(productId: number | string, imageId: number, token: string) {
+  return apiRequest(`/api/Products/${productId}/images/${imageId}/set-cover`, {
+    method: 'POST',
+    token: token
+  });
+}

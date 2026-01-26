@@ -17,7 +17,6 @@ export default function AdminLayout({
   const router = useRouter();
 
   useEffect(() => {
-    // Get user info from localStorage
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       try {
@@ -25,7 +24,6 @@ export default function AdminLayout({
         setUser(userData);
       } catch (error) {
         console.error('Error parsing user data:', error);
-        // Clear invalid user data
         localStorage.removeItem('user');
       }
     }
@@ -34,14 +32,14 @@ export default function AdminLayout({
   const handleLogout = async () => {
     try {
       await fetch('/api/admin/logout', { method: 'POST' });
-      // Clear user data from localStorage
-      localStorage.removeItem('user');
-      setUser(null);
-      router.push('/login');
     } catch (error) {
       console.error('Logout error:', error);
-      // Even if logout fails, clear local data and redirect
+    } finally {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
       localStorage.removeItem('user');
+      document.cookie = 'accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      document.cookie = 'refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
       setUser(null);
       router.push('/login');
     }

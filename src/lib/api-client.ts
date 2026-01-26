@@ -1,48 +1,79 @@
+// src/lib/api-client.ts
 
+// --- BU SƏTİR ÇOX VACİBDİR (SSL Xətasını keçmək üçün) ---
 if (process.env.NODE_ENV === 'development') {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
-
-type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-
-interface RequestOptions {
-  method?: RequestMethod;
-  headers?: Record<string, string>;
-  body?: any;
+interface RequestOptions extends RequestInit {
   token?: string;
+  data?: any;
 }
 
 export async function apiRequest<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
-  const { method = 'GET', headers = {}, body, token } = options;
+  const { token, data, headers, ...customConfig } = options;
 
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042'; // Backend portunu yoxla
+
+  // Header-ləri hazırlayırıq
   const config: RequestInit = {
-    method,
+    ...customConfig,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json', // Default olaraq JSON
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers,
     },
   };
 
-  if (token) {
-    (config.headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
+  // Əgər FormData göndəririksə (Şəkil yükləmə kimi), Content-Type-ı silirik
+  // Çünki brauzer özü boundary əlavə etməlidir
+  if (data instanceof FormData) {
+    const newHeaders = { ...config.headers } as Record<string, string>;
+    delete newHeaders['Content-Type'];
+    config.headers = newHeaders;
+    config.body = data;
+  } else if (data) {
+    config.body = JSON.stringify(data);
   }
 
-  if (body) {
-    config.body = JSON.stringify(body);
-  }
+  // URL-i düzəldirik (Bəzən / işarəsi qarışır)
+  const url = `${baseUrl}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+  console.log(`📡 Requesting: ${url}`); // Terminalda görmək üçün
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'API request failed');
-  }
+  try {
+    const response = await fetch(url, config);
 
-  if (response.status === 204) {
+    // Əgər cavab uğursuzdursa (400, 401, 500)
+    if (!response.ok) {
+      // Xətanı oxumağa çalışırıq (JSON və ya Text)
+      const errorText = await response.text();
+      let errorMessage = 'API request failed';
+      
+      try {
+        const errorJson = JSON.parse(errorText);
+        errorMessage = errorJson.title || errorJson.message || errorMessage;
+        if(errorJson.errors) {
+            errorMessage += ' ' + JSON.stringify(errorJson.errors);
+        }
+      } catch {
+        errorMessage = errorText || errorMessage;
+      }
+
+      console.error(`❌ API Error (${response.status}):`, errorMessage);
+      throw new Error(errorMessage);
+    }
+
+    // 204 No Content (Boş uğurlu cavab)
+    if (response.status === 204) {
       return {} as T;
-  }
+    }
 
-  return response.json();
+    // JSON cavabını qaytarırıq
+    return await response.json();
+
+  } catch (error: any) {
+    console.error("🔥 Network/Server Error:", error.message);
+    throw error;
+  }
 }

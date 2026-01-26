@@ -3,6 +3,7 @@
 import React from 'react';
 import HomeContent from "@/components/HomeContent/HomeContent"; // Yeni yaratdığımız komponent
 import { getProducts } from "@/lib/products"; // Backend-dən çəkən funksiya
+export const dynamic = 'force-dynamic';
 
 // Səhifəni Server Component edirik (async)
 export default async function Home() {

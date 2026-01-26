@@ -1,119 +1,115 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import styles from './page.module.css';
-import { loginUser, setTokens, setStoredUser, getRefreshToken, refreshAccessToken, clearTokens } from '@/lib/auth';
+import { loginUser, setTokens } from '@/lib/auth';
+import styles from './page.module.css'; // CSS Module qoşuldu
 
-export default function AdminLogin() {
-  const [email, setEmail] = useState('');
+export default function LoginPage() {
+  const router = useRouter();
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-  const router = useRouter();
-
-  useEffect(() => {
-    // Check for refresh token on mount
-    const checkAuth = async () => {
-        const refreshToken = getRefreshToken();
-        if (refreshToken) {
-            try {
-                const response = await refreshAccessToken(refreshToken);
-                setTokens(response.accessToken, response.refreshToken);
-                router.push('/admin');
-            } catch (err) {
-                console.error("Auto-login failed", err);
-                clearTokens();
-                setIsCheckingAuth(false);
-            }
-        } else {
-            setIsCheckingAuth(false);
-        }
-    };
-    checkAuth();
-  }, [router]);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setError('');
+    setLoading(true);
 
     try {
-      const response = await loginUser(email, password);
+      console.log("🚀 Giriş cəhdi...");
+      const data = await loginUser(username, password);
       
-      setTokens(response.accessToken, response.refreshToken || '');
-      if (response.user) {
-        setStoredUser(response.user);
+      if (data && data.accessToken) {
+        // 1. Tokenləri localStorage'a yaz
+        setTokens(data.accessToken, data.refreshToken || '');
+        
+        // 2. Token'ı cookie'ye de yaz (middleware cookie'den okuyor)
+        document.cookie = `accessToken=${data.accessToken}; path=/; max-age=${60 * 60 * 24}; SameSite=Strict`;
+        if (data.refreshToken) {
+          document.cookie = `refreshToken=${data.refreshToken}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Strict`;
+        }
+        
+        // 3. User bilgisini localStorage'a kaydet (admin layout kullanıyor)
+        if (data.user) {
+          localStorage.setItem('user', JSON.stringify(data.user));
+        }
+        
+        console.log("💾 Token yazıldı, yönləndirilir...");
+        window.location.href = '/admin'; 
+      } else {
+        setError("Token gəlmədi! Server cavabını yoxlayın.");
       }
-      
-      router.push('/admin');
     } catch (err: any) {
-      setError(err.message || 'An error occurred. Please try again.');
-    } finally {
-      setIsLoading(false);
+      console.error("❌ Login Xətası:", err);
+      setError('İstifadəçi adı və ya şifrə yanlışdır.');
+      setLoading(false);
     }
   };
 
-  if (isCheckingAuth) {
-      return <div className={styles.loginContainer}>Loading...</div>;
-  }
-
   return (
-    <div className={styles.loginContainer}>
-      <div className={styles.loginCard}>
-        <div className={styles.loginHeader}>
-          <h1>Admin Login</h1>
-          <p>Please sign in to continue</p>
-        </div>
-
-        {error && (
-          <div className={styles.errorMessage}>
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit}>
-          <div className={styles.formGroup}>
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            className={styles.loginButton}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Signing in...' : 'Sign In'}
-          </button>
-        </form>
-
-        <div style={{ textAlign: 'center' }}>
-          <Link href="/" className={styles.backLink}>
-            ← Back to Website
-          </Link>
+    <div className={styles.container}>
+      
+      <div className={styles.imageSection}>
+        <div className={styles.imageOverlay}></div>
+        <div className={styles.brandText}>
+          <h1 className={styles.brandTitle}>Admin Panel</h1>
+          <p className={styles.brandSubtitle}>
+            Mebelləri idarə etmək, yeni kolleksiyalar yaratmaq və sifarişləri izləmək üçün daxil olun.
+          </p>
         </div>
       </div>
+
+      {/* SAĞ TƏRƏF: Giriş Formu */}
+      <div className={styles.formSection}>
+        <div className={styles.formWrapper}>
+          <h2 className={styles.title}>Xoş gəldiniz</h2>
+          <p className={styles.subtitle}>Hesabınıza daxil olmaq üçün məlumatlarınızı girin.</p>
+
+          {error && (
+            <div className={styles.errorBox}>
+              ⚠️ {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className={styles.form}>
+            
+            <div className={styles.inputGroup}>
+              <label className={styles.label}>Email / Username</label>
+              <input
+                type="text"
+                placeholder="admin@example.com"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className={styles.input}
+                required
+              />
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label className={styles.label}>Şifrə</label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={styles.input}
+                required
+              />
+            </div>
+
+            <button 
+              type="submit" 
+              disabled={loading}
+              className={styles.button}
+            >
+              {loading ? 'Yoxlanılır...' : 'Daxil ol'}
+            </button>
+          </form>
+        </div>
+      </div>
+
     </div>
   );
 }
