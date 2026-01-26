@@ -15,9 +15,14 @@ export async function apiRequest<T>(endpoint: string, options: RequestOptions = 
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042'; // Backend portunu yoxla
 
+  // Timeout controller (30 saniye)
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000);
+
   // Header-ləri hazırlayırıq
   const config: RequestInit = {
     ...customConfig,
+    signal: controller.signal,
     headers: {
       'Content-Type': 'application/json', // Default olaraq JSON
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -39,10 +44,13 @@ export async function apiRequest<T>(endpoint: string, options: RequestOptions = 
   // URL-i düzəldirik (Bəzən / işarəsi qarışır)
   const url = `${baseUrl}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
 
-  console.log(`📡 Requesting: ${url}`); // Terminalda görmək üçün
+  console.log(`📡 Requesting: ${url}${token ? ' (with token)' : ' (public)'}`); // Terminalda görmək üçün
 
   try {
     const response = await fetch(url, config);
+    
+    // Timeout'u temizle
+    clearTimeout(timeoutId);
 
     // Əgər cavab uğursuzdursa (400, 401, 500)
     if (!response.ok) {
@@ -73,7 +81,28 @@ export async function apiRequest<T>(endpoint: string, options: RequestOptions = 
     return await response.json();
 
   } catch (error: any) {
-    console.error("🔥 Network/Server Error:", error.message);
+    // Timeout'u temizle
+    clearTimeout(timeoutId);
+    
+    // Timeout hatası
+    if (error.name === 'TimeoutError' || error.name === 'AbortError' || error.message?.includes('aborted')) {
+      console.error("⏱️ Request timeout:", url);
+      throw new Error(`Request timeout: ${endpoint}`);
+    }
+    
+    // Network hatası
+    if (error.message?.includes('fetch') || error.message?.includes('ECONNREFUSED')) {
+      console.error("🌐 Network connection error:", error.message);
+      throw new Error(`Network error: Unable to connect to API server`);
+    }
+    
+    // Diğer hatalar
+    console.error("🔥 Network/Server Error:", {
+      url,
+      message: error.message,
+      name: error.name,
+      stack: error.stack
+    });
     throw error;
   }
 }

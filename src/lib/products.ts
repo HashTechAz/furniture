@@ -12,6 +12,20 @@ export interface BackendSpec {
   value: string;
 }
 
+// 1. Filter Parametrləri üçün yeni Interface yaradırıq
+export interface ProductQueryParams {
+  searchTerm?: string;
+  categoryId?: number;
+  collectionId?: number;
+  designerId?: number;
+  colorIds?: number[];
+  minPrice?: number;
+  maxPrice?: number;
+  sortBy?: string; // 'newest', 'price_asc', 'price_desc', 'name_asc', 'name_desc'
+  pageNumber?: number;
+  pageSize?: number;
+}
+
 export interface BackendProduct {
   id: number;
   name: string;
@@ -117,23 +131,107 @@ const mapBackendToFrontend = (item: BackendProduct): FrontendProduct => {
   };
 };
 
-
-export async function getProducts(): Promise<FrontendProduct[]> {
+// 2. getProducts funksiyasını gücləndiririk
+export async function getProducts(params?: ProductQueryParams, retryCount = 0): Promise<FrontendProduct[]> {
+  const maxRetries = 2;
+  
   try {
-    const data = await apiRequest<BackendProduct[]>('/api/Products');
-    return data.map(mapBackendToFrontend);
-  } catch (error) {
-    console.error("Products List Error:", error);
+    // Parametrləri URL Query String-ə çeviririk
+    const searchParams = new URLSearchParams();
+
+    if (params) {
+      if (params.searchTerm) searchParams.append('SearchTerm', params.searchTerm);
+      if (params.categoryId) searchParams.append('CategoryId', params.categoryId.toString());
+      if (params.collectionId) searchParams.append('CollectionId', params.collectionId.toString());
+      if (params.designerId) searchParams.append('DesignerId', params.designerId.toString());
+      if (params.minPrice) searchParams.append('MinPrice', params.minPrice.toString());
+      if (params.maxPrice) searchParams.append('MaxPrice', params.maxPrice.toString());
+      if (params.sortBy) searchParams.append('SortBy', params.sortBy);
+      if (params.pageNumber) searchParams.append('PageNumber', params.pageNumber.toString());
+      if (params.pageSize) searchParams.append('PageSize', params.pageSize.toString());
+      
+      // Array tipli filtrlər (Məsələn rənglər)
+      if (params.colorIds && params.colorIds.length > 0) {
+        params.colorIds.forEach(id => searchParams.append('ColorIds', id.toString()));
+      }
+    }
+
+    // Backend-ə sorğu: /api/Products?CategoryId=1&SortBy=price_asc...
+    const queryString = searchParams.toString();
+    const endpoint = queryString ? `/api/Products?${queryString}` : '/api/Products';
+    
+    console.log(`📦 Fetching products from: ${endpoint}`);
+    const data = await apiRequest<BackendProduct[]>(endpoint);
+    
+    // Response Header-dən x-pagination oxumaq lazım olsa, apiRequest-i dəyişməliyik.
+    // Hələlik sadəcə məhsulları qaytarırıq.
+    
+    if (!data || !Array.isArray(data)) {
+      console.warn("⚠️ Products API returned invalid data:", data);
+      return [];
+    }
+    
+    const mappedProducts = data.map(mapBackendToFrontend);
+    console.log(`✅ Successfully loaded ${mappedProducts.length} products`);
+    return mappedProducts;
+    
+  } catch (error: any) {
+    console.error(`❌ Products List Error (attempt ${retryCount + 1}/${maxRetries + 1}):`, error);
+    
+    // Retry mekanizması - network hatalarında tekrar dene
+    if (retryCount < maxRetries && (
+      error.message?.includes('fetch') || 
+      error.message?.includes('network') ||
+      error.message?.includes('ECONNREFUSED') ||
+      error.message?.includes('timeout')
+    )) {
+      console.log(`🔄 Retrying products fetch in 1 second...`);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      return getProducts(params, retryCount + 1);
+    }
+    
+    // Son hata - boş array dön ama detaylı log
+    console.error("🔥 Final Products Error:", {
+      message: error.message,
+      stack: error.stack,
+      params: params
+    });
+    
     return [];
   }
 }
 
-export async function getProductById(id: string): Promise<FrontendProduct | null> {
+export async function getProductById(id: string, retryCount = 0): Promise<FrontendProduct | null> {
+  const maxRetries = 2;
+  
   try {
+    console.log(`📦 Fetching product by ID: ${id}`);
     const data = await apiRequest<BackendProduct>(`/api/Products/${id}`);
-    return mapBackendToFrontend(data);
-  } catch (error) {
-    console.error(`Product Detail Error (ID: ${id}):`, error);
+    
+    if (!data || !data.id) {
+      console.warn(`⚠️ Product with ID ${id} not found or invalid data`);
+      return null;
+    }
+    
+    const mappedProduct = mapBackendToFrontend(data);
+    console.log(`✅ Successfully loaded product: ${mappedProduct.title}`);
+    return mappedProduct;
+  } catch (error: any) {
+    console.error(`❌ Product Detail Error (ID: ${id}, attempt ${retryCount + 1}/${maxRetries + 1}):`, error);
+    
+    // Retry mekanizması
+    if (retryCount < maxRetries && (
+      error.message?.includes('fetch') || 
+      error.message?.includes('network') ||
+      error.message?.includes('ECONNREFUSED') ||
+      error.message?.includes('timeout')
+    )) {
+      console.log(`🔄 Retrying product fetch in 1 second...`);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      return getProductById(id, retryCount + 1);
+    }
+    
+    console.error(`🔥 Final Product Error for ID ${id}:`, error.message);
     return null;
   }
 }

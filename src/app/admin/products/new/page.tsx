@@ -1,13 +1,17 @@
 "use client";
 
 import React, { useState } from 'react';
-import { createProduct, CreateProductPayload } from '@/lib/products';
+import { useRouter } from 'next/navigation';
+import { createProduct, uploadProductImages, CreateProductPayload } from '@/lib/products';
 // import styles from './create-product.module.css'; // Stil faylın varsa aç
 
 export default function CreateProductPage() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
+  const [createdProductId, setCreatedProductId] = useState<number | null>(null);
 
   // Formun başlanğıc dəyərləri
   const [formData, setFormData] = useState<CreateProductPayload>({
@@ -46,6 +50,13 @@ export default function CreateProductPage() {
 
   const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({ ...prev, isFeatured: e.target.checked }));
+  };
+
+  // Resim seçme handler
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setSelectedFiles(e.target.files);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
