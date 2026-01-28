@@ -10,7 +10,6 @@ import SystemPalette from '@/components/Palette/SystemPalette';
 import TrustBadges from '@/components/TrustBadges/TrustBadges';
 import ProductNewsSlider from '@/components/ProductNewsSlider/ProductNewsSlider';
 import ProductSlider from '@/components/ProductSlider/ProductSlider';
-// getProducts (hamısı) funksiyasını da import edirik
 import { getProductById, getProducts } from '@/lib/products'; 
 
 interface ProductDetailsPageProps {
@@ -22,29 +21,28 @@ interface ProductDetailsPageProps {
 export const dynamic = 'force-dynamic';
 
 const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
+  // Next.js 15-də params promise ola bilər, ona görə await edirik
   const { id } = await params;
 
   // 1. Tək məhsulu gətir
   const product = await getProductById(id);
 
-  // 2. Slider üçün digər məhsulları gətir (news kimi istifadə edəcəyik)
-  // Əslində burada "News" API-si olmadığı üçün bütün məhsulları gətirib ilk 8-ni kəsirik
-  const allProducts = await getProducts();
-  
-  // Hazırkı məhsulu siyahıdan çıxarırıq (slider-də özü görünməsin)
-  const relatedProducts = allProducts
-    .filter(p => p.id !== parseInt(id))
-    .slice(0, 8); // Sadəcə ilk 8 dənəsini göstəririk
-
   if (!product) {
     notFound();
   }
+
+  const latestProducts = await getProducts({ pageSize: 9 });
+  
+  // Hazırkı məhsulu siyahıdan çıxarırıq ki, slider-də təkrarlanmasın
+  const relatedProducts = latestProducts
+    .filter(p => p.id !== parseInt(id))
+    .slice(0, 8); 
 
   return (
     <main>
       <ProductHero product={product} />
       
-      {/* 3. Slider-ə real datanı ötürürük */}
+      {/* 3. Slider-ə optimallaşdırılmış datanı ötürürük */}
       <div className={styles.sliderSection}> 
         <ProductNewsSlider products={relatedProducts} /> 
       </div>

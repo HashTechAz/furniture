@@ -46,9 +46,9 @@ const ProductCard = ({
             className={styles.image}
             sizes='(max-width: 768px) 260px, (max-width: 1024px) 300px, 350px'
           />
-          <button type='button' className={styles.productButton}>
+          <div className={styles.productButton}>
             Configure product
-          </button>
+          </div>
         </div>
 
         {/* --- DEĞİŞİKLİK BURADA --- */}
