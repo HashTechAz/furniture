@@ -172,8 +172,8 @@ const Header: React.FC = () => {
     // Dəqiq uyğunluq yoxla
     if (styleMap[p]) return styleMap[p];
 
-    // StartsWith yoxlamaları
-    if (p.startsWith("/product/") && p !== "/product") return styles.productDetailsPage; 
+    // Məhsul detalları səhifəsi – header fonu #F5F5F5
+    if (p.startsWith("/product/") && p !== "/product") return styles.productDetailsHeader; 
     if (p.startsWith("/series") && !p.includes("guarantees") && !p.includes("assembly")) return styles.seriesHeader;
     if (p.includes("colour-inspiration")) return styles.inspiringStylesHeader;
     if (p.includes("creative-minds/")) return styles.creativeMindsHeader; // Alt səhifələr üçün

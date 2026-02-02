@@ -36,6 +36,16 @@
 }
 .headerAtTop.productDetailsHeader {
     background-color: #F5F5F5;
+    color: #333;
+}
+.productDetailsHeader .navLinks,
+.productDetailsHeader .logo,
+.productDetailsHeader .searchButton,
+.productDetailsHeader .hamburgerButton {
+    color: #333 !important;
+}
+.productDetailsHeader .hamburgerButton span {
+    background-color: #333 !important;
 }
 .headerHidden {
     transform: translateY(-110%);
