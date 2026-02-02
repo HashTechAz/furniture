@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { getProductById, updateProduct, uploadProductImages, CreateProductPayload, BackendImage, deleteProductImage, setProductCoverImage } from '@/lib/products';
 import { apiRequest } from '@/lib/api-client';
+import { revalidateProducts } from '@/lib/revalidate';
 import styles from '../product-form.module.css'; // CSS faylını qoşuruq
 
 interface SimpleItem {
@@ -118,6 +119,7 @@ export default function EditProductPage({ params }: EditProductPageProps) {
       if (!token) return alert("Token yoxdur!");
 
       await updateProduct(resolvedParams.id, formData, token);
+      await revalidateProducts();
       alert('✅ Məlumatlar yeniləndi!');
     } catch (error: any) {
       alert('Xəta: ' + error.message);

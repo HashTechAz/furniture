@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
 import { getCategories, deleteCategory, Category } from "@/lib/categories";
+import { revalidateCategories } from "@/lib/revalidate";
 
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -33,8 +34,7 @@ export default function CategoriesPage() {
     try {
       const token = localStorage.getItem("accessToken") || "";
       await deleteCategory(id, token);
-      
-      // Siyahını yenilə (Silinəni ekrandan götür)
+      await revalidateCategories();
       setCategories((prev) => prev.filter((cat) => cat.id !== id));
       alert("Category deleted successfully!");
     } catch (error: any) {

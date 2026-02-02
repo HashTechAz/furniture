@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createCategory, getCategories, Category } from "@/lib/categories";
+import { revalidateCategories } from "@/lib/revalidate";
 
 const getToken = () => {
   if (typeof window !== "undefined") return localStorage.getItem("accessToken") || "";
@@ -53,9 +54,10 @@ export default function NewCategoryPage() {
         parentCategoryId: formData.parentCategoryId ? Number(formData.parentCategoryId) : null
       }, token);
 
+      await revalidateCategories();
+      router.refresh();
       alert("Kateqoriya uğurla yaradıldı!");
-      router.push("/admin/categories"); // Siyahıya qaytar
-      router.refresh(); // Siyahını yenilə
+      router.push("/admin/categories");
     } catch (error: any) {
       console.error(error);
       alert("Xəta baş verdi: " + (error.message || "Bilinməyən xəta"));

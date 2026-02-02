@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { getProducts, deleteProduct, FrontendProduct } from '@/lib/products';
+import { revalidateProducts } from '@/lib/revalidate';
 import Link from 'next/link';
 import styles from './admin-products.module.css'; // CSS-i import edirik
 
@@ -50,13 +51,10 @@ export default function AdminProductsList() {
         return;
       }
       await deleteProduct(id, token);
-      setProducts(prev => prev.filter(p => p.id !== id));
+      await revalidateProducts();
+      setProducts((prev) => prev.filter((p) => p.id !== id));
       alert("✅ Məhsul silindi!");
-      
-      // Silme sonrası listeyi yenile (rate limit için biraz bekle)
-      setTimeout(() => {
-        loadProducts();
-      }, 1000);
+      loadProducts();
     } catch (error: any) {
       alert("Xəta: " + error.message);
     }

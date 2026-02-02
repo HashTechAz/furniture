@@ -161,16 +161,19 @@ export async function getProducts(params?: ProductQueryParams, retryCount = 0): 
     const queryString = searchParams.toString();
     const endpoint = queryString ? `/api/Products?${queryString}` : '/api/Products';
 
-    // Server cache: 60 saniyə eyni sorğunu təkrar API-ə göndərmir, sürət artır
-    const data = await unstable_cache(
-      async () => apiRequest<BackendProduct[]>(endpoint),
-      ['products', endpoint],
-      { revalidate: 60 }
-    )();
-    
-    // Response Header-dən x-pagination oxumaq lazım olsa, apiRequest-i dəyişməliyik.
-    // Hələlik sadəcə məhsulları qaytarırıq.
-    
+    // Server: cache + tag (admin dəyişiklikdən sonra revalidateTag('products') ilə təmizlənir)
+    // Client (admin panel): birbaşa API – həmişə təzə məlumat, unstable_cache server-only olduğu üçün
+    let data: BackendProduct[] | null = null;
+    if (typeof window === 'undefined') {
+      data = await unstable_cache(
+        async () => apiRequest<BackendProduct[]>(endpoint),
+        ['products', endpoint],
+        { revalidate: 60, tags: ['products'] }
+      )();
+    } else {
+      data = await apiRequest<BackendProduct[]>(endpoint);
+    }
+
     if (!data || !Array.isArray(data)) {
       console.warn("⚠️ Products API returned invalid data:", data);
       return [];
@@ -226,12 +229,18 @@ export async function getProductById(id: string, retryCount = 0): Promise<Fronte
   
   try {
     console.log(`📦 Fetching product by ID: ${id}`);
-    const data = await unstable_cache(
-      async () => apiRequest<BackendProduct>(`/api/Products/${id}`),
-      ['product', id],
-      { revalidate: 60 }
-    )();
-    
+    const endpoint = `/api/Products/${id}`;
+    let data: BackendProduct | null = null;
+    if (typeof window === 'undefined') {
+      data = await unstable_cache(
+        async () => apiRequest<BackendProduct>(endpoint),
+        ['product', id],
+        { revalidate: 60, tags: ['products'] }
+      )();
+    } else {
+      data = await apiRequest<BackendProduct>(endpoint);
+    }
+
     if (!data || !data.id) {
       console.warn(`⚠️ Product with ID ${id} not found or invalid data`);
       return null;

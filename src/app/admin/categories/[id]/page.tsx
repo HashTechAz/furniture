@@ -1,51 +1,61 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // params burada yox, props kimi gəlir
+import { useState, useEffect, use } from "react"; 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getCategoryById, updateCategory, getCategories, Category } from "@/lib/categories";
+import { revalidateCategories } from "@/lib/revalidate";
 
 const getToken = () => typeof window !== "undefined" ? localStorage.getItem("accessToken") || "" : "";
 
-export default function EditCategoryPage({ params }: { params: { id: string } }) {
+export default function EditCategoryPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params); 
+  const categoryId = id;
+
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   
-  // Next.js 15-də params promise ola bilər, ona görə id-ni belə alırıq (və ya sadəcə params.id istifadə edirik)
-  // Amma "client component"-də props-dan birbaşa götürmək olar.
-  const categoryId = params.id;
-
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     parentCategoryId: ""
   });
 
-  // Datanı yüklə
   useEffect(() => {
     async function init() {
+      if (!categoryId) return;
+
       try {
-        // 1. Bütün kateqoriyaları yüklə (Dropdown üçün)
+        const token = getToken(); // Tokeni alırıq
+
+        // 1. Dropdown üçün bütün kateqoriyalar
         const allCats = await getCategories();
         setCategories(allCats);
 
-        // 2. Cari kateqoriyanı yüklə
-        const currentCat = await getCategoryById(categoryId);
+        // 2. Cari kateqoriyanı yüklə (Tokeni bura ötürürük!)
+        const currentCat = await getCategoryById(categoryId, token);
+        
         setFormData({
             name: currentCat.name,
             description: currentCat.description || "",
             parentCategoryId: currentCat.parentCategoryId ? String(currentCat.parentCategoryId) : ""
         });
 
-      } catch (err) {
+      } catch (err: any) {
         console.error("Yüklənmə xətası:", err);
-        alert("Kateqoriya tapılmadı!");
-        router.push("/admin/categories");
+        // Əgər token problemi varsa, loginə at
+        if (err?.status === 401) {
+            alert("Sessiya bitib, yenidən giriş edin.");
+            router.push("/login");
+        } else {
+            alert("Kateqoriya tapılmadı! (ID: " + categoryId + ")");
+            router.push("/admin/categories");
+        }
       }
     }
     
-    if (categoryId) init();
+    init();
   }, [categoryId, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,9 +70,10 @@ export default function EditCategoryPage({ params }: { params: { id: string } })
         parentCategoryId: formData.parentCategoryId ? Number(formData.parentCategoryId) : null
       }, token);
 
+      await revalidateCategories();
+      router.refresh();
       alert("Kateqoriya yeniləndi!");
       router.push("/admin/categories");
-      router.refresh();
     } catch (error: any) {
       alert("Xəta: " + error.message);
     } finally {
@@ -70,6 +81,7 @@ export default function EditCategoryPage({ params }: { params: { id: string } })
     }
   };
 
+  // ... (Return hissəsi eyni qalır - HTML dəyişməyib)
   return (
     <div style={{ padding: "20px", maxWidth: "800px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
@@ -107,7 +119,6 @@ export default function EditCategoryPage({ params }: { params: { id: string } })
           >
             <option value="">-- No Parent --</option>
             {categories.map((cat) => (
-                // Özünü parent kimi seçə bilməz
                Number(cat.id) !== Number(categoryId) && (
                   <option key={cat.id} value={cat.id}>{cat.name}</option>
                )

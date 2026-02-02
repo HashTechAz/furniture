@@ -1,53 +1,41 @@
 // src/lib/categories.ts
 import { apiRequest } from "./api-client";
 
-// Backend-dən gələn data strukturu (Sənin atdığın JSON-a əsasən)
 export interface Category {
   id: number;
   name: string;
   description?: string;
   parentCategoryId?: number | null;
   parentCategoryName?: string | null;
-  subCategories?: Category[]; // İç-içə (Recursive) kateqoriyalar üçün
+  subCategories?: Category[];
 }
 
-// Yeni kateqoriya yaradanda və ya yeniləyəndə göndəriləcək data
 export interface CategoryPayload {
   name: string;
   description?: string;
-  parentCategoryId?: number | null; // Əgər alt kateqoriya yaradırsansa
+  parentCategoryId?: number | null;
 }
 
-// ------------------------------------------
-// 1. READ (Oxumaq)
-// ------------------------------------------
-
-// Bütün kateqoriyaları gətir (Ağac strukturu ilə)
+// 1. READ
 export async function getCategories() {
   return apiRequest<Category[]>('/api/Categories');
 }
 
-// Tək bir kateqoriyanı ID-yə görə gətir
-export async function getCategoryById(id: number | string) {
-  return apiRequest<Category>(`/api/Categories/${id}`);
+// DÜZƏLİŞ BURADADIR: token parametrini əlavə etdik (optional)
+export async function getCategoryById(id: number | string, token?: string) {
+  return apiRequest<Category>(`/api/Categories/${id}`, { token });
 }
 
-// ------------------------------------------
-// 2. CREATE (Yaratmaq) - Admin üçün
-// ------------------------------------------
-
+// 2. CREATE
 export async function createCategory(data: CategoryPayload, token: string) {
   return apiRequest('/api/Categories', {
     method: 'POST',
     data: data,
-    token: token // Admin tokeni mütləqdir
+    token: token
   });
 }
 
-// ------------------------------------------
-// 3. UPDATE (Yeniləmək) - Admin üçün
-// ------------------------------------------
-
+// 3. UPDATE
 export async function updateCategory(id: number | string, data: CategoryPayload, token: string) {
   return apiRequest(`/api/Categories/${id}`, {
     method: 'PUT',
@@ -56,10 +44,7 @@ export async function updateCategory(id: number | string, data: CategoryPayload,
   });
 }
 
-// ------------------------------------------
-// 4. DELETE (Silmək) - Admin üçün
-// ------------------------------------------
-
+// 4. DELETE
 export async function deleteCategory(id: number | string, token: string) {
   return apiRequest(`/api/Categories/${id}`, {
     method: 'DELETE',

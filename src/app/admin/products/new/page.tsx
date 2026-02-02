@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createProduct, uploadProductImages, CreateProductPayload } from '@/lib/products';
+import { revalidateProducts } from '@/lib/revalidate';
 // import styles from './create-product.module.css'; // Stil faylın varsa aç
 
 export default function CreateProductPage() {
@@ -95,7 +96,8 @@ export default function CreateProductPage() {
       
       setCreatedProductId(productId);
       setMessage('✅ Məhsul uğurla yaradıldı!');
-      
+      await revalidateProducts();
+
       // 2. Eğer resim seçildiyse, resimleri yükle
       if (selectedFiles && selectedFiles.length > 0) {
         try {
