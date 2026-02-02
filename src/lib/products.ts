@@ -1,4 +1,5 @@
 // src/lib/products.ts
+import { unstable_cache } from 'next/cache';
 import { apiRequest } from "./api-client";
 
 export interface BackendImage {
@@ -159,9 +160,13 @@ export async function getProducts(params?: ProductQueryParams, retryCount = 0): 
     // Backend-ə sorğu: /api/Products?CategoryId=1&SortBy=price_asc...
     const queryString = searchParams.toString();
     const endpoint = queryString ? `/api/Products?${queryString}` : '/api/Products';
-    
-    console.log(`📦 Fetching products from: ${endpoint}`);
-    const data = await apiRequest<BackendProduct[]>(endpoint);
+
+    // Server cache: 60 saniyə eyni sorğunu təkrar API-ə göndərmir, sürət artır
+    const data = await unstable_cache(
+      async () => apiRequest<BackendProduct[]>(endpoint),
+      ['products', endpoint],
+      { revalidate: 60 }
+    )();
     
     // Response Header-dən x-pagination oxumaq lazım olsa, apiRequest-i dəyişməliyik.
     // Hələlik sadəcə məhsulları qaytarırıq.
@@ -221,7 +226,11 @@ export async function getProductById(id: string, retryCount = 0): Promise<Fronte
   
   try {
     console.log(`📦 Fetching product by ID: ${id}`);
-    const data = await apiRequest<BackendProduct>(`/api/Products/${id}`);
+    const data = await unstable_cache(
+      async () => apiRequest<BackendProduct>(`/api/Products/${id}`),
+      ['product', id],
+      { revalidate: 60 }
+    )();
     
     if (!data || !data.id) {
       console.warn(`⚠️ Product with ID ${id} not found or invalid data`);

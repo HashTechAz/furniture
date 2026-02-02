@@ -11,8 +11,10 @@ interface ProductCardProps {
   imageSrcHover: string;
   title: string;
   color: string;
-  measurements: string; // 'size' yerine 'measurements'
+  measurements: string;
   position: string;
+  /** İlk ekrandakı kartlar üçün – şəkil tez yüklənir, LCP yaxşılaşır */
+  priority?: boolean;
 }
 
 const ProductCard = ({
@@ -23,6 +25,7 @@ const ProductCard = ({
   color,
   measurements,
   position,
+  priority = false,
 }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -44,7 +47,8 @@ const ProductCard = ({
             src={isHovered ? imageSrcHover : imageSrc}
             alt={title ?? ""}
             className={styles.image}
-            sizes='(max-width: 768px) 260px, (max-width: 1024px) 300px, 350px'
+            sizes="(max-width: 768px) 260px, (max-width: 1024px) 300px, 350px"
+            priority={priority}
           />
           <div className={styles.productButton}>
             Configure product

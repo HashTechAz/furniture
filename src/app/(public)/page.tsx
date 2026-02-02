@@ -1,23 +1,25 @@
 // src/app/(public)/page.tsx
 
-import React from 'react';
-import HomeContent from "@/components/HomeContent/HomeContent"; // Yeni yaratdığımız komponent
-import { getProducts } from "@/lib/products"; // Backend-dən çəkən funksiya
+import React, { Suspense } from 'react';
+import HomeContent from "@/components/HomeContent/HomeContent";
+import { getProducts } from "@/lib/products";
+import Loader from "@/components/Loader/Loader";
+
 export const dynamic = 'force-dynamic';
 
-// Səhifəni Server Component edirik (async)
-export default async function Home() {
-  
-  // 1. Backend-dən bütün məhsulları gətiririk
+// Məhsullar yüklənənə qədər skeleton göstərir; səhifə quruluşu dərhal gəlir (streaming)
+async function HomeWithProducts() {
   const allProducts = await getProducts();
-  
-  // 2. İlk 10 dənəsini "News" üçün ayırırıq
-  const newsProducts = allProducts.slice(0, 10); 
+  const newsProducts = allProducts.slice(0, 10);
+  return <HomeContent products={newsProducts} />;
+}
 
-  // 3. Datanı Client Component-ə ötürürük
+export default function Home() {
   return (
     <main>
-      <HomeContent products={newsProducts} />
+      <Suspense fallback={<Loader />}>
+        <HomeWithProducts />
+      </Suspense>
     </main>
   );
 }

@@ -1,18 +1,45 @@
 // src/components/HomeContent/HomeContent.tsx
-'use client'; 
+'use client';
 
 import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import HeroSection from "@/components/HeroSection/HeroSection";
-import ProductSlider from "@/components/ProductSlider/ProductSlider";
 import NewsSection from "@/components/NewsSection/NewsSection";
-import ProductNewsSlider from "@/components/ProductNewsSlider/ProductNewsSlider";
-import MiddleBanner from "@/components/MiddleBanner/MiddleBanner";
-import TrustBadges from "@/components/TrustBadges/TrustBadges";
-import HomeVideo from "@/components/HomeVideo/HomeVideo";
-import Form from "@/components/Form/Form";
-import PaletteRightImage from "@/components/Palette/PaletteRightImage/PaletteRightImage";
-import PaletteLeftImage from "@/components/Palette/PaletteLeftImage/PaletteLeftImage";
-import { FrontendProduct } from "@/lib/products"; // Məhsul tipini import edirik
+import { FrontendProduct } from "@/lib/products";
+
+// Aşağıda qalan / ağır komponentlər – lazy yüklənir, ilk çəkim yüngülləşir
+const ProductSlider = dynamic(() => import('@/components/ProductSlider/ProductSlider'), {
+  loading: () => <div className="min-h-[280px] flex items-center justify-center text-gray-400">...</div>,
+  ssr: true,
+});
+const ProductNewsSlider = dynamic(() => import('@/components/ProductNewsSlider/ProductNewsSlider'), {
+  loading: () => <div className="min-h-[320px] flex items-center justify-center text-gray-400">...</div>,
+  ssr: false,
+});
+const MiddleBanner = dynamic(() => import('@/components/MiddleBanner/MiddleBanner'), {
+  loading: () => <div className="min-h-[200px] bg-gray-100/50 animate-pulse rounded" />,
+  ssr: true,
+});
+const TrustBadges = dynamic(() => import('@/components/TrustBadges/TrustBadges'), {
+  loading: () => <div className="min-h-[120px] bg-gray-100/50 animate-pulse rounded" />,
+  ssr: true,
+});
+const HomeVideo = dynamic(() => import('@/components/HomeVideo/HomeVideo'), {
+  loading: () => <div className="min-h-[300px] bg-gray-100/50 animate-pulse rounded" />,
+  ssr: false,
+});
+const Form = dynamic(() => import('@/components/Form/Form'), {
+  loading: () => <div className="min-h-[200px] bg-gray-100/50 animate-pulse rounded" />,
+  ssr: false,
+});
+const PaletteRightImage = dynamic(() => import('@/components/Palette/PaletteRightImage/PaletteRightImage'), {
+  loading: () => <div className="min-h-[320px] bg-gray-100/50 animate-pulse rounded" />,
+  ssr: true,
+});
+const PaletteLeftImage = dynamic(() => import('@/components/Palette/PaletteLeftImage/PaletteLeftImage'), {
+  loading: () => <div className="min-h-[320px] bg-gray-100/50 animate-pulse rounded" />,
+  ssr: true,
+});
 
 // --- PROPS INTERFACE ---
 interface HomeContentProps {

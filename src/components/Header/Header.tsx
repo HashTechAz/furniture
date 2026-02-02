@@ -3,65 +3,60 @@
 import React, { useEffect, useState, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import styles from "./Header.module.css";
 import Image from "next/image";
+import styles from "./Header.module.css";
+
+// Components
 import SearchOverlay from "../HeaderSearchOverlay/SearchOverlay";
 import SeriesContent from "../SeriesContent/SeriesContent";
 import ProductsContent from "../ProductsContent/ProductsContent";
 import InspirationContent from "../Inspiration/InspirationContent";
 
+// Data & API
+import { INSPIRATION_LINKS, SERIES_LINKS, STATIC_PRODUCT_LINKS } from "@/constants/navigation";
+import { getCategories, Category } from "@/lib/categories";
+
 const Header: React.FC = () => {
-  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
-  const [isSeriesOpen, setIsSeriesOpen] = useState<boolean>(false);
-  const [isProductsOpen, setIsProductsOpen] = useState<boolean>(false);
-  const [isInspirationOpen, setIsInspirationOpen] = useState<boolean>(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  // --- STATE MANAGEMENT ---
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isSeriesOpen, setIsSeriesOpen] = useState(false);
+  const [isProductsOpen, setIsProductsOpen] = useState(false);
+  const [isInspirationOpen, setIsInspirationOpen] = useState(false);
+  
+  // Mobile States
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeMobileSubMenu, setActiveMobileSubMenu] = useState<"inspiration" | "products" | "series" | null>(null);
 
-  const [isMobileInspirationOpen, setIsMobileInspirationOpen] =
-    useState<boolean>(false);
-  const [isMobileProductsOpen, setIsMobileProductsOpen] =
-    useState<boolean>(false);
-  const [isMobileSeriesOpen, setIsMobileSeriesOpen] = useState<boolean>(false);
+  // Scroll & UI States
+  const [isVisible, setIsVisible] = useState(true);
+  const [isAtTop, setIsAtTop] = useState(true);
+  const [isExiting, setIsExiting] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  const [isVisible, setIsVisible] = useState<boolean>(true);
-  const [isAtTop, setIsAtTop] = useState<boolean>(true);
-  const [isExiting, setIsExiting] = useState<boolean>(false);
-  const [mounted, setMounted] = useState<boolean>(false);
+  // Data States
+  const [categories, setCategories] = useState<Category[]>([]);
 
-  const lastScrollY = useRef<number>(0);
+  const lastScrollY = useRef(0);
   const pathname = usePathname();
 
-  // Ensure component is mounted on client before using pathname-dependent logic
+  // --- API DATA FETCHING ---
   useEffect(() => {
     setMounted(true);
-  }, []);
-  const isSustainabilityPage = pathname === "/sustainability";
-  const isSystemPage = pathname === "/system";
-  const isAboutPage = pathname === "/about";
-  const isProductPage = pathname.startsWith("/product");
-  const isProductsMainPage = pathname === "/product";
-  const isProductDetailsPage =
-    pathname.startsWith("/product/") && pathname !== "/product";
-  const isColoursPage = pathname === "/colours";
-  const isDesignersPage = pathname === "/designers";
-  const isProductSeriesPage = pathname === "/productseries";
-  const isCreativeMindsPage = pathname === "/creative-minds";
-  const isFaebrikPage = pathname === "/creative-minds/faebrik";
-  const isSeriesPage = pathname.startsWith("/series");
-  const isGuaranteesPage = pathname === "/series/guarantees";
-  const isAssemblyPage = pathname === "/series/assembly";
-  const isLumikelloPage = pathname === "/creative-minds/lumikello";
-  const isSwantjePage = pathname === "/creative-minds/swantje";
-  const isCathrinePage = pathname === "/creative-minds/cathrine";
-  const isTeklaPage = pathname === "/creative-minds/tekla";
-  const isCelinePage = pathname === "/creative-minds/celine";
-  const isSarahPage = pathname === "/creative-minds/sarah";
-  const isColourClassPage = pathname === "/colour-inspiration/colour-class";
-  const isColoursOfComfortPage =
-    pathname === "/colour-inspiration/colours-of-comfort";
-  const isInspiringStylesPage =
-    pathname === "/colour-inspiration/inspiring-styles";
+    
+    // Kateqoriyaları Backend-dən yükləyirik
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error("Failed to load categories for header:", error);
+      }
+    };
 
+    fetchCategories();
+  }, []);
+
+  // --- SCROLL HANDLING ---
   useEffect(() => {
     if (!mounted) return;
 
@@ -69,34 +64,28 @@ const Header: React.FC = () => {
       if (isMobileMenuOpen || isSearchOpen) return;
       const currentScrollY = window.scrollY;
 
+      // Top detection
       if (currentScrollY === 0 && !isAtTop) {
         setIsExiting(true);
         setTimeout(() => {
-          setIsAtTop(true);
-          setIsExiting(false);
+            setIsAtTop(true);
+            setIsExiting(false);
         }, 400);
       } else if (currentScrollY > 0 && isAtTop) {
         setIsAtTop(false);
       }
 
-      // Mobile'da (1024px ve altı) header her zaman görünür olsun
+      // Hide/Show logic
       const isMobile = window.innerWidth <= 1024;
-
       if (isMobile) {
         setIsVisible(true);
       } else {
-        // Desktop davranışı
-        if (!isAtTop) {
-          if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
-            setIsVisible(false);
-          } else if (currentScrollY < lastScrollY.current) {
-            setIsVisible(true);
-          }
-        } else {
+        if (!isAtTop && currentScrollY > lastScrollY.current && currentScrollY > 100) {
+          setIsVisible(false);
+        } else if (currentScrollY < lastScrollY.current) {
           setIsVisible(true);
         }
       }
-
       lastScrollY.current = currentScrollY;
     };
 
@@ -104,148 +93,92 @@ const Header: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isAtTop, isMobileMenuOpen, isSearchOpen, mounted]);
 
-  const toggleSearch = () => setIsSearchOpen((prev) => !prev);
-
-  const handleMenuClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    setter: React.Dispatch<React.SetStateAction<boolean>>,
-    isCurrentlyOpen: boolean
-  ) => {
-    e.preventDefault();
-    const closeAllMenus = () => {
-      setIsInspirationOpen(false);
-      setIsProductsOpen(false);
-      setIsSeriesOpen(false);
-    };
-
-    if (isCurrentlyOpen) {
-      closeAllMenus();
-      return;
-    }
-    if (isSeriesOpen || isProductsOpen || isInspirationOpen) {
-      closeAllMenus();
-      setTimeout(() => setter(true), 100);
-    } else {
-      setter(true);
-    }
-  };
-
+  // --- ROUTE CHANGE HANDLING ---
   useEffect(() => {
+    // Səhifə dəyişəndə bütün menyuları bağla
     setIsSeriesOpen(false);
     setIsProductsOpen(false);
     setIsInspirationOpen(false);
     setIsMobileMenuOpen(false);
+    setActiveMobileSubMenu(null);
   }, [pathname]);
 
+  // --- NO SCROLL ON BODY WHEN MENU OPEN ---
   useEffect(() => {
-    const isAnyMenuOpen =
-      isSeriesOpen ||
-      isProductsOpen ||
-      isInspirationOpen ||
-      isMobileMenuOpen ||
-      isSearchOpen;
-    if (isAnyMenuOpen) {
-      document.body.classList.add("no-scroll");
-    } else {
-      document.body.classList.remove("no-scroll");
-    }
-    return () => {
-      document.body.classList.remove("no-scroll");
-    };
-  }, [
-    isSeriesOpen,
-    isProductsOpen,
-    isInspirationOpen,
-    isMobileMenuOpen,
-    isSearchOpen,
-  ]);
-//test
-  // Hide mobile menu when screen is resized to desktop
+    const isAnyMenuOpen = isSeriesOpen || isProductsOpen || isInspirationOpen || isMobileMenuOpen || isSearchOpen;
+    document.body.classList.toggle("no-scroll", isAnyMenuOpen);
+    return () => document.body.classList.remove("no-scroll");
+  }, [isSeriesOpen, isProductsOpen, isInspirationOpen, isMobileMenuOpen, isSearchOpen]);
+
+  // --- RESIZE HANDLING ---
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 1024) {
         setIsMobileMenuOpen(false);
-        setIsMobileInspirationOpen(false);
-        setIsMobileProductsOpen(false);
-        setIsMobileSeriesOpen(false);
-
+        setActiveMobileSubMenu(null);
         setIsSearchOpen(false);
         setIsSeriesOpen(false);
         setIsProductsOpen(false);
         setIsInspirationOpen(false);
       }
     };
-
     window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleMobileLinkClick = () => {
-    setIsMobileMenuOpen(false);
+  // --- HANDLERS ---
+  const toggleSearch = () => setIsSearchOpen((prev) => !prev);
+
+  const handleDesktopMenuClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    setter: React.Dispatch<React.SetStateAction<boolean>>,
+    isOpen: boolean
+  ) => {
+    e.preventDefault();
+    // Digər hər şeyi bağla
+    setIsInspirationOpen(false);
+    setIsProductsOpen(false);
+    setIsSeriesOpen(false);
+
+    if (isOpen) {
+        setter(false);
+    } else {
+        // Keçid effekti üçün timeout
+        setTimeout(() => setter(true), 100);
+    }
   };
 
-  const inspirationSubLinks = [
-    { label: "Creative Minds", href: "/creative-minds", isMain: true },
-    { label: "Faebrik", href: "/creative-minds/faebrik" },
-    { label: "Lumikello", href: "/creative-minds/lumikello" },
-    { label: "Swantje Hinrichsen", href: "/creative-minds/swantje" },
-    { label: "Cathrine De Lichtenberg", href: "/creative-minds/cathrine" },
-    { label: "Tekla Evelina Severin", href: "/creative-minds/tekla" },
-    { label: "Céline Hallas", href: "/creative-minds/celine" },
-    { label: "Sarah Gottlieb", href: "/creative-minds/sarah" },
-    { label: "Colour inspiration", href: "/colours", isMain: true },
-    {
-      label: "Color Connaisseur & Montana Furniture",
-      href: "/colour-inspiration/colour-class",
-    },
-    {
-      label: "Colours of comfort",
-      href: "/colour-inspiration/colours-of-comfort",
-    },
-    { label: "Colours and surfaces", href: "/colours" },
-    {
-      label: "Inspiring colour styles",
-      href: "/colour-inspiration/inspiring-styles",
-    },
-    {
-      label: "Find more inspiration",
-      href: "/inspiration/find-more-inspiration",
-      isMain: true,
-    },
-    { label: "Explore our catalogues", href: "/inspiration/catalogues" },
-  ];
-
-  const productsSubLinks = [
-    { label: "About Montana", href: "/about", isMain: true },
-    { label: "Customize your solution", href: "/system" },
-    { label: "41 colors & 2 veneers", href: "/colours" },
-    { label: "Susainability", href: "/sustainability" },
-    { label: "Designers", href: "/designers" },
-    { label: "Product Series", href: "/productseries", isMain: true },
-    { label: "Montana Selection", href: "/product" },
-    { label: "Montana Mini", href: "/product" },
-    { label: "Montana Mega", href: "/product" },
-    { label: "Kevi Chairs", href: "/product" },
-    { label: "All product series", href: "/product" },
-  ];
-
-  const seriesSubLinks = [
-    { label: "Learn more about", href: "/series/learn-more-about", isMain: true },
-    { label: "Guarantees", href: "/series/guarantees" },
-    { label: "Assembly guides", href: "/series/assembly" },
-  ];
-
   const toggleMobileSubMenu = (menu: "inspiration" | "products" | "series") => {
-    setIsMobileInspirationOpen(
-      menu === "inspiration" ? !isMobileInspirationOpen : false
-    );
-    setIsMobileProductsOpen(
-      menu === "products" ? !isMobileProductsOpen : false
-    );
-    setIsMobileSeriesOpen(menu === "series" ? !isMobileSeriesOpen : false);
+    setActiveMobileSubMenu(activeMobileSubMenu === menu ? null : menu);
+  };
+
+  // Helper for dynamic classes based on route (Cleaned up version)
+  const getHeaderClass = () => {
+    if (!mounted) return "";
+    const p = pathname;
+    
+    // Xüsusi rəngli headerlər üçün map
+    const styleMap: Record<string, string> = {
+        "/sustainability": styles.sustainabilityHeader,
+        "/system": styles.systemHeader,
+        "/about": styles.aboutHeader,
+        "/product": styles.productsMainHeader,
+        "/colours": styles.coloursHeader,
+        "/designers": styles.designersHeader,
+        "/productseries": styles.productSeriesHeader,
+        "/creative-minds": styles.creativeMindsHeader,
+    };
+    
+    // Dəqiq uyğunluq yoxla
+    if (styleMap[p]) return styleMap[p];
+
+    // StartsWith yoxlamaları
+    if (p.startsWith("/product/") && p !== "/product") return styles.productDetailsPage; 
+    if (p.startsWith("/series") && !p.includes("guarantees") && !p.includes("assembly")) return styles.seriesHeader;
+    if (p.includes("colour-inspiration")) return styles.inspiringStylesHeader;
+    if (p.includes("creative-minds/")) return styles.creativeMindsHeader; // Alt səhifələr üçün
+
+    return "";
   };
 
   return (
@@ -253,209 +186,49 @@ const Header: React.FC = () => {
       <header
         className={`
           ${styles.header}
-          ${
-            !isVisible && !isExiting && !isMobileMenuOpen && !isSearchOpen
-              ? styles.headerHidden
-              : ""
-          } 
+          ${!isVisible && !isExiting && !isMobileMenuOpen && !isSearchOpen ? styles.headerHidden : ""} 
           ${isAtTop ? styles.headerAtTop : ""}
           ${isVisible && !isAtTop ? styles.headerVisibleOnScroll : ""}
           ${isExiting ? styles.headerExiting : ""}
-          ${
-            isSeriesOpen ||
-            isProductsOpen ||
-            isInspirationOpen ||
-            isMobileMenuOpen ||
-            isSearchOpen
-              ? styles.headerOverlayOpen
-              : ""
-          }
-          ${
-            isSeriesOpen || isProductsOpen || isInspirationOpen
-              ? styles.headerMenuContentOpen
-              : ""
-          }
-          ${isSustainabilityPage ? styles.sustainabilityHeader : ""}
-          ${isSystemPage ? styles.systemHeader : ""}
-          ${isAboutPage ? styles.aboutHeader : ""}
-          ${isProductsMainPage ? styles.productsMainHeader : ""}
-          ${
-            isProductPage && !isProductsMainPage
-              ? styles.productDetailsHeader
-              : ""
-          }
-          ${isProductDetailsPage ? styles.productDetailsPage : ""}
-          ${isColoursPage ? styles.coloursHeader : ""}
-          ${isDesignersPage ? styles.designersHeader : ""}
-          ${isProductSeriesPage ? styles.productSeriesHeader : ""}
-          ${isCreativeMindsPage ? styles.creativeMindsHeader : ""}
-          ${isFaebrikPage ? styles.faebrikHeader : ""}
-          ${isLumikelloPage ? styles.lumikelloHeader : ""}
-          ${isSwantjePage ? styles.swantjeHeader : ""}
-          ${isCathrinePage ? styles.cathrineHeader : ""}
-          ${isTeklaPage ? styles.teklaHeader : ""}
-          ${isCelinePage ? styles.celineHeader : ""}
-          ${isSarahPage ? styles.sarahHeader : ""}
-          ${isColourClassPage ? styles.colourClassHeader : ""}
-          ${isColoursOfComfortPage ? styles.coloursOfComfortHeader : ""}
-          ${isInspiringStylesPage ? styles.inspiringStylesHeader : ""}
-          ${isGuaranteesPage ? styles.guaranteesHeader : ""}
-          ${isAssemblyPage ? styles.assemblyHeader : ""}
-          ${
-            isSeriesPage && !isGuaranteesPage && !isAssemblyPage
-              ? styles.seriesHeader
-              : ""
-          }
+          ${(isSeriesOpen || isProductsOpen || isInspirationOpen || isMobileMenuOpen || isSearchOpen) ? styles.headerOverlayOpen : ""}
+          ${(isSeriesOpen || isProductsOpen || isInspirationOpen) ? styles.headerMenuContentOpen : ""}
+          ${getHeaderClass()}
         `}
       >
         <nav className={styles.navbar}>
+          {/* DESKTOP NAV */}
           <div className={`${styles.navigationMenu} ${styles.desktopOnly}`}>
             <ul>
-              <li>
-                <Link
-                  href='#'
-                  className={`${styles.navLinks}`}
-                  onClick={(e) =>
-                    handleMenuClick(e, setIsInspirationOpen, isInspirationOpen)
-                  }
-                >
-                  Inspiration
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href='#'
-                  className={`${styles.navLinks}`}
-                  onClick={(e) =>
-                    handleMenuClick(e, setIsProductsOpen, isProductsOpen)
-                  }
-                >
-                  Products
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href='#'
-                  className={`${styles.navLinks}`}
-                  onClick={(e) =>
-                    handleMenuClick(e, setIsSeriesOpen, isSeriesOpen)
-                  }
-                >
-                  Series
-                </Link>
-              </li>
-              <li>
-                <Link href='/system' className={styles.navLinks}>
-                  Montana System
-                </Link>
-              </li>
-              <li>
-                <Link href='/sustainability' className={styles.navLinks}>
-                  Sustainability
-                </Link>
-              </li>
+              <li><Link href="#" className={styles.navLinks} onClick={(e) => handleDesktopMenuClick(e, setIsInspirationOpen, isInspirationOpen)}>Inspiration</Link></li>
+              <li><Link href="#" className={styles.navLinks} onClick={(e) => handleDesktopMenuClick(e, setIsProductsOpen, isProductsOpen)}>Products</Link></li>
+              <li><Link href="#" className={styles.navLinks} onClick={(e) => handleDesktopMenuClick(e, setIsSeriesOpen, isSeriesOpen)}>Series</Link></li>
+              <li><Link href="/system" className={styles.navLinks}>Montana System</Link></li>
+              <li><Link href="/sustainability" className={styles.navLinks}>Sustainability</Link></li>
             </ul>
           </div>
 
+          {/* MOBILE ACTIONS (Hamburger & Search) */}
           <div className={`${styles.mobileActions} ${styles.mobileOnly}`}>
-            <button
-              type='button'
-              className={styles.hamburgerButton}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label='Toggle menu'
-            >
-              <svg
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                fill='none'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  d={isMobileMenuOpen ? "M18 6L6 18" : "M4 6h16"}
-                  stroke='currentColor'
-                  strokeWidth='1.5'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                />
-                <path
-                  d={isMobileMenuOpen ? "M6 6l12 12" : "M4 12h16"}
-                  stroke='currentColor'
-                  strokeWidth='1.5'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                />
-                {!isMobileMenuOpen && (
-                  <path
-                    d='M4 18h16'
-                    stroke='currentColor'
-                    strokeWidth='1.5'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  />
-                )}
+            <button type="button" className={styles.hamburgerButton} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Toggle menu">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                {isMobileMenuOpen ? <path d="M18 6L6 18M6 6l12 12" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
               </svg>
             </button>
-            <button
-              title='mebel'
-              type='button'
-              className={`${styles.searchButton} ${
-                isSearchOpen ? styles.searchButtonActive : ""
-              }`}
-              onClick={toggleSearch}
-            >
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                width='20'
-                height='20'
-                viewBox='0 0 24 24'
-                fill='none'
-                stroke='currentColor'
-                strokeWidth='1.5'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-              >
-                <circle cx='11' cy='11' r='8'></circle>
-                <line x1='21' y1='21' x2='16.65' y2='16.65'></line>
-              </svg>
+            <button type="button" className={styles.searchButton} onClick={toggleSearch}>
+               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </button>
           </div>
 
-          <Link href='/' className={styles.logo}>
-            <Image
-              src='/images/logo/svlogosparro-01.png'
-              alt='Sparro Logo'
-              className={styles.logoImage}
-              width={100}
-              height={40}
-              priority 
-            />
+          {/* LOGO */}
+          <Link href="/" className={styles.logo}>
+            <Image src="/images/logo/svlogosparro-01.png" alt="Sparro Logo" className={styles.logoImage} width={100} height={40} priority />
           </Link>
 
+          {/* DESKTOP SEARCH */}
           <div className={styles.navSearch}>
             <div className={styles.desktopOnly}>
-              <button
-                title='mebel'
-                type='button'
-                className={`${styles.searchButton} ${
-                  isSearchOpen ? styles.searchButtonActive : ""
-                }`}
-                onClick={toggleSearch}
-              >
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='20'
-                  height='20'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='1.5'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                >
-                  <circle cx='11' cy='11' r='8'></circle>
-                  <line x1='21' y1='21' x2='16.65' y2='16.65'></line>
-                </svg>
+              <button type="button" className={`${styles.searchButton} ${isSearchOpen ? styles.searchButtonActive : ""}`} onClick={toggleSearch}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
               </button>
             </div>
             <div className={styles.mobileOnly} style={{ width: "85px" }}></div>
@@ -463,197 +236,107 @@ const Header: React.FC = () => {
         </nav>
       </header>
 
-      <div
-        className={`${styles.mobileMenuOverlay} ${
-          isMobileMenuOpen ? styles.open : ""
-        }`}
-      >
+      {/* MOBILE MENU OVERLAY */}
+      <div className={`${styles.mobileMenuOverlay} ${isMobileMenuOpen ? styles.open : ""}`}>
         <div className={styles.mainNav}>
           <ul>
-            {/* === INSPIRATION DROPDOWN === */}
+            {/* 1. INSPIRATION (Static) */}
             <li>
-              <div
-                className={styles.mobileNavItem}
-                onClick={() => toggleMobileSubMenu("inspiration")}
-              >
+              <div className={styles.mobileNavItem} onClick={() => toggleMobileSubMenu("inspiration")}>
                 <span>Inspiration</span>
-                <svg
-                  className={`${styles.arrowIcon} ${
-                    isMobileInspirationOpen ? styles.arrowIconOpen : ""
-                  }`}
-                  width='16'
-                  height='16'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='2'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                >
-                  <polyline points='6 9 12 15 18 9'></polyline>
-                </svg>
+                <ChevronIcon isOpen={activeMobileSubMenu === "inspiration"} />
               </div>
-              <div
-                className={`${styles.mobileSubMenu} ${
-                  isMobileInspirationOpen ? styles.subMenuOpen : ""
-                }`}
-              >
+              <div className={`${styles.mobileSubMenu} ${activeMobileSubMenu === "inspiration" ? styles.subMenuOpen : ""}`}>
                 <ul>
-                  {inspirationSubLinks.map((link) => (
-                    <li key={link.label}>
-                      <Link href={link.href} onClick={handleMobileLinkClick}>
-                        {link.label}
-                      </Link>
-                    </li>
+                  {INSPIRATION_LINKS.map((link) => (
+                    <li key={link.label}><Link href={link.href} onClick={() => setIsMobileMenuOpen(false)}>{link.label}</Link></li>
                   ))}
                 </ul>
               </div>
             </li>
 
-            {/* === PRODUCTS DROPDOWN === */}
+            {/* 2. PRODUCTS (Dynamic API Data) */}
             <li>
-              <div
-                className={styles.mobileNavItem}
-                onClick={() => toggleMobileSubMenu("products")}
-              >
+              <div className={styles.mobileNavItem} onClick={() => toggleMobileSubMenu("products")}>
                 <span>Products</span>
-                <svg
-                  className={`${styles.arrowIcon} ${
-                    isMobileProductsOpen ? styles.arrowIconOpen : ""
-                  }`}
-                  width='16'
-                  height='16'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='2'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                >
-                  <polyline points='6 9 12 15 18 9'></polyline>
-                </svg>
+                <ChevronIcon isOpen={activeMobileSubMenu === "products"} />
               </div>
-              <div
-                className={`${styles.mobileSubMenu} ${
-                  isMobileProductsOpen ? styles.subMenuOpen : ""
-                }`}
-              >
+              <div className={`${styles.mobileSubMenu} ${activeMobileSubMenu === "products" ? styles.subMenuOpen : ""}`}>
                 <ul>
-                  {productsSubLinks.map((link) => (
-                    <li key={link.label}>
-                      <Link href={link.href} onClick={handleMobileLinkClick}>
-                        {link.label}
-                      </Link>
-                    </li>
+                  {/* Static Links (First) */}
+                  {STATIC_PRODUCT_LINKS.map((link) => (
+                     <li key={link.label}><Link href={link.href} onClick={() => setIsMobileMenuOpen(false)} style={{fontWeight: 'bold'}}>{link.label}</Link></li>
                   ))}
+                  
+                  {/* Dynamic API Categories */}
+                  <li className={styles.divider} style={{margin: '10px 0', borderTop: '1px solid #eee'}}></li>
+                  {categories.length > 0 ? categories.map((cat) => (
+                    <li key={cat.id}>
+                        {/* URL strukturuna diqqət: /product?CategoryId=2 */}
+                        <Link href={`/product?CategoryId=${cat.id}`} onClick={() => setIsMobileMenuOpen(false)}>
+                            {cat.name}
+                        </Link>
+                    </li>
+                  )) : (
+                    <li style={{color: '#999', fontSize: '12px', paddingLeft: '20px'}}>Yüklənir...</li>
+                  )}
                 </ul>
               </div>
             </li>
 
-            {/* === SERIES DROPDOWN === */}
+            {/* 3. SERIES (Static) */}
             <li>
-              <div
-                className={styles.mobileNavItem}
-                onClick={() => toggleMobileSubMenu("series")}
-              >
+              <div className={styles.mobileNavItem} onClick={() => toggleMobileSubMenu("series")}>
                 <span>Series</span>
-                <svg
-                  className={`${styles.arrowIcon} ${
-                    isMobileSeriesOpen ? styles.arrowIconOpen : ""
-                  }`}
-                  width='16'
-                  height='16'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='2'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                >
-                  <polyline points='6 9 12 15 18 9'></polyline>
-                </svg>
+                <ChevronIcon isOpen={activeMobileSubMenu === "series"} />
               </div>
-              <div
-                className={`${styles.mobileSubMenu} ${
-                  isMobileSeriesOpen ? styles.subMenuOpen : ""
-                }`}
-              >
+              <div className={`${styles.mobileSubMenu} ${activeMobileSubMenu === "series" ? styles.subMenuOpen : ""}`}>
                 <ul>
-                  {seriesSubLinks.map((link) => (
-                    <li key={link.label}>
-                      <Link href={link.href} onClick={handleMobileLinkClick}>
-                        {link.label}
-                      </Link>
-                    </li>
+                   {SERIES_LINKS.map((link) => (
+                    <li key={link.label}><Link href={link.href} onClick={() => setIsMobileMenuOpen(false)}>{link.label}</Link></li>
                   ))}
                 </ul>
               </div>
             </li>
 
-            {/* === NORMAL LINKS === */}
-            <li>
-              <Link href='/system' onClick={handleMobileLinkClick}>
-                Montana System
-              </Link>
-            </li>
-            <li>
-              <Link href='/sustainability' onClick={handleMobileLinkClick}>
-                Sustainability
-              </Link>
-            </li>
-            <li>
-              <Link
-                href='/professionals'
-                onClick={handleMobileLinkClick}
-                className={styles.professionalsLink}
-              >
-                Professionals
-              </Link>
-            </li>
+            {/* Other Static Links */}
+            <li><Link href="/system" onClick={() => setIsMobileMenuOpen(false)}>Montana System</Link></li>
+            <li><Link href="/sustainability" onClick={() => setIsMobileMenuOpen(false)}>Sustainability</Link></li>
+            <li><Link href="/professionals" onClick={() => setIsMobileMenuOpen(false)} className={styles.professionalsLink}>Professionals</Link></li>
           </ul>
         </div>
 
-        {/* === BOTTOM NAV LINKS === */}
+        {/* Bottom Links */}
         <div className={styles.bottomNavWrapper}>
           <ul className={styles.supportNav}>
-            <li>
-              <Link href='/contact' onClick={handleMobileLinkClick}>
-                Customer support
-              </Link>
-            </li>
-            <li>
-              <Link href='/retailers' onClick={handleMobileLinkClick}>
-                Find retailers
-              </Link>
-            </li>
+            <li><Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>Customer support</Link></li>
+            <li><Link href="/retailers" onClick={() => setIsMobileMenuOpen(false)}>Find retailers</Link></li>
           </ul>
         </div>
       </div>
 
-      <div
-        className={`${styles.seriesOverlay} ${
-          isInspirationOpen ? styles.seriesOverlayOpen : ""
-        }`}
-      >
+      {/* DESKTOP OVERLAYS */}
+      <div className={`${styles.seriesOverlay} ${isInspirationOpen ? styles.seriesOverlayOpen : ""}`}>
         {isInspirationOpen && <InspirationContent />}
       </div>
-      <div
-        className={`${styles.seriesOverlay} ${
-          isSeriesOpen ? styles.seriesOverlayOpen : ""
-        }`}
-      >
+      <div className={`${styles.seriesOverlay} ${isSeriesOpen ? styles.seriesOverlayOpen : ""}`}>
         {isSeriesOpen && <SeriesContent />}
       </div>
-      <div
-        className={`${styles.seriesOverlay} ${
-          isProductsOpen ? styles.seriesOverlayOpen : ""
-        }`}
-      >
+      <div className={`${styles.seriesOverlay} ${isProductsOpen ? styles.seriesOverlayOpen : ""}`}>
+        {/* Note: ProductsContent component-inə də gələcəkdə "categories" prop-u ötürə bilərik */}
         {isProductsOpen && <ProductsContent />}
       </div>
+      
       <SearchOverlay isOpen={isSearchOpen} onClose={toggleSearch} />
     </>
   );
 };
+
+// Helper Icon Component
+const ChevronIcon = ({ isOpen }: { isOpen: boolean }) => (
+    <svg className={`${styles.arrowIcon} ${isOpen ? styles.arrowIconOpen : ""}`} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+);
 
 export default Header;

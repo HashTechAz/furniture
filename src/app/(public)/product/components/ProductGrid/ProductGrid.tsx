@@ -28,7 +28,7 @@ const ProductGrid = ({ products }: ProductGridProps) => {
       <div className={styles.countDisplay}>Show {shownItems} items</div>
 
       <div className={styles.grid}>
-        {products.map((product) => (
+        {products.map((product, index) => (
           <ProductCard
             key={product.id}
             id={product.id}
@@ -36,8 +36,9 @@ const ProductGrid = ({ products }: ProductGridProps) => {
             color={product.color}
             measurements={product.measurements}
             position={product.position}
-            imageSrc={product.imageSrc}       
-            imageSrcHover={product.imageSrcHover} 
+            imageSrc={product.imageSrc}
+            imageSrcHover={product.imageSrcHover}
+            priority={index < 8}
           />
         ))}
       </div>

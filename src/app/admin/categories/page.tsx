@@ -1,49 +1,104 @@
-import Link from 'next/link';
-import styles from './page.module.css';
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import styles from "./page.module.css";
+import { getCategories, deleteCategory, Category } from "@/lib/categories";
 
 export default function CategoriesPage() {
-  const categories = [
-    { id: 1, name: 'Accessories', description: 'Essential accessories to complete your furniture setup', productCount: 24 },
-    { id: 2, name: 'Storage Solutions', description: 'Modular storage systems for organized living', productCount: 45 },
-    { id: 3, name: 'Tables', description: 'Dining, coffee, and work tables for every need', productCount: 32 },
-    { id: 4, name: 'Chairs', description: 'Comfortable seating solutions for any space', productCount: 28 },
-  ];
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 1. Datanı API-dən yüklə
+  const loadCategories = async () => {
+    setIsLoading(true);
+    try {
+      const data = await getCategories();
+      setCategories(data);
+    } catch (error) {
+      console.error("Failed to load categories:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  // 2. Silmə funksiyası
+  const handleDelete = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this category?")) return;
+
+    try {
+      const token = localStorage.getItem("accessToken") || "";
+      await deleteCategory(id, token);
+      
+      // Siyahını yenilə (Silinəni ekrandan götür)
+      setCategories((prev) => prev.filter((cat) => cat.id !== id));
+      alert("Category deleted successfully!");
+    } catch (error: any) {
+      alert("Failed to delete: " + error.message);
+    }
+  };
 
   return (
     <div className={styles.categoriesPage}>
       <div className={styles.pageHeader}>
         <div>
-          <h1>Categories</h1>
-          <p>Manage product categories and their organization</p>
+          <h1 className={styles.title}>Categories</h1>
+          <p className={styles.subtitle}>Manage your product categories structure</p>
         </div>
         <Link href="/admin/categories/new" className={styles.addButton}>
-          Add New Category
+          + Add New Category
         </Link>
       </div>
 
-      <div className={styles.categoriesTable}>
+      <div className={styles.tableContainer}>
         <div className={styles.tableHeader}>
-          <div>Name</div>
-          <div>Description</div>
-          <div>Products</div>
-          <div>Actions</div>
+          <div className={styles.colName}>Name</div>
+          <div className={styles.colDesc}>Description</div>
+          <div className={styles.colParent}>Parent Category</div>
+          <div className={styles.colActions}>Actions</div>
         </div>
-        
-        {categories.map((category) => (
-          <div key={category.id} className={styles.tableRow}>
-            <div className={styles.categoryName}>{category.name}</div>
-            <div className={styles.categoryDescription}>{category.description}</div>
-            <div className={styles.productCount}>{category.productCount} products</div>
-            <div className={styles.actions}>
-              <Link href={`/admin/categories/${category.id}/edit`} className={styles.editButton}>
-                Edit
-              </Link>
-              <button className={styles.deleteButton}>
-                Delete
-              </button>
+
+        {isLoading ? (
+          <div className={styles.loadingState}>Loading categories...</div>
+        ) : categories.length === 0 ? (
+          <div className={styles.emptyState}>No categories found. Create one!</div>
+        ) : (
+          categories.map((category) => (
+            <div key={category.id} className={styles.tableRow}>
+              <div className={styles.colName}>
+                <span className={styles.nameText}>{category.name}</span>
+              </div>
+              <div className={styles.colDesc}>
+                {category.description || <span className={styles.noData}>-</span>}
+              </div>
+              <div className={styles.colParent}>
+                {category.parentCategoryName ? (
+                   <span className={styles.badge}>{category.parentCategoryName}</span>
+                ) : (
+                   <span className={styles.mainBadge}>Main Category</span>
+                )}
+              </div>
+              <div className={styles.colActions}>
+                <div className={styles.actionsWrapper}>
+                  {/* EDIT LINK: /edit hissəsini sildik, çünki folder [id] kimidir */}
+                  <Link href={`/admin/categories/${category.id}`} className={styles.editButton}>
+                    Edit
+                  </Link>
+                  <button 
+                    onClick={() => handleDelete(category.id)} 
+                    className={styles.deleteButton}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );
