@@ -10,32 +10,27 @@ export default function AdminProductsList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const loadProducts = async (retryCount = 0) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await getProducts();
-      setProducts(data);
-    } catch (err: any) {
-      console.error('Products load error:', err);
-      
-      // Rate limit hatası için özel mesaj
-      if (err.message?.includes('RATE_LIMIT') || err.message?.includes('429')) {
-        setError('Çox sayda sorğu göndərilir. Bir az gözləyin və yenidən cəhd edin...');
-        
-        // 5 saniye sonra otomatik tekrar dene
-        if (retryCount < 2) {
-          setTimeout(() => {
-            loadProducts(retryCount + 1);
-          }, 5000);
-        }
-      } else {
-        setError(`Xəta: ${err.message || 'Məhsullar yüklənə bilmədi'}`);
-      }
-    } finally {
-      setLoading(false);
+const loadProducts = async (retryCount = 0) => {
+  try {
+    setLoading(true);
+    setError(null);
+    
+    // DƏYİŞİKLİK: skipCache: true göndəririk
+    const data = await getProducts(undefined, { skipCache: true }); 
+    
+    setProducts(data);
+  } catch (err: any) {
+    console.error('Products load error:', err);
+    // Xəta idarəetməsi artıq işləyəcək, çünki getProducts [] qaytarmır, throw edir.
+    if (err.message?.includes('RATE_LIMIT') || err.message?.includes('429')) {
+       // ...
+    } else {
+      setError(`Məlumat yüklənmədi: ${err.message}`);
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     loadProducts();

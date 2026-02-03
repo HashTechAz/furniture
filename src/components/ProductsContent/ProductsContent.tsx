@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import styles from "./ProductsContent.module.css";
 import NavbarCategoryCard from "../NavbarMenuCards/NavbarCategoryCard";
@@ -11,9 +11,16 @@ import { getCategories, Category } from "@/lib/categories";
 const ProductsContent = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  
+  // 🔥 QIFIL (Strict Mode Double Fetch-i əngəlləmək üçün)
+  const dataFetchedRef = useRef(false);
 
   // API-dən Kateqoriyaları Çəkirik
   useEffect(() => {
+    // Əgər artıq yükləyibsə, bir daha yükləməsin
+    if (dataFetchedRef.current) return;
+    dataFetchedRef.current = true;
+
     const fetchCategories = async () => {
       try {
         const data = await getCategories();
@@ -28,7 +35,6 @@ const ProductsContent = () => {
     fetchCategories();
   }, []);
 
-  // Promo Kart üçün sabit məlumat (Dəyişmək istəsən bura yaza bilərsən)
   const promoCardData = {
     id: 1,
     label: "Montana System",
@@ -39,7 +45,6 @@ const ProductsContent = () => {
   return (
     <>
       <section className={styles.productsCategoryMain}>
-        {/* --- SOL TƏRƏF: SABİT LİNKLƏR --- */}
         <div className={styles.productsCategoryText}>
           <h5><Link href="/about">About Montana</Link></h5>
           <ul>
@@ -59,7 +64,6 @@ const ProductsContent = () => {
           </ul>
         </div>
 
-        {/* --- ORTA TƏRƏF: DİNAMİK KATEQORİYALAR --- */}
         <div className={styles.contentWrapper}>
           <div className={styles.gridContainer}>
             <div className={styles.gridItemMain}>
@@ -70,17 +74,14 @@ const ProductsContent = () => {
                   {isLoading ? (
                     <p style={{color: '#999'}}>Loading categories...</p>
                   ) : categories.length > 0 ? (
-                    // API-dən gələn hər bir ANA kateqoriyanı render edirik
                     categories.map((category) => (
                       <ul key={category.id}>
-                        {/* Ana Kateqoriya Başlığı (Məs: Tables) */}
                         <h5>
                           <Link href={`/product?CategoryId=${category.id}`}>
                             {category.name}
                           </Link>
                         </h5>
 
-                        {/* Alt Kateqoriyalar (Məs: Dining Tables, Coffee Tables) */}
                         {category.subCategories && category.subCategories.length > 0 ? (
                           category.subCategories.map((sub) => (
                             <li key={sub.id}>
@@ -90,7 +91,6 @@ const ProductsContent = () => {
                             </li>
                           ))
                         ) : (
-                          // Əgər alt kateqoriya yoxdursa, "View all" göstər
                           <li>
                             <Link href={`/product?CategoryId=${category.id}`}>
                                 View all {category.name}
@@ -106,7 +106,6 @@ const ProductsContent = () => {
                 </div>
               </div>
 
-              {/* --- SAĞ TƏRƏF: PROMO IMAGE --- */}
               <div className={styles.gridItemMainImage}>
                 <NavbarCategoryCard
                   href={promoCardData.href}

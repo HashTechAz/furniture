@@ -35,6 +35,9 @@ const Header: React.FC = () => {
 
   // Data States
   const [categories, setCategories] = useState<Category[]>([]);
+  
+  // 🔥 QIFIL (Double Fetch qarşısını almaq üçün)
+  const dataFetchedRef = useRef(false);
 
   const lastScrollY = useRef(0);
   const pathname = usePathname();
@@ -43,7 +46,10 @@ const Header: React.FC = () => {
   useEffect(() => {
     setMounted(true);
     
-    // Kateqoriyaları Backend-dən yükləyirik
+    // Əgər artıq yüklənibsə, dayandır
+    if (dataFetchedRef.current) return;
+    dataFetchedRef.current = true;
+
     const fetchCategories = async () => {
       try {
         const data = await getCategories();
@@ -95,7 +101,6 @@ const Header: React.FC = () => {
 
   // --- ROUTE CHANGE HANDLING ---
   useEffect(() => {
-    // Səhifə dəyişəndə bütün menyuları bağla
     setIsSeriesOpen(false);
     setIsProductsOpen(false);
     setIsInspirationOpen(false);
@@ -135,7 +140,6 @@ const Header: React.FC = () => {
     isOpen: boolean
   ) => {
     e.preventDefault();
-    // Digər hər şeyi bağla
     setIsInspirationOpen(false);
     setIsProductsOpen(false);
     setIsSeriesOpen(false);
@@ -143,7 +147,6 @@ const Header: React.FC = () => {
     if (isOpen) {
         setter(false);
     } else {
-        // Keçid effekti üçün timeout
         setTimeout(() => setter(true), 100);
     }
   };
@@ -152,12 +155,10 @@ const Header: React.FC = () => {
     setActiveMobileSubMenu(activeMobileSubMenu === menu ? null : menu);
   };
 
-  // Helper for dynamic classes based on route (Cleaned up version)
   const getHeaderClass = () => {
     if (!mounted) return "";
     const p = pathname;
     
-    // Xüsusi rəngli headerlər üçün map
     const styleMap: Record<string, string> = {
         "/sustainability": styles.sustainabilityHeader,
         "/system": styles.systemHeader,
@@ -169,14 +170,11 @@ const Header: React.FC = () => {
         "/creative-minds": styles.creativeMindsHeader,
     };
     
-    // Dəqiq uyğunluq yoxla
     if (styleMap[p]) return styleMap[p];
-
-    // Məhsul detalları səhifəsi – header fonu #F5F5F5
     if (p.startsWith("/product/") && p !== "/product") return styles.productDetailsHeader; 
     if (p.startsWith("/series") && !p.includes("guarantees") && !p.includes("assembly")) return styles.seriesHeader;
     if (p.includes("colour-inspiration")) return styles.inspiringStylesHeader;
-    if (p.includes("creative-minds/")) return styles.creativeMindsHeader; // Alt səhifələr üçün
+    if (p.includes("creative-minds/")) return styles.creativeMindsHeader;
 
     return "";
   };
@@ -196,7 +194,6 @@ const Header: React.FC = () => {
         `}
       >
         <nav className={styles.navbar}>
-          {/* DESKTOP NAV */}
           <div className={`${styles.navigationMenu} ${styles.desktopOnly}`}>
             <ul>
               <li><Link href="#" className={styles.navLinks} onClick={(e) => handleDesktopMenuClick(e, setIsInspirationOpen, isInspirationOpen)}>Inspiration</Link></li>
@@ -207,7 +204,6 @@ const Header: React.FC = () => {
             </ul>
           </div>
 
-          {/* MOBILE ACTIONS (Hamburger & Search) */}
           <div className={`${styles.mobileActions} ${styles.mobileOnly}`}>
             <button type="button" className={styles.hamburgerButton} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Toggle menu">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -219,12 +215,10 @@ const Header: React.FC = () => {
             </button>
           </div>
 
-          {/* LOGO */}
           <Link href="/" className={styles.logo}>
             <Image src="/images/logo/svlogosparro-01.png" alt="Sparro Logo" className={styles.logoImage} width={100} height={40} priority />
           </Link>
 
-          {/* DESKTOP SEARCH */}
           <div className={styles.navSearch}>
             <div className={styles.desktopOnly}>
               <button type="button" className={`${styles.searchButton} ${isSearchOpen ? styles.searchButtonActive : ""}`} onClick={toggleSearch}>
@@ -236,11 +230,9 @@ const Header: React.FC = () => {
         </nav>
       </header>
 
-      {/* MOBILE MENU OVERLAY */}
       <div className={`${styles.mobileMenuOverlay} ${isMobileMenuOpen ? styles.open : ""}`}>
         <div className={styles.mainNav}>
           <ul>
-            {/* 1. INSPIRATION (Static) */}
             <li>
               <div className={styles.mobileNavItem} onClick={() => toggleMobileSubMenu("inspiration")}>
                 <span>Inspiration</span>
@@ -255,7 +247,6 @@ const Header: React.FC = () => {
               </div>
             </li>
 
-            {/* 2. PRODUCTS (Dynamic API Data) */}
             <li>
               <div className={styles.mobileNavItem} onClick={() => toggleMobileSubMenu("products")}>
                 <span>Products</span>
@@ -263,16 +254,12 @@ const Header: React.FC = () => {
               </div>
               <div className={`${styles.mobileSubMenu} ${activeMobileSubMenu === "products" ? styles.subMenuOpen : ""}`}>
                 <ul>
-                  {/* Static Links (First) */}
                   {STATIC_PRODUCT_LINKS.map((link) => (
                      <li key={link.label}><Link href={link.href} onClick={() => setIsMobileMenuOpen(false)} style={{fontWeight: 'bold'}}>{link.label}</Link></li>
                   ))}
-                  
-                  {/* Dynamic API Categories */}
                   <li className={styles.divider} style={{margin: '10px 0', borderTop: '1px solid #eee'}}></li>
                   {categories.length > 0 ? categories.map((cat) => (
                     <li key={cat.id}>
-                        {/* URL strukturuna diqqət: /product?CategoryId=2 */}
                         <Link href={`/product?CategoryId=${cat.id}`} onClick={() => setIsMobileMenuOpen(false)}>
                             {cat.name}
                         </Link>
@@ -284,7 +271,6 @@ const Header: React.FC = () => {
               </div>
             </li>
 
-            {/* 3. SERIES (Static) */}
             <li>
               <div className={styles.mobileNavItem} onClick={() => toggleMobileSubMenu("series")}>
                 <span>Series</span>
@@ -299,14 +285,12 @@ const Header: React.FC = () => {
               </div>
             </li>
 
-            {/* Other Static Links */}
             <li><Link href="/system" onClick={() => setIsMobileMenuOpen(false)}>Montana System</Link></li>
             <li><Link href="/sustainability" onClick={() => setIsMobileMenuOpen(false)}>Sustainability</Link></li>
             <li><Link href="/professionals" onClick={() => setIsMobileMenuOpen(false)} className={styles.professionalsLink}>Professionals</Link></li>
           </ul>
         </div>
 
-        {/* Bottom Links */}
         <div className={styles.bottomNavWrapper}>
           <ul className={styles.supportNav}>
             <li><Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>Customer support</Link></li>
@@ -315,7 +299,6 @@ const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* DESKTOP OVERLAYS */}
       <div className={`${styles.seriesOverlay} ${isInspirationOpen ? styles.seriesOverlayOpen : ""}`}>
         {isInspirationOpen && <InspirationContent />}
       </div>
@@ -323,7 +306,6 @@ const Header: React.FC = () => {
         {isSeriesOpen && <SeriesContent />}
       </div>
       <div className={`${styles.seriesOverlay} ${isProductsOpen ? styles.seriesOverlayOpen : ""}`}>
-        {/* Note: ProductsContent component-inə də gələcəkdə "categories" prop-u ötürə bilərik */}
         {isProductsOpen && <ProductsContent />}
       </div>
       
@@ -332,7 +314,6 @@ const Header: React.FC = () => {
   );
 };
 
-// Helper Icon Component
 const ChevronIcon = ({ isOpen }: { isOpen: boolean }) => (
     <svg className={`${styles.arrowIcon} ${isOpen ? styles.arrowIconOpen : ""}`} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="6 9 12 15 18 9"></polyline>

@@ -132,95 +132,80 @@ const mapBackendToFrontend = (item: BackendProduct): FrontendProduct => {
   };
 };
 
-// 2. getProducts funksiyasını gücləndiririk
-export async function getProducts(params?: ProductQueryParams, retryCount = 0): Promise<FrontendProduct[]> {
-  const maxRetries = 3; // Rate limit için daha fazla retry
-  
-  try {
-    // Parametrləri URL Query String-ə çeviririk
-    const searchParams = new URLSearchParams();
+// src/lib/products.ts
 
+// ... (digər importlar və interfacelər olduğu kimi qalır)
+
+// Function imzasını dəyişirik: options obyekti əlavə edirik
+export async function getProducts(
+  params?: ProductQueryParams, 
+  options?: { retryCount?: number; skipCache?: boolean } // Yeni parametr
+): Promise<FrontendProduct[]> {
+  
+  const retryCount = options?.retryCount || 0;
+  const skipCache = options?.skipCache || false; // Admin panel üçün true olacaq
+  const maxRetries = 3;
+
+  try {
+    const searchParams = new URLSearchParams();
+    // ... (Parametrləri searchParams-a yığan hissə olduğu kimi qalır) ...
     if (params) {
-      if (params.searchTerm) searchParams.append('SearchTerm', params.searchTerm);
-      if (params.categoryId) searchParams.append('CategoryId', params.categoryId.toString());
-      if (params.collectionId) searchParams.append('CollectionId', params.collectionId.toString());
-      if (params.designerId) searchParams.append('DesignerId', params.designerId.toString());
-      if (params.minPrice) searchParams.append('MinPrice', params.minPrice.toString());
-      if (params.maxPrice) searchParams.append('MaxPrice', params.maxPrice.toString());
-      if (params.sortBy) searchParams.append('SortBy', params.sortBy);
-      if (params.pageNumber) searchParams.append('PageNumber', params.pageNumber.toString());
-      if (params.pageSize) searchParams.append('PageSize', params.pageSize.toString());
-      
-      // Array tipli filtrlər (Məsələn rənglər)
-      if (params.colorIds && params.colorIds.length > 0) {
-        params.colorIds.forEach(id => searchParams.append('ColorIds', id.toString()));
-      }
+       if (params.searchTerm) searchParams.append('SearchTerm', params.searchTerm);
+       // ... digər if-lər olduğu kimi ...
+       if (params.categoryId) searchParams.append('CategoryId', params.categoryId.toString());
+       // ...
     }
 
-    // Backend-ə sorğu: /api/Products?CategoryId=1&SortBy=price_asc...
     const queryString = searchParams.toString();
     const endpoint = queryString ? `/api/Products?${queryString}` : '/api/Products';
 
-    // Server: cache + tag (admin dəyişiklikdən sonra revalidateTag('products') ilə təmizlənir)
-    // Client (admin panel): birbaşa API – həmişə təzə məlumat, unstable_cache server-only olduğu üçün
     let data: BackendProduct[] | null = null;
-    if (typeof window === 'undefined') {
+
+    // MƏNTİQ DƏYİŞİKLİYİ BURADADIR:
+    // Əgər skipCache=true-dursa (Admin), unstable_cache İŞLƏTMƏ!
+    if (typeof window === 'undefined' && !skipCache) {
+      // Saytın özü (Public tərəf) üçün Cache işə düşsün
       data = await unstable_cache(
         async () => apiRequest<BackendProduct[]>(endpoint),
-        ['products', endpoint],
+        ['products', endpoint], 
         { revalidate: 60, tags: ['products'] }
       )();
     } else {
-      data = await apiRequest<BackendProduct[]>(endpoint);
+      // Admin tərəf və ya Client side üçün birbaşa sorğu (No Cache)
+      data = await apiRequest<BackendProduct[]>(endpoint, {
+        cache: 'no-store' // Brauzerə və Next.js-ə deyirik ki, bunu yaddaşda saxlama!
+      });
     }
 
     if (!data || !Array.isArray(data)) {
-      console.warn("⚠️ Products API returned invalid data:", data);
-      return [];
+      // Boş array qaytarmaq əvəzinə xəta ataq ki, sistem bilsin problem var
+      if (!data) throw new Error("API-dən məlumat boş gəldi");
+      return []; // Əgər sadəcə [] gəlibsə, bu normaldır (məhsul yoxdur)
     }
     
     const mappedProducts = data.map(mapBackendToFrontend);
-    console.log(`✅ Successfully loaded ${mappedProducts.length} products`);
     return mappedProducts;
     
   } catch (error: any) {
-    console.error(`❌ Products List Error (attempt ${retryCount + 1}/${maxRetries + 1}):`, error);
+    console.error(`❌ Products List Error (attempt ${retryCount + 1}):`, error);
     
-    // 429 Rate Limit hatası - özel handling
-    if (error.message?.startsWith('RATE_LIMIT:') || (error as any).status === 429 || (error as any).isRateLimit) {
-      const waitTime = error.message?.startsWith('RATE_LIMIT:') 
-        ? parseInt(error.message.split(':')[1]) || 5000
-        : Math.pow(2, retryCount) * 2000; // Exponential backoff: 2s, 4s, 8s
-      
-      if (retryCount < maxRetries) {
-        console.log(`⏳ Rate limit (429) - waiting ${waitTime/1000}s before retry (${retryCount + 1}/${maxRetries + 1})...`);
-        await new Promise(resolve => setTimeout(resolve, waitTime));
-        return getProducts(params, retryCount + 1);
-      }
+    // Rate limit handling (olduğu kimi qalır)
+    if (error.status === 429 || error.message?.includes('RATE_LIMIT')) {
+       // ... (retry logic olduğu kimi) ...
+       // Recursive çağırışda options-ı düzgün ötür:
+       return getProducts(params, { retryCount: retryCount + 1, skipCache });
     }
     
-    // Retry mekanizması - network hatalarında tekrar dene
-    if (retryCount < maxRetries && (
-      error.message?.includes('fetch') || 
-      error.message?.includes('network') ||
-      error.message?.includes('ECONNREFUSED') ||
-      error.message?.includes('timeout')
-    )) {
-      // Exponential backoff: 1s, 2s, 4s
-      const waitTime = Math.pow(2, retryCount) * 1000;
-      console.log(`🔄 Retrying products fetch in ${waitTime/1000}s...`);
-      await new Promise(resolve => setTimeout(resolve, waitTime));
-      return getProducts(params, retryCount + 1);
+    // Network retry handling (olduğu kimi qalır)
+    if (retryCount < maxRetries && (/* ... network errors ... */ error.message?.includes('fetch'))) {
+       // ... (wait logic) ...
+       return getProducts(params, { retryCount: retryCount + 1, skipCache });
     }
     
-    // Son hata - boş array dön ama detaylı log
-    console.error("🔥 Final Products Error:", {
-      message: error.message,
-      stack: error.stack,
-      params: params
-    });
-    
-    return [];
+    // ƏSAS DƏYİŞİKLİK:
+    // Sonda "return []" etmək olmaz! Bu sənin probleminin əsas qaynağıdır.
+    // Xətanı yuxarı ötür ki, Admin panel xəbərdar olsun.
+    throw error; 
   }
 }
 

@@ -25,6 +25,7 @@ export async function apiRequest<T>(
       ...(token && { Authorization: `Bearer ${token}` }),
       ...headers,
     },
+    cache: options.cache, // <--- Bunu əlavə etsən super olar (əgər type icazə verirsə)
     ...customConfig,
   };
 
