@@ -88,25 +88,16 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
             sku: productData.sku,
             description: productData.description,
             shortDescription: productData.shortDescription,
-            // Qiymətdən " AZN" sözünü təmizləyib rəqəmə çeviririk
             price: parseFloat(productData.price.replace(/[^0-9.]/g, '')), 
-            isFeatured: false, // API-də varsa onu da gətir
-            
+            isFeatured: false,
             height: productData.height,
             width: productData.width,
             depth: productData.depth,
             weight: productData.weight,
-
-            // *** ƏN VACİB HİSSƏ: ID-ləri yerinə qoyuruq ***
             categoryId: productData.categoryId,
             designerId: productData.designerId,
             collectionId: productData.collectionId,
-            
-            // Rəngləri tapmaq üçün (Əgər API rəng ID-lərini qaytarırsa)
-            // Hazırda biz sadəcə adını bilirik, amma gələcəkdə ID-lər gəlsə bura qoyacağıq.
-            // Hələlik boş saxlayırıq və ya mövcud rəngi seçdirməyə çalışırıq:
-            colorIds: productData.selectedColorIds || [], // BackendProduct interface-ə colorIds əlavə etsən, bura productData.colorIds yaz
-            
+            colorIds: productData.selectedColorIds || [],
             materialIds: [],
             roomIds: [],
             tagIds: [],

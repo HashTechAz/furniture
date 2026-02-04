@@ -9,7 +9,7 @@ import styles from './layout.module.css';
 import { 
   FaBars, FaBox, FaTags, FaPalette, FaLayerGroup, 
   FaShoppingCart, FaUsers, FaLock, FaSignOutAlt, 
-  FaHome, FaPaintBrush, FaFolder 
+  FaHome, FaPaintBrush, FaFolder, FaEnvelope 
 } from 'react-icons/fa';
 
 export default function AdminLayout({
@@ -103,6 +103,10 @@ export default function AdminLayout({
           {/* YENİ: COLLECTIONS */}
           <Link href="/admin/collections" className={`${styles.navLink} ${isActive('/admin/collections')}`}>
             <FaFolder /> Collections
+          </Link>
+
+          <Link href="/admin/contact" className={`${styles.navLink} ${isActive('/admin/contact')}`}>
+            <FaEnvelope /> Messages
           </Link>
           
           <Link href="/admin/series" className={`${styles.navLink} ${isActive('/admin/series')}`}>
