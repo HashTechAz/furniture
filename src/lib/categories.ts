@@ -10,6 +10,11 @@ export interface Category {
   subCategories?: Category[];
 }
 
+export interface BackendCategory {
+  id: number;
+  name: string;
+}
+
 export interface CategoryPayload {
   name: string;
   description?: string;

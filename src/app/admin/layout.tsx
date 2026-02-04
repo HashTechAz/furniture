@@ -4,7 +4,13 @@ import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import styles from './layout.module.css';
-import { FaBars, FaBox, FaTags, FaPalette, FaLayerGroup, FaShoppingCart, FaUsers, FaLock, FaSignOutAlt, FaHome } from 'react-icons/fa';
+
+// İkonlar (FaPaintBrush - Designers üçün, FaFolder - Collections üçün əlavə etdim)
+import { 
+  FaBars, FaBox, FaTags, FaPalette, FaLayerGroup, 
+  FaShoppingCart, FaUsers, FaLock, FaSignOutAlt, 
+  FaHome, FaPaintBrush, FaFolder 
+} from 'react-icons/fa';
 
 export default function AdminLayout({
   children,
@@ -14,6 +20,7 @@ export default function AdminLayout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [user, setUser] = useState<{ email: string } | null>(null);
+  
   const router = useRouter();
   const pathname = usePathname();
 
@@ -28,9 +35,7 @@ export default function AdminLayout({
     };
 
     checkScreenSize();
-
     window.addEventListener('resize', checkScreenSize);
-    
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
@@ -52,7 +57,6 @@ export default function AdminLayout({
       console.error(e);
     } finally {
       localStorage.clear();
-      // Cookieləri təmizlə
       document.cookie.split(";").forEach((c) => {
         document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
       });
@@ -60,11 +64,12 @@ export default function AdminLayout({
     }
   };
 
-  const isActive = (path: string) => pathname === path ? styles.activeLink : '';
+  const isActive = (path: string) => pathname.startsWith(path) ? styles.activeLink : '';
 
   return (
     <div className={styles.adminLayout}>
       
+      {/* SIDEBAR */}
       <aside className={`${styles.sidebar} ${!isSidebarOpen && isMobile ? styles.sidebarClosed : styles.sidebarOpen}`}>
         <div className={styles.sidebarHeader}>
           <div className={styles.logo}>Mebel Admin</div>
@@ -74,7 +79,7 @@ export default function AdminLayout({
         </div>
         
         <nav className={styles.sidebarNav}>
-          <Link href="/admin" className={`${styles.navLink} ${isActive('/admin')}`}>
+          <Link href="/admin" className={`${styles.navLink} ${pathname === '/admin' ? styles.activeLink : ''}`}>
             <FaHome /> Dashboard
           </Link>
           
@@ -88,6 +93,16 @@ export default function AdminLayout({
 
           <Link href="/admin/colors" className={`${styles.navLink} ${isActive('/admin/colors')}`}>
             <FaPalette /> Colors
+          </Link>
+
+          {/* YENİ: DESIGNERS */}
+          <Link href="/admin/designers" className={`${styles.navLink} ${isActive('/admin/designers')}`}>
+            <FaPaintBrush /> Designers
+          </Link>
+          
+          {/* YENİ: COLLECTIONS */}
+          <Link href="/admin/collections" className={`${styles.navLink} ${isActive('/admin/collections')}`}>
+            <FaFolder /> Collections
           </Link>
           
           <Link href="/admin/series" className={`${styles.navLink} ${isActive('/admin/series')}`}>

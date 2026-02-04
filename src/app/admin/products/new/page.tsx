@@ -1,10 +1,15 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createProduct, uploadProductImages, CreateProductPayload } from '@/lib/products';
 import { revalidateProducts } from '@/lib/revalidate';
-// import styles from './create-product.module.css'; // Stil faylın varsa aç
+
+// --- YENİ IMPORTLAR (Seçimləri gətirmək üçün) ---
+import { getCategories, BackendCategory } from '@/lib/categories';
+import { getColors, BackendColor } from '@/lib/colors';
+import { getDesigners, BackendDesigner } from '../../../../lib/designers';   
+import { getCollections, BackendCollection } from '../../../../lib/collections';
 
 export default function CreateProductPage() {
   const router = useRouter();
@@ -12,7 +17,12 @@ export default function CreateProductPage() {
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
-  const [createdProductId, setCreatedProductId] = useState<number | null>(null);
+  
+  // --- SEÇİM DATALARI ---
+  const [categories, setCategories] = useState<BackendCategory[]>([]);
+  const [colors, setColors] = useState<BackendColor[]>([]);
+  const [designers, setDesigners] = useState<BackendDesigner[]>([]);
+  const [collections, setCollections] = useState<BackendCollection[]>([]);
 
   // Formun başlanğıc dəyərləri
   const [formData, setFormData] = useState<CreateProductPayload>({
@@ -26,9 +36,9 @@ export default function CreateProductPage() {
     width: 0,
     depth: 0,
     weight: 0,
-    categoryId: 0,   // DİQQƏT: Bu 0 ola bilməz!
-    designerId: 0,   // DİQQƏT: Bu 0 ola bilməz!
-    collectionId: 0, // DİQQƏT: Bu 0 ola bilməz!
+    categoryId: 0,   
+    designerId: 0,   
+    collectionId: 0, 
     colorIds: [],    
     materialIds: [],
     roomIds: [],
@@ -36,12 +46,35 @@ export default function CreateProductPage() {
     specifications: [] 
   });
 
-  // --- DÜZƏLDİLMİŞ INPUT HANDLING (NaN XƏTASI ÜÇÜN) ---
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  // --- YENİ: Dataları API-dən yükləmək ---
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Hamsını paralel yükləyirik
+        const [catsData, colorsData, designersData, collectionsData] = await Promise.all([
+          // DÜZƏLİŞ: (err: any) əlavə etdik
+          getCategories().catch((err: any) => { console.error(err); return []; }),
+          getColors().catch((err: any) => { console.error(err); return []; }),
+          getDesigners().catch((err: any) => { console.error(err); return []; }),
+          getCollections().catch((err: any) => { console.error(err); return []; })
+        ]);
+
+        setCategories(catsData);
+        setColors(colorsData);
+        setDesigners(designersData);
+        setCollections(collectionsData);
+      } catch (error) {
+        console.error('Data yüklənərkən xəta:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Input Handling
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     
-    if (type === 'number') {
-      // Əgər boşdursa 0 yazırıq, əks halda rəqəmə çeviririk
+    if (type === 'number' || name === 'categoryId' || name === 'designerId' || name === 'collectionId') {
       const numValue = value === '' ? 0 : parseFloat(value);
       setFormData(prev => ({ ...prev, [name]: numValue }));
     } else {
@@ -53,7 +86,18 @@ export default function CreateProductPage() {
     setFormData(prev => ({ ...prev, isFeatured: e.target.checked }));
   };
 
-  // Resim seçme handler
+  // --- YENİ: Rəng Seçimi (Checkbox Logic) ---
+  const handleColorToggle = (colorId: number) => {
+    setFormData(prev => {
+      const exists = prev.colorIds.includes(colorId);
+      if (exists) {
+        return { ...prev, colorIds: prev.colorIds.filter(id => id !== colorId) };
+      } else {
+        return { ...prev, colorIds: [...prev.colorIds, colorId] };
+      }
+    });
+  };
+
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setSelectedFiles(e.target.files);
@@ -65,61 +109,51 @@ export default function CreateProductPage() {
     setLoading(true);
     setMessage('');
 
-    // --- ID YOXLAMASI (500 XƏTASI ÜÇÜN) ---
-    // Backend 0 ID-sini qəbul etmir, mütləq real ID lazımdır
-    if (formData.categoryId === 0 || formData.designerId === 0 || formData.collectionId === 0) {
-       alert("Zəhmət olmasa Category, Designer və Collection ID-lərini düzgün daxil edin (0 ola bilməz)!");
+    if (formData.categoryId === 0) {
+       alert("Zəhmət olmasa Kateqoriya seçin!");
        setLoading(false);
        return;
     }
 
     try {
       const token = localStorage.getItem('accessToken'); 
-
       if (!token) {
-        alert("Siz admin kimi daxil olmamısınız (Token yoxdur)!");
+        alert("Siz admin kimi daxil olmamısınız!");
         setLoading(false);
         return;
       }
 
-      console.log("Göndərilən Data:", formData); // Konsolda baxmaq üçün
-
-      // 1. Ürünü oluştur
+      // 1. Məhsulu yarat
       const response: any = await createProduct(formData, token);
-      
-      // Backend'den dönen ürün ID'sini al
       const productId = response?.id || response?.data?.id;
       
-      if (!productId) {
-        throw new Error('Ürün oluşturuldu ama ID alınamadı!');
-      }
+      if (!productId) throw new Error('Məhsul yaradıldı amma ID gəlmədi.');
       
-      setCreatedProductId(productId);
       setMessage('✅ Məhsul uğurla yaradıldı!');
-      await revalidateProducts();
+      await revalidateProducts(); // Cache təmizlə
 
-      // 2. Eğer resim seçildiyse, resimleri yükle
+      // 2. Şəkilləri yüklə
       if (selectedFiles && selectedFiles.length > 0) {
         try {
           setUploading(true);
           await uploadProductImages(productId, selectedFiles, token);
           setMessage('✅ Məhsul və şəkillər uğurla yükləndi!');
         } catch (uploadError: any) {
-          console.error('Resim yükleme hatası:', uploadError);
-          setMessage(`✅ Məhsul yaradıldı, amma şəkillər yüklənmədi: ${uploadError.message}`);
+          console.error(uploadError);
+          setMessage(`✅ Məhsul yaradıldı, amma şəkil xətası: ${uploadError.message}`);
         } finally {
           setUploading(false);
         }
       }
       
-      // 3. Başarılı olursa products list sayfasına yönlendir
       setTimeout(() => {
         router.push('/admin/products');
+        router.refresh();
       }, 1500);
       
     } catch (error: any) {
       console.error(error);
-      setMessage(`❌ Xəta baş verdi: ${error.message}`);
+      setMessage(`❌ Xəta: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -131,87 +165,112 @@ export default function CreateProductPage() {
       
       <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '15px' }}>
         
+        {/* ƏSAS MƏLUMATLAR */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
           <label>
             Ad (Name):
-            <input type="text" name="name" value={formData.name} onChange={handleChange} required style={{border: '1px solid #ccc', padding: '8px', width: '100%'}} />
+            <input type="text" name="name" value={formData.name} onChange={handleChange} required style={inputStyle} />
           </label>
           <label>
             SKU:
-            <input type="text" name="sku" value={formData.sku} onChange={handleChange} required style={{border: '1px solid #ccc', padding: '8px', width: '100%'}} />
+            <input type="text" name="sku" value={formData.sku} onChange={handleChange} required style={inputStyle} />
           </label>
         </div>
 
         <label>
           Qısa Təsvir:
-          <input type="text" name="shortDescription" value={formData.shortDescription} onChange={handleChange} style={{border: '1px solid #ccc', padding: '8px', width: '100%'}} />
+          <input type="text" name="shortDescription" value={formData.shortDescription} onChange={handleChange} style={inputStyle} />
         </label>
 
         <label>
           Tam Təsvir:
-          <textarea name="description" value={formData.description} onChange={handleChange} style={{border: '1px solid #ccc', padding: '8px', width: '100%'}} rows={4} />
+          <textarea name="description" value={formData.description} onChange={handleChange} style={inputStyle} rows={4} />
         </label>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
           <label>
-            Qiymət:
-            {/* value={formData.price || ''} yazırıq ki, 0 olanda boş görünsün (optional) */}
-            <input type="number" name="price" value={formData.price} onChange={handleChange} required style={{border: '1px solid #ccc', padding: '8px', width: '100%'}} />
+            Qiymət (AZN):
+            <input type="number" name="price" value={formData.price} onChange={handleChange} required style={inputStyle} />
           </label>
           <label style={{display:'flex', alignItems:'center', gap: '10px'}}>
-            Featured:
-            <input type="checkbox" name="isFeatured" checked={formData.isFeatured} onChange={handleCheckbox} />
+            Önə çıxan (Featured):
+            <input type="checkbox" name="isFeatured" checked={formData.isFeatured} onChange={handleCheckbox} style={{width:'20px', height:'20px'}} />
           </label>
         </div>
 
         <h3>Ölçülər</h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '10px' }}>
-          <label>Hündürlük: <input type="number" name="height" value={formData.height} onChange={handleChange} style={{border: '1px solid #ccc', padding: '8px', width: '100%'}} /></label>
-          <label>En: <input type="number" name="width" value={formData.width} onChange={handleChange} style={{border: '1px solid #ccc', padding: '8px', width: '100%'}} /></label>
-          <label>Dərinlik: <input type="number" name="depth" value={formData.depth} onChange={handleChange} style={{border: '1px solid #ccc', padding: '8px', width: '100%'}} /></label>
-          <label>Çəki: <input type="number" name="weight" value={formData.weight} onChange={handleChange} style={{border: '1px solid #ccc', padding: '8px', width: '100%'}} /></label>
+          <label>Hündürlük: <input type="number" name="height" value={formData.height} onChange={handleChange} style={inputStyle} /></label>
+          <label>En: <input type="number" name="width" value={formData.width} onChange={handleChange} style={inputStyle} /></label>
+          <label>Dərinlik: <input type="number" name="depth" value={formData.depth} onChange={handleChange} style={inputStyle} /></label>
+          <label>Çəki: <input type="number" name="weight" value={formData.weight} onChange={handleChange} style={inputStyle} /></label>
         </div>
 
-        <div style={{backgroundColor: '#f8d7da', padding: '10px', borderRadius: '5px', marginTop: '10px'}}>
-            <strong>Vacib Qeyd:</strong> Aşağıdakı ID-lərə 0 yazmayın! Swagger-dən baxıb mövcud ID (məs: 1, 2) yazın.
-        </div>
-
-        <h3>Əlaqələr (ID)</h3>
+        {/* --- YENİLƏNMİŞ HİSSƏ: DROPDOWNLARI SEÇMƏK --- */}
+        <h3>Əlaqələr (Seçimlər)</h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
+          
+          {/* Kateqoriya */}
           <label>
-             Category ID: <span style={{color:'red'}}>*</span>
-             <input type="number" name="categoryId" value={formData.categoryId} onChange={handleChange} required style={{border: '1px solid #ccc', padding: '8px', width: '100%'}} />
+             Category: <span style={{color:'red'}}>*</span>
+             <select name="categoryId" value={formData.categoryId} onChange={handleChange} required style={inputStyle}>
+                <option value={0}>Seçin...</option>
+                {categories.map(cat => (
+                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
+             </select>
           </label>
+
+          {/* Kolleksiya */}
           <label>
-             Designer ID: <span style={{color:'red'}}>*</span>
-             <input type="number" name="designerId" value={formData.designerId} onChange={handleChange} required style={{border: '1px solid #ccc', padding: '8px', width: '100%'}} />
+             Collection: <span style={{color:'red'}}>*</span>
+             <select name="collectionId" value={formData.collectionId} onChange={handleChange} required style={inputStyle}>
+                <option value={0}>Seçin...</option>
+                {collections.map(col => (
+                  <option key={col.id} value={col.id}>{col.name}</option>
+                ))}
+             </select>
           </label>
+
+          {/* Dizayner */}
           <label>
-             Collection ID: <span style={{color:'red'}}>*</span>
-             <input type="number" name="collectionId" value={formData.collectionId} onChange={handleChange} required style={{border: '1px solid #ccc', padding: '8px', width: '100%'}} />
+             Designer: <span style={{color:'red'}}>*</span>
+             <select name="designerId" value={formData.designerId} onChange={handleChange} required style={inputStyle}>
+                <option value={0}>Seçin...</option>
+                {designers.map(des => (
+                  <option key={des.id} value={des.id}>{des.name}</option>
+                ))}
+             </select>
           </label>
         </div>
 
-        {/* Resim Yükleme Bölümü */}
+        {/* --- YENİ: RƏNG SEÇİMİ --- */}
+        <h3>Rənglər</h3>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', padding: '10px', border: '1px solid #ddd', borderRadius: '4px' }}>
+            {colors.length > 0 ? colors.map(color => (
+                <label key={color.id} style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer', padding: '5px', background: '#f9f9f9', borderRadius: '4px', border: '1px solid #eee' }}>
+                    <input 
+                        type="checkbox" 
+                        checked={formData.colorIds.includes(color.id)}
+                        onChange={() => handleColorToggle(color.id)}
+                    />
+                    <span style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: color.hexCode, border: '1px solid #ccc', display: 'inline-block' }}></span>
+                    {color.name}
+                </label>
+            )) : <p>Rənglər yüklənir və ya tapılmadı...</p>}
+        </div>
+
+        {/* Resim Yükleme */}
         <div style={{ marginTop: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f9' }}>
           <h3 style={{ marginTop: 0, marginBottom: '10px' }}>Şəkillər</h3>
-          <label style={{ display: 'block', marginBottom: '10px' }}>
-            <input 
+          <input 
               type="file" 
               multiple 
               accept="image/*"
               onChange={handleFileSelect}
               style={{ padding: '8px', width: '100%', border: '1px solid #ccc', borderRadius: '4px' }}
             />
-            <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>
-              Bir və ya bir neçə şəkil seçə bilərsiniz (JPG, PNG, vb.)
-            </small>
-          </label>
-          {selectedFiles && selectedFiles.length > 0 && (
-            <div style={{ marginTop: '10px', padding: '10px', backgroundColor: '#e8f5e9', borderRadius: '4px' }}>
-              <strong>Seçilmiş şəkillər:</strong> {selectedFiles.length} fayl
-            </div>
-          )}
+           {selectedFiles && <div style={{marginTop:'5px'}}>Seçildi: {selectedFiles.length} fayl</div>}
         </div>
 
         <button 
@@ -237,3 +296,11 @@ export default function CreateProductPage() {
     </div>
   );
 }
+
+// Sadə stil obyekti
+const inputStyle = {
+  border: '1px solid #ccc',
+  padding: '8px',
+  width: '100%',
+  borderRadius: '4px'
+};
