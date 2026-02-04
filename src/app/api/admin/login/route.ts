@@ -3,56 +3,60 @@ import { loginUser } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
     try {
-        const { email, password } = await request.json();
+        // 1. Frontend-dən gələn məlumatı oxuyuruq
+        const body = await request.json();
+        const { username, password } = body; // DÜZƏLİŞ: email yox, username
 
-        if (!email || !password) {
+        if (!username || !password) {
             return NextResponse.json(
-                { error: 'Email and password are required' },
+                { error: 'İstifadəçi adı və şifrə tələb olunur' },
                 { status: 400 }
             );
         }
 
         try {
-            const loginResponse = await loginUser(email, password);
+            // 2. Auth kitabxanası vasitəsilə Backend-ə sorğu atırıq
+            const loginResponse = await loginUser(username, password);
 
-            // Set HTTP-only cookies for security
+            // 3. Uğurlu cavab hazırlayırıq
             const response = NextResponse.json({
-                message: 'Login successful',
+                message: 'Giriş uğurludur',
                 user: loginResponse.user,
+                accessToken: loginResponse.accessToken, // Frontend üçün
+                refreshToken: loginResponse.refreshToken
             });
 
-            // Set access token as HTTP-only cookie
+            // 4. Tokenləri Cookie-yə də yazırıq (Təhlükəsizlik üçün)
             response.cookies.set('accessToken', loginResponse.accessToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'strict',
-                maxAge: 60 * 60 * 24, // 24 hours
+                maxAge: 60 * 60 * 24, // 1 gün
                 path: '/',
             });
 
-            // Set refresh token as HTTP-only cookie (if available)
             if (loginResponse.refreshToken) {
                 response.cookies.set('refreshToken', loginResponse.refreshToken, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
                     sameSite: 'strict',
-                    maxAge: 60 * 60 * 24 * 7, // 7 days
+                    maxAge: 60 * 60 * 24 * 7, // 7 gün
                     path: '/',
                 });
             }
 
             return response;
-        } catch (apiError: unknown) {
-            const errorMessage = apiError instanceof Error ? apiError.message : 'Login failed';
+
+        } catch (apiError: any) {
             return NextResponse.json(
-                { error: errorMessage },
+                { error: apiError.message || 'Giriş uğursuz oldu' },
                 { status: 401 }
             );
         }
     } catch (error) {
-        console.error('Login error:', error);
+        console.error('Login Route Error:', error);
         return NextResponse.json(
-            { error: 'Internal server error' },
+            { error: 'Daxili server xətası' },
             { status: 500 }
         );
     }

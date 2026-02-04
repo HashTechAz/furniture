@@ -8,26 +8,31 @@ export async function POST(request: NextRequest) {
 
         if (!currentPassword || !newPassword) {
             return NextResponse.json(
-                { error: 'Current password and new password are required' },
+                { error: 'Cari şifrə və yeni şifrə tələb olunur.' },
                 { status: 400 }
             );
         }
 
         if (!accessToken) {
             return NextResponse.json(
-                { error: 'Access token not found. Please login again.' },
+                { error: 'Sessiya bitib. Zəhmət olmasa yenidən giriş edin.' },
                 { status: 401 }
             );
         }
 
         try {
-            await changePassword(currentPassword, newPassword, accessToken);
+            // DÜZƏLİŞ: Funksiyaya obyekti və tokeni düzgün göndəririk
+            await changePassword({
+                currentPassword: currentPassword,
+                newPassword: newPassword,
+                confirmNewPassword: newPassword // Backend adətən təsdiq də istəyir
+            }, accessToken);
             
             return NextResponse.json({
-                message: 'Password changed successfully',
+                message: 'Şifrə uğurla dəyişdirildi',
             });
         } catch (apiError: unknown) {
-            const errorMessage = apiError instanceof Error ? apiError.message : 'Password change failed';
+            const errorMessage = apiError instanceof Error ? apiError.message : 'Şifrəni dəyişmək mümkün olmadı';
             return NextResponse.json(
                 { error: errorMessage },
                 { status: 400 }
@@ -36,7 +41,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error('Change password error:', error);
         return NextResponse.json(
-            { error: 'Internal server error' },
+            { error: 'Daxili server xətası' },
             { status: 500 }
         );
     }

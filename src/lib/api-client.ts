@@ -95,7 +95,14 @@ export async function apiRequest<T>(
 
     if (response.status === 204) return {} as T;
 
-    return await response.json();
+    const text = await response.text();
+    if (!text) return {} as T;
+    try {
+      return JSON.parse(text) as T;
+    } catch {
+      // Backend bəzən JSON yox, sadə mətn qaytarır (məs. "Şifrə uğurla dəyişdirildi")
+      return { message: text } as T;
+    }
 
   } catch (error) {
     console.error("🔥 API Request Failed:", error);

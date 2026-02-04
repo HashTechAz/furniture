@@ -151,3 +151,29 @@
     flex: none;
   }
 }
+
+/* Mövcud kodların ən aşağısına yapışdırın */
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.eyeButton {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.eyeButton:hover {
+  color: #333;
+}

@@ -6,6 +6,7 @@ import { getColors, BackendColor } from '@/lib/colors'; // <--- YENİ IMPORT
 import { apiRequest } from '@/lib/api-client';
 import { revalidateProducts } from '@/lib/revalidate';
 import styles from '../product-form.module.css';
+import { useRouter } from 'next/navigation';
 
 interface SimpleItem {
   id: number;
@@ -20,6 +21,7 @@ interface EditProductPageProps {
 
 export default function EditProductPage({ params }: EditProductPageProps) {
   const [resolvedParams, setResolvedParams] = useState<{ id: string } | null>(null);
+  const router = useRouter();
 
   // Data State-ləri
   const [loading, setLoading] = useState(true);
@@ -167,10 +169,15 @@ export default function EditProductPage({ params }: EditProductPageProps) {
       const token = localStorage.getItem('accessToken');
       if (!token) return alert("Token yoxdur!");
 
-      console.log("Update Data:", formData); // Debug üçün
+      console.log("Update Data:", formData);
       await updateProduct(resolvedParams.id, formData, token);
       await revalidateProducts();
+      
       alert('✅ Məlumatlar yeniləndi!');
+      
+      router.push('/admin/products');
+      router.refresh(); 
+      
     } catch (error: any) {
       alert('Xəta: ' + error.message);
     }
