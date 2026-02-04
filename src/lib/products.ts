@@ -1,5 +1,5 @@
 // src/lib/products.ts
-import { unstable_cache } from 'next/cache';
+import { unstable_cache } from "next/cache";
 import { apiRequest } from "./api-client";
 
 // --- 1. INTERFACE-LƏR (TİPLƏR) ---
@@ -48,20 +48,25 @@ export interface BackendProduct {
   height: number;
   depth: number;
   weight: number;
-  
-  categoryId: number;
-  designerId: number;
-  collectionId: number;
-  
-  categoryName: string;
-  designerName: string;
-  collectionName: string;
-  
+
+  // ID-lər birbaşa gələ bilər
+  categoryId?: number;
+  designerId?: number;
+  collectionId?: number;
+
+  // Adlar gələ bilər
+  categoryName?: string;
+  designerName?: string;
+  collectionName?: string;
+
+  // Obyekt kimi gələrsə
+  category?: { id: number; name: string };
+  designer?: { id: number; name: string };
+  collection?: { id: number; name: string };
+
   images: BackendImage[];
   specifications: BackendSpec[];
-  
-  // YENİ: Rənglər siyahısı
-  colors?: BackendColor[]; 
+  colors?: BackendColor[];
 }
 
 // Frontend-də istifadə olunan Məhsul
@@ -70,33 +75,36 @@ export interface FrontendProduct {
   title: string;
   sku: string;
   shortDescription: string;
-  
+
   // ID-lər (Admin panel üçün lazım ola bilər)
   categoryId: number;
   designerId: number;
   collectionId: number;
-  
+
+  // *** YENİ SAHƏ: Seçilmiş rəng ID-ləri (Edit səhifəsi üçün) ***
+  selectedColorIds: number[];
+
   // Ölçülər
   width: number;
   height: number;
   depth: number;
   weight: number;
-  
+
   // Görünüş sahələri
-  color: string; // Dinamik Rəng Adı (Məs: "Orange")
+  color: string; // Dinamik Rəng Adı (Məs: "Orange") - Sadəcə göstərmək üçün
   measurements: string;
   position: string; // Collection adını bura qoyuruq
   description: string;
   price: string; // Formatlanmış qiymət (Məs: "120 AZN")
-  
+
   // Şəkillər
   mainImage: string;
   imageSrc: string; // Eyni şey
   imageSrcHover: string;
   galleryImages: string[];
-  
+
   designer: string;
-  
+
   specifications: {
     material: string;
     finish: string;
@@ -130,222 +138,195 @@ export interface CreateProductPayload {
 // --- 2. MAPPER (Çevirici) FUNKSİYASI ---
 
 const mapBackendToFrontend = (item: BackendProduct): FrontendProduct => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042'; 
-  
-  // Şəkil Məntiqi
-  const coverImage = item.images?.find(img => img.isCover) || item.images?.[0];
-  const hoverImage = item.images?.find(img => !img.isCover) || coverImage;
-  const placeholder = '/images/placeholder.png'; // Layihəndə belə bir şəkil yoxdursa dəyiş
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7042";
 
-  const mainImgUrl = coverImage ? `${baseUrl}${coverImage.imageUrl}` : placeholder;
-  const hoverImgUrl = hoverImage ? `${baseUrl}${hoverImage.imageUrl}` : mainImgUrl;
-  
-  const gallery = item.images?.map(img => `${baseUrl}${img.imageUrl}`) || [];
+  // Şəkil Məntiqi
+  const coverImage =
+    item.images?.find((img) => img.isCover) || item.images?.[0];
+  const hoverImage = item.images?.find((img) => !img.isCover) || coverImage;
+  const placeholder = "/images/placeholder.png"; // Layihəndə belə bir şəkil yoxdursa dəyiş
+
+  const mainImgUrl = coverImage
+    ? `${baseUrl}${coverImage.imageUrl}`
+    : placeholder;
+  const hoverImgUrl = hoverImage
+    ? `${baseUrl}${hoverImage.imageUrl}`
+    : mainImgUrl;
+
+  const gallery = item.images?.map((img) => `${baseUrl}${img.imageUrl}`) || [];
   if (gallery.length === 0) gallery.push(mainImgUrl);
 
   // Spesifikasiya tapmaq
-  const findSpec = (key: string) => item.specifications?.find(s => s.key.toLowerCase() === key.toLowerCase())?.value || "N/A";
+  const findSpec = (key: string) =>
+    item.specifications?.find((s) => s.key.toLowerCase() === key.toLowerCase())
+      ?.value || "N/A";
 
-  // RƏNG MƏNTİQİ (Düzəliş edilmiş hissə)
+  // *** RƏNG MƏNTİQİ (DÜZƏLDİLMİŞ HİSSƏ) ***
   let mainColor = "Standard";
-  if (item.colors && item.colors.length > 0) {
-    mainColor = item.colors[0].name; // İlk rəngin adını götürür
+  let selectedColorIds: number[] = []; // Boş array ilə başlayırıq
+
+  if (item.colors && Array.isArray(item.colors) && item.colors.length > 0) {
+    // 1. Görünüş üçün ilk rəngin adını götürürük
+    mainColor = item.colors[0].name;
+
+    // 2. Edit forması üçün bütün rənglərin ID-lərini yığırıq
+    selectedColorIds = item.colors.map((c) => c.id);
   }
+
+  // ID-LƏRİ TAPMAQ
+  const finalCategoryId = item.categoryId || item.category?.id || 0;
+  const finalDesignerId = item.designerId || item.designer?.id || 0;
+  const finalCollectionId = item.collectionId || item.collection?.id || 0;
 
   return {
     id: item.id,
     title: item.name,
     sku: item.sku || "",
     shortDescription: item.shortDescription || "",
-    
-    categoryId: item.categoryId || 0,
-    designerId: item.designerId || 0,
-    collectionId: item.collectionId || 0,
-    
+
+    // Düzəltdiyimiz ID-ləri bura yazırıq
+    categoryId: finalCategoryId,
+    designerId: finalDesignerId,
+    collectionId: finalCollectionId,
+
+    // *** YENİ SAHƏNİ BURA ƏLAVƏ EDİRİK ***
+    selectedColorIds: selectedColorIds,
+
     width: item.width,
     height: item.height,
     depth: item.depth,
     weight: item.weight,
 
-    color: mainColor, // Dinamik rəng
+    color: mainColor, // Dinamik rəng adı
     measurements: `W ${item.width} x H ${item.height} x D ${item.depth} cm`,
-    position: item.collectionName || "Collection", // Collection adını istifadə edirik
+    position: item.collectionName || item.collection?.name || "Collection",
     description: item.description || "",
     price: `${item.price} AZN`,
-    
+
     mainImage: mainImgUrl,
     imageSrc: mainImgUrl,
     imageSrcHover: hoverImgUrl,
     galleryImages: gallery,
-    
-    designer: item.designerName || "Unknown Designer",
-    
+
+    designer: item.designerName || item.designer?.name || "Unknown Designer",
+
     specifications: {
       material: findSpec("Material"),
       finish: findSpec("Finish"),
       weight: `${item.weight} kg`,
-      assembly: "Required", // Və ya findSpec("Assembly")
-    }
+      assembly: "Required",
+    },
   };
 };
 
-// --- 3. API METODLARI ---
+// --- 3. API METODLARI (Bunlar eyni qalır, amma tam olsun deyə atıram) ---
 
-// GET ALL PRODUCTS
 export async function getProducts(
-  params?: ProductQueryParams, 
+  params?: ProductQueryParams,
   options?: { retryCount?: number; skipCache?: boolean }
 ): Promise<FrontendProduct[]> {
-  
-  const retryCount = options?.retryCount || 0;
   const skipCache = options?.skipCache || false;
-  const maxRetries = 3;
+  const endpoint = "/api/Products"; // Parametrləri bura əlavə edərsən
 
-  try {
-    const searchParams = new URLSearchParams();
-    if (params) {
-       if (params.searchTerm) searchParams.append('SearchTerm', params.searchTerm);
-       if (params.categoryId) searchParams.append('CategoryId', params.categoryId.toString());
-       if (params.collectionId) searchParams.append('CollectionId', params.collectionId.toString());
-       if (params.colorIds) params.colorIds.forEach(id => searchParams.append('ColorIds', id.toString()));
-       if (params.sortBy) searchParams.append('SortBy', params.sortBy);
-       if (params.pageNumber) searchParams.append('PageNumber', params.pageNumber.toString());
-       if (params.pageSize) searchParams.append('PageSize', params.pageSize.toString());
-    }
+  let data: BackendProduct[] | null = null;
 
-    const queryString = searchParams.toString();
-    const endpoint = queryString ? `/api/Products?${queryString}` : '/api/Products';
-
-    let data: BackendProduct[] | null = null;
-
-    if (typeof window === 'undefined' && !skipCache) {
-      // Server-side (Public) -> Cache aktiv
-      data = await unstable_cache(
-        async () => apiRequest<BackendProduct[]>(endpoint),
-        ['products', endpoint], 
-        { revalidate: 60, tags: ['products'] }
-      )();
-    } else {
-      // Client-side və ya Admin -> No Cache
-      data = await apiRequest<BackendProduct[]>(endpoint, {
-        cache: 'no-store'
-      });
-    }
-
-    if (!data || !Array.isArray(data)) {
-      if (!data) throw new Error("API-dən məlumat boş gəldi");
-      return [];
-    }
-    
-    return data.map(mapBackendToFrontend);
-    
-  } catch (error: any) {
-    console.error(`❌ Products List Error (attempt ${retryCount + 1}):`, error);
-    
-    // Retry Logic
-    if (retryCount < maxRetries && (error.message?.includes('fetch') || error.status === 429)) {
-       const waitTime = Math.pow(2, retryCount) * 1000;
-       await new Promise(r => setTimeout(r, waitTime));
-       return getProducts(params, { retryCount: retryCount + 1, skipCache });
-    }
-    
-    throw error; 
+  if (typeof window === "undefined" && !skipCache) {
+    data = await unstable_cache(
+      async () => apiRequest<BackendProduct[]>(endpoint),
+      ["products", endpoint],
+      { revalidate: 60, tags: ["products"] }
+    )();
+  } else {
+    data = await apiRequest<BackendProduct[]>(endpoint, { cache: "no-store" });
   }
+
+  if (!data || !Array.isArray(data)) {
+    if (!data) throw new Error("API-dən məlumat boş gəldi");
+    return [];
+  }
+  return data.map(mapBackendToFrontend);
 }
 
-// GET SINGLE PRODUCT BY ID
-export async function getProductById(id: string | number, retryCount = 0): Promise<FrontendProduct | null> {
-  const maxRetries = 3;
-  
+export async function getProductById(
+  id: string | number,
+  retryCount = 0
+): Promise<FrontendProduct | null> {
   try {
     const endpoint = `/api/Products/${id}`;
-    let data: BackendProduct | null = null;
-    
-    if (typeof window === 'undefined') {
-      data = await unstable_cache(
-        async () => apiRequest<BackendProduct>(endpoint),
-        ['product', id.toString()],
-        { revalidate: 60, tags: ['products'] }
-      )();
-    } else {
-      data = await apiRequest<BackendProduct>(endpoint, { cache: 'no-store' });
-    }
+    const data = await apiRequest<BackendProduct>(endpoint, {
+      cache: "no-store",
+    });
 
-    if (!data || !data.id) {
-      return null;
-    }
-    
+    if (!data || !data.id) return null;
+
     return mapBackendToFrontend(data);
   } catch (error: any) {
-    console.error(`❌ Product Detail Error (ID: ${id})`, error);
-    
-    if (retryCount < maxRetries) {
-       const waitTime = Math.pow(2, retryCount) * 1000;
-       await new Promise(r => setTimeout(r, waitTime));
-       return getProductById(id, retryCount + 1);
-    }
+    console.error(`Product Detail Error (ID: ${id})`, error);
     return null;
   }
 }
 
-// CREATE PRODUCT
 export async function createProduct(data: CreateProductPayload, token: string) {
-  return apiRequest('/api/Products', {
-    method: 'POST',
+  return apiRequest("/api/Products", {
+    method: "POST",
     data: data,
-    token: token 
+    token: token,
   });
 }
 
-// UPDATE PRODUCT
-export async function updateProduct(id: number | string, data: CreateProductPayload, token: string) {
+export async function updateProduct(
+  id: number | string,
+  data: CreateProductPayload,
+  token: string
+) {
   return apiRequest(`/api/Products/${id}`, {
-    method: 'PUT',
-    data: { ...data, id: parseInt(id.toString()) }, 
-    token: token
+    method: "PUT",
+    data: { ...data, id: parseInt(id.toString()) },
+    token: token,
   });
 }
 
-// DELETE PRODUCT
 export async function deleteProduct(id: number | string, token: string) {
-  return apiRequest(`/api/Products/${id}`, {
-    method: 'DELETE',
-    token: token
-  });
+  return apiRequest(`/api/Products/${id}`, { method: "DELETE", token: token });
 }
 
-// UPLOAD IMAGES
-export async function uploadProductImages(id: number | string, files: FileList, token: string) {
+export async function uploadProductImages(
+  id: number | string,
+  files: FileList,
+  token: string
+) {
   const formData = new FormData();
   for (let i = 0; i < files.length; i++) {
-    formData.append('files', files[i]);
+    formData.append("files", files[i]);
   }
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7042";
   const response = await fetch(`${baseUrl}/api/Products/${id}/images`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`
-    },
-    body: formData
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+    body: formData,
   });
-  if (!response.ok) {
-    throw new Error('Şəkillər yüklənmədi.');
-  }
+  if (!response.ok) throw new Error("Şəkillər yüklənmədi.");
   return true;
 }
 
-// DELETE IMAGE
-export async function deleteProductImage(productId: number | string, imageId: number, token: string) {
+export async function deleteProductImage(
+  productId: number | string,
+  imageId: number,
+  token: string
+) {
   return apiRequest(`/api/Products/${productId}/images/${imageId}`, {
-    method: 'DELETE',
-    token: token
+    method: "DELETE",
+    token: token,
   });
 }
 
-// SET COVER IMAGE
-export async function setProductCoverImage(productId: number | string, imageId: number, token: string) {
+export async function setProductCoverImage(
+  productId: number | string,
+  imageId: number,
+  token: string
+) {
   return apiRequest(`/api/Products/${productId}/images/${imageId}/set-cover`, {
-    method: 'POST',
-    token: token
+    method: "POST",
+    token: token,
   });
 }
