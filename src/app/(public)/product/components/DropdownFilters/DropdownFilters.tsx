@@ -1,6 +1,8 @@
 'use client'; 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './DropdownFilters.module.css';
+// YENİ: API-dən rəngləri gətirmək üçün
+import { getColors } from '@/lib/colors';
 
 interface DropdownProps {
   label?: string; 
@@ -10,7 +12,14 @@ interface DropdownProps {
 
 const Dropdown = ({ label, options, initialSelected }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(initialSelected || options[0]);
+  const [selectedOption, setSelectedOption] = useState(initialSelected || (options.length > 0 ? options[0] : ''));
+
+  // Options dəyişəndə (API yüklənəndə) seçimi yeniləyək
+  useEffect(() => {
+    if (options.length > 0 && !selectedOption) {
+        setSelectedOption(options[0]);
+    }
+  }, [options, selectedOption]);
 
   const handleOptionClick = (option: string) => {
     setSelectedOption(option); 
@@ -35,13 +44,17 @@ const Dropdown = ({ label, options, initialSelected }: DropdownProps) => {
       
       <div className={`${styles.dropdownMenu} ${isOpen ? styles.menuOpen : ''}`}>
         <ul>
-          {options.map((option, index) => (
-            <li key={index}>
-              <a href="#" onClick={(e) => { e.preventDefault(); handleOptionClick(option); }}>
-                {option}
-              </a>
-            </li>
-          ))}
+          {options.length > 0 ? (
+            options.map((option, index) => (
+                <li key={index}>
+                <a href="#" onClick={(e) => { e.preventDefault(); handleOptionClick(option); }}>
+                    {option}
+                </a>
+                </li>
+            ))
+          ) : (
+            <li style={{padding: '10px', color: '#999'}}>Yüklənir...</li>
+          )}
         </ul>
       </div>
     </div>
@@ -50,6 +63,10 @@ const Dropdown = ({ label, options, initialSelected }: DropdownProps) => {
 
 const DropdownFilters = () => {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  
+  // YENİ: Rənglər üçün State
+  const [colourOptions, setColourOptions] = useState<string[]>([]);
+  
   const [selectedFilters, setSelectedFilters] = useState({
     dispatch: "",
     depth: "",
@@ -63,9 +80,24 @@ const DropdownFilters = () => {
     series: false
   });
 
+  // YENİ: API-dən rəngləri çəkmək
+  useEffect(() => {
+    const fetchColors = async () => {
+      try {
+        const data = await getColors();
+        // BackendColor obyektindən sadəcə adları (string[]) götürürük
+        const names = data.map(c => c.name);
+        setColourOptions(names);
+      } catch (error) {
+        console.error("Filtr rəngləri yüklənmədi:", error);
+      }
+    };
+    fetchColors();
+  }, []);
+
   const dispatchOptions = ["In stock", "1-2 weeks", "3-4 weeks"];
   const depthOptions = ["30 cm", "38 cm", "47 cm"];
-  const colourOptions = ["New White", "Fjord", "Ruby", "Acacia"];
+  // const colourOptions = ["New White", "Fjord", "Ruby", "Acacia"]; // KÖHNƏ STATİK KOD SİLİNDİ
   const seriesOptions = ["Montana System", "Montana Free", "Panton Wire"];
   const sortOptions = ["Montana recommends", "Price: Low to High", "Price: High to Low"];
 
@@ -96,7 +128,10 @@ const DropdownFilters = () => {
       <div className={styles.leftFilters}>
         <Dropdown label="Dispatch time" options={dispatchOptions} />
         <Dropdown label="Depth" options={depthOptions} />
+        
+        {/* API-dən gələn rənglər bura ötürülür */}
         <Dropdown label="Colour" options={colourOptions} />
+        
         <Dropdown label="Product series" options={seriesOptions} />
       </div>
       
@@ -164,6 +199,7 @@ const DropdownFilters = () => {
             </div>
           </div>
 
+          {/* MOBİL RƏNG FİLTRİ (API-dən) */}
           <div className={styles.mobileFilterSection}>
             <h4 
               className={openSections.colour ? styles.open : ''}
@@ -173,15 +209,19 @@ const DropdownFilters = () => {
               <span className={styles.arrow}>▼</span>
             </h4>
             <div className={`${styles.mobileFilterOptions} ${openSections.colour ? styles.open : ''}`}>
-              {colourOptions.map((option, index) => (
-                <div
-                  key={index}
-                  className={`${styles.mobileFilterOption} ${selectedFilters.colour === option ? styles.selected : ''}`}
-                  onClick={() => handleFilterSelect('colour', option)}
-                >
-                  {option}
-                </div>
-              ))}
+              {colourOptions.length > 0 ? (
+                  colourOptions.map((option, index) => (
+                    <div
+                      key={index}
+                      className={`${styles.mobileFilterOption} ${selectedFilters.colour === option ? styles.selected : ''}`}
+                      onClick={() => handleFilterSelect('colour', option)}
+                    >
+                      {option}
+                    </div>
+                  ))
+              ) : (
+                  <div style={{padding:'10px'}}>Yüklənir...</div>
+              )}
             </div>
           </div>
 

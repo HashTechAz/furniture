@@ -12,19 +12,14 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  
-  // YENİ: Ekran ölçüsünü izləmək üçün state
   const [isMobile, setIsMobile] = useState(false);
-  
   const [user, setUser] = useState<{ email: string } | null>(null);
   const router = useRouter();
   const pathname = usePathname();
 
-  // YENİ: window.innerWidth yoxlanışını bura köçürdük
   useEffect(() => {
     const checkScreenSize = () => {
       setIsMobile(window.innerWidth < 1024);
-      // Əgər ekran böyükdürsə sidebar-ı açıq saxlayaq (istəyə bağlı)
       if (window.innerWidth >= 1024) {
         setIsSidebarOpen(true); 
       } else {
@@ -32,13 +27,10 @@ export default function AdminLayout({
       }
     };
 
-    // İlk açılışda yoxla
     checkScreenSize();
 
-    // Ekran ölçüsü dəyişəndə yenidən yoxla
     window.addEventListener('resize', checkScreenSize);
     
-    // Təmizlik işləri
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
@@ -73,8 +65,6 @@ export default function AdminLayout({
   return (
     <div className={styles.adminLayout}>
       
-      {/* SIDEBAR */}
-      {/* DÜZƏLİŞ: Artıq birbaşa window.innerWidth yox, isMobile state-ini yoxlayırıq */}
       <aside className={`${styles.sidebar} ${!isSidebarOpen && isMobile ? styles.sidebarClosed : styles.sidebarOpen}`}>
         <div className={styles.sidebarHeader}>
           <div className={styles.logo}>Mebel Admin</div>
