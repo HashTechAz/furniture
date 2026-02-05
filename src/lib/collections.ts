@@ -1,11 +1,20 @@
 import { apiRequest } from '@/lib/api-client';
 
+export interface CollectionProduct {
+  id: number;
+  name: string;
+  price: number;
+  coverImageUrl?: string; 
+  discountPrice?: number;
+}
+
+// 2. Kolleksiyanın əsas tipi
 export interface BackendCollection {
   id: number;
   name: string;
   description: string;
   coverImageUrl: string; 
-  products?: any[];
+  products?: CollectionProduct[]; 
 }
 
 // --- 1. GET ALL (Siyahı) ---
@@ -23,7 +32,7 @@ export async function createCollection(name: string, description: string, file: 
   const formData = new FormData();
   formData.append('Name', name);
   formData.append('Description', description);
-  formData.append('file', file); // Swagger: file
+  formData.append('file', file); 
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
   

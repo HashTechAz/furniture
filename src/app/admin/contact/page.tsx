@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getMessages, deleteMessage, ContactMessage } from '@/lib/contact';
+import { getMessages, deleteMessage, ContactMessage, ContactResponse } from '@/lib/contact';
 import styles from './contact.module.css';
 
 export default function ContactListPage() {
@@ -10,30 +10,36 @@ export default function ContactListPage() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
 
-  const fetchMessages = async () => {
-    setLoading(true);
-    try {
-      const token = localStorage.getItem('accessToken') || '';
-      // PageSize 10 olsun
-      const data = await getMessages(page, 10, token);
-      
-      // Backend array qaytarırsa birbaşa set edirik
-      // Əgər { items: [...] } qaytarırsa: setMessages(data.items)
-      if (Array.isArray(data)) {
-        setMessages(data);
-      } else {
-        // Ehtiyat hal üçün (əgər backend formatı fərqlidirsə)
-        setMessages((data as any).items || []);
-      }
-    } catch (error) {
-      console.error('Mesajlar gəlmədi:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // useEffect - Səhifə açılanda və ya 'page' dəyişəndə işə düşür
   useEffect(() => {
-    fetchMessages();
+    const fetchMessages = async () => {
+      setLoading(true);
+      try {
+        const token = localStorage.getItem('accessToken') || '';
+        const data = await getMessages(page, 10, token);
+        
+        console.log("🔥 API RAW DATA:", data); 
+
+        if (Array.isArray(data)) {
+          setMessages(data);
+        } 
+        // Backend 'messages' qaytarır
+        else if ('messages' in (data as ContactResponse)) {
+          setMessages((data as ContactResponse).messages);
+        }
+        else {
+          console.error("Format başa düşülmədi. Gələn data:", data);
+          setMessages([]);
+        }
+
+      } catch (error) {
+        console.error('Mesajlar gəlmədi:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMessages(); // Funksiyanı burada çağırırıq
   }, [page]);
 
   const handleDelete = async (id: number) => {
@@ -42,8 +48,23 @@ export default function ContactListPage() {
       const token = localStorage.getItem('accessToken') || '';
       await deleteMessage(id, token);
       setMessages(prev => prev.filter(m => m.id !== id));
+      alert('Silindi!');
     } catch (error) {
+      console.error(error); 
       alert('Silinmədi!');
+    }
+  };
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return '-';
+    try {
+        return new Date(dateString).toLocaleDateString('az-AZ', {
+            day: '2-digit', month: '2-digit', year: 'numeric',
+            hour: '2-digit', minute: '2-digit'
+        });
+    } catch {
+        // 'e' -ni sildik ki, xəta verməsin (unused variable)
+        return dateString;
     }
   };
 
@@ -52,13 +73,14 @@ export default function ContactListPage() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Gələn Mesajlar</h1>
+        <h1 className={styles.title}>Gələn Mesajlar ({messages.length})</h1>
       </div>
 
       <table className={styles.table}>
         <thead>
           <tr>
             <th>Status</th>
+            <th>Tarix</th>
             <th>Ad Soyad</th>
             <th>Mövzu</th>
             <th>Email</th>
@@ -73,6 +95,7 @@ export default function ContactListPage() {
                   {msg.isRead ? 'Oxunub' : 'YENİ'}
                 </span>
               </td>
+              <td style={{fontSize: '13px', color: '#666'}}>{formatDate(msg.createdAt)}</td>
               <td>{msg.fullName}</td>
               <td>{msg.subject}</td>
               <td>{msg.email}</td>
@@ -89,12 +112,11 @@ export default function ContactListPage() {
             </tr>
           ))}
           {messages.length === 0 && (
-            <tr><td colSpan={5} style={{textAlign:'center'}}>Heç bir mesaj yoxdur.</td></tr>
+            <tr><td colSpan={6} style={{textAlign:'center', padding: '20px'}}>Heç bir mesaj yoxdur.</td></tr>
           )}
         </tbody>
       </table>
 
-      {/* Sadə Pagination */}
       <div className={styles.pagination}>
         <button 
           className={styles.pageBtn} 
@@ -106,7 +128,6 @@ export default function ContactListPage() {
         <span style={{alignSelf:'center'}}>Səhifə {page}</span>
         <button 
           className={styles.pageBtn} 
-          // Əgər gələn data 10-dan azdırsa deməli son səhifədir
           disabled={messages.length < 10} 
           onClick={() => setPage(p => p + 1)}
         >

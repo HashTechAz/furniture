@@ -1,141 +1,181 @@
+/* Ümumi Səhifə Stili */
+.pageWrapper {
+  padding-bottom: 80px;
+}
+
+/* Header Hissəsi - Minimalist */
 .pageHeader {
-  background: #f8f9fa;
-  padding: 3rem 0;
+  background-color: #f8f8f8;
+  padding: 80px 0;
   text-align: center;
+  margin-bottom: 60px;
 }
 
 .pageHeader h1 {
-  font-size: 2.5rem;
+  font-size: 42px;
   font-weight: 700;
-  color: #333;
-  margin-bottom: 1rem;
+  margin-bottom: 15px;
+  letter-spacing: -1px;
 }
 
 .pageHeader p {
-  font-size: 1.125rem;
   color: #666;
+  font-size: 18px;
   max-width: 600px;
   margin: 0 auto;
 }
 
-.contactContent {
-  padding: 4rem 0;
-}
-
+/* Grid Layout */
 .contactGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  grid-template-columns: 1fr 1.5fr; /* Sol tərəf kiçik, sağ tərəf geniş */
+  gap: 80px;
+  align-items: start;
 }
 
+/* Sol Tərəf - Əlaqə Məlumatları */
 .contactInfo h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 1.5rem;
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: 600;
 }
 
 .contactInfo p {
   color: #666;
   line-height: 1.6;
-  margin-bottom: 2rem;
+  margin-bottom: 40px;
 }
 
-.contactMethods {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.contactMethod {
+  margin-bottom: 30px;
 }
 
 .contactMethod h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 0.5rem;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #999;
+  margin-bottom: 8px;
 }
 
 .contactMethod p {
-  color: #666;
+  color: #000;
+  font-weight: 500;
+  font-size: 16px;
   margin: 0;
 }
 
-.contactForm {
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  padding: 2rem;
-}
-
+/* Sağ Tərəf - Forma */
 .contactForm h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 1.5rem;
+  font-size: 24px;
+  margin-bottom: 30px;
+  font-weight: 600;
 }
 
 .formGroup {
-  margin-bottom: 1.5rem;
+  margin-bottom: 20px;
 }
 
 .formGroup label {
   display: block;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 0.5rem;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.formGroup input,
-.formGroup textarea {
+.input, .textarea {
   width: 100%;
-  padding: 0.75rem;
+  padding: 16px;
   border: 1px solid #e5e5e5;
-  border-radius: 4px;
-  font-size: 1rem;
-  transition: border-color 0.2s ease;
+  background-color: #fff;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  border-radius: 0; /* Furniture stili üçün kəskin künclər */
 }
 
-.formGroup input:focus,
-.formGroup textarea:focus {
+.input:focus, .textarea:focus {
+  border-color: #000;
   outline: none;
-  border-color: #333;
+  background-color: #fafafa;
 }
 
+.textarea {
+  resize: vertical;
+  min-height: 150px;
+}
+
+/* Submit Button & Preloader */
 .submitButton {
-  background: #333;
+  width: 100%;
+  padding: 18px;
+  background-color: #000;
   color: #fff;
-  padding: 1rem 2rem;
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 .submitButton:hover {
-  background: #555;
+  background-color: #333;
 }
 
-/* Mobile styles */
+.submitButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Spinner (Yüklənmə dairəsi) */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Mesaj Qutuları */
+.successMessage, .errorMessage {
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 4px;
+  font-weight: 500;
+  animation: fadeIn 0.5s ease;
+}
+
+.successMessage {
+  background-color: #f0fdf4;
+  color: #15803d;
+  border-left: 4px solid #15803d;
+}
+
+.errorMessage {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border-left: 4px solid #b91c1c;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .pageHeader {
-    padding: 2rem 0;
-  }
-  
-  .pageHeader h1 {
-    font-size: 2rem;
-  }
-  
-  .contactContent {
-    padding: 2rem 0;
-  }
-  
   .contactGrid {
     grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  
-  .contactForm {
-    padding: 1.5rem;
+    gap: 40px;
   }
 }

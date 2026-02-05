@@ -12,24 +12,23 @@ export interface ContactMessage {
   createdAt?: string; 
 }
 
+// DÜZƏLİŞ: Backend 'messages' göndərir
 export interface ContactResponse {
-  items: ContactMessage[]; 
+  messages: ContactMessage[]; // <-- Dəyişdirildi
   totalCount?: number;
+  currentPage?: number;
+  totalPages?: number;
 }
 
-// 1. GET ALL (Mesajları Gətir - Pagination ilə)
-export async function getMessages(pageNumber: number = 1, pageSize: number = 10, token: string): Promise<ContactMessage[]> {
-
+export async function getMessages(pageNumber: number = 1, pageSize: number = 10, token: string): Promise<ContactMessage[] | ContactResponse> {
   const query = `?pageNumber=${pageNumber}&pageSize=${pageSize}`;
-  return apiRequest<ContactMessage[]>(`/api/Contact${query}`, { token });
+  return apiRequest<ContactMessage[] | ContactResponse>(`/api/Contact${query}`, { token });
 }
-
 
 export async function getMessageById(id: number | string, token: string): Promise<ContactMessage> {
   return apiRequest<ContactMessage>(`/api/Contact/${id}`, { token });
 }
 
-// 3. DELETE (Mesajı Sil)
 export async function deleteMessage(id: number | string, token: string) {
   return apiRequest(`/api/Contact/${id}`, {
     method: 'DELETE',

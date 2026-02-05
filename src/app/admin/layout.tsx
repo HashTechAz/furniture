@@ -7,8 +7,7 @@ import styles from './layout.module.css';
 
 // İkonlar (FaPaintBrush - Designers üçün, FaFolder - Collections üçün əlavə etdim)
 import { 
-  FaBars, FaBox, FaTags, FaPalette, FaLayerGroup, 
-  FaShoppingCart, FaUsers, FaLock, FaSignOutAlt, 
+  FaBars, FaBox, FaTags, FaPalette, FaLock, FaSignOutAlt, 
   FaHome, FaPaintBrush, FaFolder, FaEnvelope 
 } from 'react-icons/fa';
 
@@ -39,12 +38,12 @@ export default function AdminLayout({
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
-  useEffect(() => {
+ useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
-      } catch (e) {
+      } catch { 
         localStorage.removeItem('user');
       }
     }
@@ -108,19 +107,6 @@ export default function AdminLayout({
           <Link href="/admin/contact" className={`${styles.navLink} ${isActive('/admin/contact')}`}>
             <FaEnvelope /> Messages
           </Link>
-          
-          <Link href="/admin/series" className={`${styles.navLink} ${isActive('/admin/series')}`}>
-            <FaLayerGroup /> Series
-          </Link>
-          
-          <Link href="/admin/orders" className={`${styles.navLink} ${isActive('/admin/orders')}`}>
-            <FaShoppingCart /> Orders
-          </Link>
-          
-          <Link href="/admin/users" className={`${styles.navLink} ${isActive('/admin/users')}`}>
-            <FaUsers /> Users
-          </Link>
-          
           <Link href="/admin/change-password" className={`${styles.navLink} ${isActive('/admin/change-password')}`}>
             <FaLock /> Security
           </Link>
