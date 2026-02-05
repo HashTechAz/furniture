@@ -1,175 +1,284 @@
-/* src/app/admin/products/product-form.module.css */
-
+/* Ümumi Layout */
 .container {
-  max-width: 900px;
+  padding: 30px 40px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 40px 20px;
-  font-family: sans-serif;
-  color: #333;
+  padding-bottom: 100px; /* Footer üçün yer */
+}
+
+/* Header (Title + Buttons) */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
 .title {
   font-size: 28px;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: -0.8px;
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+}
+
+.cancelBtn {
+  padding: 12px 20px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  color: #111;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.cancelBtn:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.saveBtn {
+  padding: 12px 24px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.saveBtn:hover {
+  background: #333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.saveBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Grid Layout (2 Kolon: Sol Main, Sağ Sidebar) */
+.grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+/* Kart Stili (Ağ Qutular) */
+.card {
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.cardTitle {
+  font-size: 16px;
   font-weight: 700;
-  margin-bottom: 30px;
-  border-bottom: 2px solid #eee;
-  padding-bottom: 10px;
+  color: #111;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.formGrid {
-  display: grid;
-  gap: 20px;
-}
-
-.row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.rowThree {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 20px;
+/* Form Elementləri */
+.formGroup {
+  margin-bottom: 20px;
 }
 
 .label {
   display: block;
+  font-size: 13px;
   font-weight: 600;
+  color: #374151;
   margin-bottom: 8px;
-  font-size: 14px;
 }
 
-.input, .select, .textarea {
+.input, .textarea, .select {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 15px;
-  transition: border-color 0.3s;
-}
-
-.input:focus, .select:focus, .textarea:focus {
-  border-color: #000;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 14px;
   outline: none;
+  background: #fff;
+  color: #111;
+  transition: all 0.2s;
 }
 
-.required {
-  color: red;
-  margin-left: 4px;
+.input:focus, .textarea:focus, .select:focus {
+  border-color: #111;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
 }
 
-/* --- ŞƏKİL YÜKLƏMƏ BÖLMƏSİ --- */
-.imageSection {
-  background-color: #f9fafb;
+.textarea {
+  min-height: 140px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.uploadArea {
+  width: 100%;
   border: 2px dashed #e5e7eb;
   border-radius: 12px;
-  padding: 24px;
-  margin-top: 20px;
-}
-
-.fileInputWrapper {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.fileInput {
-  flex: 1;
-  padding: 10px;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-}
-
-.uploadButton {
-  background-color: #2563eb;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 50px 20px; 
+  text-align: center;
   cursor: pointer;
-  font-weight: 600;
-  transition: background 0.3s;
+  transition: all 0.2s;
+  background: #f9fafb;
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  justify-content: center; 
 }
 
-.uploadButton:hover {
-  background-color: #1d4ed8;
+.uploadArea:hover {
+  border-color: #111;
+  background: #f0fdf4; 
 }
 
-.uploadButton:disabled {
-  background-color: #93c5fd;
-  cursor: not-allowed;
+.uploadIcon {
+  font-size: 32px;
+  color: #9ca3af;
+  margin-bottom: 12px;
 }
 
-/* Mövcud Şəkillər Qalereyası */
-.gallery {
+.uploadText {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.uploadSubtext {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+
+/* Image Preview Grid */
+.imageGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 12px;
   margin-top: 20px;
 }
 
-.imageCard {
+.previewItem {
   position: relative;
-  border: 1px solid #ddd;
+  width: 100%;
+  aspect-ratio: 1;
   border-radius: 8px;
   overflow: hidden;
-  background: white;
-  aspect-ratio: 1;
+  border: 1px solid #eaeaea;
 }
 
-.productImg {
+.previewImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.imageActions {
+.removeImageBtn {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0,0,0,0.6);
+  top: 4px;
+  right: 4px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
   display: flex;
-  justify-content: space-around;
-  padding: 5px;
-}
-
-.actionBtn {
-  background: none;
-  border: none;
-  color: white;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  color: #ef4444;
   font-size: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.coverBadge {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  background-color: #16a34a;
-  color: white;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: bold;
-}
-
-/* Submit Button */
-.submitButton {
-  background-color: #000;
-  color: white;
-  padding: 16px;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
+/* Toggle Switch (Featured) */
+.toggleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   cursor: pointer;
-  margin-top: 20px;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
 }
 
-.submitButton:hover {
-  background-color: #333;
+.checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #111;
+}
+
+/* Dimensions Grid (W x H x D) */
+.dimensionsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+/* Multi-select Tags (Colors) */
+.tagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.tag {
+  background: #f3f4f6;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.removeTag {
+  cursor: pointer;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.removeTag:hover {
+  color: #ef4444;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .headerActions {
+    width: 100%;
+    justify-content: space-between;
+  }
 }

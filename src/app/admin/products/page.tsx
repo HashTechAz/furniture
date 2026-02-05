@@ -1,176 +1,150 @@
-"use client";
-import React, { useState, useEffect } from 'react';
-import { getProducts, deleteProduct, FrontendProduct } from '@/lib/products';
-import { revalidateProducts } from '@/lib/revalidate';
-import Link from 'next/link';
-import styles from './admin-products.module.css'; // CSS-i import edirik
+'use client';
 
-export default function AdminProductsList() {
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { getProducts, deleteProduct, FrontendProduct } from '@/lib/products';
+import styles from './page.module.css';
+import { FaPlus, FaSearch, FaEdit, FaTrash, FaBoxOpen, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+
+export default function AdminProducts() {
   const [products, setProducts] = useState<FrontendProduct[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
 
-const loadProducts = async (retryCount = 0) => {
-  try {
+  const fetchProductsData = async () => {
     setLoading(true);
-    setError(null);
-    
-    // DƏYİŞİKLİK: skipCache: true göndəririk
-    const data = await getProducts(undefined, { skipCache: true }); 
-    
-    setProducts(data);
-  } catch (err: any) {
-    console.error('Products load error:', err);
-    // Xəta idarəetməsi artıq işləyəcək, çünki getProducts [] qaytarmır, throw edir.
-    if (err.message?.includes('RATE_LIMIT') || err.message?.includes('429')) {
-       // ...
-    } else {
-      setError(`Məlumat yüklənmədi: ${err.message}`);
-    }
-  } finally {
-    setLoading(false);
-  }
-};
-
-  useEffect(() => {
-    loadProducts();
-  }, []);
-
-  const handleDelete = async (id: number) => {
-    if (!window.confirm("Bu məhsulu silməyə əminsiniz?")) return;
-
     try {
-      const token = localStorage.getItem('accessToken');
-      if (!token) {
-        alert("Token yoxdur!");
-        return;
-      }
-      await deleteProduct(id, token);
-      await revalidateProducts();
-      setProducts((prev) => prev.filter((p) => p.id !== id));
-      alert("✅ Məhsul silindi!");
-      loadProducts();
-    } catch (error: any) {
-      alert("Xəta: " + error.message);
+      // getProducts artıq düzgün list qaytarır
+      const data = await getProducts(
+        { pageNumber: page, pageSize: 10, searchTerm: searchTerm || undefined }
+      );
+      setProducts(data);
+    } catch (error) {
+      console.error('Məhsullar gəlmədi:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (loading) return (
-    <div className={styles.loadingContainer}>
-      <div className={styles.spinner}></div>
-    </div>
-  );
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      fetchProductsData();
+    }, 500);
+    return () => clearTimeout(delayDebounceFn);
+  }, [page, searchTerm]);
+
+  const handleDelete = async (id: number) => {
+    if (!window.confirm('Bu məhsulu silmək istədiyinizə əminsiniz?')) return;
+    try {
+      const token = localStorage.getItem('accessToken') || '';
+      await deleteProduct(id, token);
+      setProducts(prev => prev.filter(p => p.id !== id));
+    } catch (error) {
+      console.error(error);
+      alert('Xəta baş verdi, silinmədi.');
+    }
+  };
 
   return (
     <div className={styles.container}>
-      
-      {/* BAŞLIQ */}
+
       <div className={styles.header}>
-        <h2 className={styles.title}>Məhsullar</h2>
+        <h1 className={styles.title}>Products</h1>
         <Link href="/admin/products/new" className={styles.addButton}>
-          <span className={styles.plusIcon}>+</span> Yeni Məhsul
+          <FaPlus /> Add Product
         </Link>
       </div>
 
-      {/* Hata mesajı */}
-      {error && (
-        <div style={{ 
-          padding: '15px', 
-          marginBottom: '20px', 
-          backgroundColor: '#fff3cd', 
-          border: '1px solid #ffc107',
-          borderRadius: '8px',
-          color: '#856404'
-        }}>
-          <strong>⚠️ {error}</strong>
-          <button 
-            onClick={() => loadProducts()} 
-            style={{ 
-              marginLeft: '15px', 
-              padding: '5px 15px', 
-              backgroundColor: '#ffc107', 
-              border: 'none', 
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
-          >
-            Yenidən yoxla
-          </button>
+      <div className={styles.filtersBar}>
+        <div className={styles.searchWrapper}>
+          <FaSearch className={styles.searchIcon} />
+          <input
+            type="text"
+            placeholder="Search by product name..."
+            className={styles.searchInput}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
-      )}
+      </div>
 
-      {/* CƏDVƏL */}
-      <div className={styles.tableWrapper}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Şəkil</th>
-              <th>Məhsul Adı</th>
-              <th>Qiymət</th>
-              <th>Kateqoriya</th>
-              <th style={{textAlign: 'center'}}>Əməliyyatlar</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.length === 0 && !loading ? (
-               <tr>
-                 <td colSpan={5} style={{textAlign: 'center', padding: '30px', color: '#888'}}>
-                    {error ? 'Xəta baş verdi. Yenidən yoxlayın.' : 'Heç bir məhsul tapılmadı.'}
-                 </td>
-               </tr>
-            ) : (
-              products.map((product) => (
-                <tr key={product.id}>
-                  {/* Şəkil */}
-                  <td>
-                    <div className={styles.productImageWrapper}>
-                      <img 
-                        className={styles.productImage}
-                        src={product.mainImage}
-                        alt={product.title}
-                      />
+      <div className={styles.tableCard}>
+        {loading ? (
+          <div style={{ padding: '50px', textAlign: 'center', color: '#666' }}>Yüklənir...</div>
+        ) : products.length === 0 ? (
+          <div style={{ padding: '60px', textAlign: 'center', color: '#666' }}>
+            <FaBoxOpen size={40} style={{ marginBottom: 10, opacity: 0.3 }} />
+            <p>Heç bir məhsul tapılmadı.</p>
+          </div>
+        ) : (
+          <>
+            <table className={styles.table}>
+              <thead>
+                <tr><th>Product</th><th>Price</th><th>Category</th><th>Color</th><th>Designer</th><th style={{ textAlign: 'right' }}>Actions</th></tr>
+              </thead>
+              <tbody>
+                {products.map((product) => (
+                  <tr key={product.id}><td>
+                    <div className={styles.productCell}>
+                      {product.mainImage ? (
+                        <img src={product.mainImage} alt={product.title} className={styles.productImage} />
+                      ) : (
+                        <div className={styles.productImage}></div>
+                      )}
+                      <div>
+                        <span className={styles.productName}>{product.title}</span>
+                        <span className={styles.productId}>ID: #{product.id}</span>
+                      </div>
                     </div>
-                  </td>
-                  
-                  {/* Ad və ID */}
-                  <td>
-                    <div style={{fontWeight: 'bold'}}>{product.title}</div>
-                    <div style={{fontSize: '12px', color: '#999'}}>ID: {product.id}</div>
-                  </td>
+                  </td><td><span className={styles.price}>${product.price}</span></td><td style={{ color: '#555', fontWeight: 500 }}>
+                      {product.categoryName}
+                    </td><td>
+                      <span style={{
+                        padding: '4px 8px',
+                        background: '#f3f4f6',
+                        borderRadius: '6px',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        color: '#333'
+                      }}>
+                        {product.color}
+                      </span>
+                    </td><td style={{ color: '#555' }}>
+                      {product.designer}
+                    </td><td>
+                      <div className={styles.actions}>
+                        <Link href={`/admin/products/${product.id}`} className={`${styles.actionBtn} ${styles.editBtn}`} title="Edit">
+                          <FaEdit />
+                        </Link>
+                        <button onClick={() => handleDelete(product.id)} className={`${styles.actionBtn} ${styles.deleteBtn}`} title="Delete">
+                          <FaTrash />
+                        </button>
+                      </div>
+                    </td></tr>
+                ))}
+              </tbody>
+            </table>
 
-                  {/* Qiymət */}
-                  <td>
-                    <span className={styles.priceBadge}>
-                      {product.price}
-                    </span>
-                  </td>
-
-                  {/* Kateqoriya */}
-                  <td>
-                    {product.position}
-                  </td>
-
-                  {/* Düymələr */}
-                  <td className={styles.actions}>
-                    <Link href={`/admin/products/${product.id}`} className={`${styles.iconButton} ${styles.editIcon}`} title="Redaktə et">
-                      {/* Qələm İkonu (SVG) */}
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                      </svg>
-                    </Link>
-
-                    <button onClick={() => handleDelete(product.id)} className={`${styles.iconButton} ${styles.deleteIcon}`} title="Sil">
-                      {/* Zibil qutusu İkonu (SVG) */}
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+            <div className={styles.pagination}>
+              <button
+                className={styles.pageBtn}
+                disabled={page === 1}
+                onClick={() => setPage(p => p - 1)}
+              >
+                <FaChevronLeft style={{ fontSize: 10 }} /> Previous
+              </button>
+              <span style={{ fontSize: 13, color: '#666', fontWeight: 600 }}>Page {page}</span>
+              <button
+                className={styles.pageBtn}
+                disabled={products.length < 10}
+                onClick={() => setPage(p => p + 1)}
+              >
+                Next <FaChevronRight style={{ fontSize: 10 }} />
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
