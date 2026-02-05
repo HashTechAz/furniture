@@ -21,12 +21,8 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
-
-    // 1. Süni Gözləmə (Preloader görünsün deyə)
-    // Ən azı 1.5 saniyə gözləyirik ki, istifadəçi prosesi hiss etsin
     const delay = new Promise(resolve => setTimeout(resolve, 1500));
 
-    // 2. API Sorğusu
     const payload = {
       fullName: formData.name,
       email: formData.email,
@@ -37,7 +33,6 @@ export default function Contact() {
 
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
     
-    // API sorğusunu başladırıq
     const fetchPromise = fetch(`${baseUrl}/api/Contact`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -45,14 +40,12 @@ export default function Contact() {
     });
 
     try {
-      // Həm API cavabını, həm də 1.5 saniyəni gözləyirik (hansı gec qurtarsa)
       const [response] = await Promise.all([fetchPromise, delay]);
 
       if (response.ok) {
         setStatus('success');
         setFormData({ name: '', email: '', phoneNumber: '', subject: '', message: '' }); 
         
-        // 5 saniyə sonra uğur mesajını gizlədə bilərik (istəyə bağlı)
         setTimeout(() => setStatus('idle'), 5000);
       } else {
         const errorText = await response.text();
@@ -67,7 +60,6 @@ export default function Contact() {
 
   return (
     <div className={styles.pageWrapper}>
-      {/* Header */}
       <div className={styles.pageHeader}>
         <div className="container">
           <h1>Contact Us</h1>
@@ -78,7 +70,6 @@ export default function Contact() {
       <div className="container">
         <div className={styles.contactGrid}>
           
-          {/* Sol Tərəf: İnfo */}
           <div className={styles.contactInfo}>
             <h2>Get in Touch</h2>
             <p>
@@ -100,7 +91,6 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Sağ Tərəf: Form */}
           <div className={styles.contactForm}>
             
             {status === 'success' && (

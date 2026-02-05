@@ -1,209 +1,282 @@
-.productsPage {
-  max-width: 1200px;
+/* Ümumi Konteyner */
+.container {
+  padding: 30px;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
-.pageHeader {
+/* HEADER: Başlıq və Add Button */
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 30px;
 }
 
-.pageHeader h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 0.5rem;
-}
-
-.pageHeader p {
-  color: #666;
-  font-size: 1rem;
+.title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: -0.8px;
 }
 
 .addButton {
-  background: #28a745;
+  background-color: #111;
   color: #fff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
   text-decoration: none;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
 }
 
 .addButton:hover {
-  background: #218838;
+  background-color: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.filters {
+/* SEARCH & FILTERS BAR */
+.controls {
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid #eaeaea;
+  margin-bottom: 24px;
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  align-items: center;
-}
-
-.filterSelect,
-.searchInput {
-  padding: 0.75rem;
-  border: 1px solid #e5e5e5;
-  border-radius: 4px;
-  font-size: 0.875rem;
-}
-
-.filterSelect {
-  min-width: 150px;
+  gap: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
 
 .searchInput {
   flex: 1;
-  max-width: 300px;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  background-color: #f9fafb;
 }
 
-.productsTable {
+.searchInput:focus {
+  border-color: #111;
+  background-color: #fff;
+}
+
+/* TABLE CARD (Ağ Qutu) */
+.tableCard {
   background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  overflow: hidden;
+  border: 1px solid #eaeaea;
+  border-radius: 16px;
+  overflow: hidden; /* Künclər üçün */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
 }
 
-.tableHeader {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-  gap: 1rem;
-  padding: 1rem 1.5rem;
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
   background: #f8f9fa;
-  border-bottom: 1px solid #e5e5e5;
-  font-weight: 600;
+  text-align: left;
+  padding: 16px 24px;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #888;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
   color: #333;
-  font-size: 0.875rem;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.tableRow {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-  gap: 1rem;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid #f5f5f5;
-  align-items: center;
-}
-
-.tableRow:last-child {
+.table tr:last-child td {
   border-bottom: none;
+}
+
+.table tr:hover td {
+  background-color: #fafafa;
+}
+
+/* Şəkil və Məhsul Adı */
+.productCell {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.productImage {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  background-color: #f3f4f6;
+  border: 1px solid #eee;
 }
 
 .productName {
   font-weight: 600;
-  color: #333;
+  color: #111;
+  display: block;
 }
 
 .productCategory {
-  color: #666;
-  font-size: 0.875rem;
+  font-size: 12px;
+  color: #888;
 }
 
-.productPrice {
-  color: #333;
-  font-weight: 500;
+/* Qiymət */
+.price {
+  font-weight: 700;
+  color: #111;
 }
 
-.status {
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  text-transform: uppercase;
-}
-
-.status.active {
-  background: #d4edda;
-  color: #155724;
-}
-
-.status.draft {
-  background: #fff3cd;
-  color: #856404;
-}
-
-.status.archived {
-  background: #f8d7da;
-  color: #721c24;
-}
-
+/* ACTION BUTTONS (Edit/Delete) */
 .actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 10px;
 }
 
-.editButton {
-  background: #007bff;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  text-decoration: none;
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-}
-
-.editButton:hover {
-  background: #0056b3;
-}
-
-.deleteButton {
-  background: #dc3545;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  font-size: 0.875rem;
-  font-weight: 500;
+.actionBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s;
+  color: #666;
 }
 
-.deleteButton:hover {
-  background: #c82333;
+.editBtn:hover {
+  background: #111;
+  color: #fff;
+  border-color: #111;
 }
 
-/* Mobile styles */
-@media (max-width: 768px) {
-  .pageHeader {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-  
-  .filters {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .filterSelect,
-  .searchInput {
-    width: 100%;
-  }
-  
-  .tableHeader,
-  .tableRow {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-  }
-  
-  .tableHeader {
-    display: none;
-  }
-  
-  .tableRow {
-    padding: 1rem;
-    border: 1px solid #e5e5e5;
-    border-radius: 4px;
-    margin-bottom: 1rem;
-  }
-  
-  .actions {
-    justify-content: flex-start;
-  }
+.deleteBtn:hover {
+  background: #fee2e2;
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+/* PAGINATION */
+.pagination {
+  padding: 20px 24px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border-top: 1px solid #eaeaea;
+}
+
+.pageBtn {
+  padding: 8px 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.pageBtn:hover:not(:disabled) {
+  border-color: #111;
+  color: #111;
+}
+
+.pageBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --- FORMLAR ÜÇÜN (Create/Edit səhifələri üçün) --- */
+.formContainer {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #eaeaea;
+  padding: 30px;
+  max-width: 800px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.formGroup {
+  margin-bottom: 24px;
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.input, .textarea, .select {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  background-color: #fff;
+  transition: all 0.2s;
+  color: #111;
+}
+
+.input:focus, .textarea:focus, .select:focus {
+  border-color: #111;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.cancelBtn {
+  padding: 14px 24px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  color: #111;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 15px;
+}
+
+.saveBtn {
+  padding: 14px 24px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.saveBtn:hover {
+  background: #333;
 }
