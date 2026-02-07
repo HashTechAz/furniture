@@ -1,158 +1,54 @@
+/* Konteyner (Digərləri ilə eyni) */
 .container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
-}
-
-.card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   padding: 40px;
-  width: 100%;
-  max-width: 500px;
+  max-width: 600px; /* Şifrə dəyişmə kartı çox geniş olmamalıdır */
+  margin: 0 auto;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
+/* Header */
 .header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
-.header h1 {
-  color: #333;
-  margin: 0 0 10px 0;
+.title {
   font-size: 28px;
-  font-weight: 600;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: -0.8px;
+  margin-bottom: 10px;
 }
 
-.header p {
+.subtitle {
   color: #666;
-  margin: 0;
-  font-size: 16px;
+  font-size: 15px;
 }
 
+/* Card */
+.card {
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+}
+
+/* Form Groups */
 .formGroup {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
-.formGroup label {
+.label {
   display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
   margin-bottom: 8px;
-  color: #333;
-  font-weight: 500;
-  font-size: 14px;
 }
-
-.formGroup input {
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #e1e5e9;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 0.3s ease;
-  box-sizing: border-box;
-}
-
-.formGroup input:focus {
-  outline: none;
-  border-color: #667eea;
-}
-
-.formGroup input:invalid {
-  border-color: #e74c3c;
-}
-
-.buttonGroup {
-  display: flex;
-  gap: 15px;
-  margin-top: 30px;
-}
-
-.submitButton {
-  flex: 1;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  padding: 14px 24px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.submitButton:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-}
-
-.submitButton:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.cancelButton {
-  flex: 1;
-  background: #f8f9fa;
-  color: #6c757d;
-  border: 2px solid #e9ecef;
-  padding: 14px 24px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.cancelButton:hover {
-  background: #e9ecef;
-  border-color: #dee2e6;
-}
-
-.errorMessage {
-  background: #f8d7da;
-  color: #721c24;
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  border: 1px solid #f5c6cb;
-  font-size: 14px;
-}
-
-.successMessage {
-  background: #d4edda;
-  color: #155724;
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  border: 1px solid #c3e6cb;
-  font-size: 14px;
-}
-
-@media (max-width: 600px) {
-  .container {
-    padding: 10px;
-  }
-  
-  .card {
-    padding: 30px 20px;
-  }
-  
-  .buttonGroup {
-    flex-direction: column;
-  }
-  
-  .submitButton,
-  .cancelButton {
-    flex: none;
-  }
-}
-
-/* Mövcud kodların ən aşağısına yapışdırın */
 
 .inputWrapper {
   position: relative;
@@ -160,13 +56,32 @@
   align-items: center;
 }
 
+.input {
+  width: 100%;
+  padding: 14px 16px;
+  padding-right: 45px; /* Göz ikonu üçün yer */
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none;
+  background: #fff;
+  color: #111;
+  transition: all 0.2s;
+}
+
+.input:focus {
+  border-color: #111;
+  box-shadow: 0 0 0 4px rgba(0,0,0,0.05);
+}
+
+/* Eye Icon */
 .eyeButton {
   position: absolute;
-  right: 10px;
+  right: 12px;
   background: none;
   border: none;
   cursor: pointer;
-  color: #666;
+  color: #9ca3af;
   padding: 5px;
   display: flex;
   align-items: center;
@@ -175,5 +90,63 @@
 }
 
 .eyeButton:hover {
-  color: #333;
+  color: #111;
+}
+
+/* Buttons */
+.buttonGroup {
+  display: flex;
+  gap: 15px;
+  margin-top: 40px;
+}
+
+.submitBtn {
+  flex: 1;
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.submitBtn:hover {
+  background: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.submitBtn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.cancelBtn {
+  flex: 1;
+  background: #fff;
+  color: #111;
+  border: 1px solid #e5e7eb;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelBtn:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container { padding: 20px; }
+  .card { padding: 25px; }
+  .buttonGroup { flex-direction: column; }
 }
