@@ -4,28 +4,40 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createColor } from '@/lib/colors';
+import { useAdminModal } from '@/context/admin-modal-context';
 import styles from '../colors.module.css';
+
+import { FaSave, FaPalette } from 'react-icons/fa';
 
 export default function NewColorPage() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    name: '',
-    hexCode: '#000000' // Default qara
-  });
+  const { openModal } = useAdminModal();
+  const [formData, setFormData] = useState({ name: '', hexCode: '#000000' });
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    if (!formData.name || !formData.hexCode) {
+      openModal({ type: 'error', title: 'Error', message: 'All fields are required!' });
+      return;
+    }
 
+    setLoading(true);
     try {
       const token = localStorage.getItem('accessToken') || '';
       await createColor(formData, token);
-      alert('✅ Rəng yaradıldı!');
-      router.push('/admin/colors');
-      router.refresh();
+
+      openModal({
+        type: 'success',
+        title: 'Color Added! 🎨',
+        message: 'New color has been added successfully.',
+        confirmText: 'Go to Colors',
+        onConfirm: () => router.push('/admin/colors')
+      });
+      
     } catch (error: any) {
-      alert('Xəta: ' + error.message);
+      console.error(error);
+      openModal({ type: 'error', title: 'Failed', message: error.message || 'Could not create color' });
     } finally {
       setLoading(false);
     }
@@ -33,37 +45,40 @@ export default function NewColorPage() {
 
   return (
     <div className={styles.container}>
-      <Link href="/admin/colors" className={styles.backBtn}>← Geri qayıt</Link>
-      <h1 className={styles.title} style={{ marginBottom: '20px' }}>Yeni Rəng Yarat</h1>
+      <div className={styles.header}>
+        <h1 className={styles.title}>New Color</h1>
+        <div className={styles.headerActions}>
+            <Link href="/admin/colors" className={styles.cancelBtn}>Cancel</Link>
+            <button form="colorForm" type="submit" className={styles.saveBtn} disabled={loading}>
+              <FaSave /> {loading ? 'Saving...' : 'Save Color'}
+            </button>
+        </div>
+      </div>
 
-      <div className={styles.formCard}>
-        <form onSubmit={handleSubmit}>
-          
+      <div className={styles.simpleCard}>
+        <div className={styles.cardTitle}><FaPalette /> Color Details</div>
+        
+        <form id="colorForm" onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
-            <label className={styles.label}>Rəngin Adı</label>
+            <label className={styles.label}>Color Name</label>
             <input 
-              type="text" 
-              className={styles.input} 
-              placeholder="Məs: Qırmızı, Space Grey..." 
-              required
+              type="text" className={styles.input} 
+              placeholder="e.g. Midnight Blue" required 
               value={formData.name}
               onChange={(e) => setFormData({...formData, name: e.target.value})}
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.label}>Rəng Seçimi (Hex)</label>
-            <div style={{ display: 'flex', gap: '10px' }}>
+            <label className={styles.label}>Hex Code</label>
+            <div className={styles.colorPickerWrapper}>
               <input 
-                type="color" 
-                className={styles.colorInput}
-                style={{ width: '60px' }}
+                type="color" className={styles.colorInput}
                 value={formData.hexCode}
                 onChange={(e) => setFormData({...formData, hexCode: e.target.value})}
               />
               <input 
-                type="text" 
-                className={styles.input} 
+                type="text" className={styles.input} 
                 value={formData.hexCode}
                 onChange={(e) => setFormData({...formData, hexCode: e.target.value})}
                 placeholder="#000000"
@@ -72,10 +87,6 @@ export default function NewColorPage() {
               />
             </div>
           </div>
-
-          <button type="submit" className={styles.submitBtn} disabled={loading}>
-            {loading ? 'Yaradılır...' : 'Yadda Saxla'}
-          </button>
         </form>
       </div>
     </div>

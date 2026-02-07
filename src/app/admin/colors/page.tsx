@@ -3,17 +3,21 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { getColors, deleteColor, BackendColor } from '@/lib/colors';
+import { useAdminModal } from '@/context/admin-modal-context';
 import styles from './colors.module.css';
+
+import { FaPlus, FaEdit, FaTrash, FaPalette } from 'react-icons/fa';
 
 export default function ColorsPage() {
   const [colors, setColors] = useState<BackendColor[]>([]);
   const [loading, setLoading] = useState(true);
+  const { openModal } = useAdminModal();
 
-  // Məlumatları gətir
   const fetchColors = async () => {
     try {
+      setLoading(true);
       const data = await getColors();
-      setColors(data);
+      setColors(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Failed to fetch colors', error);
     } finally {
@@ -25,78 +29,85 @@ export default function ColorsPage() {
     fetchColors();
   }, []);
 
-  // Silmə funksiyası
-  const handleDelete = async (id: number) => {
-    if (!window.confirm('Bu rəngi silməyə əminsiniz?')) return;
-
-    try {
-      const token = localStorage.getItem('accessToken') || '';
-      await deleteColor(id, token);
-      // Siyahıdan dərhal silirik (UI üçün)
-      setColors(prev => prev.filter(c => c.id !== id));
-      alert('Rəng silindi!');
-    } catch (error: any) {
-      alert('Xəta: ' + error.message);
-    }
+  // DELETE MODAL
+  const handleDelete = (id: number) => {
+    openModal({
+      type: 'warning',
+      title: 'Delete Color?',
+      message: 'Are you sure you want to delete this color? Products using this color will be affected.',
+      confirmText: 'Yes, Delete',
+      cancelText: 'Cancel',
+      onConfirm: async () => {
+        const token = localStorage.getItem('accessToken') || '';
+        await deleteColor(id, token);
+        setColors(prev => prev.filter(c => c.id !== id));
+      }
+    });
   };
-
-  if (loading) return <div className={styles.container}>Yüklənir...</div>;
 
   return (
     <div className={styles.container}>
+      
+      {/* Header */}
       <div className={styles.header}>
-        <h1 className={styles.title}>Rənglər ({colors.length})</h1>
+        <h1 className={styles.title}>Colors</h1>
         <Link href="/admin/colors/new" className={styles.addButton}>
-          + Yeni Rəng
+          <FaPlus /> New Color
         </Link>
       </div>
 
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Rəng</th>
-            <th>Ad</th>
-            <th>Hex Kod</th>
-            <th>Əməliyyatlar</th>
-          </tr>
-        </thead>
-        <tbody>
-          {colors.map((color) => (
-            <tr key={color.id}>
-              <td>{color.id}</td>
-              <td>
-                <div 
-                  className={styles.colorBox} 
-                  style={{ backgroundColor: color.hexCode }} 
-                />
-              </td>
-              <td>{color.name}</td>
-              <td>{color.hexCode}</td>
-              <td>
-                <div className={styles.actions}>
-                  <Link href={`/admin/colors/${color.id}`} className={styles.editBtn}>
-                    Redaktə
-                  </Link>
-                  <button 
-                    onClick={() => handleDelete(color.id)} 
-                    className={styles.deleteBtn}
-                  >
-                    Sil
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-          {colors.length === 0 && (
-            <tr>
-              <td colSpan={5} style={{textAlign: 'center', color: '#888'}}>
-                Heç bir rəng tapılmadı.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      {/* Table Card */}
+      <div className={styles.tableCard}>
+        {loading ? (
+           <div style={{padding: 50, textAlign: 'center', color: '#666'}}>Loading...</div>
+        ) : colors.length === 0 ? (
+           <div style={{padding: 60, textAlign: 'center', color: '#666'}}>
+             <FaPalette size={40} style={{marginBottom: 10, opacity: 0.3}}/>
+             <p>No colors found.</p>
+           </div>
+        ) : (
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Color Name</th>
+                <th>Hex Code</th>
+                <th style={{textAlign: 'right'}}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {colors.map((color) => (
+                <tr key={color.id}>
+                  <td>
+                    <div className={styles.cellContent}>
+                      <div 
+                        className={styles.colorCircle} 
+                        style={{ backgroundColor: color.hexCode }} 
+                      />
+                      <div className={styles.nameInfo}>
+                         <span className={styles.name}>{color.name}</span>
+                         <span className={styles.idBadge}>ID: #{color.id}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span className={styles.hexBadge}>{color.hexCode}</span>
+                  </td>
+                  <td>
+                    <div className={styles.actions}>
+                      <Link href={`/admin/colors/${color.id}`} className={`${styles.actionBtn} ${styles.editBtn}`} title="Edit">
+                        <FaEdit />
+                      </Link>
+                      <button onClick={() => handleDelete(color.id)} className={`${styles.actionBtn} ${styles.deleteBtn}`} title="Delete">
+                        <FaTrash />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 }
