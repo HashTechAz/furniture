@@ -2,17 +2,20 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter, useParams } from 'next/navigation';
 import { getMessageById, ContactMessage } from '@/lib/contact';
+import { useAdminModal } from '@/context/admin-modal-context';
 import styles from '../contact.module.css';
 
-export default function ContactDetailPage({ params }: { params: { id: string } }) {
+import { FaArrowLeft, FaUser, FaEnvelope, FaPhone, FaCalendarAlt } from 'react-icons/fa';
+
+export default function ContactDetailPage() {
+  const params = useParams();
+  const id = params?.id as string;
   const [message, setMessage] = useState<ContactMessage | null>(null);
   const [loading, setLoading] = useState(true);
-  const [id, setId] = useState<string>('');
-
-  useEffect(() => {
-    Promise.resolve(params).then(p => setId(p.id));
-  }, [params]);
+  const { openModal } = useAdminModal();
+  const router = useRouter();
 
   useEffect(() => {
     if (!id) return;
@@ -23,53 +26,57 @@ export default function ContactDetailPage({ params }: { params: { id: string } }
         setMessage(data);
       } catch (error) {
         console.error('Mesaj tapılmadı');
+        openModal({ type: 'error', title: 'Error', message: 'Message not found.' });
+        router.push('/admin/contact');
       } finally {
         setLoading(false);
       }
     };
     fetchDetail();
-  }, [id]);
+  }, [id, router]);
 
-  if (loading) return <div className={styles.container}>Yüklənir...</div>;
-  if (!message) return <div className={styles.container}>Mesaj tapılmadı.</div>;
+  if (loading) return <div style={{padding: 40, textAlign: 'center'}}>Loading...</div>;
+  if (!message) return null;
 
   return (
     <div className={styles.container}>
-      <Link href="/admin/contact" style={{display:'inline-block', marginBottom:'20px'}}>
-        ← Geri qayıt
+      <Link href="/admin/contact" className={styles.backLink}>
+        <FaArrowLeft /> Back to Inbox
       </Link>
       
-      <div className={styles.header}>
-        <h1 className={styles.title}>{message.subject}</h1>
-      </div>
+      <div className={styles.detailCard}>
+        <div className={styles.detailHeader}>
+           <h1 className={styles.detailTitle}>{message.subject}</h1>
+           <span className={`${styles.statusBadge} ${!message.isRead ? styles.statusNew : styles.statusRead}`}>
+                {!message.isRead ? 'Unread' : 'Read'}
+           </span>
+        </div>
 
-      <div className={styles.messageCard}>
         <div className={styles.metaInfo}>
           <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Göndərən</span>
+            <span className={styles.metaLabel}><FaUser style={{marginRight: 5}}/> Sender</span>
             <span className={styles.metaValue}>{message.fullName}</span>
           </div>
           <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Email</span>
+            <span className={styles.metaLabel}><FaEnvelope style={{marginRight: 5}}/> Email</span>
             <span className={styles.metaValue}>
-                <a href={`mailto:${message.email}`} style={{color: '#2563eb'}}>{message.email}</a>
+                <a href={`mailto:${message.email}`} style={{color: '#2563eb', textDecoration: 'none'}}>{message.email}</a>
             </span>
           </div>
           <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Telefon</span>
-            <span className={styles.metaValue}>{message.phoneNumber || 'Qeyd olunmayıb'}</span>
+            <span className={styles.metaLabel}><FaPhone style={{marginRight: 5}}/> Phone</span>
+            <span className={styles.metaValue}>{message.phoneNumber || '—'}</span>
           </div>
           <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Tarix</span>
-            {/* Backend tarixi göndərirsə formatlayırıq */}
+            <span className={styles.metaLabel}><FaCalendarAlt style={{marginRight: 5}}/> Date</span>
             <span className={styles.metaValue}>
-                {message.createdAt ? new Date(message.createdAt).toLocaleDateString() : 'Bilinmir'}
+                {message.createdAt ? new Date(message.createdAt).toLocaleString() : '—'}
             </span>
           </div>
         </div>
 
-        <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Mesaj</span>
+        <div>
+            <span className={styles.metaLabel}>Message Body</span>
             <div className={styles.messageBody}>
                 {message.message}
             </div>
