@@ -5,8 +5,10 @@ import Link from 'next/link';
 import { getProducts, deleteProduct, FrontendProduct } from '@/lib/products';
 import styles from './page.module.css';
 import { FaPlus, FaSearch, FaEdit, FaTrash, FaBoxOpen, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { useAdminModal } from '@/context/admin-modal-context';
 
 export default function AdminProducts() {
+  const { openModal } = useAdminModal();
   const [products, setProducts] = useState<FrontendProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -34,16 +36,19 @@ export default function AdminProducts() {
     return () => clearTimeout(delayDebounceFn);
   }, [page, searchTerm]);
 
-  const handleDelete = async (id: number) => {
-    if (!window.confirm('Bu məhsulu silmək istədiyinizə əminsiniz?')) return;
-    try {
-      const token = localStorage.getItem('accessToken') || '';
-      await deleteProduct(id, token);
-      setProducts(prev => prev.filter(p => p.id !== id));
-    } catch (error) {
-      console.error(error);
-      alert('Xəta baş verdi, silinmədi.');
-    }
+  const handleDelete = (id: number) => {
+    openModal({
+      type: 'warning',
+      title: 'Delete Product?',
+      message: 'Are you sure you want to delete this product? This action cannot be undone.',
+      confirmText: 'Yes, Delete',
+      cancelText: 'Cancel',
+      onConfirm: async () => {
+        const token = localStorage.getItem('accessToken') || '';
+        await deleteProduct(id, token);
+        setProducts(prev => prev.filter(p => p.id !== id));
+      }
+    });
   };
 
   return (

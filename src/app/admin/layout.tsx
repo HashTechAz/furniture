@@ -10,6 +10,8 @@ import {
   FaHome, FaPaintBrush, FaFolder, FaEnvelope 
 } from 'react-icons/fa';
 
+import { AdminModalProvider } from '@/context/admin-modal-context';
+
 export default function AdminLayout({
   children,
 }: {
@@ -73,6 +75,7 @@ export default function AdminLayout({
   const isActive = (path: string) => pathname === path || pathname.startsWith(path + '/') ? styles.activeLink : '';
 
   return (
+    <AdminModalProvider>
     <div className={styles.adminLayout}>
       
       {/* SIDEBAR */}
@@ -167,5 +170,6 @@ export default function AdminLayout({
         </main>
       </div>
     </div>
+    </AdminModalProvider>
   );
 }

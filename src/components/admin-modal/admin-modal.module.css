@@ -1,0 +1,114 @@
+/* Overlay (Arxa Fon - Bulanıq) */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Yarı şəffaf qara */
+  backdrop-filter: blur(8px); /* Premium bulanıqlıq effekti */
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Modal Qutusu */
+.modal {
+  background: #ffffff;
+  width: 90%;
+  max-width: 440px;
+  border-radius: 24px; /* Böyük yumru künclər */
+  padding: 32px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transform: scale(0.95) translateY(10px);
+  opacity: 0;
+  animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.1s;
+}
+
+/* İkon dairəsi */
+.iconWrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.success { background: #dcfce7; color: #166534; }
+.error { background: #fee2e2; color: #991b1b; }
+.warning { background: #fef3c7; color: #92400e; }
+.info { background: #eff6ff; color: #1e40af; }
+
+/* Mətnlər */
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.message {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 28px;
+}
+
+/* Düymələr Footer-i */
+.footer {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+/* Ləğv et düyməsi */
+.cancelBtn {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.cancelBtn:hover {
+  background: #e5e7eb;
+  color: #111;
+}
+
+/* Təsdiq düyməsi (Dinamik rəng) */
+.confirmBtn {
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.confirmBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+/* Animasiyalar */
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
