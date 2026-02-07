@@ -1,24 +1,22 @@
-// src/lib/categories.ts
 import { apiRequest } from "./api-client";
 
+// Backend-dən gələn
 export interface Category {
   id: number;
   name: string;
   description?: string;
-  parentCategoryId?: number | null;
+  imageUrl?: string;
+  parentCategoryId?: number | null; // <--- Bu vacibdir
   parentCategoryName?: string | null;
   subCategories?: Category[];
+  productCount?: number;
 }
 
-export interface BackendCategory {
-  id: number;
-  name: string;
-}
-
+// Backend-ə göndərilən
 export interface CategoryPayload {
   name: string;
   description?: string;
-  parentCategoryId?: number | null;
+  parentCategoryId?: number | null; // <--- Bunu göndərəcəyik
 }
 
 // 1. READ
@@ -26,12 +24,12 @@ export async function getCategories() {
   return apiRequest<Category[]>('/api/Categories');
 }
 
-// DÜZƏLİŞ BURADADIR: token parametrini əlavə etdik (optional)
+// 2. READ ONE
 export async function getCategoryById(id: number | string, token?: string) {
   return apiRequest<Category>(`/api/Categories/${id}`, { token });
 }
 
-// 2. CREATE
+// 3. CREATE (JSON)
 export async function createCategory(data: CategoryPayload, token: string) {
   return apiRequest('/api/Categories', {
     method: 'POST',
@@ -40,7 +38,7 @@ export async function createCategory(data: CategoryPayload, token: string) {
   });
 }
 
-// 3. UPDATE
+// 4. UPDATE (JSON)
 export async function updateCategory(id: number | string, data: CategoryPayload, token: string) {
   return apiRequest(`/api/Categories/${id}`, {
     method: 'PUT',
@@ -49,7 +47,7 @@ export async function updateCategory(id: number | string, data: CategoryPayload,
   });
 }
 
-// 4. DELETE
+// 5. DELETE
 export async function deleteCategory(id: number | string, token: string) {
   return apiRequest(`/api/Categories/${id}`, {
     method: 'DELETE',
