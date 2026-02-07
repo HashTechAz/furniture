@@ -2,18 +2,22 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { getDesigners, deleteDesigner, BackendDesigner } from '@/lib/designers';
+import { useAdminModal } from '@/context/admin-modal-context';
 import styles from './designers.module.css';
+
+import { FaPlus, FaEdit, FaTrash, FaUserTie, FaUser } from 'react-icons/fa';
 
 export default function DesignersPage() {
   const [designers, setDesigners] = useState<BackendDesigner[]>([]);
   const [loading, setLoading] = useState(true);
+  const { openModal } = useAdminModal();
 
   const fetchDesigners = async () => {
     try {
+      setLoading(true);
       const data = await getDesigners();
-      setDesigners(data);
+      setDesigners(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Failed to fetch designers', error);
     } finally {
@@ -25,79 +29,99 @@ export default function DesignersPage() {
     fetchDesigners();
   }, []);
 
-  const handleDelete = async (id: number) => {
-    if (!window.confirm('Bu dizayneri silmək istədiyinizə əminsiniz?')) return;
-
-    try {
-      const token = localStorage.getItem('accessToken') || '';
-      await deleteDesigner(id, token);
-      setDesigners(prev => prev.filter(d => d.id !== id));
-      alert('Silindi!');
-    } catch (error: any) {
-      alert('Xəta: ' + error.message);
-    }
+  // DELETE MODAL
+  const handleDelete = (id: number) => {
+    openModal({
+      type: 'warning',
+      title: 'Delete Designer?',
+      message: 'Are you sure you want to delete this designer? This action cannot be undone.',
+      confirmText: 'Yes, Delete',
+      cancelText: 'Cancel',
+      onConfirm: async () => {
+        const token = localStorage.getItem('accessToken') || '';
+        await deleteDesigner(id, token);
+        setDesigners(prev => prev.filter(d => d.id !== id));
+      }
+    });
   };
 
-  // Şəkil URL-ni düzəltmək üçün (Backend tam URL vermirsə)
   const getImageUrl = (url: string) => {
-    if (!url) return '/placeholder.png';
+    if (!url) return null;
     if (url.startsWith('http')) return url;
     return `${process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042'}${url}`;
   };
 
-  if (loading) return <div className={styles.container}>Yüklənir...</div>;
-
   return (
     <div className={styles.container}>
+      
+      {/* Header */}
       <div className={styles.header}>
-        <h1 className={styles.title}>Dizaynerlər ({designers.length})</h1>
+        <h1 className={styles.title}>Designers</h1>
         <Link href="/admin/designers/new" className={styles.addButton}>
-          + Yeni Dizayner
+          <FaPlus /> New Designer
         </Link>
       </div>
 
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Şəkil</th>
-            <th>Ad Soyad</th>
-            <th>Haqqında</th>
-            <th>Əməliyyatlar</th>
-          </tr>
-        </thead>
-        <tbody>
-          {designers.map((designer) => (
-            <tr key={designer.id}>
-              <td>{designer.id}</td>
-              <td>
-                <img 
-                  src={getImageUrl(designer.imageUrl)} 
-                  alt={designer.name} 
-                  className={styles.designerImage}
-                />
-              </td>
-              <td>{designer.name}</td>
-              <td>{designer.biography?.substring(0, 50)}...</td>
-              <td>
-                <div className={styles.actions}>
-                  <Link href={`/admin/designers/${designer.id}`} className={styles.editBtn}>
-                    Redaktə
-                  </Link>
-                  <button onClick={() => handleDelete(designer.id)} className={styles.deleteBtn}>
-                    Sil
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-          {designers.length === 0 && (
-            <tr>
-              <td colSpan={5} style={{textAlign: 'center', color: '#888'}}>Məlumat yoxdur.</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      {/* Table Card */}
+      <div className={styles.tableCard}>
+        {loading ? (
+           <div style={{padding: 50, textAlign: 'center', color: '#666'}}>Loading...</div>
+        ) : designers.length === 0 ? (
+           <div style={{padding: 60, textAlign: 'center', color: '#666'}}>
+             <FaUserTie size={40} style={{marginBottom: 10, opacity: 0.3}}/>
+             <p>No designers found.</p>
+           </div>
+        ) : (
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Designer</th>
+                <th>Biography</th>
+                <th style={{textAlign: 'right'}}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {designers.map((designer) => {
+                const imgUrl = getImageUrl(designer.imageUrl);
+                return (
+                  <tr key={designer.id}>
+                    <td>
+                      <div className={styles.cellContent}>
+                        <div className={styles.imageWrapper}>
+                          {imgUrl ? (
+                            <img src={imgUrl} alt={designer.name} className={styles.image} />
+                          ) : (
+                            <div style={{width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc'}}>
+                              <FaUser />
+                            </div>
+                          )}
+                        </div>
+                        <div className={styles.nameInfo}>
+                           <span className={styles.name}>{designer.name}</span>
+                           <span className={styles.idBadge}>ID: #{designer.id}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td style={{color: '#666', maxWidth: 300}}>
+                      {designer.biography ? designer.biography.substring(0, 60) + (designer.biography.length > 60 ? '...' : '') : '—'}
+                    </td>
+                    <td>
+                      <div className={styles.actions}>
+                        <Link href={`/admin/designers/${designer.id}`} className={`${styles.actionBtn} ${styles.editBtn}`} title="Edit">
+                          <FaEdit />
+                        </Link>
+                        <button onClick={() => handleDelete(designer.id)} className={`${styles.actionBtn} ${styles.deleteBtn}`} title="Delete">
+                          <FaTrash />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 }

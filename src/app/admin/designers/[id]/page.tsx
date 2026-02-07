@@ -1,46 +1,63 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { getDesignerById, updateDesigner } from '@/lib/designers';
+import { useAdminModal } from '@/context/admin-modal-context';
 import styles from '../designers.module.css';
 
-export default function EditDesignerPage({ params }: { params: { id: string } }) {
+import { FaSave, FaUserTie, FaCloudUploadAlt, FaTimes } from 'react-icons/fa';
+
+export default function EditDesignerPage() {
   const router = useRouter();
+  const params = useParams();
+  const id = params?.id as string;
+  const { openModal } = useAdminModal();
+
+  const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
+
   const [name, setName] = useState('');
   const [biography, setBiography] = useState('');
-  const [currentImage, setCurrentImage] = useState('');
+  
+  const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  // ID-ni həll etmək
-  const [id, setId] = useState<string>('');
-  useEffect(() => {
-    Promise.resolve(params).then(p => setId(p.id));
-  }, [params]);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!id) return;
-    const fetchData = async () => {
-      try {
-        // DÜZƏLİŞ: Tokeni alıb funksiyaya göndəririk
-        const token = localStorage.getItem('accessToken') || undefined;
-        const data = await getDesignerById(id, token);
-        
-        setName(data.name);
-        setBiography(data.biography || '');
-        setCurrentImage(data.imageUrl);
-      } catch (error) {
-        console.error("Dizayner tapılmadı:", error); // Konsolda xətanı görmək üçün
-        alert('Dizayner tapılmadı və ya icazəniz yoxdur.');
-        router.push('/admin/designers');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
+    if (id) {
+      const fetchData = async () => {
+        try {
+          const token = localStorage.getItem('accessToken') || undefined;
+          const data = await getDesignerById(id, token);
+          setName(data.name);
+          setBiography(data.biography || '');
+          if(data.imageUrl) setCurrentImageUrl(data.imageUrl); 
+        } catch (error) {
+          console.error(error);
+          openModal({ type: 'error', title: 'Error', message: 'Designer not found.' });
+          router.push('/admin/designers');
+        } finally {
+          setInitialLoading(false);
+        }
+      };
+      fetchData();
+    }
   }, [id, router]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const selected = e.target.files[0];
+      setFile(selected);
+      setPreviewUrl(URL.createObjectURL(selected));
+    }
+  };
+
+  const removeNewFile = () => {
+    setFile(null);
+    setPreviewUrl(null);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,13 +65,18 @@ export default function EditDesignerPage({ params }: { params: { id: string } })
 
     try {
       const token = localStorage.getItem('accessToken') || '';
-      // File null ola bilər (əgər dəyişmirsə)
       await updateDesigner(id, name, biography, file, token);
-      alert('✅ Dizayner yeniləndi!');
-      router.push('/admin/designers');
-      router.refresh();
+      
+      openModal({
+        type: 'success',
+        title: 'Updated Successfully!',
+        message: 'Designer details have been saved.',
+        confirmText: 'Back to List',
+        onConfirm: () => router.push('/admin/designers')
+      });
+
     } catch (error: any) {
-      alert('Xəta: ' + error.message);
+      openModal({ type: 'error', title: 'Error', message: error.message || 'Failed to update' });
     } finally {
       setLoading(false);
     }
@@ -66,60 +88,61 @@ export default function EditDesignerPage({ params }: { params: { id: string } })
     return `${process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042'}${url}`;
   };
 
-  if (loading) return <div className={styles.container}>Yüklənir...</div>;
+  if (initialLoading) return <div style={{padding: 40, textAlign: 'center'}}>Loading...</div>;
 
   return (
-    <div className={styles.container}>
-      <Link href="/admin/designers" style={{marginBottom: '20px', display: 'inline-block'}}>← Geri</Link>
-      <h1 className={styles.title} style={{marginBottom: '20px'}}>Dizayneri Yenilə</h1>
-
-      <div className={styles.formCard}>
-        <form onSubmit={handleSubmit}>
-          
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Ad Soyad</label>
-            <input 
-              type="text" 
-              className={styles.input} 
-              required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Haqqında (Bio)</label>
-            <textarea 
-              className={styles.textarea} 
-              rows={4}
-              value={biography}
-              onChange={(e) => setBiography(e.target.value)}
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Mövcud Şəkil</label>
-            {currentImage && (
-              <img 
-                src={getFullImageUrl(currentImage)} 
-                alt="Current" 
-                style={{width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px', marginBottom: '10px'}} 
-              />
-            )}
-            <br />
-            <label className={styles.label}>Yeni Şəkil (Dəyişmək istəyirsinizsə seçin)</label>
-            <input 
-              type="file" 
-              accept="image/*"
-              onChange={(e) => e.target.files && setFile(e.target.files[0])}
-            />
-          </div>
-
-          <button type="submit" className={styles.submitBtn} disabled={loading}>
-            {loading ? 'Yenilənir...' : 'Yadda Saxla'}
+    <form onSubmit={handleSubmit} className={styles.container}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Edit Designer</h1>
+        <div className={styles.headerActions}>
+          <Link href="/admin/designers" className={styles.cancelBtn}>Cancel</Link>
+          <button type="submit" className={styles.saveBtn} disabled={loading}>
+            <FaSave /> {loading ? 'Saving...' : 'Save Changes'}
           </button>
-        </form>
+        </div>
       </div>
-    </div>
+
+      <div className={styles.formGrid}>
+        <div className={styles.card}>
+          <div className={styles.cardTitle}><FaUserTie /> Profile Info</div>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Name</label>
+            <input type="text" className={styles.input} value={name} onChange={(e) => setName(e.target.value)} required />
+          </div>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Biography</label>
+            <textarea className={styles.textarea} value={biography} onChange={(e) => setBiography(e.target.value)} />
+          </div>
+        </div>
+
+        <div className={styles.card}>
+          <div className={styles.cardTitle}><FaCloudUploadAlt /> Profile Photo</div>
+          
+          {previewUrl ? (
+            <div className={styles.previewWrapper}>
+              <img src={previewUrl} alt="New" className={styles.previewImage} />
+              <button type="button" onClick={removeNewFile} className={styles.removeImageBtn}><FaTimes /></button>
+            </div>
+          ) : (
+            <>
+              {currentImageUrl && (
+                <div className={styles.previewWrapper} style={{marginBottom: 15, borderStyle: 'solid'}}>
+                  <img src={getFullImageUrl(currentImageUrl)} alt="Current" className={styles.previewImage} />
+                  <span style={{position: 'absolute', bottom: 5, left: 5, background: '#111', color: '#fff', fontSize: 10, padding: '2px 6px', borderRadius: 4}}>Current</span>
+                </div>
+              )}
+              
+              <label className={styles.uploadArea}>
+                <input type="file" accept="image/*" hidden onChange={handleFileChange} />
+                <div style={{fontSize: 28, color: '#ccc', marginBottom: 8}}><FaCloudUploadAlt /></div>
+                <span style={{fontSize: 13, color: '#666', fontWeight: 500}}>
+                   {currentImageUrl ? 'Change Photo' : 'Upload Photo'}
+                </span>
+              </label>
+            </>
+          )}
+        </div>
+      </div>
+    </form>
   );
 }
