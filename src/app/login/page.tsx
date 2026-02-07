@@ -1,14 +1,16 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { loginUser, setTokens } from '@/lib/auth';
-import styles from './page.module.css'; // CSS Module qoşuldu
+import styles from './page.module.css';
+import { FaEye, FaEyeSlash, FaExclamationCircle, FaArrowRight } from 'react-icons/fa';
 
 export default function LoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -18,31 +20,23 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      console.log("🚀 Giriş cəhdi...");
       const data = await loginUser(username, password);
       
       if (data && data.accessToken) {
-        // 1. Tokenləri localStorage'a yaz
         setTokens(data.accessToken, data.refreshToken || '');
-        
-        // 2. Token'ı cookie'ye de yaz (middleware cookie'den okuyor)
         document.cookie = `accessToken=${data.accessToken}; path=/; max-age=${60 * 60 * 24}; SameSite=Strict`;
         if (data.refreshToken) {
           document.cookie = `refreshToken=${data.refreshToken}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Strict`;
         }
-        
-        // 3. User bilgisini localStorage'a kaydet (admin layout kullanıyor)
         if (data.user) {
           localStorage.setItem('user', JSON.stringify(data.user));
         }
-        
-        console.log("💾 Token yazıldı, yönləndirilir...");
         window.location.href = '/admin'; 
       } else {
-        setError("Token gəlmədi! Server cavabını yoxlayın.");
+        setError("Giriş uğursuz oldu. Məlumatları yoxlayın.");
       }
     } catch (err: any) {
-      console.error("❌ Login Xətası:", err);
+      console.error("Login Error:", err);
       setError('İstifadəçi adı və ya şifrə yanlışdır.');
       setLoading(false);
     }
@@ -51,25 +45,32 @@ export default function LoginPage() {
   return (
     <div className={styles.container}>
       
+      {/* SOL TƏRƏF: ŞƏKİL VƏ BRANDING */}
       <div className={styles.imageSection}>
+        {/* Şəkil ayrıca div-dədir ki, animasiya yazıları tərpətməsin */}
+        <div className={styles.animatedBg}></div> 
         <div className={styles.imageOverlay}></div>
-        <div className={styles.brandText}>
-          <h1 className={styles.brandTitle}>Admin Panel</h1>
+        
+        <div className={styles.brandContent}>
+          <h1 className={styles.brandTitle}>Sparro.</h1>
           <p className={styles.brandSubtitle}>
-            Mebelləri idarə etmək, yeni kolleksiyalar yaratmaq və sifarişləri izləmək üçün daxil olun.
+            Premium mebel idarəetmə sistemi. Sifarişləri, məhsulları və kolleksiyaları tək mərkəzdən idarə edin.
           </p>
         </div>
       </div>
 
-      {/* SAĞ TƏRƏF: Giriş Formu */}
+      {/* SAĞ TƏRƏF: FORM */}
       <div className={styles.formSection}>
         <div className={styles.formWrapper}>
-          <h2 className={styles.title}>Xoş gəldiniz</h2>
-          <p className={styles.subtitle}>Hesabınıza daxil olmaq üçün məlumatlarınızı girin.</p>
+          
+          <div className={styles.header}>
+            <h2 className={styles.title}>Xoş Gəldiniz</h2>
+            <p className={styles.subtitle}>Hesabınıza daxil olmaq üçün məlumatlarınızı daxil edin</p>
+          </div>
 
           {error && (
             <div className={styles.errorBox}>
-              ⚠️ {error}
+              <FaExclamationCircle /> {error}
             </div>
           )}
 
@@ -79,7 +80,7 @@ export default function LoginPage() {
               <label className={styles.label}>Email / Username</label>
               <input
                 type="text"
-                placeholder="admin@example.com"
+                placeholder="admin@sparro.com"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className={styles.input}
@@ -89,14 +90,23 @@ export default function LoginPage() {
 
             <div className={styles.inputGroup}>
               <label className={styles.label}>Şifrə</label>
-              <input
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={styles.input}
-                required
-              />
+              <div className={styles.inputWrapper}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={styles.input}
+                  required
+                />
+                <button 
+                  type="button" 
+                  className={styles.eyeButton}
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                </button>
+              </div>
             </div>
 
             <button 
@@ -105,8 +115,14 @@ export default function LoginPage() {
               className={styles.button}
             >
               {loading ? 'Yoxlanılır...' : 'Daxil ol'}
+              {!loading && <FaArrowRight />}
             </button>
           </form>
+
+          <p className={styles.footerText}>
+            &copy; {new Date().getFullYear()} Sparro Furniture. All rights reserved.
+          </p>
+
         </div>
       </div>
 
