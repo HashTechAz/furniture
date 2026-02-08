@@ -10,19 +10,17 @@ import {
   FaHome, FaPaintBrush, FaFolder, FaEnvelope 
 } from 'react-icons/fa';
 
-import { AdminModalProvider } from '@/context/admin-modal-context';
+import { AdminModalProvider, useAdminModal } from '@/context/admin-modal-context';
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function LayoutContent({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [user, setUser] = useState<{ email: string } | null>(null);
   
   const router = useRouter();
   const pathname = usePathname();
+  const { openModal } = useAdminModal();
 
+  // Səhifə Başlıqları
   const getPageTitle = () => {
     if (pathname === '/admin') return 'Dashboard';
     if (pathname.includes('products')) return 'Products';
@@ -31,23 +29,44 @@ export default function AdminLayout({
     if (pathname.includes('designers')) return 'Designers';
     if (pathname.includes('collections')) return 'Collections';
     if (pathname.includes('contact')) return 'Inbox';
+    if (pathname.includes('change-password')) return 'Security';
     return 'Admin';
   };
 
+  // Logout Funksiyası
+  const handleLogout = async () => {
+    try {
+      // Backend-ə logout sorğusu (varsa)
+      await fetch('/api/admin/logout', { method: 'POST' });
+    } catch (e) { 
+      console.error(e); 
+    } finally {
+      // 1. LocalStorage təmizlə
+      localStorage.clear();
+      
+      // 2. Cookieləri təmizlə
+      document.cookie.split(";").forEach((c) => {
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+      });
+
+      // 3. Logina at
+      router.push('/login');
+    }
+  };
+
+  // Resize Handler
   useEffect(() => {
-    // Window obyektini yalnız useEffect daxilində (yəni Client tərəfdə) istifadə edirik
     const handleResize = () => {
       if (window.innerWidth < 1024) setIsSidebarOpen(false);
       else setIsSidebarOpen(true);
     };
 
-    // İlk yüklənmədə yoxlamaq (ancaq client-də)
     handleResize();
-
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // User Load
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -59,43 +78,56 @@ export default function AdminLayout({
     }
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await fetch('/api/admin/logout', { method: 'POST' });
-    } catch (e) { console.error(e); } 
-    finally {
-      localStorage.clear();
-      document.cookie.split(";").forEach((c) => {
-        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-      });
+  // *** TOKEN YOXLAMASI VƏ INTERCEPTOR DİNLƏYİCİSİ ***
+  useEffect(() => {
+    // 1. Token ümumiyyətlə varmı?
+    const token = document.cookie.includes('accessToken') || localStorage.getItem('user');
+    if (!token) {
       router.push('/login');
     }
-  };
+
+    // 2. "auth-error" hadisəsini dinlə (api-client.ts göndərir)
+    const handleAuthError = () => {
+      openModal({
+        type: 'error',
+        title: 'Sessiya Bitdi 🔒',
+        message: 'Təhlükəsizlik səbəbilə sessiyanızın vaxtı bitib. Zəhmət olmasa yenidən daxil olun.',
+        confirmText: 'Daxil ol',
+        onConfirm: () => {
+           handleLogout(); // Yuxarıdakı logout funksiyasını çağırırıq
+        },
+        cancelText: '' // Cancel düyməsini gizlədirik ki, məcbur çıxsın
+      });
+    };
+
+    window.addEventListener('auth-error', handleAuthError);
+
+    return () => {
+      window.removeEventListener('auth-error', handleAuthError);
+    };
+  }, [router, openModal]);
 
   const isActive = (path: string) => pathname === path || pathname.startsWith(path + '/') ? styles.activeLink : '';
 
   return (
-    <AdminModalProvider>
     <div className={styles.adminLayout}>
       
       {/* SIDEBAR */}
       <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarOpen : ''}`}>
         
-        {/* LOGO: Sparro */}
+        {/* LOGO */}
         <div className={styles.sidebarHeader}>
           <div className={styles.logo}>
             <div className={styles.logoBox}>S</div>
             Sparro
           </div>
           
-          {/* DÜZƏLİŞ EDİLƏN HİSSƏ BURADIR: */}
           <button 
              className={styles.menuButton} 
              onClick={() => setIsSidebarOpen(false)} 
              style={{ marginLeft: 'auto' }} 
-             // window.innerWidth yoxlanışını sildik, CSS bunu həll edəcək
           >
-             ×
+              ×
           </button>
         </div>
         
@@ -170,6 +202,14 @@ export default function AdminLayout({
         </main>
       </div>
     </div>
+  );
+}
+
+// --- ƏSAS LAYOUT (Wrapper) ---
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <AdminModalProvider>
+      <LayoutContent>{children}</LayoutContent>
     </AdminModalProvider>
   );
 }
