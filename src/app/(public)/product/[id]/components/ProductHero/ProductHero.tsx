@@ -1,10 +1,10 @@
 "use client";
 import Image from "next/image";
 import React, { useState, useCallback, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./ProductHero.module.css";
 import useEmblaCarousel from "embla-carousel-react";
-import { FrontendProduct } from "@/lib/products";
-// YENİ: Rəngləri gətirmək üçün import
+import { FrontendProduct, getProductVariants } from "@/lib/products";
 import { getColors, BackendColor } from "@/lib/colors";
 
 interface ProductHeroProps {
@@ -56,31 +56,34 @@ const GalleryPanel = ({ title, images, onClose }: { title: string; images: strin
   );
 };
 
-// --- COLOUR PANEL (DİNAMİK) ---
+// --- COLOUR PANEL (Variantlar və ya bütün rənglər) ---
 const ColourPanel = ({
   currentColor,
+  currentProductId,
+  productGroupId,
+  variants,
+  currentProductForSingle,
+  allColors,
+  loadingColors,
   onSelectColor,
+  onSelectVariant,
 }: {
   currentColor: string;
+  currentProductId: number;
+  productGroupId: number | null | undefined;
+  variants: FrontendProduct[];
+  currentProductForSingle: FrontendProduct | null;
+  allColors: BackendColor[];
+  loadingColors: boolean;
   onSelectColor: (color: string) => void;
+  onSelectVariant?: (variantId: number) => void;
 }) => {
-  // YENİ: Rəngləri API-dən gətirmək üçün state
-  const [colors, setColors] = useState<BackendColor[]>([]);
-  const [loading, setLoading] = useState(true);
+  const isVariantGroup = productGroupId != null;
+  const hasVariants = variants.length > 0;
+  const showOnlyVariants = isVariantGroup && (hasVariants || currentProductForSingle != null);
+  const colorNameToHex = Object.fromEntries(allColors.map((c) => [c.name.toLowerCase(), c.hexCode]));
 
-  useEffect(() => {
-    const fetchColors = async () => {
-      try {
-        const data = await getColors();
-        setColors(data);
-      } catch (error) {
-        console.error("Rəngləri gətirmək mümkün olmadı:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchColors();
-  }, []);
+  const listToShow = hasVariants ? variants : currentProductForSingle ? [currentProductForSingle] : [];
 
   return (
     <div className={styles.panelLayout}>
@@ -89,23 +92,53 @@ const ColourPanel = ({
           <h3>Colour: {currentColor}</h3>
         </div>
         <div className={styles.panelSubHeader}>
-          <span>Laquers</span>
+          <span>
+            {showOnlyVariants
+              ? "Bu məhsulun rəng variantları"
+              : "Laquers"}
+          </span>
         </div>
-        
-        {loading ? (
-          <p style={{padding: '20px', color: '#666'}}>Rənglər yüklənir...</p>
+
+        {loadingColors ? (
+          <p style={{ padding: "20px", color: "#666" }}>Rənglər yüklənir...</p>
+        ) : showOnlyVariants ? (
+          <div className={styles.colorGrid}>
+            {listToShow.map((v) => {
+              const hex = colorNameToHex[v.color?.toLowerCase()] || "#ccc";
+              const isCurrent = v.id === currentProductId;
+              return (
+                <div
+                  key={v.id}
+                  className={styles.colorSwatchWrapper}
+                  onClick={isCurrent ? undefined : () => onSelectVariant?.(v.id)}
+                  title={isCurrent ? `${v.title} (cari)` : `${v.title} – ${v.color}`}
+                >
+                  <div
+                    className={styles.colorSwatch}
+                    style={{ backgroundColor: hex }}
+                  >
+                    {isCurrent && (
+                      <div className={styles.checkmarkIcon}>
+                        <CheckmarkIcon />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         ) : (
           <div className={styles.colorGrid}>
-            {colors.map((color) => (
+            {allColors.map((color) => (
               <div
-                key={color.id} // API-dən gələn ID
+                key={color.id}
                 className={styles.colorSwatchWrapper}
                 onClick={() => onSelectColor(color.name)}
                 title={color.name}
               >
                 <div
                   className={styles.colorSwatch}
-                  style={{ backgroundColor: color.hexCode }} // API: hexCode
+                  style={{ backgroundColor: color.hexCode }}
                 >
                   {currentColor.toLowerCase() === color.name.toLowerCase() && (
                     <div className={styles.checkmarkIcon}>
@@ -115,7 +148,7 @@ const ColourPanel = ({
                 </div>
               </div>
             ))}
-            {colors.length === 0 && <p>Heç bir rəng tapılmadı.</p>}
+            {allColors.length === 0 && <p>Heç bir rəng tapılmadı.</p>}
           </div>
         )}
       </div>
@@ -155,12 +188,45 @@ const DepthPanel = ({ currentDepth, onSelectDepth }: { currentDepth: string; onS
 
 // --- MAIN HERO COMPONENT ---
 const ProductHero = ({ product }: ProductHeroProps) => {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("description");
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [currentProductColor, setCurrentProductColor] = useState(product.color || "White");
   const [currentProductPosition, setCurrentProductPosition] = useState(product.position || "Plinth H3 cm");
   const [currentProductDepth, setCurrentProductDepth] = useState("Depth 38 cm");
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+
+  const [variants, setVariants] = useState<FrontendProduct[]>([]);
+  const [allColors, setAllColors] = useState<BackendColor[]>([]);
+  const [loadingColors, setLoadingColors] = useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      setLoadingColors(true);
+      try {
+        const colors = await getColors();
+        setAllColors(colors);
+        if (product.productGroupId != null) {
+          const list = await getProductVariants(product.productGroupId);
+          setVariants(list);
+        } else {
+          setVariants([]);
+        }
+      } catch (e) {
+        console.error("Colour panel load error:", e);
+      } finally {
+        setLoadingColors(false);
+      }
+    };
+    load();
+  }, [product.id, product.productGroupId]);
+
+  const handleSelectVariant = useCallback(
+    (variantId: number) => {
+      router.push(`/product/${variantId}`);
+    },
+    [router],
+  );
 
   const handleMenuClick = (menuKey: string) => {
     if (menuKey === "gallery") {
@@ -185,7 +251,16 @@ const ProductHero = ({ product }: ProductHeroProps) => {
       panel: (
         <ColourPanel
           currentColor={currentProductColor}
+          currentProductId={product.id}
+          productGroupId={product.productGroupId}
+          variants={variants}
+          currentProductForSingle={
+            product.productGroupId != null && variants.length === 0 ? product : null
+          }
+          allColors={allColors}
+          loadingColors={loadingColors}
           onSelectColor={setCurrentProductColor}
+          onSelectVariant={handleSelectVariant}
         />
       ),
     },

@@ -300,6 +300,7 @@ export default function EditProductPage() {
           
           <div className={styles.card}>
             <div className={styles.cardTitle}><FaPalette /> Colors</div>
+            <p className={styles.label} style={{ marginBottom: 8, color: '#666', fontSize: 13 }}>Bir məhsulda yalnız bir rəng ola bilər. Digər rənglər üçün variant əlavə edin.</p>
             <div className={styles.formGroup}><select className={styles.select} onChange={handleColorChange} value=""><option value="">Add Color...</option>{colors.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}</select></div>
             <div className={styles.tagsContainer}>
               {formData.selectedColorIds.map(id => {
@@ -307,6 +308,9 @@ export default function EditProductPage() {
                 return color ? (<div key={id} className={styles.tag}><span style={{width: 10, height: 10, background: color.hexCode, borderRadius: '50%', border: '1px solid #ddd'}}></span>{color.name}<span className={styles.removeTag} onClick={() => removeColor(id)}>×</span></div>) : null;
               })}
             </div>
+            <Link href={`/admin/products/${productId}/variant/new`} className={styles.variantLink}>
+              + Bu məhsulun başqa rəng variantını yarat
+            </Link>
           </div>
         </div>
       </div>

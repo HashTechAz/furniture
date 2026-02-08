@@ -267,6 +267,28 @@
   color: #ef4444;
 }
 
+.variantLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 10px;
+  color: #166534;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.variantLink:hover {
+  background: #dcfce7;
+  border-color: #22c55e;
+  color: #14532d;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .grid {

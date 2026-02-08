@@ -27,6 +27,7 @@ export interface ProductQueryParams {
   collectionId?: number;
   designerId?: number;
   colorIds?: number[];
+  productGroupId?: number; // Eyni qrupdakı variantları gətirmək üçün (rəng variantları)
   minPrice?: number;
   maxPrice?: number;
   sortBy?: string;
@@ -49,6 +50,7 @@ export interface BackendProduct {
   categoryId?: number;
   designerId?: number;
   collectionId?: number;
+  productGroupId?: number | null;
 
   // Backend-dən adlar gəlirsə
   categoryName?: string;
@@ -75,6 +77,7 @@ export interface FrontendProduct {
   designerId: number;
   collectionId: number;
   selectedColorIds: number[];
+  productGroupId?: number | null; // Eyni məhsulun digər rəng variantları üçün
 
   // YENİ: Kategoriya adı (Rahat göstərmək üçün)
   categoryName: string;
@@ -126,6 +129,29 @@ export interface CreateProductPayload {
   specifications: { key: string; value: string }[];
 }
 
+/** Backend-in POST /api/Products/{id}/variants üçün body. ProductGroupId backend tərəfindən avtomatik təyin edilir. */
+export interface CreateProductVariantPayload {
+  name: string;
+  sku: string;
+  description?: string;
+  shortDescription?: string;
+  price: number;
+  isFeatured?: boolean;
+  height: number;
+  width: number;
+  depth: number;
+  weight: number;
+  categoryId: number;
+  designerId: number;
+  collectionId: number;
+  productGroupId?: number; // İstəyə bağlı, backend özü də təyin edə bilər
+  colorIds: number[];
+  materialIds?: number[];
+  roomIds?: number[];
+  tagIds?: number[];
+  specifications?: { key: string; value: string }[];
+}
+
 // --- 2. MAPPER ---
 
 const mapBackendToFrontend = (item: BackendProduct): FrontendProduct => {
@@ -166,6 +192,10 @@ const mapBackendToFrontend = (item: BackendProduct): FrontendProduct => {
 
   const finalDesignerId = item.designerId || item.designer?.id || 0;
   const finalCollectionId = item.collectionId || item.collection?.id || 0;
+  const productGroupId =
+    item.productGroupId ??
+    (item as unknown as { ProductGroupId?: number }).ProductGroupId ??
+    undefined;
 
   return {
     id: item.id,
@@ -174,7 +204,8 @@ const mapBackendToFrontend = (item: BackendProduct): FrontendProduct => {
     shortDescription: item.shortDescription || "",
 
     categoryId: finalCategoryId,
-    categoryName: finalCategoryName, // Artıq mövcuddur!
+    categoryName: finalCategoryName,
+    productGroupId,
 
     designerId: finalDesignerId,
     collectionId: finalCollectionId,
@@ -217,6 +248,8 @@ export async function getProducts(
   const queryParams = new URLSearchParams();
   if (params) {
     if (params.searchTerm) queryParams.append("searchTerm", params.searchTerm);
+    if (params.productGroupId != null)
+      queryParams.append("productGroupId", params.productGroupId.toString());
     if (params.pageNumber)
       queryParams.append("pageNumber", params.pageNumber.toString());
     if (params.pageSize)
@@ -261,6 +294,29 @@ export async function getProductById(
 
 export async function createProduct(data: CreateProductPayload, token: string) {
   return apiRequest("/api/Products", { method: "POST", data, token });
+}
+
+/**
+ * Mövcud məhsulun rəng variantını yaradır.
+ * Backend ProductGroupId-ni avtomatik idarə edir (yoxdursa yaradır, varsa eyni ID-ni yeni varianta verir).
+ */
+export async function createProductVariant(
+  baseProductId: number | string,
+  data: CreateProductVariantPayload,
+  token: string,
+) {
+  return apiRequest<BackendProduct>(`/api/Products/${baseProductId}/variants`, {
+    method: "POST",
+    data,
+    token,
+  });
+}
+
+/** Eyni ProductGroupId-dakı variant məhsulları (məs. eyni stulun digər rəngləri). Backend productGroupId filter dəstəkləyəndə işləyir. */
+export async function getProductVariants(
+  productGroupId: number,
+): Promise<FrontendProduct[]> {
+  return getProducts({ productGroupId, pageSize: 50 });
 }
 
 export async function updateProduct(
