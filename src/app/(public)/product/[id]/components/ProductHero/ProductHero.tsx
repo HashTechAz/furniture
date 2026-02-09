@@ -4,7 +4,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./ProductHero.module.css";
 import useEmblaCarousel from "embla-carousel-react";
-import { FrontendProduct, getProductVariants } from "@/lib/products";
+import { FrontendProduct, getProductVariants, getProductVariantsByNameFallback } from "@/lib/products";
 import { getColors, BackendColor } from "@/lib/colors";
 
 interface ProductHeroProps {
@@ -78,9 +78,9 @@ const ColourPanel = ({
   onSelectColor: (color: string) => void;
   onSelectVariant?: (variantId: number) => void;
 }) => {
-  const isVariantGroup = productGroupId != null;
   const hasVariants = variants.length > 0;
-  const showOnlyVariants = isVariantGroup && (hasVariants || currentProductForSingle != null);
+  const showOnlyVariants =
+    hasVariants || (productGroupId != null && currentProductForSingle != null);
   const colorNameToHex = Object.fromEntries(allColors.map((c) => [c.name.toLowerCase(), c.hexCode]));
 
   const listToShow = hasVariants ? variants : currentProductForSingle ? [currentProductForSingle] : [];
@@ -210,7 +210,8 @@ const ProductHero = ({ product }: ProductHeroProps) => {
           const list = await getProductVariants(product.productGroupId);
           setVariants(list);
         } else {
-          setVariants([]);
+          const list = await getProductVariantsByNameFallback(product);
+          setVariants(list.length >= 2 ? list : []);
         }
       } catch (e) {
         console.error("Colour panel load error:", e);
@@ -219,7 +220,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
       }
     };
     load();
-  }, [product.id, product.productGroupId]);
+  }, [product.id, product.productGroupId, product.title, product.categoryId]);
 
   const handleSelectVariant = useCallback(
     (variantId: number) => {

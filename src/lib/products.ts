@@ -319,6 +319,31 @@ export async function getProductVariants(
   return getProducts({ productGroupId, pageSize: 50 });
 }
 
+/** Ad əsasına görə eyni məhsulun variantlarını tapır (məs. "Stul – Qırmızı" / "Stul" → eyni base "Stul"). productGroupId olmayan məhsullar üçün fallback. */
+function getBaseName(title: string): string {
+  if (!title || typeof title !== "string") return "";
+  const normalized = title.trim();
+  const dash = normalized.indexOf(" – ");
+  const dash2 = normalized.indexOf(" - ");
+  const idx = dash >= 0 && (dash2 < 0 || dash <= dash2) ? dash : dash2;
+  const base = idx >= 0 ? normalized.slice(0, idx).trim() : normalized;
+  return base.toLowerCase();
+}
+
+/** productGroupId olmadıqda, eyni ad əsası və kategoriyaya görə "qardaş" məhsulları gətirir (bütün rəngləri göstərməyin qarşısını alır). */
+export async function getProductVariantsByNameFallback(
+  product: FrontendProduct,
+): Promise<FrontendProduct[]> {
+  const base = getBaseName(product.title);
+  if (!base) return [];
+  const all = await getProducts({ pageSize: 200 });
+  return all.filter(
+    (p) =>
+      getBaseName(p.title) === base &&
+      p.categoryId === product.categoryId,
+  );
+}
+
 export async function updateProduct(
   id: number | string,
   data: CreateProductPayload,
