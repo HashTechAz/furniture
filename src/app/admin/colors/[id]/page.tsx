@@ -26,7 +26,7 @@ export default function EditColorPage() {
         try {
           const token = localStorage.getItem('accessToken');
           const data = await getColorById(id, token || undefined);
-          setFormData({ name: data.name, hexCode: data.hexCode });
+          setFormData({ name: data.name || '', hexCode: data.hexCode || '#000000' });
         } catch (error) {
           console.error('Color not found', error);
           openModal({ type: 'error', title: 'Error', message: 'Color not found.' });

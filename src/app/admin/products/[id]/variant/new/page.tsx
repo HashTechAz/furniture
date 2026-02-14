@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import styles from '../../../product-form.module.css';   
+import styles from '../../../product-form.module.css';
 import { getProductById, createProductVariant } from '@/lib/products';
 import { getColors } from '@/lib/colors';
 import { useAdminModal } from '@/context/admin-modal-context';
@@ -19,7 +19,7 @@ export default function NewVariantPage() {
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [baseProduct, setBaseProduct] = useState<Awaited<ReturnType<typeof getProductById>>>(null);
-  const [colors, setColors] = useState<{ id: number; name: string; hexCode: string }[]>([]);
+  const [colors, setColors] = useState<{ id: number; name: string; hexCode?: string }[]>([]);
 
   const [name, setName] = useState('');
   const [sku, setSku] = useState('');
@@ -79,18 +79,19 @@ export default function NewVariantPage() {
         specifications: [],
       };
       const newProduct = await createProductVariant(baseProductId, payload, token);
+      const newId = (newProduct as { id: number }).id;
       openModal({
         type: 'success',
         title: 'Variant yaradıldı',
         message: 'Yeni rəng variantı uğurla əlavə olundu. İndi şəkillər əlavə edə bilərsiniz.',
         confirmText: 'Yeni məhsula keç',
-        onConfirm: () => router.push(`/admin/products/${(newProduct as { id: number }).id}`),
+        onConfirm: () => router.push(`/admin/products/${newId}`),
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       openModal({
         type: 'error',
         title: 'Xəta',
-        message: error?.message || 'Variant yaradıla bilmədi.',
+        message: error instanceof Error ? error.message : 'Variant yaradıla bilmədi.',
       });
     } finally {
       setLoading(false);
