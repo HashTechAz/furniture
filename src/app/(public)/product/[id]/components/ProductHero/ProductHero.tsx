@@ -79,8 +79,8 @@ const ColourPanel = ({
   onSelectVariant?: (variantId: number) => void;
 }) => {
   const hasVariants = variants.length > 0;
-  const showOnlyVariants =
-    hasVariants || (productGroupId != null && currentProductForSingle != null);
+  const showOnlyProductColors =
+    hasVariants || currentProductForSingle != null;
   const colorNameToHex = Object.fromEntries(allColors.map((c) => [c.name.toLowerCase(), c.hexCode]));
 
   const listToShow = hasVariants ? variants : currentProductForSingle ? [currentProductForSingle] : [];
@@ -93,63 +93,51 @@ const ColourPanel = ({
         </div>
         <div className={styles.panelSubHeader}>
           <span>
-            {showOnlyVariants
+            {hasVariants
               ? "Bu məhsulun rəng variantları"
-              : "Laquers"}
+              : listToShow.length === 1
+                ? "Bu məhsulun yalnız bu rəngi var"
+                : ""}
           </span>
         </div>
 
         {loadingColors ? (
           <p style={{ padding: "20px", color: "#666" }}>Rənglər yüklənir...</p>
-        ) : showOnlyVariants ? (
-          <div className={styles.colorGrid}>
-            {listToShow.map((v) => {
-              const hex = colorNameToHex[v.color?.toLowerCase()] || "#ccc";
-              const isCurrent = v.id === currentProductId;
-              return (
-                <div
-                  key={v.id}
-                  className={styles.colorSwatchWrapper}
-                  onClick={isCurrent ? undefined : () => onSelectVariant?.(v.id)}
-                  title={isCurrent ? `${v.title} (cari)` : `${v.title} – ${v.color}`}
-                >
+        ) : showOnlyProductColors ? (
+          <>
+            <div className={styles.colorGrid}>
+              {listToShow.map((v) => {
+                const hex = colorNameToHex[v.color?.toLowerCase()] || "#ccc";
+                const isCurrent = v.id === currentProductId;
+                return (
                   <div
-                    className={styles.colorSwatch}
-                    style={{ backgroundColor: hex }}
+                    key={v.id}
+                    className={styles.colorSwatchWrapper}
+                    onClick={isCurrent ? undefined : () => onSelectVariant?.(v.id)}
+                    title={isCurrent ? `${v.title} (cari)` : `${v.title} – ${v.color}`}
                   >
-                    {isCurrent && (
-                      <div className={styles.checkmarkIcon}>
-                        <CheckmarkIcon />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className={styles.colorGrid}>
-            {allColors.map((color) => (
-              <div
-                key={color.id}
-                className={styles.colorSwatchWrapper}
-                onClick={() => onSelectColor(color.name)}
-                title={color.name}
-              >
-                <div
-                  className={styles.colorSwatch}
-                  style={{ backgroundColor: color.hexCode }}
-                >
-                  {currentColor.toLowerCase() === color.name.toLowerCase() && (
-                    <div className={styles.checkmarkIcon}>
-                      <CheckmarkIcon />
+                    <div
+                      className={styles.colorSwatch}
+                      style={{ backgroundColor: hex }}
+                    >
+                      {isCurrent && (
+                        <div className={styles.checkmarkIcon}>
+                          <CheckmarkIcon />
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              </div>
-            ))}
-            {allColors.length === 0 && <p>Heç bir rəng tapılmadı.</p>}
-          </div>
+                  </div>
+                );
+              })}
+            </div>
+            {listToShow.length === 1 && (
+              <p style={{ padding: "12px 0 0", fontSize: 13, color: "#666" }}>
+                Bu məhsulun başqa rəng seçimi yoxdur.
+              </p>
+            )}
+          </>
+        ) : (
+          <p style={{ padding: "20px", color: "#666" }}>Rəng məlumatı yoxdur.</p>
         )}
       </div>
     </div>
@@ -208,7 +196,8 @@ const ProductHero = ({ product }: ProductHeroProps) => {
         setAllColors(colors);
         if (product.productGroupId != null) {
           const list = await getProductVariants(product.productGroupId);
-          setVariants(list);
+          const sameGroup = list.filter((p) => p.productGroupId === product.productGroupId);
+          setVariants(sameGroup);
         } else {
           const list = await getProductVariantsByNameFallback(product);
           setVariants(list.length >= 2 ? list : []);
@@ -255,9 +244,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
           currentProductId={product.id}
           productGroupId={product.productGroupId}
           variants={variants}
-          currentProductForSingle={
-            product.productGroupId != null && variants.length === 0 ? product : null
-          }
+          currentProductForSingle={variants.length === 0 ? product : null}
           allColors={allColors}
           loadingColors={loadingColors}
           onSelectColor={setCurrentProductColor}

@@ -1,12 +1,19 @@
 // src/lib/colors.ts
 import { apiRequest } from '@/lib/api-client';
 
-// Swagger cavabına uyğun Interface
+// Məhsulun daxilindəki "colorVariants" array-i üçün (JSON-a əsasən)
+export interface ProductColorVariant {
+  productId: number;
+  colorName: string;
+  colorHexCode: string;
+}
+
+// Swagger cavabına uyğun Interface (Bəzi yerlərdə hexCode gəlmədiyi üçün optional etdim)
 export interface BackendColor {
   id: number;
   name: string;
-  hexCode: string;
-  products?: any[]; // Backend-dən gələn siyahı (əgər varsa)
+  hexCode?: string; 
+  products?: any[];
 }
 
 // Yaratmaq və Yeniləmək üçün Payload
@@ -21,7 +28,6 @@ export async function getColors(): Promise<BackendColor[]> {
 }
 
 // --- 2. GET BY ID (Tək rəng - Redaktə üçün) ---
-// QEYD: Swagger-də 401 aldığın üçün bura optional token əlavə etdim
 export async function getColorById(id: number | string, token?: string): Promise<BackendColor> {
   return apiRequest<BackendColor>(`/api/Colors/${id}`, { token });
 }
