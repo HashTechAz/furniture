@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { createCategory, getCategories, Category } from '@/lib/categories';
 import { useAdminModal } from '@/context/admin-modal-context';
@@ -11,18 +11,17 @@ import { FaSave, FaTags, FaLayerGroup } from 'react-icons/fa';
 
 export default function NewCategoryPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const parentIdFromUrl = searchParams.get('parentId');
   const { openModal } = useAdminModal();
   const [loading, setLoading] = useState(false);
 
-  // Form State
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [parentCategoryId, setParentCategoryId] = useState<number>(0); // 0 = No Parent
+  const [parentCategoryId, setParentCategoryId] = useState<number>(0);
 
-  // Dropdown üçün mövcud kateqoriyalar
   const [categories, setCategories] = useState<Category[]>([]);
 
-  // Kateqoriyaları gətir (Dropdown üçün)
   useEffect(() => {
     async function fetchCats() {
       try {
@@ -34,6 +33,13 @@ export default function NewCategoryPage() {
     }
     fetchCats();
   }, []);
+
+  useEffect(() => {
+    if (parentIdFromUrl && categories.length > 0) {
+      const pid = Number(parentIdFromUrl);
+      if (pid && categories.some((c) => c.id === pid)) setParentCategoryId(pid);
+    }
+  }, [parentIdFromUrl, categories]);
 
   // SUBMIT
   const handleSubmit = async (e: React.FormEvent) => {
