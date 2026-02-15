@@ -3,7 +3,6 @@ import Image from "next/image";
 import React, { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./ProductHero.module.css";
-import useEmblaCarousel from "embla-carousel-react";
 import { FrontendProduct, getProductVariants, getProductVariantsByNameFallback } from "@/lib/products";
 import { getColors, BackendColor } from "@/lib/colors";
 
@@ -12,51 +11,104 @@ interface ProductHeroProps {
 }
 
 // --- ICONS ---
-const CloseIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M18 6L6 18" stroke="#333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M6 6L18 18" stroke="#333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+const CloseIcon = ({ size = 24, color = "#333" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18 6L6 18" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M6 6L18 18" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
+
 const CheckmarkIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M20 6L9 17L4 12" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
-// --- GALLERY PANEL ---
-const GalleryPanel = ({ title, images, onClose }: { title: string; images: string[]; onClose: () => void; }) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", dragFree: true });
+// --- FULL SCREEN GALLERY MODAL ---
+const FullScreenGallery = ({
+  images,
+  onClose,
+  title,
+}: {
+  images: string[];
+  onClose: () => void;
+  title: string;
+}) => {
+  const scrollRef = React.useRef<HTMLDivElement>(null);
 
-  const scrollPrev = useCallback(() => { if (emblaApi) emblaApi.scrollPrev(); }, [emblaApi]);
-  const scrollNext = useCallback(() => { if (emblaApi) emblaApi.scrollNext(); }, [emblaApi]);
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
+  const scroll = (dir: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const step = Math.min(el.clientWidth * 0.9, 900);
+    el.scrollBy({ left: dir === "left" ? -step : step, behavior: "smooth" });
+  };
 
   return (
     <div className={styles.galleryOverlay}>
+      {/* Header: title ortada, sağda oxlar + close */}
       <header className={styles.galleryHeader}>
-        <h3 className={styles.galleryTitle}>{title} Gallery</h3>
+        <div style={{ width: 80 }} aria-hidden />
+        <h2 className={styles.galleryTitle}>{title} Gallery</h2>
         <div className={styles.galleryNav}>
-          <button onClick={scrollPrev} className={styles.galleryNavButton}>&larr;</button>
-          <button onClick={scrollNext} className={styles.galleryNavButton}>&rarr;</button>
-          <button onClick={onClose} className={styles.galleryCloseButton}>&times;</button>
+          <button
+            type="button"
+            className={styles.galleryNavButton}
+            onClick={() => scroll("left")}
+            aria-label="Əvvəlki"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            className={styles.galleryNavButton}
+            onClick={() => scroll("right")}
+            aria-label="Növbəti"
+          >
+            →
+          </button>
+          <button
+            type="button"
+            className={styles.galleryCloseButton}
+            onClick={onClose}
+            aria-label="Bağla"
+          >
+            <CloseIcon size={24} />
+          </button>
         </div>
       </header>
-      <div className={styles.gallerySliderContainer}>
-        <div className={styles.galleryEmbla} ref={emblaRef}>
-          <div className={styles.galleryEmblaContainer}>
-            {images.map((src, index) => (
-              <div key={index} className={`${styles.galleryEmblaSlide} ${index === 0 ? styles.wide : styles.normal}`} style={{ position: "relative" }}>
-                <Image fill src={src} alt={`Product image ${index + 1}`} className={styles.galleryImage} />
-              </div>
-            ))}
-          </div>
+
+      {/* Böyük şəkillər, yan-yana, üfüqi scroll */}
+      <div
+        ref={scrollRef}
+        className={styles.gallerySliderContainer}
+        style={{ overflowX: "auto", overflowY: "hidden", display: "flex", alignItems: "center" }}
+      >
+        <div className={styles.galleryScrollTrack}>
+          {images.map((src, index) => (
+            <div key={index} className={styles.galleryLargeSlide}>
+              <Image
+                src={src}
+                alt={`${title} image ${index + 1}`}
+                fill
+                className={styles.galleryImage}
+                sizes="90vw"
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
 };
 
-// --- COLOUR PANEL (Variantlar və ya bütün rənglər) ---
+// --- COLOUR PANEL ---
 const ColourPanel = ({
   currentColor,
   currentProductId,
@@ -79,11 +131,16 @@ const ColourPanel = ({
   onSelectVariant?: (variantId: number) => void;
 }) => {
   const hasVariants = variants.length > 0;
-  const showOnlyProductColors =
-    hasVariants || currentProductForSingle != null;
-  const colorNameToHex = Object.fromEntries(allColors.map((c) => [c.name.toLowerCase(), c.hexCode]));
+  const showOnlyProductColors = hasVariants || currentProductForSingle != null;
+  const colorNameToHex = Object.fromEntries(
+    allColors.map((c) => [c.name.toLowerCase(), c.hexCode])
+  );
 
-  const listToShow = hasVariants ? variants : currentProductForSingle ? [currentProductForSingle] : [];
+  const listToShow = hasVariants
+    ? variants
+    : currentProductForSingle
+    ? [currentProductForSingle]
+    : [];
 
   return (
     <div className={styles.panelLayout}>
@@ -96,8 +153,8 @@ const ColourPanel = ({
             {hasVariants
               ? "Bu məhsulun rəng variantları"
               : listToShow.length === 1
-                ? "Bu məhsulun yalnız bu rəngi var"
-                : ""}
+              ? "Bu məhsulun yalnız bu rəngi var"
+              : ""}
           </span>
         </div>
 
@@ -116,10 +173,7 @@ const ColourPanel = ({
                     onClick={isCurrent ? undefined : () => onSelectVariant?.(v.id)}
                     title={isCurrent ? `${v.title} (cari)` : `${v.title} – ${v.color}`}
                   >
-                    <div
-                      className={styles.colorSwatch}
-                      style={{ backgroundColor: hex }}
-                    >
+                    <div className={styles.colorSwatch} style={{ backgroundColor: hex }}>
                       {isCurrent && (
                         <div className={styles.checkmarkIcon}>
                           <CheckmarkIcon />
@@ -145,14 +199,38 @@ const ColourPanel = ({
 };
 
 // --- POSITION PANEL ---
-const PositionPanel = ({ currentPosition, onSelectPosition }: { currentPosition: string; onSelectPosition: (position: string) => void; }) => {
-  const positionOptions = ["Plinth H3 cm", "Plinth H7 cm", "Castors H6.8 cm", "Legs H12.6 cm", "No position (used for stacked modules)", "Suspension rail"];
+const PositionPanel = ({
+  currentPosition,
+  onSelectPosition,
+}: {
+  currentPosition: string;
+  onSelectPosition: (position: string) => void;
+}) => {
+  const positionOptions = [
+    "Plinth H3 cm",
+    "Plinth H7 cm",
+    "Castors H6.8 cm",
+    "Legs H12.6 cm",
+    "No position (used for stacked modules)",
+    "Suspension rail",
+  ];
   return (
     <div className={styles.panelContent}>
-      <div className={styles.panelHeader}><h3>Position: {currentPosition}</h3></div>
+      <div className={styles.panelHeader}>
+        <h3>Position: {currentPosition}</h3>
+      </div>
       <ul className={styles.positionList}>
         {positionOptions.map((option) => (
-          <li key={option} className={`${styles.positionItem} ${currentPosition === option ? styles.activePosition : ""}`} onClick={() => onSelectPosition(option)}> {option} </li>
+          <li
+            key={option}
+            className={`${styles.positionItem} ${
+              currentPosition === option ? styles.activePosition : ""
+            }`}
+            onClick={() => onSelectPosition(option)}
+          >
+            {" "}
+            {option}{" "}
+          </li>
         ))}
       </ul>
     </div>
@@ -160,14 +238,31 @@ const PositionPanel = ({ currentPosition, onSelectPosition }: { currentPosition:
 };
 
 // --- DEPTH PANEL ---
-const DepthPanel = ({ currentDepth, onSelectDepth }: { currentDepth: string; onSelectDepth: (depth: string) => void; }) => {
+const DepthPanel = ({
+  currentDepth,
+  onSelectDepth,
+}: {
+  currentDepth: string;
+  onSelectDepth: (depth: string) => void;
+}) => {
   const depthOptions = ["Depth 20 cm", "Depth 30 cm", "Depth 38 cm", "Depth 47 cm"];
   return (
     <div className={styles.panelContent}>
-      <div className={styles.panelHeader}><h3>Depth: {currentDepth}</h3></div>
+      <div className={styles.panelHeader}>
+        <h3>Depth: {currentDepth}</h3>
+      </div>
       <ul className={styles.positionList}>
         {depthOptions.map((option) => (
-          <li key={option} className={`${styles.positionItem} ${currentDepth === option ? styles.activePosition : ""}`} onClick={() => onSelectDepth(option)}> {option} </li>
+          <li
+            key={option}
+            className={`${styles.positionItem} ${
+              currentDepth === option ? styles.activePosition : ""
+            }`}
+            onClick={() => onSelectDepth(option)}
+          >
+            {" "}
+            {option}{" "}
+          </li>
         ))}
       </ul>
     </div>
@@ -179,14 +274,28 @@ const ProductHero = ({ product }: ProductHeroProps) => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("description");
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const [currentProductColor, setCurrentProductColor] = useState(product.color || "White");
-  const [currentProductPosition, setCurrentProductPosition] = useState(product.position || "Plinth H3 cm");
-  const [currentProductDepth, setCurrentProductDepth] = useState("Depth 38 cm");
+
+  // Gallery Modal State
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+
+  // Məhsulun əsas şəkli
+  const [heroImage, setHeroImage] = useState(product.mainImage);
+
+  const [currentProductColor, setCurrentProductColor] = useState(product.color || "White");
+  const [currentProductPosition, setCurrentProductPosition] = useState(
+    product.position || "Plinth H3 cm"
+  );
+  const [currentProductDepth, setCurrentProductDepth] = useState("Depth 38 cm");
 
   const [variants, setVariants] = useState<FrontendProduct[]>([]);
   const [allColors, setAllColors] = useState<BackendColor[]>([]);
   const [loadingColors, setLoadingColors] = useState(true);
+
+  // Məhsul dəyişdikdə şəkli yenilə
+  useEffect(() => {
+    setHeroImage(product.mainImage);
+    setCurrentProductColor(product.color || "White");
+  }, [product]);
 
   useEffect(() => {
     const load = async () => {
@@ -215,16 +324,19 @@ const ProductHero = ({ product }: ProductHeroProps) => {
     (variantId: number) => {
       router.push(`/product/${variantId}`);
     },
-    [router],
+    [router]
   );
 
+  // Menyuda click olunduqda
   const handleMenuClick = (menuKey: string) => {
+    // Əgər Gallery seçilibsə, Modalı aç, Menu panelini yox
     if (menuKey === "gallery") {
       setIsGalleryOpen(true);
-      setOpenMenu(null);
-    } else {
-      setOpenMenu((prev) => (prev === menuKey ? null : menuKey));
+      setOpenMenu(null); // Başqa açıq menu varsa bağla
+      return;
     }
+    // Digər menyular üçün standart davranış
+    setOpenMenu((prev) => (prev === menuKey ? null : menuKey));
   };
 
   const menuItems = [
@@ -292,7 +404,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
     {
       key: "gallery",
       label: "Gallery",
-      value: "",
+      value: `${product.galleryImages?.length || 0} images`,
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="3" y="3" width="18" height="18" rx="2" stroke="#333" strokeWidth="2" />
@@ -300,17 +412,19 @@ const ProductHero = ({ product }: ProductHeroProps) => {
           <path d="M21 15l-5-5L5 21" stroke="#333" strokeWidth="2" />
         </svg>
       ),
+      // Panel burada null saxlanılır, çünki Gallery üçün ayrıca modal istifadə edirik
       panel: null,
     },
   ];
 
   return (
     <section className={styles.heroSection}>
+      {/* Full Screen Gallery Modal */}
       {isGalleryOpen && (
-        <GalleryPanel
-          title={product.title}
-          images={product.galleryImages}
-          onClose={() => setIsGalleryOpen(false)}
+        <FullScreenGallery 
+          images={product.galleryImages} 
+          title={product.title} 
+          onClose={() => setIsGalleryOpen(false)} 
         />
       )}
 
@@ -319,13 +433,18 @@ const ProductHero = ({ product }: ProductHeroProps) => {
           <ul className={openMenu ? styles.menuIsOpen : ""}>
             {menuItems.map((item) => (
               <li key={item.key}>
-                <div className={styles.menuItemWrapper} onClick={() => handleMenuClick(item.key)}>
+                <div
+                  className={styles.menuItemWrapper}
+                  onClick={() => handleMenuClick(item.key)}
+                >
                   <div className={styles.heroItemIcons}>
                     {openMenu === item.key ? <CloseIcon /> : item.icon}
                   </div>
                   <span className={styles.menuItemLabel}>
                     {item.label}
-                    {item.value && <span className={styles.menuItemValue}>: {item.value}</span>}
+                    {item.value && (
+                      <span className={styles.menuItemValue}>: {item.value}</span>
+                    )}
                   </span>
                 </div>
               </li>
@@ -340,9 +459,10 @@ const ProductHero = ({ product }: ProductHeroProps) => {
         <div className={styles.heroProductImage}>
           <Image
             fill
-            src={product.mainImage}
+            src={heroImage} // State-dəki şəkli istifadə edir
             alt={product.title ?? ""}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority // LCP üçün vacibdir
           />
           <div className={styles.zoomIcon}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -355,8 +475,18 @@ const ProductHero = ({ product }: ProductHeroProps) => {
         <div className={styles.heroProductDescription}>
           <h2>{product.title}</h2>
           <div className={styles.tabList}>
-            <span className={activeTab === "description" ? styles.activeTab : ""} onClick={() => setActiveTab("description")}>Description</span>
-            <span className={activeTab === "specifications" ? styles.activeTab : ""} onClick={() => setActiveTab("specifications")}>Specifications</span>
+            <span
+              className={activeTab === "description" ? styles.activeTab : ""}
+              onClick={() => setActiveTab("description")}
+            >
+              Description
+            </span>
+            <span
+              className={activeTab === "specifications" ? styles.activeTab : ""}
+              onClick={() => setActiveTab("specifications")}
+            >
+              Specifications
+            </span>
           </div>
           {activeTab === "description" && (
             <div className={styles.tabContent}>
@@ -366,17 +496,27 @@ const ProductHero = ({ product }: ProductHeroProps) => {
           )}
           {activeTab === "specifications" && (
             <div className={styles.tabContent}>
-              <p><strong>Material:</strong> {product.specifications.material}</p>
-              <p><strong>Finish:</strong> {product.specifications.finish}</p>
-              <p><strong>Weight:</strong> {product.specifications.weight}</p>
-              <p><strong>Assembly:</strong> {product.specifications.assembly}</p>
+              <p>
+                <strong>Material:</strong> {product.specifications.material}
+              </p>
+              <p>
+                <strong>Finish:</strong> {product.specifications.finish}
+              </p>
+              <p>
+                <strong>Weight:</strong> {product.specifications.weight}
+              </p>
+              <p>
+                <strong>Assembly:</strong> {product.specifications.assembly}
+              </p>
             </div>
           )}
           <div className={styles.tabMore}>
             <span>Read More</span>
             <span>See downloads</span>
           </div>
-          <a href="#" className={styles.heroButton}>Find store</a>
+          <a href="#" className={styles.heroButton}>
+            Find store
+          </a>
           <div className={styles.productInfo}>
             <div className={styles.infoRow}>
               <span>10 year guarantee</span>

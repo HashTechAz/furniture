@@ -543,7 +543,29 @@
 .galleryImage {
   width: 100%;
   height: 100%;
-  object-fit: contain; 
+  object-fit: contain;
+}
+
+/* Full-screen gallery: böyük şəkillər, yan-yana scroll */
+.galleryScrollTrack {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  height: 100%;
+  min-height: 85vh;
+  padding: 2rem 2.5rem 2rem 8rem; /* sol 4rem, sağ bir az */
+  box-sizing: border-box;
+}
+
+.galleryLargeSlide {
+  flex-shrink: 0;
+  position: relative;
+  width: 75vw;
+  min-width: 700px;
+  max-width: 1100px;
+  height: 80vh;
+  min-height: 500px;
+  max-height: 820px;
 }
 
 
@@ -643,10 +665,21 @@
     padding-left: 1.5rem;
   }
   .galleryEmblaSlide.wide {
-    width: 1000px; 
+    width: 1000px;
   }
   .galleryEmblaSlide.normal {
     width: 500px;
+  }
+
+  .galleryScrollTrack {
+    padding: 1rem 1.5rem 1rem 4rem;
+    min-height: 75vh;
+  }
+  .galleryLargeSlide {
+    width: 90vw;
+    min-width: 280px;
+    height: 70vh;
+    min-height: 320px;
   }
 
   .menuItemWrapper {
