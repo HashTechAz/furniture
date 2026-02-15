@@ -71,3 +71,10 @@
   gap: 20px;
   justify-items: center;
 }
+
+.loadingState {
+  grid-column: 1 / -1;
+  padding: 40px;
+  text-align: center;
+  color: #888;
+}

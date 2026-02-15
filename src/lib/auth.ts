@@ -61,7 +61,7 @@ export async function loginUser(username: string, password: string): Promise<Log
      throw new Error("Login uğursuz oldu. Token gəlmədi.");
   }
 
-  // User məlumatlarını tokendən oxuyuruq
+  // User məlumatlarını tokendən oxuma
   let user: User = { id: '0', email: username };
   
   try {
@@ -83,7 +83,7 @@ export async function loginUser(username: string, password: string): Promise<Log
 
   return {
     accessToken: accessToken,
-    refreshToken: response.refreshToken || '', // Backend qaytarırsa götürürük
+    refreshToken: response.refreshToken || '', 
     user: user,
     expiration: response.expiration
   };
@@ -98,7 +98,6 @@ export async function refreshTokenCall(accessToken: string, refreshToken: string
 }
 
 // --- 3. CHANGE PASSWORD (YENİ) ---
-// Backend (.NET) PascalCase gözləyir: CurrentPassword, NewPassword, ConfirmPassword
 export async function changePassword(payload: ChangePasswordPayload, token: string) {
   return apiRequest('/api/Account/change-password', {
     method: 'POST',
@@ -111,9 +110,8 @@ export async function changePassword(payload: ChangePasswordPayload, token: stri
   });
 }
 
-// --- 4. LOGOUT (Backend + Frontend) ---
+// --- 4. LOGOUT  ---
 export async function logoutUser(accessToken: string) {
-  // 1. Serverə xəbər veririk (əgər serverdə blacklist varsa)
   try {
     await apiRequest<void>('/api/Account/logout', { 
        method: 'POST',
@@ -129,7 +127,6 @@ export async function logoutUser(accessToken: string) {
 
 // ================= KÖMƏKÇİ FUNKSİYALAR (HELPERS) =================
 
-// Frontend-də təmizləmə işləri
 export function logout() {
     if (typeof window === 'undefined') return;
     
@@ -153,5 +150,10 @@ export function setTokens(accessToken: string, refreshToken: string): void {
 
 export function getAccessToken() {
   if (typeof window !== 'undefined') return localStorage.getItem('accessToken');
+  return null;
+}
+
+export function getRefreshToken() {
+  if (typeof window !== 'undefined') return localStorage.getItem('refreshToken');
   return null;
 }

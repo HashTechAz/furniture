@@ -57,14 +57,38 @@ export async function apiRequest<T>(
       }
     }
 
-    // --- 2. TOKEN BİTMƏSİ (401) - YENİ ƏLAVƏ ---
+    // --- 2. TOKEN BİTMƏSİ (401) — əvvəlcə refresh token ilə yeniləyirik ---
+    if (response.status === 401 && typeof window !== 'undefined' && retryCount === 0) {
+      const accessToken = localStorage.getItem('accessToken');
+      const refreshToken = localStorage.getItem('refreshToken');
+      if (refreshToken && accessToken) {
+        try {
+          const refreshRes = await fetch(`${BASE_URL}/api/Account/refresh`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ accessToken, refreshToken }),
+          });
+          if (refreshRes.ok) {
+            const data = await refreshRes.json();
+            const newAccess = data.accessToken ?? data.AccessToken ?? null;
+            const newRefresh = data.refreshToken ?? data.RefreshToken ?? refreshToken;
+            if (newAccess) {
+              localStorage.setItem('accessToken', newAccess);
+              if (newRefresh) localStorage.setItem('refreshToken', newRefresh);
+              return apiRequest<T>(endpoint, { ...options, token: newAccess }, 1);
+            }
+          }
+        } catch (e) {
+          console.warn('Refresh token cəhdi uğursuz:', e);
+        }
+      }
+      window.dispatchEvent(new Event('auth-error'));
+      throw new Error('Session expired');
+    }
     if (response.status === 401) {
-      console.error("🔒 Token keçərsizdir və ya müddəti bitib.");
-      
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new Event('auth-error'));
       }
-      
       throw new Error('Session expired');
     }
 

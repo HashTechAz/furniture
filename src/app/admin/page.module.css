@@ -302,6 +302,38 @@
   font-weight: 500;
 }
 
+.emptyHint {
+  color: #9ca3af;
+  font-size: 14px;
+  margin: 0;
+  padding: 20px 0;
+}
+
+.quickLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quickLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #f8fafc;
+  border-radius: 12px;
+  color: #334155;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.quickLink:hover {
+  background: #1e293b;
+  color: #fff;
+}
+
 @media (max-width: 1024px) {
   .contentGrid {
     grid-template-columns: 1fr;

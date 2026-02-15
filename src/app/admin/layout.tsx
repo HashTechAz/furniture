@@ -7,7 +7,7 @@ import styles from './layout.module.css';
 
 import { 
   FaBars, FaBox, FaTags, FaPalette, FaLock, FaSignOutAlt, 
-  FaHome, FaPaintBrush, FaFolder, FaEnvelope 
+  FaHome, FaPaintBrush, FaFolder, FaEnvelope, FaBuilding 
 } from 'react-icons/fa';
 
 import { AdminModalProvider, useAdminModal } from '@/context/admin-modal-context';
@@ -29,6 +29,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     if (pathname.includes('designers')) return 'Designers';
     if (pathname.includes('collections')) return 'Collections';
     if (pathname.includes('contact')) return 'Inbox';
+    if (pathname.includes('rooms')) return 'Rooms';
     if (pathname.includes('change-password')) return 'Security';
     return 'Admin';
   };
@@ -155,6 +156,10 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
 
           <Link href="/admin/colors" className={`${styles.navLink} ${isActive('/admin/colors')}`}>
             <FaPalette /> Colors
+          </Link>
+
+          <Link href="/admin/rooms" className={`${styles.navLink} ${isActive('/admin/rooms')}`}>
+            <FaBuilding /> Rooms
           </Link>
 
           <Link href="/admin/contact" className={`${styles.navLink} ${isActive('/admin/contact')}`}>
