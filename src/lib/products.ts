@@ -65,6 +65,7 @@ export interface BackendProduct {
   images: BackendImage[];
   specifications: BackendSpec[];
   colors?: BackendColor[];
+  materials?: { id: number; name: string }[];
 }
 
 export interface FrontendProduct {
@@ -176,6 +177,15 @@ const mapBackendToFrontend = (item: BackendProduct): FrontendProduct => {
     item.specifications?.find((s) => s.key.toLowerCase() === key.toLowerCase())
       ?.value || "N/A";
 
+  // Material: API-dan materials massivi gəlirsə onların adlarını göstər, yoxdursa specifications-dan
+  const rawMaterials =
+    item.materials ??
+    (item as unknown as { Materials?: { id: number; name: string }[] }).Materials;
+  const materialDisplay =
+    Array.isArray(rawMaterials) && rawMaterials.length > 0
+      ? rawMaterials.map((m) => m.name).join(", ")
+      : findSpec("Material");
+
   // Rəng Məntiqi
   let mainColor = "Standard";
   let selectedColorIds: number[] = [];
@@ -230,7 +240,7 @@ const mapBackendToFrontend = (item: BackendProduct): FrontendProduct => {
     designer: item.designerName || item.designer?.name || "Unknown Designer",
 
     specifications: {
-      material: findSpec("Material"),
+      material: materialDisplay,
       finish: findSpec("Finish"),
       weight: `${item.weight} kg`,
       assembly: "Required",

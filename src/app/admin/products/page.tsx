@@ -86,7 +86,7 @@ export default function AdminProducts() {
           <>
             <table className={styles.table}>
               <thead>
-                <tr><th>Product</th><th>Price</th><th>Category</th><th>Color</th><th>Designer</th><th style={{ textAlign: 'right' }}>Actions</th></tr>
+                <tr><th>Product</th><th>Price</th><th>Category</th><th>Color</th><th>Materials</th><th>Designer</th><th style={{ textAlign: 'right' }}>Actions</th></tr>
               </thead>
               <tbody>
                 {products.map((product) => (
@@ -115,6 +115,8 @@ export default function AdminProducts() {
                       }}>
                         {product.color}
                       </span>
+                    </td><td style={{ color: '#555', maxWidth: 140 }}>
+                      {product.specifications?.material ?? '—'}
                     </td><td style={{ color: '#555' }}>
                       {product.designer}
                     </td><td>

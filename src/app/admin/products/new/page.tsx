@@ -10,6 +10,7 @@ import { getCategories } from '@/lib/categories';
 import { getDesigners } from '@/lib/designers';
 import { getCollections } from '@/lib/collections';
 import { getColors } from '@/lib/colors';
+import { getMaterials } from '@/lib/materials';
 
 // YENİ: Modal Hook
 import { useAdminModal } from '@/context/admin-modal-context';
@@ -28,11 +29,14 @@ export default function CreateProductPage() {
   const [designers, setDesigners] = useState<any[]>([]);
   const [collections, setCollections] = useState<any[]>([]);
   const [colors, setColors] = useState<any[]>([]);
+  const [materials, setMaterials] = useState<any[]>([]);
 
   const [formData, setFormData] = useState({
     name: '', sku: '', description: '', shortDescription: '', price: 0,
     isFeatured: false, width: 0, height: 0, depth: 0, weight: 0,
-    categoryId: 0, designerId: 0, collectionId: 0, selectedColorIds: [] as number[]
+    categoryId: 0, designerId: 0, collectionId: 0,
+    selectedColorIds: [] as number[],
+    selectedMaterialIds: [] as number[]
   });
 
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -43,13 +47,14 @@ export default function CreateProductPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [cats, des, cols, colsList] = await Promise.all([
-          getCategories(), getDesigners(), getCollections(), getColors()
+        const [cats, des, cols, colsList, mats] = await Promise.all([
+          getCategories(), getDesigners(), getCollections(), getColors(), getMaterials()
         ]);
         setCategories(Array.isArray(cats) ? cats : []);
         setDesigners(Array.isArray(des) ? des : []);
         setCollections(Array.isArray(cols) ? cols : []);
         setColors(Array.isArray(colsList) ? colsList : []);
+        setMaterials(Array.isArray(mats) ? mats : []);
       } catch (error) {
         console.error(error);
       } finally {
@@ -75,6 +80,13 @@ export default function CreateProductPage() {
     }
   };
   const removeColor = (id: number) => setFormData(prev => ({ ...prev, selectedColorIds: prev.selectedColorIds.filter(c => c !== id) }));
+  const handleMaterialChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const id = parseInt(e.target.value);
+    if (id && !formData.selectedMaterialIds.includes(id)) {
+      setFormData(prev => ({ ...prev, selectedMaterialIds: [...prev.selectedMaterialIds, id] }));
+    }
+  };
+  const removeMaterial = (id: number) => setFormData(prev => ({ ...prev, selectedMaterialIds: prev.selectedMaterialIds.filter(m => m !== id) }));
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -104,7 +116,7 @@ export default function CreateProductPage() {
     try {
       const token = localStorage.getItem('accessToken') || '';
 
-      const payload = { ...formData, colorIds: formData.selectedColorIds, materialIds: [], roomIds: [], tagIds: [], specifications: [] };
+      const payload = { ...formData, colorIds: formData.selectedColorIds, materialIds: formData.selectedMaterialIds, roomIds: [], tagIds: [], specifications: [] };
       const createdProduct: any = await createProduct(payload, token);
 
       if (selectedFiles.length > 0 && createdProduct?.id) {
@@ -211,6 +223,16 @@ export default function CreateProductPage() {
               {formData.selectedColorIds.map(id => {
                 const color = colors.find(c => c.id === id);
                 return color ? (<div key={id} className={styles.tag}><span style={{ width: 10, height: 10, background: color.hexCode, borderRadius: '50%', border: '1px solid #ddd' }}></span>{color.name}<span className={styles.removeTag} onClick={() => removeColor(id)}>×</span></div>) : null;
+              })}
+            </div>
+          </div>
+          <div className={styles.card}>
+            <div className={styles.cardTitle}><FaCube /> Materials</div>
+            <div className={styles.formGroup}><label className={styles.label}>Add Material</label><select className={styles.select} onChange={handleMaterialChange} value=""><option value="">Choose material...</option>{materials.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}</select></div>
+            <div className={styles.tagsContainer}>
+              {formData.selectedMaterialIds.map(id => {
+                const material = materials.find(m => m.id === id);
+                return material ? (<div key={id} className={styles.tag}>{material.name}<span className={styles.removeTag} onClick={() => removeMaterial(id)}>×</span></div>) : null;
               })}
             </div>
           </div>

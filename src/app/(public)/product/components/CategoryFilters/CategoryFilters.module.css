@@ -11,7 +11,8 @@
   margin: 0;
 }
 
-.categoryList a {
+.categoryList a,
+.categoryList button {
   display: inline-block;
   text-decoration: none;
   color: #666;
@@ -21,26 +22,28 @@
   border: 1px solid #ccc;
   background-color: #fff;
   transition: all 0.2s ease-in-out;
-  position: relative; 
-  overflow: hidden;   
-  z-index: 1;         
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  cursor: pointer;
+  font-family: inherit;
 }
 
-/* Sadece aktif OLMAYAN butonlar için hover efekti */
+.categoryList button:not(.active):hover,
 .categoryList a:not(.active):hover {
   color: #fff;
   background-color: #333;
   border-color: #333;
 }
 
-/* Aktif butonun varsayılan stili (her zaman siyah) */
+.categoryList button.active,
 .categoryList a.active {
   color: #fff;
   background-color: #333;
   border-color: #333;
 }
 
-/* DEĞİŞİKLİK: Parlama katmanı SADECE .active sınıfına sahip butonlar için oluşturuluyor */
+.categoryList button.active::before,
 .categoryList a.active::before {
   content: '';
   position: absolute;
@@ -48,13 +51,13 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.15); 
+  background-color: rgba(255, 255, 255, 0.15);
   z-index: -1;
   transform: translateX(-100%);
   transition: transform 0.4s ease-in-out;
 }
 
-/* DEĞİŞİKLİK: Animasyon SADECE .active sınıfına sahip butonun üzerine gelindiğinde tetikleniyor */
+.categoryList button.active:hover::before,
 .categoryList a.active:hover::before {
   transform: translateX(0);
 }
@@ -86,7 +89,8 @@
     flex-shrink: 0;
   }
 
-  .categoryList a {
+  .categoryList a,
+  .categoryList button {
     font-size: 13px;
     padding: 10px 42px;
     white-space: nowrap;
@@ -113,9 +117,10 @@
     flex-shrink: 0; /* Itemlar küçülmesin */
   }
 
-  .categoryList a {
+  .categoryList a,
+  .categoryList button {
     font-size: 12px;
     padding: 6px 20px;
-    white-space: nowrap; /* Text kırılmasın */
+    white-space: nowrap;
   }
 }

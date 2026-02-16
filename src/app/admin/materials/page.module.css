@@ -1,0 +1,234 @@
+/* Materials – Rooms/Categories ilə eyni struktur */
+.container {
+  padding: 30px 40px;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: -0.8px;
+  margin: 0;
+}
+
+.addButton {
+  background-color: #111;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.addButton:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.tableCard {
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table th {
+  background: #fff;
+  text-align: left;
+  padding: 18px 24px;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #888;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid #f9fafb;
+  vertical-align: middle;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tr:hover td {
+  background-color: #fafafa;
+}
+
+.cellContent {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nameInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: 600;
+  color: #111;
+  font-size: 14px;
+}
+
+.idBadge {
+  font-size: 11px;
+  color: #888;
+  font-family: monospace;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.actionBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #666;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.editBtn:hover {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.deleteBtn:hover {
+  background: #fff5f5;
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  background: #fff;
+  color: #111;
+  transition: all 0.2s;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: #111;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+}
+
+.cancelBtn {
+  padding: 12px 20px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  color: #111;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.cancelBtn:hover {
+  background: #f9fafb;
+}
+
+.saveBtn {
+  padding: 12px 24px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.saveBtn:hover {
+  background: #333;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 20px;
+}

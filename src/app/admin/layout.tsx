@@ -6,8 +6,8 @@ import Link from 'next/link';
 import styles from './layout.module.css';
 
 import { 
-  FaBars, FaBox, FaTags, FaPalette, FaLock, FaSignOutAlt, 
-  FaHome, FaPaintBrush, FaFolder, FaEnvelope, FaBuilding 
+  FaBars, FaBox, FaTags, FaTag, FaPalette, FaLock, FaSignOutAlt, 
+  FaHome, FaPaintBrush, FaFolder, FaEnvelope, FaBuilding, FaCube 
 } from 'react-icons/fa';
 
 import { AdminModalProvider, useAdminModal } from '@/context/admin-modal-context';
@@ -30,6 +30,8 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     if (pathname.includes('collections')) return 'Collections';
     if (pathname.includes('contact')) return 'Inbox';
     if (pathname.includes('rooms')) return 'Rooms';
+    if (pathname.includes('materials')) return 'Materials';
+    if (pathname.includes('tags')) return 'Tags';
     if (pathname.includes('change-password')) return 'Security';
     return 'Admin';
   };
@@ -156,6 +158,14 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
 
           <Link href="/admin/colors" className={`${styles.navLink} ${isActive('/admin/colors')}`}>
             <FaPalette /> Colors
+          </Link>
+
+          <Link href="/admin/materials" className={`${styles.navLink} ${isActive('/admin/materials')}`}>
+            <FaCube /> Materials
+          </Link>
+
+          <Link href="/admin/tags" className={`${styles.navLink} ${isActive('/admin/tags')}`}>
+            <FaTag /> Tags
           </Link>
 
           <Link href="/admin/rooms" className={`${styles.navLink} ${isActive('/admin/rooms')}`}>

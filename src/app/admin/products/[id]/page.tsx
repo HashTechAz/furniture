@@ -13,6 +13,7 @@ import { getCategories } from '@/lib/categories';
 import { getDesigners } from '@/lib/designers';
 import { getCollections } from '@/lib/collections';
 import { getColors } from '@/lib/colors';
+import { getMaterials } from '@/lib/materials';
 
 // YENİ: Modal Hook
 import { useAdminModal } from '@/context/admin-modal-context';
@@ -33,11 +34,14 @@ export default function EditProductPage() {
   const [designers, setDesigners] = useState<any[]>([]);
   const [collections, setCollections] = useState<any[]>([]);
   const [colors, setColors] = useState<any[]>([]);
+  const [materials, setMaterials] = useState<any[]>([]);
 
   const [formData, setFormData] = useState({
     name: '', sku: '', description: '', shortDescription: '', price: 0,
     isFeatured: false, width: 0, height: 0, depth: 0, weight: 0,
-    categoryId: 0, designerId: 0, collectionId: 0, selectedColorIds: [] as number[]
+    categoryId: 0, designerId: 0, collectionId: 0,
+    selectedColorIds: [] as number[],
+    selectedMaterialIds: [] as number[]
   });
 
   const [existingImages, setExistingImages] = useState<{ id: number; imageUrl: string; isCover: boolean }[]>([]);
@@ -48,17 +52,19 @@ export default function EditProductPage() {
     async function fetchData() {
       try {
         // 1. Seçimləri gətir (Categories, Designers, etc.)
-        const [cats, des, cols, colsList] = await Promise.all([
+        const [cats, des, cols, colsList, mats] = await Promise.all([
           getCategories(),
           getDesigners(),
           getCollections(),
-          getColors()
+          getColors(),
+          getMaterials()
         ]);
         
         setCategories(Array.isArray(cats) ? cats : []);
         setDesigners(Array.isArray(des) ? des : []);
         setCollections(Array.isArray(cols) ? cols : []);
         setColors(Array.isArray(colsList) ? colsList : []);
+        setMaterials(Array.isArray(mats) ? mats : []);
 
         if (productId) {
           const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7042";
@@ -76,6 +82,7 @@ export default function EditProductPage() {
               const desId = product.designerId || product.designer?.id || 0;
               const colId = product.collectionId || product.collection?.id || 0;
 
+              const materialIds = product.materials?.map((m: any) => m.id) ?? product.materialIds ?? [];
               setFormData({
                 name: product.name || '',
                 sku: product.sku || '',
@@ -87,13 +94,11 @@ export default function EditProductPage() {
                 height: product.height || 0,
                 depth: product.depth || 0,
                 weight: product.weight || 0,
-                
-                // Artıq dəqiqləşdirilmiş ID-ləri bura yazırıq:
                 categoryId: catId,
                 designerId: desId,
                 collectionId: colId,
-                
-                selectedColorIds: product.colors ? product.colors.map((c: any) => c.id) : []
+                selectedColorIds: product.colors ? product.colors.map((c: any) => c.id) : [],
+                selectedMaterialIds: Array.isArray(materialIds) ? materialIds : []
               });
 
               // Şəkilləri yüklə
@@ -123,6 +128,13 @@ export default function EditProductPage() {
     }
   };
   const removeColor = (id: number) => setFormData(prev => ({ ...prev, selectedColorIds: prev.selectedColorIds.filter(c => c !== id) }));
+  const handleMaterialChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const id = parseInt(e.target.value);
+    if (id && !formData.selectedMaterialIds.includes(id)) {
+      setFormData(prev => ({ ...prev, selectedMaterialIds: [...prev.selectedMaterialIds, id] }));
+    }
+  };
+  const removeMaterial = (id: number) => setFormData(prev => ({ ...prev, selectedMaterialIds: prev.selectedMaterialIds.filter(m => m !== id) }));
 
   // File Handlers
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -170,7 +182,7 @@ export default function EditProductPage() {
     setLoading(true);
     try {
       const token = localStorage.getItem('accessToken') || '';
-      const payload = { ...formData, colorIds: formData.selectedColorIds, materialIds: [], roomIds: [], tagIds: [], specifications: [] };
+      const payload = { ...formData, colorIds: formData.selectedColorIds, materialIds: formData.selectedMaterialIds, roomIds: [], tagIds: [], specifications: [] };
       await updateProduct(productId, payload, token);
 
       if (newFiles.length > 0) {
@@ -311,6 +323,17 @@ export default function EditProductPage() {
             <Link href={`/admin/products/${productId}/variant/new`} className={styles.variantLink}>
               + Bu məhsulun başqa rəng variantını yarat
             </Link>
+          </div>
+
+          <div className={styles.card}>
+            <div className={styles.cardTitle}><FaCube /> Materials</div>
+            <div className={styles.formGroup}><label className={styles.label}>Add Material</label><select className={styles.select} onChange={handleMaterialChange} value=""><option value="">Choose material...</option>{materials.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}</select></div>
+            <div className={styles.tagsContainer}>
+              {formData.selectedMaterialIds.map(id => {
+                const material = materials.find(m => m.id === id);
+                return material ? (<div key={id} className={styles.tag}>{material.name}<span className={styles.removeTag} onClick={() => removeMaterial(id)}>×</span></div>) : null;
+              })}
+            </div>
           </div>
         </div>
       </div>
