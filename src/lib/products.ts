@@ -103,9 +103,9 @@ export interface FrontendProduct {
 
   specifications: {
     material: string;
-    finish: string;
+    dimensions: string;
     weight: string;
-    assembly: string;
+    category: string;
   };
 }
 
@@ -241,9 +241,9 @@ const mapBackendToFrontend = (item: BackendProduct): FrontendProduct => {
 
     specifications: {
       material: materialDisplay,
-      finish: findSpec("Finish"),
+      dimensions: `W ${item.width} x H ${item.height} x D ${item.depth} cm`,
       weight: `${item.weight} kg`,
-      assembly: "Required",
+      category: finalCategoryName,
     },
   };
 };

@@ -96,6 +96,38 @@
   border-radius: 4px;
 }
 
+.colorSwatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px;
+}
+
+.colorSwatch {
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.colorSwatch:hover {
+  opacity: 0.9;
+}
+
+.colorSwatchSelected {
+  outline: 1px solid #111;
+  outline-offset: 1px;
+}
+
+.colorSwatchLoading {
+  padding: 8px;
+  font-size: 12px;
+  color: #999;
+}
+
 /* Mobile'da dropdown menu sabit kalmalı */
 @media (max-width: 768px) {
   .dropdown {

@@ -500,13 +500,13 @@ const ProductHero = ({ product }: ProductHeroProps) => {
                 <strong>Material:</strong> {product.specifications.material}
               </p>
               <p>
-                <strong>Finish:</strong> {product.specifications.finish}
+                <strong>Dimensions:</strong> {product.specifications.dimensions}
               </p>
               <p>
                 <strong>Weight:</strong> {product.specifications.weight}
               </p>
               <p>
-                <strong>Assembly:</strong> {product.specifications.assembly}
+                <strong>Category:</strong> {product.specifications.category}
               </p>
             </div>
           )}
@@ -514,6 +514,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
             <span>Read More</span>
             <span>See downloads</span>
           </div>
+          <p className={styles.heroPrice}>{product.price} ₼</p>
           <a href="#" className={styles.heroButton}>
             Find store
           </a>

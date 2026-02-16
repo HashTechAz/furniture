@@ -394,7 +394,7 @@
   border-bottom-color: #333;
 }
 .tabContent {
-  min-height: 120px;
+  margin-bottom: 20px;
 }
 .heroProductDescription p {
   font-size: 14px;
@@ -405,13 +405,18 @@
 .tabMore {
   display: flex;
   gap: 30px;
-  margin-bottom: 2rem;
 }
 .tabMore span {
   font-size: 14px;
   font-weight: 600;
   text-decoration: underline;
   cursor: pointer;
+}
+.heroPrice {
+  font-size: 36px;
+  font-weight: 500;
+  color: #111;
+  margin: 3rem 0 1rem 0;
 }
 .heroButton {
   width: max-content;

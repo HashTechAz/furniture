@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './DropdownFilters.module.css';
 // YENİ: API-dən rəngləri gətirmək üçün
-import { getColors } from '@/lib/colors';
+import { getColors, type BackendColor } from '@/lib/colors';
 
 interface DropdownProps {
   label?: string; 
@@ -61,12 +61,43 @@ const Dropdown = ({ label, options, initialSelected }: DropdownProps) => {
   );
 };
 
+const ColourDropdown = ({ colors, selectedName, onSelect }: { colors: BackendColor[]; selectedName: string; onSelect: (name: string) => void }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const displayLabel = selectedName ? `Colour - ${selectedName}` : 'Colour';
+  return (
+    <div className={styles.dropdown}>
+      <button type="button" className={styles.dropdownButton} onClick={() => setIsOpen(!isOpen)}>
+        <span>{displayLabel}</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}>
+          <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+      <div className={`${styles.dropdownMenu} ${isOpen ? styles.menuOpen : ''}`}>
+        <div className={styles.colorSwatches}>
+          {colors.length > 0 ? (
+            colors.map((c) => (
+              <button
+                key={c.id}
+                type="button"
+                className={`${styles.colorSwatch} ${selectedName === c.name ? styles.colorSwatchSelected : ''}`}
+                style={{ background: c.hexCode || '#ccc' }}
+                title={c.name}
+                onClick={() => { onSelect(c.name); setIsOpen(false); }}
+              />
+            ))
+          ) : (
+            <span className={styles.colorSwatchLoading}>Yüklənir...</span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const DropdownFilters = () => {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-  
-  // YENİ: Rənglər üçün State
-  const [colourOptions, setColourOptions] = useState<string[]>([]);
-  
+  const [colourOptions, setColourOptions] = useState<BackendColor[]>([]);
+
   const [selectedFilters, setSelectedFilters] = useState({
     dispatch: "",
     depth: "",
@@ -85,9 +116,7 @@ const DropdownFilters = () => {
     const fetchColors = async () => {
       try {
         const data = await getColors();
-        // BackendColor obyektindən sadəcə adları (string[]) götürürük
-        const names = data.map(c => c.name);
-        setColourOptions(names);
+        setColourOptions(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Filtr rəngləri yüklənmədi:", error);
       }
@@ -129,8 +158,7 @@ const DropdownFilters = () => {
         <Dropdown label="Dispatch time" options={dispatchOptions} />
         <Dropdown label="Depth" options={depthOptions} />
         
-        {/* API-dən gələn rənglər bura ötürülür */}
-        <Dropdown label="Colour" options={colourOptions} />
+        <ColourDropdown colors={colourOptions} selectedName={selectedFilters.colour} onSelect={(name) => setSelectedFilters((p) => ({ ...p, colour: p.colour === name ? '' : name }))} />
         
         <Dropdown label="Product series" options={seriesOptions} />
       </div>
@@ -210,17 +238,20 @@ const DropdownFilters = () => {
             </h4>
             <div className={`${styles.mobileFilterOptions} ${openSections.colour ? styles.open : ''}`}>
               {colourOptions.length > 0 ? (
-                  colourOptions.map((option, index) => (
-                    <div
-                      key={index}
-                      className={`${styles.mobileFilterOption} ${selectedFilters.colour === option ? styles.selected : ''}`}
-                      onClick={() => handleFilterSelect('colour', option)}
-                    >
-                      {option}
-                    </div>
-                  ))
+                <div className={styles.colorSwatches}>
+                  {colourOptions.map((c) => (
+                    <button
+                      key={c.id}
+                      type="button"
+                      className={`${styles.colorSwatch} ${selectedFilters.colour === c.name ? styles.colorSwatchSelected : ''}`}
+                      style={{ background: c.hexCode || '#ccc' }}
+                      title={c.name}
+                      onClick={() => handleFilterSelect('colour', c.name)}
+                    />
+                  ))}
+                </div>
               ) : (
-                  <div style={{padding:'10px'}}>Yüklənir...</div>
+                <div style={{ padding: '10px' }}>Yüklənir...</div>
               )}
             </div>
           </div>
