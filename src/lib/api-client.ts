@@ -1,7 +1,7 @@
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
-if (process.env.NODE_ENV === 'development') {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-}
+// Yerli backend self-signed sertifikat istifadə edəndə TLS xətası olmasın deyə
+// yalnız development-da .env faylında NODE_TLS_REJECT_UNAUTHORIZED=0 təyin edin.
+// Node bu halda xəbərdarlıq göstərəcək; production-da heç vaxt istifadə etmeyin.
 
 interface ApiOptions extends RequestInit {
   data?: any;
@@ -57,8 +57,16 @@ export async function apiRequest<T>(
       }
     }
 
-    // --- 2. TOKEN BİTMƏSİ (401) — əvvəlcə refresh token ilə yeniləyirik ---
-    if (response.status === 401 && typeof window !== 'undefined' && retryCount === 0) {
+    // --- 2. TOKEN BİTMƏSİ (401) ---
+    // Sorğuda token göndərilməyibsə (məs. public səhifə) — "Session expired" deyil, "Unauthorized"
+    if (response.status === 401 && !token) {
+      const err: any = new Error('Unauthorized');
+      err.status = 401;
+      throw err;
+    }
+
+    // Klientdə token var, refresh cəhdi
+    if (response.status === 401 && typeof window !== 'undefined' && retryCount === 0 && token) {
       const accessToken = localStorage.getItem('accessToken');
       const refreshToken = localStorage.getItem('refreshToken');
       if (refreshToken && accessToken) {
@@ -75,6 +83,10 @@ export async function apiRequest<T>(
             if (newAccess) {
               localStorage.setItem('accessToken', newAccess);
               if (newRefresh) localStorage.setItem('refreshToken', newRefresh);
+              // Cookie ilə sinxron (middleware və səhifə naviqasiyası üçün)
+              const maxAge = 60 * 60 * 24;
+              document.cookie = `accessToken=${newAccess}; path=/; max-age=${maxAge}; SameSite=Strict`;
+              document.cookie = `refreshToken=${newRefresh}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Strict`;
               return apiRequest<T>(endpoint, { ...options, token: newAccess }, 1);
             }
           }

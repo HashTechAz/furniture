@@ -40,6 +40,13 @@ function decodeJWT(token: string): any {
   }
 }
 
+/** JWT-nin bitmə vaxtını millisaniyə qaytarır (Date.now() ilə müqayisə). */
+export function getTokenExpiryMs(accessToken: string): number | null {
+  const payload = decodeJWT(accessToken);
+  if (!payload || typeof payload.exp !== 'number') return null;
+  return payload.exp * 1000;
+}
+
 // ================= API METODLARI =================
 
 // --- 1. LOGIN USER ---
@@ -89,12 +96,34 @@ export async function loginUser(username: string, password: string): Promise<Log
   };
 }
 
-// --- 2. REFRESH TOKEN (YENİ) ---
+// --- 2. REFRESH TOKEN (client - localStorage ilə) ---
 export async function refreshTokenCall(accessToken: string, refreshToken: string): Promise<LoginResponse> {
   return apiRequest('/api/Account/refresh', {
     method: 'POST',
     data: { accessToken, refreshToken },
   });
+}
+
+// --- 2b. REFRESH TOKEN (server - API route üçün, birbaşa backend-ə) ---
+const getApiBase = () => process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+export async function refreshAccessToken(refreshToken: string, accessToken?: string): Promise<LoginResponse> {
+  const body = accessToken
+    ? { accessToken, refreshToken }
+    : { refreshToken };
+  const res = await fetch(`${getApiBase()}/api/Account/refresh`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || 'Token yenilənmədi');
+  }
+  const data = await res.json();
+  return {
+    accessToken: data.accessToken ?? data.AccessToken ?? '',
+    refreshToken: data.refreshToken ?? data.RefreshToken ?? refreshToken,
+  };
 }
 
 // --- 3. CHANGE PASSWORD (YENİ) ---

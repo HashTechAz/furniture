@@ -11,6 +11,7 @@ import {
 } from 'react-icons/fa';
 
 import { AdminModalProvider, useAdminModal } from '@/context/admin-modal-context';
+import { getTokenExpiryMs } from '@/lib/auth';
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -109,6 +110,55 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       window.removeEventListener('auth-error', handleAuthError);
     };
   }, [router, openModal]);
+
+  // *** PROAKTİV TOKEN YENİLƏMƏ (15 dəq bitməzdən əvvəl refresh) ***
+  useEffect(() => {
+    const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+    if (!accessToken) return;
+
+    const expiryMs = getTokenExpiryMs(accessToken);
+    const now = Date.now();
+    const twoMinutes = 2 * 60 * 1000;
+
+    const scheduleRefresh = (delayMs: number): (() => void) => {
+      if (delayMs <= 0) return () => {};
+      const t = setTimeout(async () => {
+        try {
+          const res = await fetch('/api/admin/refresh', { method: 'POST', credentials: 'include' });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.accessToken) {
+              localStorage.setItem('accessToken', data.accessToken);
+              if (data.refreshToken) localStorage.setItem('refreshToken', data.refreshToken);
+            }
+            const nextExp = getTokenExpiryMs(data.accessToken);
+            if (nextExp != null) scheduleRefresh(nextExp - Date.now() - twoMinutes);
+          }
+        } catch {
+          // Səssiz uğursuz; 401 olanda auth-error ilə idarə olunacaq
+        }
+      }, delayMs);
+      return () => clearTimeout(t);
+    };
+
+    if (expiryMs == null) return;
+    const delay = expiryMs - now - twoMinutes;
+    if (delay <= 0) {
+      fetch('/api/admin/refresh', { method: 'POST', credentials: 'include' })
+        .then(async (res) => {
+          if (res.ok) {
+            const data = await res.json();
+            if (data.accessToken) {
+              localStorage.setItem('accessToken', data.accessToken);
+              if (data.refreshToken) localStorage.setItem('refreshToken', data.refreshToken);
+            }
+          }
+        })
+        .catch(() => {});
+      return;
+    }
+    return scheduleRefresh(delay);
+  }, []);
 
   const isActive = (path: string) => pathname === path || pathname.startsWith(path + '/') ? styles.activeLink : '';
 

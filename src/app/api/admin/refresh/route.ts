@@ -3,6 +3,7 @@ import { refreshAccessToken } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
     try {
+        const accessToken = request.cookies.get('accessToken')?.value;
         const refreshToken = request.cookies.get('refreshToken')?.value;
 
         if (!refreshToken) {
@@ -13,11 +14,13 @@ export async function POST(request: NextRequest) {
         }
 
         try {
-            const refreshResponse = await refreshAccessToken(refreshToken);
+            const refreshResponse = await refreshAccessToken(refreshToken, accessToken ?? undefined);
             
-            // Set new tokens as HTTP-only cookies
+            // Body-də token qaytarırıq ki, client localStorage-ı yeniləyə bilsin (admin paneldə apiRequest token oradan oxuyur)
             const response = NextResponse.json({
                 message: 'Token refreshed successfully',
+                accessToken: refreshResponse.accessToken,
+                refreshToken: refreshResponse.refreshToken,
             });
 
             // Set new access token
