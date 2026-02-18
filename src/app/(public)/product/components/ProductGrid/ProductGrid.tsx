@@ -7,9 +7,12 @@ import { FrontendProduct } from "@/lib/products";
 
 interface ProductGridProps {
   products: FrontendProduct[];
+  onLoadMore?: () => void;
+  hasMore?: boolean;
+  loadingMore?: boolean;
 }
 
-const ProductGrid = ({ products }: ProductGridProps) => {
+const ProductGrid = ({ products, onLoadMore, hasMore = false, loadingMore = false }: ProductGridProps) => {
   const totalItems = products.length; 
   const shownItems = products.length; 
 
@@ -47,6 +50,16 @@ const ProductGrid = ({ products }: ProductGridProps) => {
         <p className={styles.itemCount}>
           Showing {shownItems} out of {totalItems} items
         </p>
+        
+        {hasMore && (
+          <button 
+            className={styles.loadMoreButton}
+            onClick={onLoadMore}
+            disabled={loadingMore}
+          >
+            {loadingMore ? 'Loading...' : 'Load More'}
+          </button>
+        )}
       </div>
     </div>
   );

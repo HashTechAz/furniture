@@ -265,6 +265,8 @@ export async function getProducts(
     if (params.pageSize)
       queryParams.append("pageSize", params.pageSize.toString());
     if (params.sortBy) queryParams.append("sortBy", params.sortBy);
+    if (params.colorIds && params.colorIds.length > 0)
+      params.colorIds.forEach(id => queryParams.append("colorIds", id.toString()));
     // Digər parametrlər lazım olsa əlavə et
   }
 

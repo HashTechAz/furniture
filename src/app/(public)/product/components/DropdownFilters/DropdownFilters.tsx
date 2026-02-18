@@ -94,14 +94,20 @@ const ColourDropdown = ({ colors, selectedName, onSelect }: { colors: BackendCol
   );
 };
 
-const DropdownFilters = () => {
+interface DropdownFiltersProps {
+  onColorSelect?: (colorName: string) => void;
+  selectedColor?: string;
+  colors?: BackendColor[];
+}
+
+const DropdownFilters = ({ onColorSelect, selectedColor = '', colors = [] }: DropdownFiltersProps) => {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-  const [colourOptions, setColourOptions] = useState<BackendColor[]>([]);
+  const [colourOptions, setColourOptions] = useState<BackendColor[]>(colors);
 
   const [selectedFilters, setSelectedFilters] = useState({
     dispatch: "",
     depth: "",
-    colour: "",
+    colour: selectedColor,
     series: ""
   });
   const [openSections, setOpenSections] = useState({
@@ -111,18 +117,18 @@ const DropdownFilters = () => {
     series: false
   });
 
-  // YENİ: API-dən rəngləri çəkmək
+  // Xarici rənglər dəyişəndə yenilə
   useEffect(() => {
-    const fetchColors = async () => {
-      try {
-        const data = await getColors();
-        setColourOptions(Array.isArray(data) ? data : []);
-      } catch (error) {
-        console.error("Filtr rəngləri yüklənmədi:", error);
-      }
-    };
-    fetchColors();
-  }, []);
+    setColourOptions(colors);
+  }, [colors]);
+
+  // Xarici selectedColor dəyişəndə yenilə
+  useEffect(() => {
+    setSelectedFilters(prev => ({
+      ...prev,
+      colour: selectedColor
+    }));
+  }, [selectedColor]);
 
   const dispatchOptions = ["In stock", "1-2 weeks", "3-4 weeks"];
   const depthOptions = ["30 cm", "38 cm", "47 cm"];
@@ -131,10 +137,17 @@ const DropdownFilters = () => {
   const sortOptions = ["Montana recommends", "Price: Low to High", "Price: High to Low"];
 
   const handleFilterSelect = (category: keyof typeof selectedFilters, value: string) => {
+    const newValue = selectedFilters[category] === value ? "" : value;
+    
     setSelectedFilters(prev => ({
       ...prev,
-      [category]: prev[category] === value ? "" : value
+      [category]: newValue
     }));
+
+    // Xüsusi rəng seçimi üçün callback çağır
+    if (category === 'colour' && onColorSelect) {
+      onColorSelect(newValue);
+    }
   };
 
   const toggleSection = (section: keyof typeof openSections) => {
@@ -158,7 +171,7 @@ const DropdownFilters = () => {
         <Dropdown label="Dispatch time" options={dispatchOptions} />
         <Dropdown label="Depth" options={depthOptions} />
         
-        <ColourDropdown colors={colourOptions} selectedName={selectedFilters.colour} onSelect={(name) => setSelectedFilters((p) => ({ ...p, colour: p.colour === name ? '' : name }))} />
+        <ColourDropdown colors={colourOptions} selectedName={selectedFilters.colour} onSelect={(name) => handleFilterSelect('colour', name)} />
         
         <Dropdown label="Product series" options={seriesOptions} />
       </div>
