@@ -258,6 +258,8 @@ export async function getProducts(
   const queryParams = new URLSearchParams();
   if (params) {
     if (params.searchTerm) queryParams.append("searchTerm", params.searchTerm);
+    if (params.categoryId != null)
+      queryParams.append("categoryId", params.categoryId.toString());
     if (params.productGroupId != null)
       queryParams.append("productGroupId", params.productGroupId.toString());
     if (params.pageNumber)

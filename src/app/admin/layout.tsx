@@ -32,7 +32,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     if (pathname.includes('contact')) return 'Inbox';
     if (pathname.includes('rooms')) return 'Rooms';
     if (pathname.includes('materials')) return 'Materials';
-    if (pathname.includes('tags')) return 'Tags';
+    // if (pathname.includes('tags')) return 'Tags';
     if (pathname.includes('change-password')) return 'Security';
     return 'Admin';
   };
@@ -214,9 +214,11 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
             <FaCube /> Materials
           </Link>
 
+          {/* Tags — commentə alınıb
           <Link href="/admin/tags" className={`${styles.navLink} ${isActive('/admin/tags')}`}>
             <FaTag /> Tags
           </Link>
+          */}
 
           <Link href="/admin/rooms" className={`${styles.navLink} ${isActive('/admin/rooms')}`}>
             <FaBuilding /> Rooms

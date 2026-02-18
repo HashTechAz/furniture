@@ -26,35 +26,39 @@ const ProductPage = () => {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [selectedColor, setSelectedColor] = useState<string>('');
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const [colors, setColors] = useState<BackendColor[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const productsPerPage = 12;
 
-  // İlk məhsulları və rəngləri yüklə
+  // İlk məhsulları və rəngləri yüklə (kateqoriya dəyişəndə də yenidən yüklə)
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        
+        setCurrentPage(1);
+
         const [productsData, colorsData] = await Promise.all([
-          getProducts({ pageNumber: 1, pageSize: productsPerPage }),
+          getProducts({
+            pageNumber: 1,
+            pageSize: productsPerPage,
+            ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
+          }),
           getColors()
         ]);
-        
-        // Məhsulları təyin et
+
         setAllProducts(productsData);
         setDisplayedProducts(productsData);
         setColors(Array.isArray(colorsData) ? colorsData : []);
-        
-        // Əgər az məhsul gəlibsə, daha çox yoxdur
+
         if (productsData.length < productsPerPage) {
           setHasMore(false);
+        } else {
+          setHasMore(true);
         }
-        
-        // React-in DOM-u yeniləməsi üçün bir sonrakı render dövrünə qədər gözlə
+
         await new Promise(resolve => setTimeout(resolve, 0));
-        
       } catch (error) {
         console.error('Data yüklənmədi:', error);
       } finally {
@@ -62,18 +66,19 @@ const ProductPage = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [selectedCategoryId]);
 
   // Daha çox məhsul yüklə
   const loadMoreProducts = async () => {
     if (loadingMore || !hasMore) return;
-    
+
     try {
       setLoadingMore(true);
       const nextPage = currentPage + 1;
-      const newProducts = await getProducts({ 
-        pageNumber: nextPage, 
-        pageSize: productsPerPage 
+      const newProducts = await getProducts({
+        pageNumber: nextPage,
+        pageSize: productsPerPage,
+        ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
       });
       
       if (newProducts.length === 0) {
@@ -131,7 +136,10 @@ const ProductPage = () => {
   return (
     <main>
       <ProductHero />
-      <CategoryFilters />
+      <CategoryFilters
+        selectedCategoryId={selectedCategoryId}
+        onCategoryChange={setSelectedCategoryId}
+      />
       <DropdownFilters onColorSelect={handleColorSelect} selectedColor={selectedColor} colors={colors} />
       {loading ? (
         <ProductGridSkeleton />

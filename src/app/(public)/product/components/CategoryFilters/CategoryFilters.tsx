@@ -1,20 +1,38 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { getTags } from '@/lib/tags';
+import { getCategories } from '@/lib/categories';
+import type { Category } from '@/lib/categories';
 import styles from './CategoryFilters.module.css';
 
-const CategoryFilters = () => {
-  const [tags, setTags] = useState<{ id: number; name: string }[]>([]);
-  const [activeId, setActiveId] = useState<number | null>(null);
+interface CategoryFiltersProps {
+  selectedCategoryId: number | null;
+  onCategoryChange: (categoryId: number | null) => void;
+}
+
+const CategoryFilters = ({ selectedCategoryId, onCategoryChange }: CategoryFiltersProps) => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getTags()
-      .then((data) => setTags((Array.isArray(data) ? data : []).map((t) => ({ id: t.id, name: t.tagName }))))
-      .catch(() => setTags([]));
+    getCategories()
+      .then((data) => setCategories(Array.isArray(data) ? data : []))
+      .catch(() => setCategories([]))
+      .finally(() => setLoading(false));
   }, []);
 
-  const items = [{ id: 0, name: 'All products' }, ...tags];
+  const items = [{ id: 0, name: 'Bütün məhsullar' }, ...categories];
+  const activeId = selectedCategoryId ?? 0;
+
+  if (loading) {
+    return (
+      <div className={styles.filterContainer}>
+        <ul className={styles.categoryList}>
+          <li><span className={styles.placeholder}>...</span></li>
+        </ul>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.filterContainer}>
@@ -23,8 +41,8 @@ const CategoryFilters = () => {
           <li key={item.id}>
             <button
               type="button"
-              className={activeId === item.id || (item.id === 0 && activeId === null) ? styles.active : ''}
-              onClick={() => setActiveId(item.id === 0 ? null : item.id)}
+              className={activeId === item.id ? styles.active : ''}
+              onClick={() => onCategoryChange(item.id === 0 ? null : item.id)}
             >
               {item.name}
             </button>

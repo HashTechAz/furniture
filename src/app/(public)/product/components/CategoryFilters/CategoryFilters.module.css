@@ -2,6 +2,11 @@
   padding: 40px 80px;
 }
 
+.placeholder {
+  color: #999;
+  font-size: 13px;
+}
+
 .categoryList {
   display: flex;
   flex-wrap: wrap;
