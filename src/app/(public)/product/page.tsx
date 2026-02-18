@@ -27,6 +27,7 @@ const ProductPage = () => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const [sortBy, setSortBy] = useState<string>('newest');
   const [colors, setColors] = useState<BackendColor[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -43,6 +44,7 @@ const ProductPage = () => {
           getProducts({
             pageNumber: 1,
             pageSize: productsPerPage,
+            sortBy,
             ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
           }),
           getColors()
@@ -66,7 +68,7 @@ const ProductPage = () => {
       }
     };
     fetchData();
-  }, [selectedCategoryId]);
+  }, [selectedCategoryId, sortBy]);
 
   // Daha çox məhsul yüklə
   const loadMoreProducts = async () => {
@@ -78,6 +80,7 @@ const ProductPage = () => {
       const newProducts = await getProducts({
         pageNumber: nextPage,
         pageSize: productsPerPage,
+        sortBy,
         ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
       });
       
@@ -140,7 +143,13 @@ const ProductPage = () => {
         selectedCategoryId={selectedCategoryId}
         onCategoryChange={setSelectedCategoryId}
       />
-      <DropdownFilters onColorSelect={handleColorSelect} selectedColor={selectedColor} colors={colors} />
+      <DropdownFilters
+        onColorSelect={handleColorSelect}
+        selectedColor={selectedColor}
+        colors={colors}
+        sortBy={sortBy}
+        onSortChange={setSortBy}
+      />
       {loading ? (
         <ProductGridSkeleton />
       ) : (

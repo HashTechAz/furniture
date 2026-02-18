@@ -172,6 +172,15 @@
   background-color: #f8f9fa;
 }
 
+.dropdownMenu ul button:hover {
+  background-color: #f8f9fa;
+}
+
+.dropdownMenu ul button.sortOption[data-selected='true'] {
+  background-color: #f0f0f0;
+  font-weight: 600;
+}
+
 /* --- RESPONSIVE STYLES --- */
 @media (min-width: 768px) and (max-width: 1024px) {
   .filtersWrapper {

@@ -94,13 +94,70 @@ const ColourDropdown = ({ colors, selectedName, onSelect }: { colors: BackendCol
   );
 };
 
+type SortOption = { label: string; value: string };
+const SortDropdown = ({
+  options,
+  value,
+  onChange,
+}: {
+  options: readonly SortOption[];
+  value: string;
+  onChange: (value: string) => void;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const current = options.find((o) => o.value === value) || options[0];
+  return (
+    <div className={styles.dropdown}>
+      <button
+        type="button"
+        className={styles.dropdownButton}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span>{current?.label ?? 'Sırala'}</span>
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}
+        >
+          <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      <div className={`${styles.dropdownMenu} ${isOpen ? styles.menuOpen : ''}`}>
+        <ul>
+          {options.map((opt) => (
+            <li key={opt.value}>
+              <button
+                type="button"
+                data-selected={opt.value === value ? 'true' : undefined}
+                className={styles.sortOption}
+                style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 12px', font: 'inherit' }}
+                onClick={() => {
+                  onChange(opt.value);
+                  setIsOpen(false);
+                }}
+              >
+                {opt.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
+
 interface DropdownFiltersProps {
   onColorSelect?: (colorName: string) => void;
   selectedColor?: string;
   colors?: BackendColor[];
+  sortBy?: string;
+  onSortChange?: (sortBy: string) => void;
 }
 
-const DropdownFilters = ({ onColorSelect, selectedColor = '', colors = [] }: DropdownFiltersProps) => {
+const DropdownFilters = ({ onColorSelect, selectedColor = '', colors = [], sortBy = 'newest', onSortChange }: DropdownFiltersProps) => {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [colourOptions, setColourOptions] = useState<BackendColor[]>(colors);
 
@@ -132,9 +189,16 @@ const DropdownFilters = ({ onColorSelect, selectedColor = '', colors = [] }: Dro
 
   const dispatchOptions = ["In stock", "1-2 weeks", "3-4 weeks"];
   const depthOptions = ["30 cm", "38 cm", "47 cm"];
-  // const colourOptions = ["New White", "Fjord", "Ruby", "Acacia"]; // KÖHNƏ STATİK KOD SİLİNDİ
   const seriesOptions = ["Montana System", "Montana Free", "Panton Wire"];
-  const sortOptions = ["Montana recommends", "Price: Low to High", "Price: High to Low"];
+
+  // Backend sortBy: newest | price_asc | price_desc | name_asc | name_desc
+  const SORT_OPTIONS = [
+    { label: 'Ən yenilərə görə', value: 'newest' },
+    { label: 'A-dan Z-yə', value: 'name_asc' },
+    { label: 'Z-dən A-ya', value: 'name_desc' },
+    { label: 'Ucuzdan Bahaya', value: 'price_asc' },
+    { label: 'Bahadan Ucuza', value: 'price_desc' },
+  ] as const;
 
   const handleFilterSelect = (category: keyof typeof selectedFilters, value: string) => {
     const newValue = selectedFilters[category] === value ? "" : value;
@@ -301,8 +365,12 @@ const DropdownFilters = ({ onColorSelect, selectedColor = '', colors = [] }: Dro
         </div>
         </div>
 
-        {/* Seçici Dropdown */}
-        <Dropdown options={sortOptions} initialSelected={sortOptions[0]} />
+        {/* Sıralama dropdown — backend sortBy: newest | price_asc | price_desc | name_asc | name_desc */}
+        <SortDropdown
+          options={SORT_OPTIONS}
+          value={sortBy}
+          onChange={(value) => onSortChange?.(value)}
+        />
       </div>
     </div>
   );
