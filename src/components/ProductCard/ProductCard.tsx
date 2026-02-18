@@ -13,7 +13,7 @@ interface ProductCardProps {
   color: string;
   measurements: string;
   position: string;
-  /** İlk ekrandakı kartlar üçün – şəkil tez yüklənir, LCP yaxşılaşır */
+  price?: string;
   priority?: boolean;
 }
 
@@ -25,6 +25,7 @@ const ProductCard = ({
   color,
   measurements,
   position,
+  price,
   priority = false,
 }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -63,6 +64,11 @@ const ProductCard = ({
             Measurements: {measurements}
           </p>
           <p className={styles.cardPosition}>Position: {position}</p>
+          {price != null && price !== '' && (
+            <p className={styles.cardPrice}>
+              Qiymət: <span className={styles.cardPriceBold}>{price} ₼</span>
+            </p>
+          )}
         </div>
       </div>
     </Link>

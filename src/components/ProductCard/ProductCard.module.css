@@ -62,6 +62,16 @@
   font-size: 12px;
   margin: 0px;
 }
+
+.cardPrice {
+  font-size: 12px;
+  margin: 12px 0 0 0;
+}
+
+.cardPriceBold {
+  font-weight: 700;
+}
+
 /* ------------------------------------------- */
 
 .productButton {
@@ -124,7 +134,8 @@
     
     .cardColor,
     .cardMeasurements,
-    .cardPosition {
-        font-size: 12px; /* Mobile'da daha küçük description */
+    .cardPosition,
+    .cardPrice {
+        font-size: 12px;
     }
 }

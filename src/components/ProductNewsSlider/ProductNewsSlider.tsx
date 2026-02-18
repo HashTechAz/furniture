@@ -107,17 +107,17 @@ const ProductNewsSlider = ({ products }: ProductNewsSliderProps) => {
 
       <div className={styles.embla} ref={emblaRef}>
         <div className={styles.embla__container}>
-          {/* MOCK DATA YOX, REAL DATANI MAP EDİRİK */}
           {products.map((product) => (
             <div className={styles.embla__slide} key={product.id}>
               <ProductCard
                 id={product.id}
-                imageSrc={product.imageSrc}       // Düzəldilmiş adlar
-                imageSrcHover={product.imageSrcHover} // Düzəldilmiş adlar
+                imageSrc={product.imageSrc}
+                imageSrcHover={product.imageSrcHover}
                 title={product.title}
                 color={product.color}
                 measurements={product.measurements}
                 position={product.position}
+                price={product.price}
               />
             </div>
           ))}

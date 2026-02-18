@@ -39,6 +39,7 @@ const ProductGrid = ({ products, onLoadMore, hasMore = false, loadingMore = fals
             color={product.color}
             measurements={product.measurements}
             position={product.position}
+            price={product.price}
             imageSrc={product.imageSrc}
             imageSrcHover={product.imageSrcHover}
             priority={index < 8}
