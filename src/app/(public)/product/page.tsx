@@ -8,13 +8,14 @@ import ProductGrid from './components/ProductGrid/ProductGrid';
 import ProductAbout from './components/ProductAbout/ProductAbout';
 import { getProducts, type FrontendProduct } from '@/lib/products';
 import { getColors, type BackendColor } from '@/lib/colors';
+import styles from './page.module.css';
 
 export const dynamic = 'force-dynamic';
 
 function ProductGridSkeleton() {
   return (
-    <div className="min-h-[400px] flex items-center justify-center text-gray-400 py-12">
-      Məhsullar yüklənir...
+    <div className={styles.loaderContainer}>
+      <div className={styles.spinner}></div>
     </div>
   );
 }
@@ -35,10 +36,13 @@ const ProductPage = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
+        
         const [productsData, colorsData] = await Promise.all([
           getProducts({ pageNumber: 1, pageSize: productsPerPage }),
           getColors()
         ]);
+        
+        // Məhsulları təyin et
         setAllProducts(productsData);
         setDisplayedProducts(productsData);
         setColors(Array.isArray(colorsData) ? colorsData : []);
@@ -47,6 +51,10 @@ const ProductPage = () => {
         if (productsData.length < productsPerPage) {
           setHasMore(false);
         }
+        
+        // React-in DOM-u yeniləməsi üçün bir sonrakı render dövrünə qədər gözlə
+        await new Promise(resolve => setTimeout(resolve, 0));
+        
       } catch (error) {
         console.error('Data yüklənmədi:', error);
       } finally {
