@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import styles from "./ProductCard.module.css";
 
-// Kartın alacağı props'ları güncelliyoruz
 interface ProductCardProps {
   id?: number;
   imageSrc: string;
@@ -42,13 +41,14 @@ const ProductCard = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className={styles.card}>
+        {/* Şəkil Hissəsi */}
         <div className={styles.imageWrapper}>
           <Image
             fill
             src={isHovered ? imageSrcHover : imageSrc}
             alt={title ?? ""}
             className={styles.image}
-            sizes="(max-width: 768px) 260px, (max-width: 1024px) 300px, 350px"
+            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             priority={priority}
           />
           <div className={styles.productButton}>
@@ -56,17 +56,18 @@ const ProductCard = ({
           </div>
         </div>
 
-        {/* --- DEĞİŞİKLİK BURADA --- */}
+        {/* Məlumat Hissəsi */}
         <div className={styles.cardInfo}>
           <h3 className={styles.cardTitle}>{title}</h3>
-          <p className={styles.cardColor}>Color: {color}</p>
+          <p className={styles.cardColor}>Colour: {color}</p>
           <p className={styles.cardMeasurements}>
             Measurements: {measurements}
           </p>
           <p className={styles.cardPosition}>Position: {position}</p>
+          
           {price != null && price !== '' && (
             <p className={styles.cardPrice}>
-              Qiymət: <span className={styles.cardPriceBold}>{price} ₼</span>
+              Displayed model {price} ₼
             </p>
           )}
         </div>

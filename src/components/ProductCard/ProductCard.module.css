@@ -1,141 +1,125 @@
+/* ProductCard.module.css */
+
+/* Kartın ümumi çərçivəsi - Borderləri yığışdırdıq */
 .cardLink {
   text-decoration: none;
   color: inherit;
   display: block;
+  width: 100%; /* Fixed 360px yerinə 100% veririk ki, Grid idarə etsin */
 }
 
 .card {
-  width: 100%;
-  text-align: left;
-  position: relative;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  text-align: left;
+  background: transparent; /* Ağ fonu sildik */
+  border: none; /* Çərçivəni sildik */
+  transition: opacity 0.2s ease;
 }
 
-/* new styles */
+.cardLink:hover .card {
+  opacity: 0.95; /* Hover olanda yüngül şəffaflıq */
+  /* Kölgə və border effektini yığışdırdıq ki, şəkildəki kimi sadə olsun */
+}
 
+/* --- Şəkil sahəsi --- */
 .imageWrapper {
-  width: 100%; 
-  height: 390px;
-  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Tam kvadrat olması üçün */
   position: relative;
-  background-color: #f5f5f5;
+  overflow: hidden;
+  background: #f7f7f7; /* Şəkildəki kimi açıq boz fon */
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px; /* Resimlere padding ver */
+  margin-bottom: 16px; /* Şəkillə yazı arasında məsafə */
 }
 
 .image {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Resimlerin tam görünmesi için contain */
-  transition: transform 0.2s ease;
-  will-change: transform;
+  object-fit: contain; /* Şəkil kəsilməsin, tam düşsün */
+  padding: 40px; /* Şəklin kənarlardan bir az içəridə durması üçün */
+  transition: transform 0.4s ease;
 }
 
-
-/* --- YENİ EKLENEN VE GÜNCELLENEN STİLLER --- */
-.cardInfo {
-  margin-top: 15px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-     
-.cardTitle {
-  font-size: 14px;
-  font-weight: 700;
-  margin: 0;
-  color: #333;
+/* Hover zamanı şəklin yüngül böyüməsi */
+.cardLink:hover .image {
+  transform: scale(1.05);
 }
 
-.cardColor {
-  /* İstediğin gibi 20px boşluk */
-  margin: 20px 0px 0px 0px; 
-  font-size: 12px;
-}
-
-.cardMeasurements, .cardPosition {
-  font-size: 12px;
-  margin: 0px;
-}
-
-.cardPrice {
-  font-size: 12px;
-  margin: 12px 0 0 0;
-}
-
-.cardPriceBold {
-  font-weight: 700;
-}
-
-/* ------------------------------------------- */
-
+/* "Configure product" düyməsi (Sizdə var idi deyə saxladım, amma dizayna uyğunlaşdırdım) */
 .productButton {
   position: absolute;
-  bottom: 20px; /* Yüksekliği azalttığımız için bottom'ı ayarladım */
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  color: black;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
+  color: #000;
+  font-size: 13px;
+  font-weight: 600;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-  white-space: nowrap; /* Metnin alta kaymasını engelle */
-}
-
-.cardLink:hover .image {
-  transform: scale(1.02);
+  transition: all 0.3s ease;
+  padding: 10px 20px;
+  background: #fff;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .cardLink:hover .productButton {
   opacity: 1;
   visibility: visible;
+  bottom: 30px; /* Aşağıdan yuxarı qalxma effekti */
 }
 
-.productButton::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background-color: currentColor;
-  transform: scaleX(0);
-  transform-origin: bottom left;
-  transition: transform 0.3s ease-out;
+/* --- Məlumat hissəsi --- */
+.cardInfo {
+  display: flex;
+  flex-direction: column;
+  padding: 0; /* İçəridəki boşluqları sildik ki, kənara yapışmasın */
 }
 
-.productButton:hover::after {
-  transform: scaleX(1);
+.cardTitle {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: #000;
+  letter-spacing: -0.01em;
 }
 
+/* Detallar (Rəng, ölçü, mövqe) */
+.cardColor,
+.cardMeasurements,
+.cardPosition {
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
+  color: #555; /* Bir az tündləşdirdik ki, oxunaqlı olsun */
+  font-weight: 400;
+}
 
-/* --- YENİ RESPONSİV STİL --- */
+/* Qiymət hissəsi */
+.cardPrice {
+  font-size: 13px;
+  margin-top: 12px;
+  color: #000;
+  font-weight: 700; /* Şəkildəki kimi qalın şrift */
+}
+
+/* Responsive düzəlişlər */
 @media (max-width: 768px) {
-    /* ProductNewsSlider üçün xüsusi hündürlük */
-    :global(.embla__slide) {
-        height: 340px;
-    }
-    
-    .imageWrapper {
-        /* Mobile'da kartların height'ini 220px yap */
-        height: 220px;
-    }
-    
-    .cardTitle {
-        font-size: 12px; /* Mobile'da daha küçük title */
-    }
-    
-    .cardColor,
-    .cardMeasurements,
-    .cardPosition,
-    .cardPrice {
-        font-size: 12px;
-    }
+  .imageWrapper {
+    padding: 20px;
+  }
+  
+  .cardTitle {
+    font-size: 14px;
+  }
+  
+  .cardColor, 
+  .cardMeasurements, 
+  .cardPosition, 
+  .cardPrice {
+    font-size: 12px;
+  }
 }
