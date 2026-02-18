@@ -2,19 +2,18 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { FaCheck, FaTimes, FaExclamationTriangle, FaInfo } from 'react-icons/fa';
-import styles from '@/components/admin-modal/admin-modal.module.css'; // Yuxarıdakı CSS
-
-// Modal Tipləri
+import styles from '@/components/admin-modal/admin-modal.module.css'; 
 type ModalType = 'success' | 'error' | 'warning' | 'info';
 
-interface ModalOptions {
+export interface ModalOptions {
   type: ModalType;
   title: string;
   message: string;
   confirmText?: string;
   cancelText?: string;
-  onConfirm?: () => Promise<void> | void; // Async dəstəyi
-  autoClose?: boolean; // Avtomatik bağlansın?
+  onConfirm?: () => Promise<void> | void;
+  onCancel?: () => void; 
+  autoClose?: boolean; 
 }
 
 interface AdminModalContextType {
@@ -36,7 +35,7 @@ export function AdminModalProvider({ children }: { children: ReactNode }) {
 
   const closeModal = () => {
     setIsOpen(false);
-    setTimeout(() => setOptions(null), 300); // Animasiya bitənə qədər gözlə
+    setTimeout(() => setOptions(null), 300); 
   };
 
   const handleConfirm = async () => {
@@ -55,7 +54,6 @@ export function AdminModalProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // İkon seçimi
   const getIcon = (type: ModalType) => {
     switch (type) {
       case 'success': return <FaCheck />;
@@ -65,12 +63,11 @@ export function AdminModalProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Düymə rəngi
   const getConfirmStyle = (type: ModalType) => {
     switch (type) {
-      case 'error': case 'warning': return { background: '#ef4444' }; // Qırmızı (Delete üçün)
-      case 'success': return { background: '#16a34a' }; // Yaşıl
-      default: return { background: '#111' }; // Qara (Standard)
+      case 'error': case 'warning': return { background: '#ef4444' }; 
+      case 'success': return { background: '#16a34a' }; 
+      default: return { background: '#111' }; 
     }
   };
 
@@ -78,27 +75,22 @@ export function AdminModalProvider({ children }: { children: ReactNode }) {
     <AdminModalContext.Provider value={{ openModal, closeModal }}>
       {children}
 
-      {/* GLOBAL MODAL UI */}
       {isOpen && options && (
         <div className={styles.overlay} onClick={!loading ? closeModal : undefined}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             
-            {/* İkon */}
             <div className={`${styles.iconWrapper} ${styles[options.type]}`}>
               {getIcon(options.type)}
             </div>
 
-            {/* Mətnlər */}
             <h3 className={styles.title}>{options.title}</h3>
             <p className={styles.message}>{options.message}</p>
 
-            {/* Düymələr */}
             <div className={styles.footer}>
-              {/* Cancel düyməsi (Yalnız Confirm funksiyası varsa və ya warning/error tipidirsə göstər) */}
               {(options.onConfirm || options.type === 'warning') && (
                 <button 
                   className={`${styles.btn} ${styles.cancelBtn}`} 
-                  onClick={closeModal} 
+                  onClick={() => { options.onCancel?.(); closeModal(); }} 
                   disabled={loading}
                 >
                   {options.cancelText || 'Cancel'}
@@ -122,7 +114,6 @@ export function AdminModalProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Hook
 export function useAdminModal() {
   const context = useContext(AdminModalContext);
   if (!context) {

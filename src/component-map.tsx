@@ -1,14 +1,11 @@
 import dynamic from 'next/dynamic';
 
-// 1. Loading Fallback (Yüklənənə qədər görünən hissə)
 const Loading = () => (
   <div className="w-full py-10 flex justify-center items-center text-gray-400">
     Loading...
   </div>
 );
 
-// 2. SERVER Componentləri (Bunları normal import edirik - SSR və SEO üçün vacibdir)
-// Bu hissələr istifadəçi saytı açan kimi HTML olaraq gələcək (Gözləmə olmayacaq)
 import Hero from '@/components/Hero/Hero';
 import HeroSection from '@/components/HeroSection/HeroSection';
 import SystemHero from '@/app/(public)/system/components/SystemHero/SystemHero';
@@ -33,11 +30,9 @@ import FrameColors from '@/components/FrameColors/FrameColors';
 import PaletteLeftImage from '@/components/Palette/PaletteLeftImage/PaletteLeftImage';
 import PaletteRightImage from '@/components/Palette/PaletteRightImage/PaletteRightImage';
 
-// 3. CLIENT Componentləri (Bunları dynamic edirik - Performans üçün)
-// İçində "window", "document" və ya ağır animasiya olanlar
 const ProductSlider = dynamic(() => import('@/components/ProductSlider/ProductSlider'), { 
   loading: Loading,
-  ssr: true // Serverdə HTML kimi yaransın, amma JS-i sonradan gəlsin
+  ssr: true 
 });
 
 const ProductNewsSlider = dynamic(() => import('@/components/ProductNewsSlider/ProductNewsSlider'), { 
@@ -53,9 +48,7 @@ const Form = dynamic(() => import('@/components/Form/Form'), {
   loading: Loading 
 });
 
-// 4. Map Obyekti
 export const componentMap = {
-  // Statik (Server) Komponentlər
   Hero,
   HeroSection,
   SystemHero,
@@ -79,8 +72,6 @@ export const componentMap = {
   FrameColors,
   PaletteLeftImage,
   PaletteRightImage,
-
-  // Dinamik (Client) Komponentlər
   ProductSlider,
   ProductNewsSlider,
   HomeVideo,

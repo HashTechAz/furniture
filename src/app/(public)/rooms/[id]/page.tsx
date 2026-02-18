@@ -25,11 +25,11 @@ export default async function RoomPage({ params }: { params: Promise<{ id: strin
   }
   if (!room) notFound();
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
   const imageUrl = room.imageUrl
     ? room.imageUrl.startsWith('http')
       ? room.imageUrl
-      : `${baseUrl}${room.imageUrl}`
+      : `${baseUrl}${room.imageUrl.startsWith('/') ? '' : '/'}${room.imageUrl}`
     : null;
 
   return (

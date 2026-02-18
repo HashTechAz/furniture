@@ -3,10 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import { getRoomById, updateRoom } from '@/lib/rooms';
+import { getRoomById, updateRoom, uploadRoomImage, deleteRoomImage, isAllowedRoomImageFile } from '@/lib/rooms';
 import { useAdminModal } from '@/context/admin-modal-context';
 import styles from '../page.module.css';
-import { FaSave } from 'react-icons/fa';
+import { FaSave, FaCloudUploadAlt, FaTrash } from 'react-icons/fa';
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
 
 export default function EditRoomPage() {
   const router = useRouter();
@@ -15,7 +17,16 @@ export default function EditRoomPage() {
   const { openModal } = useAdminModal();
   const [formData, setFormData] = useState({ name: '', description: '', imageUrl: '' });
   const [loading, setLoading] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
+
+  const refetchRoom = () => {
+    if (!id) return;
+    const token = localStorage.getItem('accessToken') || '';
+    getRoomById(id, token).then((data) => {
+      setFormData({ name: data.name, description: data.description || '', imageUrl: data.imageUrl || '' });
+    });
+  };
 
   useEffect(() => {
     if (!id) {
@@ -45,7 +56,7 @@ export default function EditRoomPage() {
     setLoading(true);
     const token = localStorage.getItem('accessToken') || '';
     try {
-      await updateRoom(id, { name: formData.name, description: formData.description, imageUrl: formData.imageUrl || undefined }, token);
+      await updateRoom(id, { name: formData.name, description: formData.description }, token);
       openModal({
         type: 'success',
         title: 'Yeniləndi',
@@ -62,6 +73,51 @@ export default function EditRoomPage() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const getFullImageUrl = (url: string) => {
+    if (!url) return '';
+    if (url.startsWith('http')) return url;
+    return `${BASE_URL}${url}`;
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !id) return;
+    if (!isAllowedRoomImageFile(file)) {
+      openModal({ type: 'error', title: 'Xəta', message: 'Yalnız .jpg, .jpeg, .png formatlı fayllara icazə verilir.' });
+      e.target.value = '';
+      return;
+    }
+    setImageLoading(true);
+    const token = localStorage.getItem('accessToken') || '';
+    try {
+      await uploadRoomImage(Number(id), file, token);
+      refetchRoom();
+      openModal({ type: 'success', title: 'Şəkil yükləndi', message: 'Otaq şəkli uğurla əlavə edildi.' });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Şəkil yüklənə bilmədi';
+      openModal({ type: 'error', title: 'Xəta', message });
+    } finally {
+      setImageLoading(false);
+      e.target.value = '';
+    }
+  };
+
+  const handleDeleteImage = async () => {
+    if (!id || !formData.imageUrl) return;
+    setImageLoading(true);
+    const token = localStorage.getItem('accessToken') || '';
+    try {
+      await deleteRoomImage(id, token);
+      refetchRoom();
+      openModal({ type: 'success', title: 'Şəkil silindi', message: 'Otaq şəkli silindi.' });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Şəkil silinə bilmədi';
+      openModal({ type: 'error', title: 'Xəta', message });
+    } finally {
+      setImageLoading(false);
     }
   };
 
@@ -109,19 +165,54 @@ export default function EditRoomPage() {
               className={styles.textarea}
             />
           </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label} htmlFor="imageUrl">
-              Şəkil URL (Series menyuda göstəriləcək)
+
+          <div className={styles.imageCard}>
+            <h2 className={styles.imageCardTitle}><FaCloudUploadAlt /> Otaq şəkli (PC-dən yüklə)</h2>
+            {formData.imageUrl ? (
+              <>
+                <div className={styles.previewWrapper}>
+                  <img src={getFullImageUrl(formData.imageUrl)} alt={formData.name} className={styles.previewImage} />
+                  <button
+                    type="button"
+                    className={styles.removeImageBtn}
+                    onClick={handleDeleteImage}
+                    disabled={imageLoading}
+                    title="Şəkli sil"
+                  >
+                    <FaTrash />
+                  </button>
+                </div>
+                <p className={styles.label} style={{ marginTop: 0 }}>Cari şəkil. Yenisini yükləmək üçün aşağıdakı sahəyə klik edib fayl seçin (köhnə avtomatik silinəcək).</p>
+              </>
+            ) : (
+              <p className={styles.label} style={{ marginBottom: 12 }}>Otağın şəkli yoxdur. Aşağıya klik edib .jpg, .jpeg və ya .png fayl seçin.</p>
+            )}
+            <label className={styles.uploadArea} style={{ pointerEvents: imageLoading ? 'none' : undefined }}>
+              <input
+                type="file"
+                accept=".jpg,.jpeg,.png,image/jpeg,image/jpg,image/png"
+                hidden
+                onChange={handleImageUpload}
+              />
+              <div style={{ fontSize: 28, color: '#ccc', marginBottom: 8 }}><FaCloudUploadAlt /></div>
+              <span style={{ fontSize: 13, color: '#666', fontWeight: 500 }}>
+                {imageLoading ? 'Yüklənir...' : formData.imageUrl ? 'Başqa şəkil seç' : 'Şəkil seç (PC-dən)'}
+              </span>
             </label>
-            <input
-              id="imageUrl"
-              type="url"
-              placeholder="https://..."
-              value={formData.imageUrl}
-              onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-              className={styles.input}
-            />
+            {formData.imageUrl && (
+              <div className={styles.imageActions} style={{ marginTop: 12 }}>
+                <button
+                  type="button"
+                  className={`${styles.imageBtn} ${styles.imageBtnDanger}`}
+                  disabled={imageLoading}
+                  onClick={handleDeleteImage}
+                >
+                  <FaTrash /> Şəkli sil
+                </button>
+              </div>
+            )}
           </div>
+
           <div className={styles.headerActions}>
             <button type="submit" className={styles.saveBtn} disabled={loading}>
               <FaSave /> {loading ? 'Gözləyin...' : 'Yenilə'}

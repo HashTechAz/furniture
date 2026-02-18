@@ -7,6 +7,15 @@ import { useAdminModal } from '@/context/admin-modal-context';
 import styles from './page.module.css';
 import { FaPlus, FaEdit, FaTrash, FaDoorOpen } from 'react-icons/fa';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+
+function roomImageSrc(room: Room): string {
+  const url = room.imageUrl ?? '';
+  if (!url) return '';
+  if (url.startsWith('http')) return url;
+  return `${API_BASE}${url.startsWith('/') ? '' : '/'}${url}`;
+}
+
 export default function RoomsPage() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
@@ -27,6 +36,12 @@ export default function RoomsPage() {
 
   useEffect(() => {
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const onFocus = () => fetchData();
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
   }, []);
 
   const handleDelete = (id: number) => {
@@ -83,7 +98,7 @@ export default function RoomsPage() {
                     <div className={styles.cellContent}>
                       <div className={styles.imageWrapper}>
                         {room.imageUrl ? (
-                          <img src={room.imageUrl.startsWith('http') ? room.imageUrl : `${process.env.NEXT_PUBLIC_API_URL || ''}${room.imageUrl}`} alt={room.name} />
+                          <img src={roomImageSrc(room)} alt={room.name} />
                         ) : (
                           <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc', fontSize: 20 }}>⌂</div>
                         )}

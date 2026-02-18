@@ -19,7 +19,7 @@ const SeriesContent = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const baseUrl = typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_API_URL || '' : '';
+  const baseUrl = typeof process !== 'undefined' ? (process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042') : 'https://localhost:7042';
 
   return (
     <>
@@ -50,7 +50,7 @@ const SeriesContent = () => {
             ) : (
               rooms.map((room) => {
                 const imageUrl = room.imageUrl
-                  ? (room.imageUrl.startsWith('http') ? room.imageUrl : `${baseUrl}${room.imageUrl}`)
+                  ? (room.imageUrl.startsWith('http') ? room.imageUrl : `${baseUrl}${room.imageUrl.startsWith('/') ? '' : '/'}${room.imageUrl}`)
                   : PLACEHOLDER_IMAGE;
                 return (
                   <NavbarCategoryCard

@@ -3,27 +3,52 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { createRoom } from '@/lib/rooms';
+import { createRoom, uploadRoomImage, isAllowedRoomImageFile } from '@/lib/rooms';
 import { useAdminModal } from '@/context/admin-modal-context';
 import styles from '../page.module.css';
-import { FaSave } from 'react-icons/fa';
+import { FaSave, FaCloudUploadAlt, FaTimes } from 'react-icons/fa';
 
 export default function NewRoomPage() {
   const router = useRouter();
   const { openModal } = useAdminModal();
-  const [formData, setFormData] = useState({ name: '', description: '', imageUrl: '' });
+  const [formData, setFormData] = useState({ name: '', description: '' });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!isAllowedRoomImageFile(file)) {
+      openModal({ type: 'error', title: 'Xəta', message: 'Yalnız .jpg, .jpeg, .png formatlı fayllara icazə verilir.' });
+      e.target.value = '';
+      return;
+    }
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setSelectedFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+    e.target.value = '';
+  };
+
+  const removeFile = () => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setSelectedFile(null);
+    setPreviewUrl(null);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     const token = localStorage.getItem('accessToken') || '';
     try {
-      await createRoom({ name: formData.name, description: formData.description, imageUrl: formData.imageUrl || undefined }, token);
+      const room = await createRoom({ name: formData.name, description: formData.description }, token);
+      if (selectedFile && room?.id) {
+        await uploadRoomImage(room.id, selectedFile, token);
+      }
       openModal({
         type: 'success',
         title: 'Otaq yaradıldı',
-        message: 'Yeni otaq uğurla əlavə edildi.',
+        message: 'Otaq və şəkil (varsa) uğurla yadda saxlanıldı.',
         confirmText: 'Siyahıya keç',
         onConfirm: () => router.push('/admin/rooms'),
       });
@@ -42,7 +67,7 @@ export default function NewRoomPage() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>New Room</h1>
+        <h1 className={styles.title}>Yeni otaq</h1>
         <Link href="/admin/rooms" className={styles.cancelBtn}>
           Geri
         </Link>
@@ -75,19 +100,33 @@ export default function NewRoomPage() {
               className={styles.textarea}
             />
           </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label} htmlFor="imageUrl">
-              Şəkil URL (Series menyuda göstəriləcək)
-            </label>
-            <input
-              id="imageUrl"
-              type="url"
-              placeholder="https://..."
-              value={formData.imageUrl}
-              onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-              className={styles.input}
-            />
+
+          <div className={styles.imageCard}>
+            <h2 className={styles.imageCardTitle}><FaCloudUploadAlt /> Şəkil (PC-dən)</h2>
+            <p className={styles.label} style={{ marginBottom: 12, color: '#666', fontWeight: 400 }}>
+              .jpg, .jpeg və ya .png seçin. İstəyə bağlıdır.
+            </p>
+            {previewUrl ? (
+              <div className={styles.previewWrapper}>
+                <img src={previewUrl} alt="Önizləmə" className={styles.previewImage} />
+                <button type="button" onClick={removeFile} className={styles.removeImageBtn} title="Şəkli sil">
+                  <FaTimes />
+                </button>
+              </div>
+            ) : (
+              <label className={styles.uploadArea}>
+                <input
+                  type="file"
+                  accept=".jpg,.jpeg,.png,image/jpeg,image/jpg,image/png"
+                  hidden
+                  onChange={handleFileChange}
+                />
+                <div style={{ fontSize: 28, color: '#ccc', marginBottom: 8 }}><FaCloudUploadAlt /></div>
+                <span style={{ fontSize: 13, color: '#666', fontWeight: 500 }}>Şəkil seç</span>
+              </label>
+            )}
           </div>
+
           <div className={styles.headerActions}>
             <button type="submit" className={styles.saveBtn} disabled={loading}>
               <FaSave /> {loading ? 'Gözləyin...' : 'Yadda saxla'}
