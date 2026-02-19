@@ -1,9 +1,9 @@
-"use client"; 
+"use client";
 
 import React from "react";
 import styles from "./ProductGrid.module.css";
 import ProductCard from "@/components/ProductCard/ProductCard";
-import { FrontendProduct } from "@/lib/products"; 
+import { FrontendProduct } from "@/lib/products";
 
 interface ProductGridProps {
   products: FrontendProduct[];
@@ -12,16 +12,21 @@ interface ProductGridProps {
   loadingMore?: boolean;
 }
 
-const ProductGrid = ({ products, onLoadMore, hasMore = false, loadingMore = false }: ProductGridProps) => {
-  const totalItems = products.length; 
-  const shownItems = products.length; 
+const ProductGrid = ({
+  products,
+  onLoadMore,
+  hasMore = false,
+  loadingMore = false,
+}: ProductGridProps) => {
+  const totalItems = products.length;
+  const shownItems = products.length;
 
   if (!products || products.length === 0) {
     return (
       <div className={styles.gridContainer}>
-         <div className={styles.noProducts} style={{textAlign: 'center', padding: '50px'}}>
-            Hələlik heç bir məhsul tapılmadı.
-         </div>
+        <div className={styles.noProducts}>
+          Hələlik heç bir məhsul tapılmadı.
+        </div>
       </div>
     );
   }
@@ -51,14 +56,14 @@ const ProductGrid = ({ products, onLoadMore, hasMore = false, loadingMore = fals
         <p className={styles.itemCount}>
           Showing {shownItems} out of {totalItems} items
         </p>
-        
+
         {hasMore && (
-          <button 
+          <button
             className={styles.loadMoreButton}
             onClick={onLoadMore}
             disabled={loadingMore}
           >
-            {loadingMore ? 'Loading...' : 'Load More'}
+            {loadingMore ? "Loading..." : "Load More"}
           </button>
         )}
       </div>

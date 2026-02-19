@@ -1,5 +1,3 @@
-/* ProductGrid.module.css */
-
 .gridContainer {
   padding: 60px 40px;
   max-width: 1600px;
@@ -7,27 +5,27 @@
 }
 
 .countDisplay {
-  text-align: left; /* Şəkildə sol tərəfdə olmaya bilər, amma adətən solda olur */
-  margin-bottom: 40px;
+  text-align: left;
+  margin-bottom: 30px;
   font-size: 14px;
   color: #666;
-  padding-left: 10px;
 }
 
 .grid {
   display: grid;
-  /* Əsas dəyişiklik buradadır: Fixed pixel yox, responsive grid */
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 40px 24px; /* Sətirlər arası 40px, sütunlar arası 24px boşluq */
+  gap: 50px 24px;
   width: 100%;
 }
 
 .noProducts {
   font-size: 16px;
   color: #666;
+  text-align: center;
+  padding: 100px 20px;
 }
 
-/* --- Pagination / Load More --- */
+/* Pagination / Load More */
 .paginationControls {
   text-align: center;
   padding-top: 80px;
@@ -45,7 +43,7 @@
   background-color: #000;
   color: #fff;
   border: 1px solid #000;
-  border-radius: 0; /* Minimalist stillərdə radius adətən olmur */
+  border-radius: 0;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -64,28 +62,29 @@
   cursor: not-allowed;
 }
 
-/* --- Responsive --- */
+/* Responsive */
+@media (max-width: 1024px) {
+  .gridContainer {
+    padding: 40px 20px;
+  }
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 40px 20px;
+  }
+}
 
-/* Mobil */
 @media (max-width: 600px) {
   .gridContainer {
     padding: 20px 16px;
   }
-  
   .grid {
-    /* Mobildə 2 sütun istəyirsinizsə 150px, tək sütun üçün 1fr */
-    grid-template-columns: repeat(1, 1fr); 
+    grid-template-columns: 1fr;
     gap: 32px;
   }
-  
   .countDisplay {
     display: none;
   }
-}
-
-/* Tablet */
-@media (min-width: 601px) and (max-width: 1024px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
+  .paginationControls {
+    padding-top: 50px;
   }
 }

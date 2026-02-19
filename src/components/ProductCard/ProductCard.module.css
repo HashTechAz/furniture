@@ -1,53 +1,45 @@
-/* ProductCard.module.css */
-
-/* Kartın ümumi çərçivəsi - Borderləri yığışdırdıq */
 .cardLink {
   text-decoration: none;
   color: inherit;
   display: block;
-  width: 100%; /* Fixed 360px yerinə 100% veririk ki, Grid idarə etsin */
+  width: 100%;
 }
 
 .card {
   display: flex;
   flex-direction: column;
   text-align: left;
-  background: transparent; /* Ağ fonu sildik */
-  border: none; /* Çərçivəni sildik */
+  background: transparent;
+  border: none;
   transition: opacity 0.2s ease;
 }
 
 .cardLink:hover .card {
-  opacity: 0.95; /* Hover olanda yüngül şəffaflıq */
+  opacity: 0.95;
 }
 
-/* --- Şəkil sahəsi --- */
 .imageWrapper {
   width: 100%;
-  aspect-ratio: 1 / 1; /* Tam kvadrat olması üçün */
+  aspect-ratio: 1 / 1;
   position: relative;
   overflow: hidden;
-  background: #f7f7f7; /* Şəkildəki kimi açıq boz fon */
+  background: #f7f7f7;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* Şəkil kəsilməsin, tam düşsün */
-  padding: 40px; /* Şəklin kənarlardan bir az içəridə durması üçün */
+  object-fit: contain;
+  padding: 40px;
   transition: transform 0.4s ease;
 }
 
-/* Hover zamanı şəklin yüngül böyüməsi */
 .cardLink:hover .image {
   transform: scale(1.05);
 }
 
-/* "Configure product" düyməsi (Sizdə var idi deyə saxladım, amma dizayna uyğunlaşdırdım) */
 .productButton {
   position: absolute;
   bottom: 20px;
@@ -62,36 +54,33 @@
   padding: 10px 20px;
   background: #fff;
   border: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
 }
 
 .cardLink:hover .productButton {
   opacity: 1;
   visibility: visible;
-  bottom: 30px; /* Aşağıdan yuxarı qalxma effekti */
+  bottom: 30px;
 }
 
-/* --- Məlumat hissəsi --- */
 .cardInfo {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
   padding: 0;
 }
 
 .cardTitle {
   font-size: 15px;
   font-weight: 700;
-  margin: 0;
+  margin: 0 0 4px 0;
   color: #000;
   letter-spacing: -0.01em;
   line-height: 1.3;
 }
 
-/* Detallar (Rəng, ölçü, mövqe) */
-.cardColor,
-.cardMeasurements,
-.cardPosition {
+.cardText {
   font-size: 13px;
   line-height: 1.35;
   margin: 0;
@@ -99,23 +88,24 @@
   font-weight: 400;
 }
 
-/* Qiymət hissəsi */
 .cardPrice {
   font-size: 13px;
-  margin: 4px 0 0 0;
+  margin: 6px 0 0 0;
   color: #000;
   font-weight: 700;
 }
 
-/* Responsive düzəlişlər */
 @media (max-width: 768px) {
+  .imageWrapper {
+    margin-bottom: 8px;
+  }
+  .image {
+    padding: 20px;
+  }
   .cardTitle {
     font-size: 14px;
   }
-  
-  .cardColor, 
-  .cardMeasurements, 
-  .cardPosition, 
+  .cardText,
   .cardPrice {
     font-size: 12px;
   }

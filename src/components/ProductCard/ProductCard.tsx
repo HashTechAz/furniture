@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
@@ -29,9 +30,7 @@ const ProductCard = ({
 }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  if (!imageSrc) {
-    return null;
-  }
+  if (!imageSrc) return null;
 
   return (
     <Link
@@ -46,29 +45,23 @@ const ProductCard = ({
           <Image
             fill
             src={isHovered ? imageSrcHover : imageSrc}
-            alt={title ?? ""}
+            alt={title ?? "Product Image"}
             className={styles.image}
-            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority={priority}
           />
-          <div className={styles.productButton}>
-            Configure product
-          </div>
+          <div className={styles.productButton}>Configure product</div>
         </div>
 
         {/* Məlumat Hissəsi */}
         <div className={styles.cardInfo}>
           <h3 className={styles.cardTitle}>{title}</h3>
-          <p className={styles.cardColor}>Colour: {color}</p>
-          <p className={styles.cardMeasurements}>
-            Measurements: {measurements}
-          </p>
-          <p className={styles.cardPosition}>Position: {position}</p>
-          
-          {price != null && price !== '' && (
-            <p className={styles.cardPrice}>
-              Displayed model {price} ₼
-            </p>
+          <p className={styles.cardText}>Colour: {color}</p>
+          <p className={styles.cardText}>Measurements: {measurements}</p>
+          <p className={styles.cardText}>Position: {position}</p>
+
+          {price && price !== "0" && (
+            <p className={styles.cardPrice}>Displayed model {price} ₼</p>
           )}
         </div>
       </div>
