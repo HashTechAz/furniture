@@ -87,8 +87,12 @@ export default function EditProductPage() {
               const desId = product.designerId || product.designer?.id || 0;
               const colId = product.collectionId || product.collection?.id || 0;
 
-              const materialIds = product.materials?.map((m: any) => m.id) ?? product.materialIds ?? [];
-              const roomIds = product.rooms?.map((r: any) => r.id) ?? product.roomIds ?? [];
+              const materialIds = product.materials?.map((m: any) => m.id ?? m.Id) ?? product.materialIds ?? product.MaterialIds ?? [];
+              const roomIdsRaw = product.suitableRooms ?? product.rooms ?? product.Rooms ?? product.roomIds ?? product.RoomIds ?? [];
+              const roomIds = Array.isArray(roomIdsRaw)
+                ? roomIdsRaw.map((r: any) => (typeof r === 'number' ? r : (r?.id ?? r?.Id)))
+                : [];
+              const roomIdsFiltered = roomIds.filter((id: unknown): id is number => typeof id === 'number' && !Number.isNaN(id));
               setFormData({
                 name: product.name || '',
                 sku: product.sku || '',
@@ -103,9 +107,9 @@ export default function EditProductPage() {
                 categoryId: catId,
                 designerId: desId,
                 collectionId: colId,
-                selectedColorIds: product.colors ? product.colors.map((c: any) => c.id) : [],
+                selectedColorIds: product.colors ? product.colors.map((c: any) => c.id ?? c.Id) : [],
                 selectedMaterialIds: Array.isArray(materialIds) ? materialIds : [],
-                selectedRoomIds: Array.isArray(roomIds) ? roomIds : []
+                selectedRoomIds: roomIdsFiltered
               });
 
               // Şəkilləri yüklə
@@ -196,7 +200,15 @@ export default function EditProductPage() {
     setLoading(true);
     try {
       const token = localStorage.getItem('accessToken') || '';
-      const payload = { ...formData, colorIds: formData.selectedColorIds, materialIds: formData.selectedMaterialIds, roomIds: formData.selectedRoomIds, tagIds: [], specifications: [] };
+      const payload = {
+        ...formData,
+        colorIds: formData.selectedColorIds,
+        materialIds: formData.selectedMaterialIds,
+        suitableRooms: formData.selectedRoomIds.map((id) => ({ id })),
+        roomIds: formData.selectedRoomIds,
+        tagIds: [],
+        specifications: []
+      };
       await updateProduct(productId, payload, token);
 
       if (newFiles.length > 0) {

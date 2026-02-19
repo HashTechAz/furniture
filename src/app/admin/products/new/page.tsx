@@ -127,7 +127,15 @@ export default function CreateProductPage() {
     try {
       const token = localStorage.getItem('accessToken') || '';
 
-      const payload = { ...formData, colorIds: formData.selectedColorIds, materialIds: formData.selectedMaterialIds, roomIds: formData.selectedRoomIds, tagIds: [], specifications: [] };
+      const payload = {
+        ...formData,
+        colorIds: formData.selectedColorIds,
+        materialIds: formData.selectedMaterialIds,
+        suitableRooms: formData.selectedRoomIds.map((id) => ({ id })),
+        roomIds: formData.selectedRoomIds,
+        tagIds: [],
+        specifications: []
+      };
       const createdProduct: any = await createProduct(payload, token);
 
       if (selectedFiles.length > 0 && createdProduct?.id) {

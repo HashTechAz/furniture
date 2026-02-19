@@ -63,7 +63,7 @@ export default function NewVariantPage() {
     setLoading(true);
     try {
       const token = localStorage.getItem('accessToken') || '';
-      const payload: CreateProductVariantPayload = {
+      const payload: CreateProductVariantPayload & { suitableRooms?: { id: number }[] } = {
         name: name.trim() || baseProduct.title,
         sku: sku.trim() || `variant-${baseProductId}-${colorId}`,
         description: baseProduct.description || '',
@@ -80,6 +80,7 @@ export default function NewVariantPage() {
         colorIds: [colorId],
         materialIds: [],
         roomIds: selectedRoomIds,
+        suitableRooms: selectedRoomIds.map((id) => ({ id })),
         tagIds: [],
         specifications: [],
       };

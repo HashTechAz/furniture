@@ -42,7 +42,7 @@ const ProductPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const productsPerPage = 12;
 
-  // İlk məhsulları və rəngləri yüklə (kateqoriya, otaq, sıralama dəyişəndə)
+  // Otaq səhifəsində (roomsId varsa) kateqoriyaya klikləyəndə: həm roomId həm categoryId göndərilir — həmin otağa + kateqoriyaya aid məhsullar.
   useEffect(() => {
     const fetchData = async () => {
       try {

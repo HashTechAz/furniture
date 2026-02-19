@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./Header.module.css";
@@ -41,6 +41,8 @@ const Header: React.FC = () => {
 
   const lastScrollY = useRef(0);
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const searchString = searchParams.toString();
 
   // --- API DATA FETCHING ---
   useEffect(() => {
@@ -99,14 +101,14 @@ const Header: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isAtTop, isMobileMenuOpen, isSearchOpen, mounted]);
 
-  // --- ROUTE CHANGE HANDLING ---
+  // --- ROUTE CHANGE HANDLING (pathname və query dəyişəndə menyuları bağla) ---
   useEffect(() => {
     setIsSeriesOpen(false);
     setIsProductsOpen(false);
     setIsInspirationOpen(false);
     setIsMobileMenuOpen(false);
     setActiveMobileSubMenu(null);
-  }, [pathname]);
+  }, [pathname, searchString]);
 
   // --- NO SCROLL ON BODY WHEN MENU OPEN ---
   useEffect(() => {
