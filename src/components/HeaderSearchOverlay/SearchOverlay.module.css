@@ -74,9 +74,8 @@
 }
 
 .searchWrapper p {
-  padding: 40px;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 /* --- RESPONSIVE STYLES --- */
@@ -108,9 +107,6 @@
     font-size: 1.5rem;
   }
 
-  .searchWrapper p {
-    padding: 30px 20px;
-  }
 }
 
 /* --- YENİ: RESULT LIST STYLES (Existing kodların altına yapışdır) --- */
@@ -132,63 +128,14 @@
 }
 
 .resultsList {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
   margin-top: 20px;
 }
 
-.resultItem {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  text-decoration: none;
-  padding: 10px;
-  border-radius: 8px;
-  transition: background-color 0.2s;
-}
-
-.resultItem:hover {
-  background-color: #f9f9f9;
-}
-
-.imageWrapper {
-  width: 60px;
-  height: 60px;
-  position: relative;
-  background-color: #eee;
-  border-radius: 4px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.productImage {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-}
-
-.productInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.productName {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-}
-
-.productCategory {
-  font-size: 13px;
-  color: #888;
-}
-
-.productPrice {
-  font-size: 14px;
-  font-weight: 500;
-  color: #000;
+.resultCardWrap {
+  min-width: 0;
 }
 
 .viewAllButton {
@@ -223,5 +170,9 @@
 @media (max-width: 768px) {
   .resultsContainer {
     padding: 20px;
+  }
+
+  .resultsList {
+    grid-template-columns: 1fr;
   }
 }

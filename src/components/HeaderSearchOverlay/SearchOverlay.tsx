@@ -2,9 +2,8 @@
 
 import { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import Image from "next/image";
 import { getProducts, FrontendProduct } from "@/lib/products";
+import ProductCard from "@/components/ProductCard/ProductCard";
 import styles from "./SearchOverlay.module.css";
 
 interface SearchOverlayProps {
@@ -74,7 +73,7 @@ const SearchOverlay = ({ isOpen, onClose }: SearchOverlayProps) => {
       try {
         // Backend-dən məhsulları gətiririk (Cache-siz)
         const data = await getProducts(
-          { searchTerm: val, pageSize: 5 }, 
+          { searchTerm: val, pageSize: 12 },
           { skipCache: true }
         );
         setResults(data);
@@ -86,11 +85,11 @@ const SearchOverlay = ({ isOpen, onClose }: SearchOverlayProps) => {
     }, 500); // 500ms gözləmə
   };
 
-  // Enter basanda "Hamısına bax" səhifəsinə get
+  // Enter basanda məhsul səhifəsinə axtarış ilə get
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && query.trim().length > 0) {
       onClose();
-      router.push(`/productseries?search=${encodeURIComponent(query)}`);
+      router.push(`/product?search=${encodeURIComponent(query.trim())}`);
     }
   };
 
@@ -129,38 +128,29 @@ const SearchOverlay = ({ isOpen, onClose }: SearchOverlayProps) => {
              <p className={styles.statusText}>Nəticə tapılmadı.</p>
           )}
 
-          {/* 3. Nəticələr var */}
+          {/* 3. Nəticələr var – ProductCard ilə */}
           {!loading && results.length > 0 && (
             <div className={styles.resultsList}>
               {results.map((product) => (
-                <Link 
-                  href={`/product/${product.id}`} 
-                  key={product.id} 
-                  className={styles.resultItem}
-                  onClick={onClose}
-                >
-                  <div className={styles.imageWrapper}>
-                    <Image 
-                      src={product.mainImage} 
-                      alt={product.title} 
-                      width={60} 
-                      height={60} 
-                      className={styles.productImage} 
-                    />
-                  </div>
-                  <div className={styles.productInfo}>
-                    <span className={styles.productName}>{product.title}</span>
-                    <span className={styles.productCategory}>{product.position}</span>
-                    <span className={styles.productPrice}>{product.price}</span>
-                  </div>
-                </Link>
+                <div key={product.id} className={styles.resultCardWrap} onClick={onClose}>
+                  <ProductCard
+                    id={product.id}
+                    imageSrc={product.imageSrc}
+                    imageSrcHover={product.imageSrcHover}
+                    title={product.title}
+                    color={product.color}
+                    measurements={product.measurements}
+                    position={product.position}
+                    price={product.price}
+                  />
+                </div>
               ))}
-              
-              <button 
+              <button
+                type="button"
                 className={styles.viewAllButton}
                 onClick={() => {
                   onClose();
-                  router.push(`/productseries?search=${encodeURIComponent(query)}`);
+                  router.push(`/product?search=${encodeURIComponent(query)}`);
                 }}
               >
                 Bütün nəticələrə bax ({query}) &rarr;

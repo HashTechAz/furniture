@@ -31,7 +31,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16px; /* Şəkillə yazı arasında məsafə */
+  margin-bottom: 10px;
 }
 
 .image {
@@ -75,15 +75,17 @@
 .cardInfo {
   display: flex;
   flex-direction: column;
-  padding: 0; /* İçəridəki boşluqları sildik ki, kənara yapışmasın */
+  gap: 5px;
+  padding: 0;
 }
 
 .cardTitle {
   font-size: 15px;
   font-weight: 700;
-  margin: 0 0 8px 0;
+  margin: 0;
   color: #000;
   letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 
 /* Detallar (Rəng, ölçü, mövqe) */
@@ -91,18 +93,18 @@
 .cardMeasurements,
 .cardPosition {
   font-size: 13px;
-  line-height: 1.6;
+  line-height: 1.35;
   margin: 0;
-  color: #555; /* Bir az tündləşdirdik ki, oxunaqlı olsun */
+  color: #555;
   font-weight: 400;
 }
 
 /* Qiymət hissəsi */
 .cardPrice {
   font-size: 13px;
-  margin-top: 12px;
+  margin: 4px 0 0 0;
   color: #000;
-  font-weight: 700; /* Şəkildəki kimi qalın şrift */
+  font-weight: 700;
 }
 
 /* Responsive düzəlişlər */

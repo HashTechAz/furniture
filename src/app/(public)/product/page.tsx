@@ -32,6 +32,7 @@ const ProductPage = () => {
     const n = parseInt(v, 10);
     return Number.isNaN(n) ? null : n;
   }, [searchParams]);
+  const searchFromUrl = searchParams.get('search')?.trim() || null;
 
   const [allProducts, setAllProducts] = useState<FrontendProduct[]>([]);
   const [displayedProducts, setDisplayedProducts] = useState<FrontendProduct[]>([]);
@@ -62,6 +63,7 @@ const ProductPage = () => {
             pageNumber: 1,
             pageSize: productsPerPage,
             sortBy,
+            ...(searchFromUrl && { searchTerm: searchFromUrl }),
             ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
             ...(roomsIdFromUrl != null && { roomId: roomsIdFromUrl }),
             ...(selectedMaterialId != null && { materialIds: [selectedMaterialId] }),
@@ -98,7 +100,7 @@ const ProductPage = () => {
       }
     };
     fetchData();
-  }, [selectedCategoryId, sortBy, roomsIdFromUrl, selectedMaterialId, selectedDepthRange, selectedCollectionId]);
+  }, [selectedCategoryId, sortBy, roomsIdFromUrl, searchFromUrl, selectedMaterialId, selectedDepthRange, selectedCollectionId]);
 
   // Daha çox məhsul yüklə
   const loadMoreProducts = async () => {
@@ -111,6 +113,7 @@ const ProductPage = () => {
         pageNumber: nextPage,
         pageSize: productsPerPage,
         sortBy,
+        ...(searchFromUrl && { searchTerm: searchFromUrl }),
         ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
         ...(roomsIdFromUrl != null && { roomId: roomsIdFromUrl }),
         ...(selectedMaterialId != null && { materialIds: [selectedMaterialId] }),
