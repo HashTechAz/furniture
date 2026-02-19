@@ -29,6 +29,7 @@ export interface ProductQueryParams {
   colorIds?: number[];
   productGroupId?: number; // Eyni qrupdakı variantları gətirmək üçün (rəng variantları)
   roomId?: number; // Otağa görə məhsulları filtrlə (Series / Rooms)
+  materialIds?: number[]; // Materiala görə filtrlə
   minPrice?: number;
   maxPrice?: number;
   sortBy?: string;
@@ -272,7 +273,8 @@ export async function getProducts(
     if (params.sortBy) queryParams.append("sortBy", params.sortBy);
     if (params.colorIds && params.colorIds.length > 0)
       params.colorIds.forEach(id => queryParams.append("colorIds", id.toString()));
-    // Digər parametrlər lazım olsa əlavə et
+    if (params.materialIds && params.materialIds.length > 0)
+      params.materialIds.forEach(id => queryParams.append("materialIds", id.toString()));
   }
 
   const endpoint = `/api/Products?${queryParams.toString()}`;

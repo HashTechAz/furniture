@@ -1,8 +1,8 @@
 'use client'; 
 import React, { useState, useEffect } from 'react';
 import styles from './DropdownFilters.module.css';
-// YENİ: API-dən rəngləri gətirmək üçün
 import { getColors, type BackendColor } from '@/lib/colors';
+import type { Material } from '@/lib/materials';
 
 interface DropdownProps {
   label?: string; 
@@ -54,6 +54,62 @@ const Dropdown = ({ label, options, initialSelected }: DropdownProps) => {
             ))
           ) : (
             <li style={{padding: '10px', color: '#999'}}>Yüklənir...</li>
+          )}
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+const MaterialDropdown = ({
+  materials,
+  selectedMaterialId,
+  onSelect,
+}: {
+  materials: Material[];
+  selectedMaterialId: number | null;
+  onSelect: (id: number | null) => void;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selectedMaterial = materials.find((m) => m.id === selectedMaterialId);
+  const displayLabel = selectedMaterial ? `Material - ${selectedMaterial.name}` : 'Material';
+  return (
+    <div className={styles.dropdown}>
+      <button type="button" className={styles.dropdownButton} onClick={() => setIsOpen(!isOpen)}>
+        <span>{displayLabel}</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}>
+          <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      <div className={`${styles.dropdownMenu} ${isOpen ? styles.menuOpen : ''}`}>
+        <ul>
+          <li>
+            <button
+              type="button"
+              style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 12px', font: 'inherit' }}
+              className={selectedMaterialId === null ? styles.sortOption : ''}
+              data-selected={selectedMaterialId === null ? 'true' : undefined}
+              onClick={() => { onSelect(null); setIsOpen(false); }}
+            >
+              Hamısı
+            </button>
+          </li>
+          {materials.length > 0 ? (
+            materials.map((m) => (
+              <li key={m.id}>
+                <button
+                  type="button"
+                  style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 12px', font: 'inherit' }}
+                  className={selectedMaterialId === m.id ? styles.sortOption : ''}
+                  data-selected={selectedMaterialId === m.id ? 'true' : undefined}
+                  onClick={() => { onSelect(m.id); setIsOpen(false); }}
+                >
+                  {m.name}
+                </button>
+              </li>
+            ))
+          ) : (
+            <li style={{ padding: '10px', color: '#999' }}>Yüklənir...</li>
           )}
         </ul>
       </div>
@@ -153,22 +209,34 @@ interface DropdownFiltersProps {
   onColorSelect?: (colorName: string) => void;
   selectedColor?: string;
   colors?: BackendColor[];
+  materials?: Material[];
+  selectedMaterialId?: number | null;
+  onMaterialSelect?: (id: number | null) => void;
   sortBy?: string;
   onSortChange?: (sortBy: string) => void;
 }
 
-const DropdownFilters = ({ onColorSelect, selectedColor = '', colors = [], sortBy = 'newest', onSortChange }: DropdownFiltersProps) => {
+const DropdownFilters = ({
+  onColorSelect,
+  selectedColor = '',
+  colors = [],
+  materials = [],
+  selectedMaterialId = null,
+  onMaterialSelect,
+  sortBy = 'newest',
+  onSortChange,
+}: DropdownFiltersProps) => {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [colourOptions, setColourOptions] = useState<BackendColor[]>(colors);
 
   const [selectedFilters, setSelectedFilters] = useState({
-    dispatch: "",
+    material: selectedMaterialId,
     depth: "",
     colour: selectedColor,
     series: ""
   });
   const [openSections, setOpenSections] = useState({
-    dispatch: false,
+    material: false,
     depth: false,
     colour: false,
     series: false
@@ -187,9 +255,12 @@ const DropdownFilters = ({ onColorSelect, selectedColor = '', colors = [], sortB
     }));
   }, [selectedColor]);
 
-  const dispatchOptions = ["In stock", "1-2 weeks", "3-4 weeks"];
   const depthOptions = ["30 cm", "38 cm", "47 cm"];
   const seriesOptions = ["Montana System", "Montana Free", "Panton Wire"];
+
+  useEffect(() => {
+    setSelectedFilters((prev) => ({ ...prev, material: selectedMaterialId }));
+  }, [selectedMaterialId]);
 
   // Backend sortBy: newest | price_asc | price_desc | name_asc | name_desc
   const SORT_OPTIONS = [
@@ -200,17 +271,14 @@ const DropdownFilters = ({ onColorSelect, selectedColor = '', colors = [], sortB
     { label: 'Bahadan Ucuza', value: 'price_desc' },
   ] as const;
 
-  const handleFilterSelect = (category: keyof typeof selectedFilters, value: string) => {
-    const newValue = selectedFilters[category] === value ? "" : value;
-    
-    setSelectedFilters(prev => ({
-      ...prev,
-      [category]: newValue
-    }));
-
-    // Xüsusi rəng seçimi üçün callback çağır
-    if (category === 'colour' && onColorSelect) {
-      onColorSelect(newValue);
+  const handleFilterSelect = (category: keyof typeof selectedFilters, value: string | number | null) => {
+    const newValue = selectedFilters[category] === value ? (category === 'material' ? null : "") : value;
+    setSelectedFilters(prev => ({ ...prev, [category]: newValue }));
+    if (category === 'colour' && onColorSelect && typeof value === 'string') {
+      onColorSelect(value);
+    }
+    if (category === 'material' && onMaterialSelect) {
+      onMaterialSelect(typeof newValue === 'number' ? newValue : null);
     }
   };
 
@@ -232,11 +300,13 @@ const DropdownFilters = ({ onColorSelect, selectedColor = '', colors = [], sortB
   return (
     <div className={styles.filtersWrapper}>
       <div className={styles.leftFilters}>
-        <Dropdown label="Dispatch time" options={dispatchOptions} />
+        <MaterialDropdown
+          materials={materials}
+          selectedMaterialId={selectedMaterialId ?? null}
+          onSelect={(id) => onMaterialSelect?.(id)}
+        />
         <Dropdown label="Depth" options={depthOptions} />
-        
         <ColourDropdown colors={colourOptions} selectedName={selectedFilters.colour} onSelect={(name) => handleFilterSelect('colour', name)} />
-        
         <Dropdown label="Product series" options={seriesOptions} />
       </div>
       
@@ -263,23 +333,33 @@ const DropdownFilters = ({ onColorSelect, selectedColor = '', colors = [], sortB
           </div>
 
           <div className={styles.mobileFilterSection}>
-            <h4 
-              className={openSections.dispatch ? styles.open : ''}
-              onClick={() => toggleSection('dispatch')}
+            <h4
+              className={openSections.material ? styles.open : ''}
+              onClick={() => toggleSection('material')}
             >
-              Dispatch time
+              Material
               <span className={styles.arrow}>▼</span>
             </h4>
-            <div className={`${styles.mobileFilterOptions} ${openSections.dispatch ? styles.open : ''}`}>
-              {dispatchOptions.map((option, index) => (
-                <div
-                  key={index}
-                  className={`${styles.mobileFilterOption} ${selectedFilters.dispatch === option ? styles.selected : ''}`}
-                  onClick={() => handleFilterSelect('dispatch', option)}
-                >
-                  {option}
-                </div>
-              ))}
+            <div className={`${styles.mobileFilterOptions} ${openSections.material ? styles.open : ''}`}>
+              <div
+                className={`${styles.mobileFilterOption} ${selectedFilters.material === null || selectedFilters.material === '' ? styles.selected : ''}`}
+                onClick={() => handleFilterSelect('material', null)}
+              >
+                Hamısı
+              </div>
+              {materials.length > 0 ? (
+                materials.map((m) => (
+                  <div
+                    key={m.id}
+                    className={`${styles.mobileFilterOption} ${selectedFilters.material === m.id ? styles.selected : ''}`}
+                    onClick={() => handleFilterSelect('material', m.id)}
+                  >
+                    {m.name}
+                  </div>
+                ))
+              ) : (
+                <div style={{ padding: '10px', color: '#999' }}>Yüklənir...</div>
+              )}
             </div>
           </div>
 

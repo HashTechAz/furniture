@@ -9,6 +9,7 @@ import ProductGrid from './components/ProductGrid/ProductGrid';
 import ProductAbout from './components/ProductAbout/ProductAbout';
 import { getProducts, type FrontendProduct } from '@/lib/products';
 import { getColors, type BackendColor } from '@/lib/colors';
+import { getMaterials, type Material } from '@/lib/materials';
 import styles from './page.module.css';
 
 export const dynamic = 'force-dynamic';
@@ -36,8 +37,10 @@ const ProductPage = () => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const [selectedMaterialId, setSelectedMaterialId] = useState<number | null>(null);
   const [sortBy, setSortBy] = useState<string>('newest');
   const [colors, setColors] = useState<BackendColor[]>([]);
+  const [materials, setMaterials] = useState<Material[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const productsPerPage = 12;
@@ -49,20 +52,23 @@ const ProductPage = () => {
         setLoading(true);
         setCurrentPage(1);
 
-        const [productsData, colorsData] = await Promise.all([
+        const [productsData, colorsData, materialsData] = await Promise.all([
           getProducts({
             pageNumber: 1,
             pageSize: productsPerPage,
             sortBy,
             ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
             ...(roomsIdFromUrl != null && { roomId: roomsIdFromUrl }),
+            ...(selectedMaterialId != null && { materialIds: [selectedMaterialId] }),
           }),
-          getColors()
+          getColors(),
+          getMaterials()
         ]);
 
         setAllProducts(productsData);
         setDisplayedProducts(productsData);
         setColors(Array.isArray(colorsData) ? colorsData : []);
+        setMaterials(Array.isArray(materialsData) ? materialsData : []);
 
         if (productsData.length < productsPerPage) {
           setHasMore(false);
@@ -78,7 +84,7 @@ const ProductPage = () => {
       }
     };
     fetchData();
-  }, [selectedCategoryId, sortBy, roomsIdFromUrl]);
+  }, [selectedCategoryId, sortBy, roomsIdFromUrl, selectedMaterialId]);
 
   // Daha çox məhsul yüklə
   const loadMoreProducts = async () => {
@@ -93,6 +99,7 @@ const ProductPage = () => {
         sortBy,
         ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
         ...(roomsIdFromUrl != null && { roomId: roomsIdFromUrl }),
+        ...(selectedMaterialId != null && { materialIds: [selectedMaterialId] }),
       });
       
       if (newProducts.length === 0) {
@@ -158,6 +165,9 @@ const ProductPage = () => {
         onColorSelect={handleColorSelect}
         selectedColor={selectedColor}
         colors={colors}
+        materials={materials}
+        selectedMaterialId={selectedMaterialId}
+        onMaterialSelect={setSelectedMaterialId}
         sortBy={sortBy}
         onSortChange={setSortBy}
       />
