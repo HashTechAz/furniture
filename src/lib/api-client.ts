@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:7042';
 // Yerli backend self-signed sertifikat istifadə edəndə TLS xətası olmasın deyə
 // yalnız development-da .env faylında NODE_TLS_REJECT_UNAUTHORIZED=0 təyin edin.
 // Node bu halda xəbərdarlıq göstərəcək; production-da heç vaxt istifadə etmeyin.
