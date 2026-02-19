@@ -1,12 +1,16 @@
 import React from 'react';
 import styles from './ProductHero.module.css';
 
-const ProductHero = () => {
+interface ProductHeroProps {
+  title?: string;
+}
+
+const ProductHero = ({ title = 'All Products' }: ProductHeroProps) => {
   return (
     <section className={styles.heroSection}>
       <div className={styles.content}>
         <h1 className={styles.title}>
-          All Products
+          {title}
         </h1>
       </div>
     </section>

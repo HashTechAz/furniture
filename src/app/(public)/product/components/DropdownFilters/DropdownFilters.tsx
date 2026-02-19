@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './DropdownFilters.module.css';
 import { getColors, type BackendColor } from '@/lib/colors';
 import type { Material } from '@/lib/materials';
+import type { BackendCollection } from '@/lib/collections';
 
 interface DropdownProps {
   label?: string; 
@@ -85,7 +86,7 @@ const DepthDropdown = ({
         ? selectedDepthRange === null
         : selectedDepthRange !== null && opt.value?.min === selectedDepthRange.min && opt.value?.max === selectedDepthRange.max
   ) ?? DEPTH_RANGE_OPTIONS[0];
-  const displayLabel = current?.label ?? 'Depth';
+  const displayLabel = selectedDepthRange === null ? 'Derinlik' : (current?.label ?? 'Derinlik');
   return (
     <div className={styles.dropdown}>
       <button type="button" className={styles.dropdownButton} onClick={() => setIsOpen(!isOpen)}>
@@ -100,7 +101,7 @@ const DepthDropdown = ({
             <li key={opt.label}>
               <button
                 type="button"
-                style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 12px', font: 'inherit' }}
+                style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 12px', fontSize: 14, fontWeight: 500 }}
                 className={opt.value === null ? (selectedDepthRange === null ? styles.sortOption : '') : (selectedDepthRange?.min === opt.value?.min && selectedDepthRange?.max === opt.value?.max ? styles.sortOption : '')}
                 data-selected={
                   (opt.value === null && selectedDepthRange === null) ||
@@ -145,7 +146,7 @@ const MaterialDropdown = ({
           <li>
             <button
               type="button"
-              style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 12px', font: 'inherit' }}
+              style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 12px', fontSize: 14, fontWeight: 500 }}
               className={selectedMaterialId === null ? styles.sortOption : ''}
               data-selected={selectedMaterialId === null ? 'true' : undefined}
               onClick={() => { onSelect(null); setIsOpen(false); }}
@@ -158,12 +159,68 @@ const MaterialDropdown = ({
               <li key={m.id}>
                 <button
                   type="button"
-                  style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 12px', font: 'inherit' }}
+                  style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 12px', fontSize: 14, fontWeight: 500 }}
                   className={selectedMaterialId === m.id ? styles.sortOption : ''}
                   data-selected={selectedMaterialId === m.id ? 'true' : undefined}
                   onClick={() => { onSelect(m.id); setIsOpen(false); }}
                 >
                   {m.name}
+                </button>
+              </li>
+            ))
+          ) : (
+            <li style={{ padding: '10px', color: '#999' }}>Yüklənir...</li>
+          )}
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+const CollectionDropdown = ({
+  collections,
+  selectedCollectionId,
+  onSelect,
+}: {
+  collections: BackendCollection[];
+  selectedCollectionId: number | null;
+  onSelect: (id: number | null) => void;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selectedCollection = collections.find((c) => c.id === selectedCollectionId);
+  const displayLabel = selectedCollection ? `Kolleksiya - ${selectedCollection.name}` : 'Kolleksiya';
+  return (
+    <div className={styles.dropdown}>
+      <button type="button" className={styles.dropdownButton} onClick={() => setIsOpen(!isOpen)}>
+        <span>{displayLabel}</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}>
+          <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      <div className={`${styles.dropdownMenu} ${isOpen ? styles.menuOpen : ''}`}>
+        <ul>
+          <li>
+            <button
+              type="button"
+              style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 12px', fontSize: 14, fontWeight: 500 }}
+              className={selectedCollectionId === null ? styles.sortOption : ''}
+              data-selected={selectedCollectionId === null ? 'true' : undefined}
+              onClick={() => { onSelect(null); setIsOpen(false); }}
+            >
+              Hamısı
+            </button>
+          </li>
+          {collections.length > 0 ? (
+            collections.map((c) => (
+              <li key={c.id}>
+                <button
+                  type="button"
+                  style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 12px', fontSize: 14, fontWeight: 500 }}
+                  className={selectedCollectionId === c.id ? styles.sortOption : ''}
+                  data-selected={selectedCollectionId === c.id ? 'true' : undefined}
+                  onClick={() => { onSelect(c.id); setIsOpen(false); }}
+                >
+                  {c.name}
                 </button>
               </li>
             ))
@@ -248,7 +305,7 @@ const SortDropdown = ({
                 type="button"
                 data-selected={opt.value === value ? 'true' : undefined}
                 className={styles.sortOption}
-                style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 12px', font: 'inherit' }}
+                style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 12px', fontSize: 14, fontWeight: 500 }}
                 onClick={() => {
                   onChange(opt.value);
                   setIsOpen(false);
@@ -273,6 +330,9 @@ interface DropdownFiltersProps {
   onMaterialSelect?: (id: number | null) => void;
   selectedDepthRange?: DepthRange;
   onDepthRangeSelect?: (range: DepthRange) => void;
+  collections?: BackendCollection[];
+  selectedCollectionId?: number | null;
+  onCollectionSelect?: (id: number | null) => void;
   sortBy?: string;
   onSortChange?: (sortBy: string) => void;
 }
@@ -286,6 +346,9 @@ const DropdownFilters = ({
   onMaterialSelect,
   selectedDepthRange = null,
   onDepthRangeSelect,
+  collections = [],
+  selectedCollectionId = null,
+  onCollectionSelect,
   sortBy = 'newest',
   onSortChange,
 }: DropdownFiltersProps) => {
@@ -296,18 +359,18 @@ const DropdownFilters = ({
     material: number | null;
     depth: DepthRange;
     colour: string;
-    series: string;
+    collection: number | null;
   }>({
     material: selectedMaterialId,
     depth: selectedDepthRange,
     colour: selectedColor,
-    series: ""
+    collection: selectedCollectionId
   });
   const [openSections, setOpenSections] = useState({
     material: false,
     depth: false,
     colour: false,
-    series: false
+    collection: false
   });
 
   // Xarici rənglər dəyişəndə yenilə
@@ -323,7 +386,9 @@ const DropdownFilters = ({
     }));
   }, [selectedColor]);
 
-  const seriesOptions = ["Montana System", "Montana Free", "Panton Wire"];
+  useEffect(() => {
+    setSelectedFilters((prev) => ({ ...prev, collection: selectedCollectionId }));
+  }, [selectedCollectionId]);
 
   useEffect(() => {
     setSelectedFilters((prev) => ({ ...prev, depth: selectedDepthRange }));
@@ -351,9 +416,10 @@ const DropdownFilters = ({
   const handleFilterSelect = (category: keyof typeof selectedFilters, value: string | number | DepthRange) => {
     const isDepth = category === 'depth';
     const isMaterial = category === 'material';
+    const isCollection = category === 'collection';
     const current = selectedFilters[category];
     const same = isDepth ? isSameDepth(current as DepthRange, value as DepthRange) : current === value;
-    const newValue = same ? (isMaterial ? null : isDepth ? null : '') : value;
+    const newValue = same ? (isMaterial || isCollection ? null : isDepth ? null : '') : value;
     setSelectedFilters(prev => ({ ...prev, [category]: newValue }));
     if (category === 'colour' && onColorSelect && typeof value === 'string') {
       onColorSelect(value);
@@ -363,6 +429,9 @@ const DropdownFilters = ({
     }
     if (category === 'depth' && onDepthRangeSelect) {
       onDepthRangeSelect(newValue as DepthRange);
+    }
+    if (category === 'collection' && onCollectionSelect) {
+      onCollectionSelect(typeof newValue === 'number' ? newValue : null);
     }
   };
 
@@ -394,7 +463,11 @@ const DropdownFilters = ({
           onSelect={(range) => onDepthRangeSelect?.(range)}
         />
         <ColourDropdown colors={colourOptions} selectedName={selectedFilters.colour} onSelect={(name) => handleFilterSelect('colour', name)} />
-        <Dropdown label="Product series" options={seriesOptions} />
+        <CollectionDropdown
+          collections={collections}
+          selectedCollectionId={selectedCollectionId ?? null}
+          onSelect={(id) => onCollectionSelect?.(id)}
+        />
       </div>
       
       <div className={styles.rightFilters}>
@@ -506,23 +579,33 @@ const DropdownFilters = ({
           </div>
 
           <div className={styles.mobileFilterSection}>
-            <h4 
-              className={openSections.series ? styles.open : ''}
-              onClick={() => toggleSection('series')}
+            <h4
+              className={openSections.collection ? styles.open : ''}
+              onClick={() => toggleSection('collection')}
             >
-              Product series
+              Kolleksiya
               <span className={styles.arrow}>▼</span>
             </h4>
-            <div className={`${styles.mobileFilterOptions} ${openSections.series ? styles.open : ''}`}>
-              {seriesOptions.map((option, index) => (
-                <div
-                  key={index}
-                  className={`${styles.mobileFilterOption} ${selectedFilters.series === option ? styles.selected : ''}`}
-                  onClick={() => handleFilterSelect('series', option)}
-                >
-                  {option}
-                </div>
-              ))}
+            <div className={`${styles.mobileFilterOptions} ${openSections.collection ? styles.open : ''}`}>
+              <div
+                className={`${styles.mobileFilterOption} ${selectedFilters.collection === null ? styles.selected : ''}`}
+                onClick={() => handleFilterSelect('collection', null)}
+              >
+                Hamısı
+              </div>
+              {collections.length > 0 ? (
+                collections.map((c) => (
+                  <div
+                    key={c.id}
+                    className={`${styles.mobileFilterOption} ${selectedFilters.collection === c.id ? styles.selected : ''}`}
+                    onClick={() => handleFilterSelect('collection', c.id)}
+                  >
+                    {c.name}
+                  </div>
+                ))
+              ) : (
+                <div style={{ padding: '10px', color: '#999' }}>Yüklənir...</div>
+              )}
             </div>
           </div>
 

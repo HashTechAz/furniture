@@ -264,6 +264,8 @@ export async function getProducts(
     if (params.searchTerm) queryParams.append("searchTerm", params.searchTerm);
     if (params.categoryId != null)
       queryParams.append("categoryId", params.categoryId.toString());
+    if (params.collectionId != null)
+      queryParams.append("collectionId", params.collectionId.toString());
     if (params.productGroupId != null)
       queryParams.append("productGroupId", params.productGroupId.toString());
     if (params.roomId != null)

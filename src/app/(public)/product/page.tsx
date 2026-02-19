@@ -10,6 +10,8 @@ import ProductAbout from './components/ProductAbout/ProductAbout';
 import { getProducts, type FrontendProduct } from '@/lib/products';
 import { getColors, type BackendColor } from '@/lib/colors';
 import { getMaterials, type Material } from '@/lib/materials';
+import { getCollections, type BackendCollection } from '@/lib/collections';
+import { getCategories, type Category } from '@/lib/categories';
 import styles from './page.module.css';
 
 export const dynamic = 'force-dynamic';
@@ -39,9 +41,12 @@ const ProductPage = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const [selectedMaterialId, setSelectedMaterialId] = useState<number | null>(null);
   const [selectedDepthRange, setSelectedDepthRange] = useState<{ min: number; max?: number } | null>(null);
+  const [selectedCollectionId, setSelectedCollectionId] = useState<number | null>(null);
   const [sortBy, setSortBy] = useState<string>('newest');
   const [colors, setColors] = useState<BackendColor[]>([]);
   const [materials, setMaterials] = useState<Material[]>([]);
+  const [collections, setCollections] = useState<BackendCollection[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const productsPerPage = 12;
@@ -52,7 +57,7 @@ const ProductPage = () => {
         setLoading(true);
         setCurrentPage(1);
 
-        const [productsData, colorsData, materialsData] = await Promise.all([
+        const [productsData, colorsData, materialsData, collectionsData, categoriesData] = await Promise.all([
           getProducts({
             pageNumber: 1,
             pageSize: productsPerPage,
@@ -64,15 +69,20 @@ const ProductPage = () => {
               minDepth: selectedDepthRange.min,
               ...(selectedDepthRange.max != null && { maxDepth: selectedDepthRange.max }),
             }),
+            ...(selectedCollectionId != null && { collectionId: selectedCollectionId }),
           }),
           getColors(),
-          getMaterials()
+          getMaterials(),
+          getCollections(),
+          getCategories()
         ]);
 
         setAllProducts(productsData);
         setDisplayedProducts(productsData);
         setColors(Array.isArray(colorsData) ? colorsData : []);
         setMaterials(Array.isArray(materialsData) ? materialsData : []);
+        setCollections(Array.isArray(collectionsData) ? collectionsData : []);
+        setCategories(Array.isArray(categoriesData) ? categoriesData : []);
 
         if (productsData.length < productsPerPage) {
           setHasMore(false);
@@ -88,7 +98,7 @@ const ProductPage = () => {
       }
     };
     fetchData();
-  }, [selectedCategoryId, sortBy, roomsIdFromUrl, selectedMaterialId, selectedDepthRange]);
+  }, [selectedCategoryId, sortBy, roomsIdFromUrl, selectedMaterialId, selectedDepthRange, selectedCollectionId]);
 
   // Daha çox məhsul yüklə
   const loadMoreProducts = async () => {
@@ -108,6 +118,7 @@ const ProductPage = () => {
           minDepth: selectedDepthRange.min,
           ...(selectedDepthRange.max != null && { maxDepth: selectedDepthRange.max }),
         }),
+        ...(selectedCollectionId != null && { collectionId: selectedCollectionId }),
       });
       
       if (newProducts.length === 0) {
@@ -162,9 +173,13 @@ const ProductPage = () => {
     setSelectedColor(prev => prev === colorName ? '' : colorName);
   };
 
+  const heroTitle = selectedCategoryId == null
+    ? 'All Products'
+    : (categories.find((c) => c.id === selectedCategoryId)?.name ?? 'All Products');
+
   return (
     <main>
-      <ProductHero />
+      <ProductHero title={heroTitle} />
       <CategoryFilters
         selectedCategoryId={selectedCategoryId}
         onCategoryChange={setSelectedCategoryId}
@@ -178,6 +193,9 @@ const ProductPage = () => {
         onMaterialSelect={setSelectedMaterialId}
         selectedDepthRange={selectedDepthRange}
         onDepthRangeSelect={setSelectedDepthRange}
+        collections={collections}
+        selectedCollectionId={selectedCollectionId}
+        onCollectionSelect={setSelectedCollectionId}
         sortBy={sortBy}
         onSortChange={setSortBy}
       />
