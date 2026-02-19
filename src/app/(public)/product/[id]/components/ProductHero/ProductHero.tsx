@@ -278,6 +278,19 @@ const ProductHero = ({ product }: ProductHeroProps) => {
   // Gallery Modal State
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
 
+  // Lens zoom: şəkil sabit, lens siçanla hərəkət edir
+  const imageWrapRef = React.useRef<HTMLDivElement>(null);
+  const [lensData, setLensData] = useState<{
+    lensX: number;
+    lensY: number;
+    innerLeft: number;
+    innerTop: number;
+    innerWidth: number;
+    innerHeight: number;
+  } | null>(null);
+  const LENS_SIZE = 140;
+  const ZOOM_FACTOR = 2;
+
   // Məhsulun əsas şəkli
   const [heroImage, setHeroImage] = useState(product.mainImage);
 
@@ -326,6 +339,41 @@ const ProductHero = ({ product }: ProductHeroProps) => {
     },
     [router]
   );
+
+  // Şəkil üzərində siçan — lens mövqeyi (şəkil sabit, zoom lens içində hərəkət edir)
+  const handleImageMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const wrap = imageWrapRef.current;
+      if (!wrap) return;
+      const img = wrap.querySelector("img");
+      if (!img) return;
+      const rect = wrap.getBoundingClientRect();
+      const cx = e.clientX - rect.left;
+      const cy = e.clientY - rect.top;
+      const nw = (img as HTMLImageElement).naturalWidth || rect.width;
+      const nh = (img as HTMLImageElement).naturalHeight || rect.height;
+      const scale = Math.min(rect.width / nw, rect.height / nh);
+      const dispW = nw * scale;
+      const dispH = nh * scale;
+      const offsetX = (rect.width - dispW) / 2;
+      const offsetY = (rect.height - dispH) / 2;
+      const cix = cx - offsetX;
+      const ciy = cy - offsetY;
+      const innerW = dispW * ZOOM_FACTOR;
+      const innerH = dispH * ZOOM_FACTOR;
+      setLensData({
+        lensX: cx,
+        lensY: cy,
+        innerLeft: LENS_SIZE / 2 - cix * ZOOM_FACTOR,
+        innerTop: LENS_SIZE / 2 - ciy * ZOOM_FACTOR,
+        innerWidth: innerW,
+        innerHeight: innerH,
+      });
+    },
+    []
+  );
+
+  const handleImageMouseLeave = useCallback(() => setLensData(null), []);
 
   // Menyuda click olunduqda
   const handleMenuClick = (menuKey: string) => {
@@ -459,18 +507,11 @@ const ProductHero = ({ product }: ProductHeroProps) => {
         <div className={styles.heroProductImage}>
           <Image
             fill
-            src={heroImage} // State-dəki şəkli istifadə edir
+            src={heroImage}
             alt={product.title ?? ""}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            priority // LCP üçün vacibdir
+            priority
           />
-          <div className={styles.zoomIcon}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M16.9497 16.9497L20.4853 20.4853" stroke="#333333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              <circle cx="10.4142" cy="10.4142" r="6.36396" stroke="#333333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <p className={styles.zoomText}>Tap here to zoom</p>
         </div>
         <div className={styles.heroProductDescription}>
           <h2>{product.title}</h2>
