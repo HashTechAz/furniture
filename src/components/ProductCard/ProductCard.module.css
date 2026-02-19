@@ -19,7 +19,6 @@
 
 .cardLink:hover .card {
   opacity: 0.95; /* Hover olanda yüngül şəffaflıq */
-  /* Kölgə və border effektini yığışdırdıq ki, şəkildəki kimi sadə olsun */
 }
 
 /* --- Şəkil sahəsi --- */
@@ -108,10 +107,6 @@
 
 /* Responsive düzəlişlər */
 @media (max-width: 768px) {
-  .imageWrapper {
-    padding: 20px;
-  }
-  
   .cardTitle {
     font-size: 14px;
   }
