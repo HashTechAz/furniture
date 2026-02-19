@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
 import ProductHero from './components/ProductHero/ProductHero';
 import CategoryFilters from './components/CategoryFilters/CategoryFilters';
 import DropdownFilters from './components/DropdownFilters/DropdownFilters';
@@ -21,6 +22,14 @@ function ProductGridSkeleton() {
 }
 
 const ProductPage = () => {
+  const searchParams = useSearchParams();
+  const roomsIdFromUrl = useMemo(() => {
+    const v = searchParams.get('roomsId');
+    if (v === null || v === '') return null;
+    const n = parseInt(v, 10);
+    return Number.isNaN(n) ? null : n;
+  }, [searchParams]);
+
   const [allProducts, setAllProducts] = useState<FrontendProduct[]>([]);
   const [displayedProducts, setDisplayedProducts] = useState<FrontendProduct[]>([]);
   const [loading, setLoading] = useState(true);
@@ -33,7 +42,7 @@ const ProductPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const productsPerPage = 12;
 
-  // İlk məhsulları və rəngləri yüklə (kateqoriya dəyişəndə də yenidən yüklə)
+  // İlk məhsulları və rəngləri yüklə (kateqoriya, otaq, sıralama dəyişəndə)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -46,6 +55,7 @@ const ProductPage = () => {
             pageSize: productsPerPage,
             sortBy,
             ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
+            ...(roomsIdFromUrl != null && { roomId: roomsIdFromUrl }),
           }),
           getColors()
         ]);
@@ -68,7 +78,7 @@ const ProductPage = () => {
       }
     };
     fetchData();
-  }, [selectedCategoryId, sortBy]);
+  }, [selectedCategoryId, sortBy, roomsIdFromUrl]);
 
   // Daha çox məhsul yüklə
   const loadMoreProducts = async () => {
@@ -82,6 +92,7 @@ const ProductPage = () => {
         pageSize: productsPerPage,
         sortBy,
         ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
+        ...(roomsIdFromUrl != null && { roomId: roomsIdFromUrl }),
       });
       
       if (newProducts.length === 0) {

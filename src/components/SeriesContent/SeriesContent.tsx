@@ -55,7 +55,7 @@ const SeriesContent = () => {
                 return (
                   <NavbarCategoryCard
                     key={room.id}
-                    href={`/rooms/${room.id}`}
+                    href={`/product?roomsId=${room.id}`}
                     label={room.name}
                     imageUrl={imageUrl}
                   />

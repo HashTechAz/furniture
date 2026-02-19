@@ -28,6 +28,7 @@ export interface ProductQueryParams {
   designerId?: number;
   colorIds?: number[];
   productGroupId?: number; // Eyni qrupdakı variantları gətirmək üçün (rəng variantları)
+  roomId?: number; // Otağa görə məhsulları filtrlə (Series / Rooms)
   minPrice?: number;
   maxPrice?: number;
   sortBy?: string;
@@ -262,6 +263,8 @@ export async function getProducts(
       queryParams.append("categoryId", params.categoryId.toString());
     if (params.productGroupId != null)
       queryParams.append("productGroupId", params.productGroupId.toString());
+    if (params.roomId != null)
+      queryParams.append("roomId", params.roomId.toString());
     if (params.pageNumber)
       queryParams.append("pageNumber", params.pageNumber.toString());
     if (params.pageSize)

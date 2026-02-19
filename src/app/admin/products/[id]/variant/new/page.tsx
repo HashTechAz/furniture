@@ -6,8 +6,9 @@ import Link from 'next/link';
 import styles from '../../../product-form.module.css';
 import { getProductById, createProductVariant } from '@/lib/products';
 import { getColors } from '@/lib/colors';
+import { getRooms } from '@/lib/rooms';
 import { useAdminModal } from '@/context/admin-modal-context';
-import { FaSave, FaArrowLeft, FaPalette } from 'react-icons/fa';
+import { FaSave, FaArrowLeft, FaPalette, FaDoorOpen } from 'react-icons/fa';
 import type { CreateProductVariantPayload } from '@/lib/products';
 
 export default function NewVariantPage() {
@@ -20,6 +21,8 @@ export default function NewVariantPage() {
   const [initialLoading, setInitialLoading] = useState(true);
   const [baseProduct, setBaseProduct] = useState<Awaited<ReturnType<typeof getProductById>>>(null);
   const [colors, setColors] = useState<{ id: number; name: string; hexCode?: string }[]>([]);
+  const [rooms, setRooms] = useState<{ id: number; name: string }[]>([]);
+  const [selectedRoomIds, setSelectedRoomIds] = useState<number[]>([]);
 
   const [name, setName] = useState('');
   const [sku, setSku] = useState('');
@@ -29,12 +32,14 @@ export default function NewVariantPage() {
     async function load() {
       if (!baseProductId) return;
       try {
-        const [product, colorsList] = await Promise.all([
+        const [product, colorsList, roomsList] = await Promise.all([
           getProductById(baseProductId),
           getColors(),
+          getRooms(),
         ]);
         setBaseProduct(product);
         setColors(Array.isArray(colorsList) ? colorsList : []);
+        setRooms(Array.isArray(roomsList) ? roomsList : []);
         if (product) {
           setName(`${product.title} – `);
           setSku(product.sku ? `${product.sku}-` : '');
@@ -74,7 +79,7 @@ export default function NewVariantPage() {
         collectionId: baseProduct.collectionId,
         colorIds: [colorId],
         materialIds: [],
-        roomIds: [],
+        roomIds: selectedRoomIds,
         tagIds: [],
         specifications: [],
       };
@@ -181,6 +186,33 @@ export default function NewVariantPage() {
                   <option value={0}>Başqa rəng yoxdur (əvvəlcə rəng əlavə edin)</option>
                 )}
               </select>
+            </div>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Otaqlar (isteğe bağlı)</label>
+              <select
+                className={styles.select}
+                value=""
+                onChange={(e) => {
+                  const id = parseInt(e.target.value, 10);
+                  if (id && !selectedRoomIds.includes(id)) setSelectedRoomIds((prev) => [...prev, id]);
+                }}
+              >
+                <option value="">Otaq seçin...</option>
+                {rooms.map((r) => (
+                  <option key={r.id} value={r.id}>{r.name}</option>
+                ))}
+              </select>
+              <div className={styles.tagsContainer} style={{ marginTop: 8 }}>
+                {selectedRoomIds.map((id) => {
+                  const room = rooms.find((r) => r.id === id);
+                  return room ? (
+                    <div key={id} className={styles.tag}>
+                      {room.name}
+                      <span className={styles.removeTag} onClick={() => setSelectedRoomIds((prev) => prev.filter((r) => r !== id))}>×</span>
+                    </div>
+                  ) : null;
+                })}
+              </div>
             </div>
           </div>
         </div>

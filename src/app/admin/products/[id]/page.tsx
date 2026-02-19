@@ -14,11 +14,12 @@ import { getDesigners } from '@/lib/designers';
 import { getCollections } from '@/lib/collections';
 import { getColors } from '@/lib/colors';
 import { getMaterials } from '@/lib/materials';
+import { getRooms } from '@/lib/rooms';
 
 // YENİ: Modal Hook
 import { useAdminModal } from '@/context/admin-modal-context';
 
-import { FaSave, FaTimes, FaCloudUploadAlt, FaCube, FaTag, FaPalette, FaRulerCombined, FaTrash, FaArrowLeft, FaStar, FaRegStar } from 'react-icons/fa';
+import { FaSave, FaTimes, FaCloudUploadAlt, FaCube, FaTag, FaPalette, FaRulerCombined, FaTrash, FaArrowLeft, FaStar, FaRegStar, FaDoorOpen } from 'react-icons/fa';
 
 export default function EditProductPage() {
   const router = useRouter();
@@ -35,13 +36,15 @@ export default function EditProductPage() {
   const [collections, setCollections] = useState<any[]>([]);
   const [colors, setColors] = useState<any[]>([]);
   const [materials, setMaterials] = useState<any[]>([]);
+  const [rooms, setRooms] = useState<any[]>([]);
 
   const [formData, setFormData] = useState({
     name: '', sku: '', description: '', shortDescription: '', price: 0,
     isFeatured: false, width: 0, height: 0, depth: 0, weight: 0,
     categoryId: 0, designerId: 0, collectionId: 0,
     selectedColorIds: [] as number[],
-    selectedMaterialIds: [] as number[]
+    selectedMaterialIds: [] as number[],
+    selectedRoomIds: [] as number[]
   });
 
   const [existingImages, setExistingImages] = useState<{ id: number; imageUrl: string; isCover: boolean }[]>([]);
@@ -52,12 +55,13 @@ export default function EditProductPage() {
     async function fetchData() {
       try {
         // 1. Seçimləri gətir (Categories, Designers, etc.)
-        const [cats, des, cols, colsList, mats] = await Promise.all([
+        const [cats, des, cols, colsList, mats, roomsList] = await Promise.all([
           getCategories(),
           getDesigners(),
           getCollections(),
           getColors(),
-          getMaterials()
+          getMaterials(),
+          getRooms()
         ]);
         
         setCategories(Array.isArray(cats) ? cats : []);
@@ -65,6 +69,7 @@ export default function EditProductPage() {
         setCollections(Array.isArray(cols) ? cols : []);
         setColors(Array.isArray(colsList) ? colsList : []);
         setMaterials(Array.isArray(mats) ? mats : []);
+        setRooms(Array.isArray(roomsList) ? roomsList : []);
 
         if (productId) {
           const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7042";
@@ -83,6 +88,7 @@ export default function EditProductPage() {
               const colId = product.collectionId || product.collection?.id || 0;
 
               const materialIds = product.materials?.map((m: any) => m.id) ?? product.materialIds ?? [];
+              const roomIds = product.rooms?.map((r: any) => r.id) ?? product.roomIds ?? [];
               setFormData({
                 name: product.name || '',
                 sku: product.sku || '',
@@ -98,7 +104,8 @@ export default function EditProductPage() {
                 designerId: desId,
                 collectionId: colId,
                 selectedColorIds: product.colors ? product.colors.map((c: any) => c.id) : [],
-                selectedMaterialIds: Array.isArray(materialIds) ? materialIds : []
+                selectedMaterialIds: Array.isArray(materialIds) ? materialIds : [],
+                selectedRoomIds: Array.isArray(roomIds) ? roomIds : []
               });
 
               // Şəkilləri yüklə
@@ -135,6 +142,13 @@ export default function EditProductPage() {
     }
   };
   const removeMaterial = (id: number) => setFormData(prev => ({ ...prev, selectedMaterialIds: prev.selectedMaterialIds.filter(m => m !== id) }));
+  const handleRoomChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const id = parseInt(e.target.value);
+    if (id && !formData.selectedRoomIds.includes(id)) {
+      setFormData(prev => ({ ...prev, selectedRoomIds: [...prev.selectedRoomIds, id] }));
+    }
+  };
+  const removeRoom = (id: number) => setFormData(prev => ({ ...prev, selectedRoomIds: prev.selectedRoomIds.filter(r => r !== id) }));
 
   // File Handlers
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -182,7 +196,7 @@ export default function EditProductPage() {
     setLoading(true);
     try {
       const token = localStorage.getItem('accessToken') || '';
-      const payload = { ...formData, colorIds: formData.selectedColorIds, materialIds: formData.selectedMaterialIds, roomIds: [], tagIds: [], specifications: [] };
+      const payload = { ...formData, colorIds: formData.selectedColorIds, materialIds: formData.selectedMaterialIds, roomIds: formData.selectedRoomIds, tagIds: [], specifications: [] };
       await updateProduct(productId, payload, token);
 
       if (newFiles.length > 0) {
@@ -332,6 +346,16 @@ export default function EditProductPage() {
               {formData.selectedMaterialIds.map(id => {
                 const material = materials.find(m => m.id === id);
                 return material ? (<div key={id} className={styles.tag}>{material.name}<span className={styles.removeTag} onClick={() => removeMaterial(id)}>×</span></div>) : null;
+              })}
+            </div>
+          </div>
+          <div className={styles.card}>
+            <div className={styles.cardTitle}><FaDoorOpen /> Rooms</div>
+            <div className={styles.formGroup}><label className={styles.label}>Add Room</label><select className={styles.select} onChange={handleRoomChange} value=""><option value="">Choose room...</option>{rooms.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}</select></div>
+            <div className={styles.tagsContainer}>
+              {formData.selectedRoomIds.map(id => {
+                const room = rooms.find(r => r.id === id);
+                return room ? (<div key={id} className={styles.tag}>{room.name}<span className={styles.removeTag} onClick={() => removeRoom(id)}>×</span></div>) : null;
               })}
             </div>
           </div>
