@@ -61,6 +61,65 @@ const Dropdown = ({ label, options, initialSelected }: DropdownProps) => {
   );
 };
 
+export type DepthRange = { min: number; max?: number } | null;
+
+const DEPTH_RANGE_OPTIONS: { label: string; value: DepthRange }[] = [
+  { label: 'Hamısı', value: null },
+  { label: '30-50 sm', value: { min: 30, max: 50 } },
+  { label: '50-80 sm', value: { min: 50, max: 80 } },
+  { label: '80-120 sm', value: { min: 80, max: 120 } },
+  { label: '120+ sm', value: { min: 120 } },
+];
+
+const DepthDropdown = ({
+  selectedDepthRange,
+  onSelect,
+}: {
+  selectedDepthRange: DepthRange;
+  onSelect: (range: DepthRange) => void;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const current = DEPTH_RANGE_OPTIONS.find(
+    (opt) =>
+      opt.value === null
+        ? selectedDepthRange === null
+        : selectedDepthRange !== null && opt.value?.min === selectedDepthRange.min && opt.value?.max === selectedDepthRange.max
+  ) ?? DEPTH_RANGE_OPTIONS[0];
+  const displayLabel = current?.label ?? 'Depth';
+  return (
+    <div className={styles.dropdown}>
+      <button type="button" className={styles.dropdownButton} onClick={() => setIsOpen(!isOpen)}>
+        <span>{displayLabel}</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}>
+          <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      <div className={`${styles.dropdownMenu} ${isOpen ? styles.menuOpen : ''}`}>
+        <ul>
+          {DEPTH_RANGE_OPTIONS.map((opt) => (
+            <li key={opt.label}>
+              <button
+                type="button"
+                style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 12px', font: 'inherit' }}
+                className={opt.value === null ? (selectedDepthRange === null ? styles.sortOption : '') : (selectedDepthRange?.min === opt.value?.min && selectedDepthRange?.max === opt.value?.max ? styles.sortOption : '')}
+                data-selected={
+                  (opt.value === null && selectedDepthRange === null) ||
+                  (opt.value !== null && selectedDepthRange !== null && opt.value?.min === selectedDepthRange.min && opt.value?.max === selectedDepthRange.max)
+                    ? 'true'
+                    : undefined
+                }
+                onClick={() => { onSelect(opt.value); setIsOpen(false); }}
+              >
+                {opt.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
+
 const MaterialDropdown = ({
   materials,
   selectedMaterialId,
@@ -212,6 +271,8 @@ interface DropdownFiltersProps {
   materials?: Material[];
   selectedMaterialId?: number | null;
   onMaterialSelect?: (id: number | null) => void;
+  selectedDepthRange?: DepthRange;
+  onDepthRangeSelect?: (range: DepthRange) => void;
   sortBy?: string;
   onSortChange?: (sortBy: string) => void;
 }
@@ -223,15 +284,22 @@ const DropdownFilters = ({
   materials = [],
   selectedMaterialId = null,
   onMaterialSelect,
+  selectedDepthRange = null,
+  onDepthRangeSelect,
   sortBy = 'newest',
   onSortChange,
 }: DropdownFiltersProps) => {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [colourOptions, setColourOptions] = useState<BackendColor[]>(colors);
 
-  const [selectedFilters, setSelectedFilters] = useState({
+  const [selectedFilters, setSelectedFilters] = useState<{
+    material: number | null;
+    depth: DepthRange;
+    colour: string;
+    series: string;
+  }>({
     material: selectedMaterialId,
-    depth: "",
+    depth: selectedDepthRange,
     colour: selectedColor,
     series: ""
   });
@@ -255,8 +323,11 @@ const DropdownFilters = ({
     }));
   }, [selectedColor]);
 
-  const depthOptions = ["30 cm", "38 cm", "47 cm"];
   const seriesOptions = ["Montana System", "Montana Free", "Panton Wire"];
+
+  useEffect(() => {
+    setSelectedFilters((prev) => ({ ...prev, depth: selectedDepthRange }));
+  }, [selectedDepthRange]);
 
   useEffect(() => {
     setSelectedFilters((prev) => ({ ...prev, material: selectedMaterialId }));
@@ -271,14 +342,27 @@ const DropdownFilters = ({
     { label: 'Bahadan Ucuza', value: 'price_desc' },
   ] as const;
 
-  const handleFilterSelect = (category: keyof typeof selectedFilters, value: string | number | null) => {
-    const newValue = selectedFilters[category] === value ? (category === 'material' ? null : "") : value;
+  const isSameDepth = (a: DepthRange, b: DepthRange) => {
+    if (a === null && b === null) return true;
+    if (a === null || b === null) return false;
+    return a.min === b.min && a.max === b.max;
+  };
+
+  const handleFilterSelect = (category: keyof typeof selectedFilters, value: string | number | DepthRange) => {
+    const isDepth = category === 'depth';
+    const isMaterial = category === 'material';
+    const current = selectedFilters[category];
+    const same = isDepth ? isSameDepth(current as DepthRange, value as DepthRange) : current === value;
+    const newValue = same ? (isMaterial ? null : isDepth ? null : '') : value;
     setSelectedFilters(prev => ({ ...prev, [category]: newValue }));
     if (category === 'colour' && onColorSelect && typeof value === 'string') {
       onColorSelect(value);
     }
     if (category === 'material' && onMaterialSelect) {
       onMaterialSelect(typeof newValue === 'number' ? newValue : null);
+    }
+    if (category === 'depth' && onDepthRangeSelect) {
+      onDepthRangeSelect(newValue as DepthRange);
     }
   };
 
@@ -305,7 +389,10 @@ const DropdownFilters = ({
           selectedMaterialId={selectedMaterialId ?? null}
           onSelect={(id) => onMaterialSelect?.(id)}
         />
-        <Dropdown label="Depth" options={depthOptions} />
+        <DepthDropdown
+          selectedDepthRange={selectedDepthRange ?? null}
+          onSelect={(range) => onDepthRangeSelect?.(range)}
+        />
         <ColourDropdown colors={colourOptions} selectedName={selectedFilters.colour} onSelect={(name) => handleFilterSelect('colour', name)} />
         <Dropdown label="Product series" options={seriesOptions} />
       </div>
@@ -342,7 +429,7 @@ const DropdownFilters = ({
             </h4>
             <div className={`${styles.mobileFilterOptions} ${openSections.material ? styles.open : ''}`}>
               <div
-                className={`${styles.mobileFilterOption} ${selectedFilters.material === null || selectedFilters.material === '' ? styles.selected : ''}`}
+                className={`${styles.mobileFilterOption} ${selectedFilters.material === null ? styles.selected : ''}`}
                 onClick={() => handleFilterSelect('material', null)}
               >
                 Hamısı
@@ -364,21 +451,26 @@ const DropdownFilters = ({
           </div>
 
           <div className={styles.mobileFilterSection}>
-            <h4 
+            <h4
               className={openSections.depth ? styles.open : ''}
               onClick={() => toggleSection('depth')}
             >
-              Depth
+              Depth (sm)
               <span className={styles.arrow}>▼</span>
             </h4>
             <div className={`${styles.mobileFilterOptions} ${openSections.depth ? styles.open : ''}`}>
-              {depthOptions.map((option, index) => (
+              {DEPTH_RANGE_OPTIONS.map((opt) => (
                 <div
-                  key={index}
-                  className={`${styles.mobileFilterOption} ${selectedFilters.depth === option ? styles.selected : ''}`}
-                  onClick={() => handleFilterSelect('depth', option)}
+                  key={opt.label}
+                  className={`${styles.mobileFilterOption} ${
+                    (opt.value === null && selectedFilters.depth === null) ||
+                    (opt.value !== null && selectedFilters.depth !== null && opt.value?.min === selectedFilters.depth?.min && opt.value?.max === selectedFilters.depth?.max)
+                      ? styles.selected
+                      : ''
+                  }`}
+                  onClick={() => handleFilterSelect('depth', opt.value)}
                 >
-                  {option}
+                  {opt.label}
                 </div>
               ))}
             </div>

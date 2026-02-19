@@ -38,6 +38,7 @@ const ProductPage = () => {
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const [selectedMaterialId, setSelectedMaterialId] = useState<number | null>(null);
+  const [selectedDepthRange, setSelectedDepthRange] = useState<{ min: number; max?: number } | null>(null);
   const [sortBy, setSortBy] = useState<string>('newest');
   const [colors, setColors] = useState<BackendColor[]>([]);
   const [materials, setMaterials] = useState<Material[]>([]);
@@ -45,7 +46,6 @@ const ProductPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const productsPerPage = 12;
 
-  // Otaq səhifəsində (roomsId varsa) kateqoriyaya klikləyəndə: həm roomId həm categoryId göndərilir — həmin otağa + kateqoriyaya aid məhsullar.
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -60,6 +60,10 @@ const ProductPage = () => {
             ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
             ...(roomsIdFromUrl != null && { roomId: roomsIdFromUrl }),
             ...(selectedMaterialId != null && { materialIds: [selectedMaterialId] }),
+            ...(selectedDepthRange != null && {
+              minDepth: selectedDepthRange.min,
+              ...(selectedDepthRange.max != null && { maxDepth: selectedDepthRange.max }),
+            }),
           }),
           getColors(),
           getMaterials()
@@ -84,7 +88,7 @@ const ProductPage = () => {
       }
     };
     fetchData();
-  }, [selectedCategoryId, sortBy, roomsIdFromUrl, selectedMaterialId]);
+  }, [selectedCategoryId, sortBy, roomsIdFromUrl, selectedMaterialId, selectedDepthRange]);
 
   // Daha çox məhsul yüklə
   const loadMoreProducts = async () => {
@@ -100,6 +104,10 @@ const ProductPage = () => {
         ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
         ...(roomsIdFromUrl != null && { roomId: roomsIdFromUrl }),
         ...(selectedMaterialId != null && { materialIds: [selectedMaterialId] }),
+        ...(selectedDepthRange != null && {
+          minDepth: selectedDepthRange.min,
+          ...(selectedDepthRange.max != null && { maxDepth: selectedDepthRange.max }),
+        }),
       });
       
       if (newProducts.length === 0) {
@@ -168,6 +176,8 @@ const ProductPage = () => {
         materials={materials}
         selectedMaterialId={selectedMaterialId}
         onMaterialSelect={setSelectedMaterialId}
+        selectedDepthRange={selectedDepthRange}
+        onDepthRangeSelect={setSelectedDepthRange}
         sortBy={sortBy}
         onSortChange={setSortBy}
       />

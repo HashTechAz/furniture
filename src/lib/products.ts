@@ -32,6 +32,8 @@ export interface ProductQueryParams {
   materialIds?: number[]; // Materiala görə filtrlə
   minPrice?: number;
   maxPrice?: number;
+  minDepth?: number; // Dərinlik aralığı (sm)
+  maxDepth?: number;
   sortBy?: string;
   pageNumber?: number;
   pageSize?: number;
@@ -275,6 +277,8 @@ export async function getProducts(
       params.colorIds.forEach(id => queryParams.append("colorIds", id.toString()));
     if (params.materialIds && params.materialIds.length > 0)
       params.materialIds.forEach(id => queryParams.append("materialIds", id.toString()));
+    if (params.minDepth != null) queryParams.append("minDepth", params.minDepth.toString());
+    if (params.maxDepth != null) queryParams.append("maxDepth", params.maxDepth.toString());
   }
 
   const endpoint = `/api/Products?${queryParams.toString()}`;
