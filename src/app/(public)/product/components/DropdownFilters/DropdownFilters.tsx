@@ -86,7 +86,7 @@ const DepthDropdown = ({
         ? selectedDepthRange === null
         : selectedDepthRange !== null && opt.value?.min === selectedDepthRange.min && opt.value?.max === selectedDepthRange.max
   ) ?? DEPTH_RANGE_OPTIONS[0];
-  const displayLabel = selectedDepthRange === null ? 'Derinlik' : (current?.label ?? 'Derinlik');
+  const displayLabel = current?.label ?? 'Depth';
   return (
     <div className={styles.dropdown}>
       <button type="button" className={styles.dropdownButton} onClick={() => setIsOpen(!isOpen)}>

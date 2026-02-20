@@ -135,7 +135,7 @@ const HomeContent = ({ products }: HomeContentProps) => {
 
   return (
     <>
-      <HeroSection />
+      <HeroSection backgroundImage="/images/home-hero/home-hero.jpg" />
       <div id="header-trigger" style={{ height: 1 }} />
       
       {/* Product Slider hələlik statik qalır */}

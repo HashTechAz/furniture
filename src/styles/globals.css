@@ -166,6 +166,22 @@
   padding: 0 var(--spacing-xl);
 }
 
+/* Fluid: 1600px+ ekranlarda container və spacing vw ilə genişlənir (styles/globals istifadə olunursa) */
+@media (min-width: 1600px) {
+  :root {
+    --spacing-xs: 0.35vw;
+    --spacing-sm: 0.69vw;
+    --spacing-md: 1.39vw;
+    --spacing-lg: 2.78vw;
+    --spacing-xl: 5.56vw;
+  }
+  .container {
+    max-width: 83.33vw; /* 1200/1440 */
+    padding-left: 5.56vw;
+    padding-right: 5.56vw;
+  }
+}
+
 .flex-center {
   display: flex;
   align-items: center;
