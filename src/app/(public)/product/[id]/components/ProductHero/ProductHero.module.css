@@ -393,6 +393,12 @@
   color: #111;
   margin: 3rem 0 1rem 0;
 }
+.heroButtons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
 .heroButton {
   width: max-content;
   text-decoration: none;
@@ -409,6 +415,23 @@
 }
 .heroButton:hover {
   background-color: #1a2365;
+}
+.heroButtonWhatsApp {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: white;
+  background-color: #25d366;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: background-color 0.3s ease-in-out;
+  cursor: pointer;
+}
+.heroButtonWhatsApp:hover {
+  background-color: #20bd5a;
 }
 .productInfo {
   margin-top: 2rem;
