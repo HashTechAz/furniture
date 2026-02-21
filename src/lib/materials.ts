@@ -16,7 +16,7 @@ export interface MaterialPayload {
 
 // 1. Bütün materialları gətir
 export async function getMaterials(): Promise<Material[]> {
-  return apiRequest<Material[]>("/api/Materials", { cache: "no-store" });
+  return apiRequest<Material[]>("/api/Materials", { next: { revalidate: 3600 } });
 }
 
 // 2. Tək materialı gətir (ID ilə)

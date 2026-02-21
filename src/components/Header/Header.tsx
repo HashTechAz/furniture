@@ -22,7 +22,7 @@ const Header: React.FC = () => {
   const [isSeriesOpen, setIsSeriesOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [isInspirationOpen, setIsInspirationOpen] = useState(false);
-  
+
   // Mobile States
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMobileSubMenu, setActiveMobileSubMenu] = useState<"inspiration" | "products" | "series" | null>(null);
@@ -35,7 +35,7 @@ const Header: React.FC = () => {
 
   // Data States
   const [categories, setCategories] = useState<Category[]>([]);
-  
+
   // 🔥 QIFIL (Double Fetch qarşısını almaq üçün)
   const dataFetchedRef = useRef(false);
 
@@ -47,7 +47,7 @@ const Header: React.FC = () => {
   // --- API DATA FETCHING ---
   useEffect(() => {
     setMounted(true);
-    
+
     // Əgər artıq yüklənibsə, dayandır
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
@@ -76,8 +76,8 @@ const Header: React.FC = () => {
       if (currentScrollY === 0 && !isAtTop) {
         setIsExiting(true);
         setTimeout(() => {
-            setIsAtTop(true);
-            setIsExiting(false);
+          setIsAtTop(true);
+          setIsExiting(false);
         }, 400);
       } else if (currentScrollY > 0 && isAtTop) {
         setIsAtTop(false);
@@ -147,9 +147,9 @@ const Header: React.FC = () => {
     setIsSeriesOpen(false);
 
     if (isOpen) {
-        setter(false);
+      setter(false);
     } else {
-        setTimeout(() => setter(true), 100);
+      setTimeout(() => setter(true), 100);
     }
   };
 
@@ -160,20 +160,20 @@ const Header: React.FC = () => {
   const getHeaderClass = () => {
     if (!mounted) return "";
     const p = pathname;
-    
+
     const styleMap: Record<string, string> = {
-        "/sustainability": styles.sustainabilityHeader,
-        "/system": styles.systemHeader,
-        "/about": styles.aboutHeader,
-        "/product": styles.productsMainHeader,
-        "/colours": styles.coloursHeader,
-        "/designers": styles.designersHeader,
-        "/productseries": styles.productSeriesHeader,
-        "/creative-minds": styles.creativeMindsHeader,
+      "/sustainability": styles.sustainabilityHeader,
+      "/system": styles.systemHeader,
+      "/about": styles.aboutHeader,
+      "/product": styles.productsMainHeader,
+      "/colours": styles.coloursHeader,
+      "/designers": styles.designersHeader,
+      "/productseries": styles.productSeriesHeader,
+      "/creative-minds": styles.creativeMindsHeader,
     };
-    
+
     if (styleMap[p]) return styleMap[p];
-    if (p.startsWith("/product/") && p !== "/product") return styles.productDetailsHeader; 
+    if (p.startsWith("/product/") && p !== "/product") return styles.productDetailsHeader;
     if (p.startsWith("/series") && !p.includes("guarantees") && !p.includes("assembly")) return styles.seriesHeader;
     if (p.includes("colour-inspiration")) return styles.inspiringStylesHeader;
     if (p.includes("creative-minds/")) return styles.creativeMindsHeader;
@@ -213,7 +213,7 @@ const Header: React.FC = () => {
               </svg>
             </button>
             <button type="button" className={styles.searchButton} onClick={toggleSearch}>
-               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </button>
           </div>
 
@@ -257,17 +257,17 @@ const Header: React.FC = () => {
               <div className={`${styles.mobileSubMenu} ${activeMobileSubMenu === "products" ? styles.subMenuOpen : ""}`}>
                 <ul>
                   {STATIC_PRODUCT_LINKS.map((link) => (
-                     <li key={link.label}><Link href={link.href} onClick={() => setIsMobileMenuOpen(false)} style={{fontWeight: 'bold'}}>{link.label}</Link></li>
+                    <li key={link.label}><Link href={link.href} onClick={() => setIsMobileMenuOpen(false)} style={{ fontWeight: 'bold' }}>{link.label}</Link></li>
                   ))}
-                  <li className={styles.divider} style={{margin: '10px 0', borderTop: '1px solid #eee'}}></li>
+                  <li className={styles.divider} style={{ margin: '10px 0', borderTop: '1px solid #eee' }}></li>
                   {categories.length > 0 ? categories.map((cat) => (
                     <li key={cat.id}>
-                        <Link href={`/product?CategoryId=${cat.id}`} onClick={() => setIsMobileMenuOpen(false)}>
-                            {cat.name}
-                        </Link>
+                      <Link href={`/product?CategoryId=${cat.id}`} onClick={() => setIsMobileMenuOpen(false)}>
+                        {cat.name}
+                      </Link>
                     </li>
                   )) : (
-                    <li style={{color: '#999', fontSize: '12px', paddingLeft: '20px'}}>Yüklənir...</li>
+                    <li style={{ color: '#999', fontSize: '12px', paddingLeft: '20px' }}>Yüklənir...</li>
                   )}
                 </ul>
               </div>
@@ -280,7 +280,7 @@ const Header: React.FC = () => {
               </div>
               <div className={`${styles.mobileSubMenu} ${activeMobileSubMenu === "series" ? styles.subMenuOpen : ""}`}>
                 <ul>
-                   {SERIES_LINKS.map((link) => (
+                  {SERIES_LINKS.map((link) => (
                     <li key={link.label}><Link href={link.href} onClick={() => setIsMobileMenuOpen(false)}>{link.label}</Link></li>
                   ))}
                 </ul>
@@ -302,24 +302,24 @@ const Header: React.FC = () => {
       </div>
 
       <div className={`${styles.seriesOverlay} ${isInspirationOpen ? styles.seriesOverlayOpen : ""}`}>
-        {isInspirationOpen && <InspirationContent />}
+        <InspirationContent />
       </div>
       <div className={`${styles.seriesOverlay} ${isSeriesOpen ? styles.seriesOverlayOpen : ""}`}>
-        {isSeriesOpen && <SeriesContent />}
+        <SeriesContent />
       </div>
       <div className={`${styles.seriesOverlay} ${isProductsOpen ? styles.seriesOverlayOpen : ""}`}>
-        {isProductsOpen && <ProductsContent />}
+        <ProductsContent />
       </div>
-      
+
       <SearchOverlay isOpen={isSearchOpen} onClose={toggleSearch} />
     </>
   );
 };
 
 const ChevronIcon = ({ isOpen }: { isOpen: boolean }) => (
-    <svg className={`${styles.arrowIcon} ${isOpen ? styles.arrowIconOpen : ""}`} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="6 9 12 15 18 9"></polyline>
-    </svg>
+  <svg className={`${styles.arrowIcon} ${isOpen ? styles.arrowIconOpen : ""}`} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="6 9 12 15 18 9"></polyline>
+  </svg>
 );
 
 export default Header;

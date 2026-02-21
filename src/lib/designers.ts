@@ -11,7 +11,7 @@ export interface BackendDesigner {
 
 // --- 1. GET ALL (Siyahı) ---
 export async function getDesigners(): Promise<BackendDesigner[]> {
-  return apiRequest<BackendDesigner[]>('/api/Designers');
+  return apiRequest<BackendDesigner[]>('/api/Designers', { next: { revalidate: 3600 } });
 }
 
 // --- 2. GET BY ID (Tək Dizayner) ---

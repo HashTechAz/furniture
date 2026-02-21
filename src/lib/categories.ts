@@ -32,7 +32,7 @@ export interface CategoryPayload {
 
 // 1. READ
 export async function getCategories(): Promise<Category[]> {
-  const data = await apiRequest<CategoryApiResponse[]>('/api/Categories');
+  const data = await apiRequest<CategoryApiResponse[]>('/api/Categories', { next: { revalidate: 3600 } });
   return Array.isArray(data) ? data.map(normalizeCategory) : [];
 }
 

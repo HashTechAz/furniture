@@ -19,7 +19,7 @@ export interface BackendCollection {
 
 // --- 1. GET ALL (Siyahı) ---
 export async function getCollections(): Promise<BackendCollection[]> {
-  return apiRequest<BackendCollection[]>('/api/Collections');
+  return apiRequest<BackendCollection[]>('/api/Collections', { next: { revalidate: 3600 } });
 }
 
 // --- 2. GET BY ID (Tək Kolleksiya) ---

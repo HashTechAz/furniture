@@ -24,7 +24,7 @@ export interface ColorPayload {
 
 // --- 1. GET ALL (Siyahı) ---
 export async function getColors(): Promise<BackendColor[]> {
-  return apiRequest<BackendColor[]>('/api/Colors');
+  return apiRequest<BackendColor[]>('/api/Colors', { next: { revalidate: 3600 } });
 }
 
 // --- 2. GET BY ID (Tək rəng - Redaktə üçün) ---

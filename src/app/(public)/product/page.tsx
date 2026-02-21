@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, Suspense, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProductHero from './components/ProductHero/ProductHero';
 import CategoryFilters from './components/CategoryFilters/CategoryFilters';
@@ -25,7 +25,7 @@ function ProductGridSkeleton() {
   );
 }
 
-const ProductPage = () => {
+const ProductPageContent = () => {
   const searchParams = useSearchParams();
   const [selectedRoomId, setSelectedRoomId] = useState<number | null>(() => {
     const v = searchParams.get('roomsId');
@@ -95,41 +95,58 @@ const ProductPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const productsPerPage = 12;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        setCurrentPage(1);
+  const staticDataFetchedRef = useRef(false);
 
-        const [productsData, colorsData, materialsData, collectionsData, roomsData, categoriesData] = await Promise.all([
-          getProducts({
-            pageNumber: 1,
-            pageSize: productsPerPage,
-            sortBy,
-            ...(searchFromUrl && { searchTerm: searchFromUrl }),
-            ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
-            ...(selectedRoomId != null && { roomId: selectedRoomId }),
-            ...(selectedMaterialId != null && { materialIds: [selectedMaterialId] }),
-            ...(selectedDepthRange != null && {
-              minDepth: selectedDepthRange.min,
-              ...(selectedDepthRange.max != null && { maxDepth: selectedDepthRange.max }),
-            }),
-            ...(selectedCollectionId != null && { collectionId: selectedCollectionId }),
-          }),
+  // 1. Static Data Fetch (Run Once)
+  useEffect(() => {
+    if (staticDataFetchedRef.current) return;
+    staticDataFetchedRef.current = true;
+
+    const fetchStaticData = async () => {
+      try {
+        const [colorsData, materialsData, collectionsData, roomsData, categoriesData] = await Promise.all([
           getColors(),
           getMaterials(),
           getCollections(),
           getRooms(),
           getCategories()
         ]);
-
-        setAllProducts(productsData);
-        setDisplayedProducts(productsData);
         setColors(Array.isArray(colorsData) ? colorsData : []);
         setMaterials(Array.isArray(materialsData) ? materialsData : []);
         setCollections(Array.isArray(collectionsData) ? collectionsData : []);
         setRooms(Array.isArray(roomsData) ? roomsData : []);
         setCategories(Array.isArray(categoriesData) ? categoriesData : []);
+      } catch (error) {
+        console.error('Static data yüklənmədi:', error);
+      }
+    };
+    fetchStaticData();
+  }, []);
+
+  // 2. Product Data Fetch (Run on filter changes)
+  useEffect(() => {
+    const fetchProductsData = async () => {
+      try {
+        setLoading(true);
+        setCurrentPage(1);
+
+        const productsData = await getProducts({
+          pageNumber: 1,
+          pageSize: productsPerPage,
+          sortBy,
+          ...(searchFromUrl && { searchTerm: searchFromUrl }),
+          ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
+          ...(selectedRoomId != null && { roomId: selectedRoomId }),
+          ...(selectedMaterialId != null && { materialIds: [selectedMaterialId] }),
+          ...(selectedDepthRange != null && {
+            minDepth: selectedDepthRange.min,
+            ...(selectedDepthRange.max != null && { maxDepth: selectedDepthRange.max }),
+          }),
+          ...(selectedCollectionId != null && { collectionId: selectedCollectionId }),
+        });
+
+        setAllProducts(productsData);
+        setDisplayedProducts(productsData);
 
         if (productsData.length < productsPerPage) {
           setHasMore(false);
@@ -137,14 +154,13 @@ const ProductPage = () => {
           setHasMore(true);
         }
 
-        await new Promise(resolve => setTimeout(resolve, 0));
       } catch (error) {
-        console.error('Data yüklənmədi:', error);
+        console.error('Məhsullar yüklənmədi:', error);
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
+    fetchProductsData();
   }, [selectedCategoryId, sortBy, selectedRoomId, searchFromUrl, selectedMaterialId, selectedDepthRange, selectedCollectionId]);
 
   // Daha çox məhsul yüklə
@@ -262,6 +278,14 @@ const ProductPage = () => {
       )}
       <ProductAbout />
     </main>
+  );
+};
+
+const ProductPage = () => {
+  return (
+    <Suspense fallback={<ProductGridSkeleton />}>
+      <ProductPageContent />
+    </Suspense>
   );
 };
 
