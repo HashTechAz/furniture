@@ -381,31 +381,31 @@ const ProductHero = ({ product }: ProductHeroProps) => {
     load();
   }, [product.id, product.productGroupId, product.title, product.categoryId]);
 
-  // Set WhatsApp href after mount - ASCII-only template + [M][R] style "icons" so encoding never breaks
+  // Set WhatsApp href after mount
   useEffect(() => {
     const productUrl = `${window.location.origin}/product/${product.id}`;
     const title = product.title || "";
     const desc = product.description || product.shortDescription || "-";
     const depthStr = product.depth != null ? product.depth + " cm" : "Not specified";
     const message =
-      "Salam! Bu mehsulla maraqliram:" +
+      "Salam! Bu məhsulla maraqlanıram:" +
       "\n\n" +
-      "[M] *Mehsul:* " +
+      "🛍️ *Məhsul:* " +
       title +
       "\n" +
-      "[R] *Reng:* " +
+      "🎨 *Rəng:* " +
       currentProductColor +
       "\n" +
-      "[O] *Olcu:* " +
+      "📏 *Ölçü:* " +
       currentProductPosition +
       "\n" +
-      "[D] *Derinlik:* " +
+      "📐 *Dərinlik:* " +
       depthStr +
       "\n" +
-      "[T] *Tesvir:* " +
+      "📝 *Təsvir:* " +
       desc +
       "\n\n" +
-      "[L] Link: " +
+      "🔗 Link: " +
       productUrl;
     setWaHref(`https://wa.me/994775480896?text=${encodeURIComponent(message)}`);
   }, [
