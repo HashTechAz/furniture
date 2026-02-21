@@ -5,7 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import styles from "./ProductSlider.module.css";
 import systemStyles from "./ProductSliderSystem.module.css";
 import CategoryCard from "../CategoryCard/CategoryCard";
-import slideData from "../../mock/productSliderData.json";
+import { getCategories, Category } from "@/lib/categories";
 
 interface SlideData {
   id: number;
@@ -18,7 +18,7 @@ interface ProductSliderProps {
   variant?: "default" | "system";
   titleTop?: string;
   titleBottom?: string;
-  slideDataProp?: SlideData[]; 
+  slideDataProp?: SlideData[];
 }
 
 const ProductSlider: React.FC<ProductSliderProps> = ({
@@ -27,7 +27,24 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
   titleBottom,
   slideDataProp,
 }) => {
-  const currentSlideData = slideDataProp || slideData;
+  const [fetchedCategories, setFetchedCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    // Yalnız slideDataProp verilməyəndə kateqoriyaları yüklə
+    if (!slideDataProp) {
+      getCategories()
+        .then((data) => setFetchedCategories(Array.isArray(data) ? data : []))
+        .catch(console.error);
+    }
+  }, [slideDataProp]);
+
+  // Əgər kənardan prop olaraq məlumat gəlibsə onu istifadə et, yoxsa API-dən gələn kateqoriyaları
+  const currentSlideData: SlideData[] = slideDataProp || fetchedCategories.map((cat, index) => ({
+    id: cat.id,
+    label: cat.name,
+    imageUrl: cat.imageUrl || "/images/placeholder.jpg",
+    size: "normal" // Şəkillərin eyni ölçüdə qalması üçün 'normal'
+  }));
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,

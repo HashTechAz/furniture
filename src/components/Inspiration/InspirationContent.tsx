@@ -1,28 +1,35 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import styles from './InspirationContent.module.css';
 import Link from 'next/link';
-import Image from 'next/image'; 
-const SmallInspirationCard = ({ title, imageUrl }: { title: string, imageUrl: string }) => (
-  <Link href="#" className={styles.smallCard}>
-    <div className={styles.smallCardImageWrapper} style={{position:"relative"}}>
-       <Image  fill src={imageUrl} alt={title ?? ""} />
+import Image from 'next/image';
+import { getRooms } from '@/lib/rooms';
+
+const PLACEHOLDER_IMAGE = 'https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/colours/montana_colourps_amber_camomile_rhubarb_flint_oat.jpg?mode=crop&width=1520&height=2027';
+
+const SmallInspirationCard = ({ title, imageUrl, href }: { title: string, imageUrl: string, href: string }) => (
+  <Link href={href} className={styles.smallCard}>
+    <div className={styles.smallCardImageWrapper} style={{ position: "relative" }}>
+      <Image fill src={imageUrl} alt={title ?? ""} />
     </div>
     <span className={styles.smallCardTitle}>{title}</span>
   </Link>
 );
 
 const InspirationContent = () => {
-  const smallCardsData = [
-    { id: 1, title: "Living Rooms", imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-home/2023/studio/montana_home_23_24_a02_octave_ii_acacia_couple_iris_w.jpg?mode=crop&width=1520&height=1093" },
-    { id: 2, title: "Bedrooms", imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-home/2020/montana_home20_21_bathroom_iris_look_mushroom_w.jpg?mode=crop&width=1520&height=1093" },
-    { id: 3, title: "Dining", imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/studio/montana_home_23_24_c05_dream_acacia_clay_headboard_h.jpg?mode=crop&width=1520&height=1093" },
-    { id: 4, title: "Home Office", imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-mini/ss25/montana_mini_kidsroom_flint_camomile_fennel_amber_ruby_rosehip_w.jpg?mode=crop&width=1520&height=1093" },
-    { id: 5, title: "Hallway", imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-mini/ss25/montana_mini_kidsroom_flint_camomile_fennel_amber_ruby_rosehip_w.jpg?mode=crop&width=1520&height=1093" },
-    { id: 6, title: "Kids' Rooms", imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/location---radiohuset/montana_home_23_24_jwtable_kevi2060_oyster_h.jpg?mode=crop&width=1520&height=1093" },
-    { id: 7, title: "Bathroom", imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-home/2023/studio/montana_home_23_24_c04_coat_clay_detail_01_w.jpg?mode=crop&width=1520&height=1093" },
-    { id: 8, title: "Kitchen", imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/location---radiohuset/montana_home_23_24_jwtable_kevi2060_oyster_h.jpg?mode=crop&width=1520&height=1093" },
-    { id: 9, title: "Outdoor", imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/studio/montana_home_23_24_a03_ripple_cabinet_ii_acacia_01_h.jpg?mode=crop&width=1520&height=1093" },
-  ];
+  const [rooms, setRooms] = useState<{ id: number; name: string; imageUrl?: string }[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getRooms()
+      .then((data) => setRooms(Array.isArray(data) ? data : []))
+      .catch(() => setRooms([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const baseUrl = typeof process !== 'undefined' ? (process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042') : 'https://localhost:7042';
+
 
   const newsLinks = [
     "KIMPOP Limited Editions",
@@ -59,24 +66,35 @@ const InspirationContent = () => {
         </ul>
       </div>
 
-        {/* Sağ İçerik Alanı */}
-        <div className={styles.contentWrapper}>
+      {/* Sağ İçerik Alanı */}
+      <div className={styles.contentWrapper}>
         <div className={styles.smallCardsGrid}>
-          {smallCardsData.map(card => (
-            <SmallInspirationCard key={card.id} title={card.title} imageUrl={card.imageUrl} />
-          ))}
+          {loading ? (
+            <div style={{ padding: '20px' }}>Loading...</div>
+          ) : rooms.length === 0 ? (
+            <div style={{ padding: '20px' }}>No inspiration rooms yet.</div>
+          ) : (
+            rooms.map(room => {
+              const imageUrl = room.imageUrl
+                ? (room.imageUrl.startsWith('http') ? room.imageUrl : `${baseUrl}${room.imageUrl.startsWith('/') ? '' : '/'}${room.imageUrl}`)
+                : PLACEHOLDER_IMAGE;
+              return (
+                <SmallInspirationCard key={room.id} title={room.name} imageUrl={imageUrl} href={`/product?roomsId=${room.id}`} />
+              );
+            })
+          )}
         </div>
 
         {/* DEĞİŞİKLİK: Büyük kart yerine artık bu liste var */}
         <div className={styles.newsListWrapper}>
           <h5>News from Montana</h5>
-            <ul>
-                {newsLinks.map((link, index) => (
-                    <li key={index}>
-                        <Link href="#">{link}</Link>
-                    </li>
-                ))}
-            </ul>
+          <ul>
+            {newsLinks.map((link, index) => (
+              <li key={index}>
+                <Link href="#">{link}</Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

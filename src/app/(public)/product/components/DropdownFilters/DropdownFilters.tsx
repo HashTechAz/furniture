@@ -1,14 +1,15 @@
-'use client'; 
+'use client';
 import React, { useState, useEffect } from 'react';
 import styles from './DropdownFilters.module.css';
 import { getColors, type BackendColor } from '@/lib/colors';
 import type { Material } from '@/lib/materials';
 import type { BackendCollection } from '@/lib/collections';
+import type { Room } from '@/lib/rooms';
 
 interface DropdownProps {
-  label?: string; 
+  label?: string;
   options: string[];
-  initialSelected?: string; 
+  initialSelected?: string;
 }
 
 const Dropdown = ({ label, options, initialSelected }: DropdownProps) => {
@@ -18,43 +19,43 @@ const Dropdown = ({ label, options, initialSelected }: DropdownProps) => {
   // Options dəyişəndə (API yüklənəndə) seçimi yeniləyək
   useEffect(() => {
     if (options.length > 0 && !selectedOption) {
-        setSelectedOption(options[0]);
+      setSelectedOption(options[0]);
     }
   }, [options, selectedOption]);
 
   const handleOptionClick = (option: string) => {
-    setSelectedOption(option); 
-    setIsOpen(false); 
+    setSelectedOption(option);
+    setIsOpen(false);
   };
 
   return (
     <div className={styles.dropdown}>
-      <button 
-        className={styles.dropdownButton} 
+      <button
+        className={styles.dropdownButton}
         onClick={() => setIsOpen(!isOpen)}
       >
         <span>{label ? label : selectedOption}</span>
-        <svg 
-          width="12" height="12" viewBox="0 0 24 24" 
+        <svg
+          width="12" height="12" viewBox="0 0 24 24"
           fill="none" xmlns="http://www.w3.org/2000/svg"
           className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}
         >
-          <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
-      
+
       <div className={`${styles.dropdownMenu} ${isOpen ? styles.menuOpen : ''}`}>
         <ul>
           {options.length > 0 ? (
             options.map((option, index) => (
-                <li key={index}>
+              <li key={index}>
                 <a href="#" onClick={(e) => { e.preventDefault(); handleOptionClick(option); }}>
-                    {option}
+                  {option}
                 </a>
-                </li>
+              </li>
             ))
           ) : (
-            <li style={{padding: '10px', color: '#999'}}>Yüklənir...</li>
+            <li style={{ padding: '10px', color: '#999' }}>Yüklənir...</li>
           )}
         </ul>
       </div>
@@ -85,8 +86,9 @@ const DepthDropdown = ({
       opt.value === null
         ? selectedDepthRange === null
         : selectedDepthRange !== null && opt.value?.min === selectedDepthRange.min && opt.value?.max === selectedDepthRange.max
-  ) ?? DEPTH_RANGE_OPTIONS[0];
-  const displayLabel = current?.label ?? 'Depth';
+  );
+  const isAll = !selectedDepthRange || current?.value === null;
+  const displayLabel = !isAll && current ? `Dərinlik - ${current.label}` : 'Dərinlik';
   return (
     <div className={styles.dropdown}>
       <button type="button" className={styles.dropdownButton} onClick={() => setIsOpen(!isOpen)}>
@@ -105,7 +107,7 @@ const DepthDropdown = ({
                 className={opt.value === null ? (selectedDepthRange === null ? styles.sortOption : '') : (selectedDepthRange?.min === opt.value?.min && selectedDepthRange?.max === opt.value?.max ? styles.sortOption : '')}
                 data-selected={
                   (opt.value === null && selectedDepthRange === null) ||
-                  (opt.value !== null && selectedDepthRange !== null && opt.value?.min === selectedDepthRange.min && opt.value?.max === selectedDepthRange.max)
+                    (opt.value !== null && selectedDepthRange !== null && opt.value?.min === selectedDepthRange.min && opt.value?.max === selectedDepthRange.max)
                     ? 'true'
                     : undefined
                 }
@@ -233,6 +235,62 @@ const CollectionDropdown = ({
   );
 };
 
+const RoomDropdown = ({
+  rooms,
+  selectedRoomId,
+  onSelect,
+}: {
+  rooms: Room[];
+  selectedRoomId: number | null;
+  onSelect: (id: number | null) => void;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selectedRoom = rooms.find((r) => r.id === selectedRoomId);
+  const displayLabel = selectedRoom ? `Otaq - ${selectedRoom.name}` : 'Otaqlar';
+  return (
+    <div className={styles.dropdown}>
+      <button type="button" className={styles.dropdownButton} onClick={() => setIsOpen(!isOpen)}>
+        <span>{displayLabel}</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}>
+          <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      <div className={`${styles.dropdownMenu} ${isOpen ? styles.menuOpen : ''}`}>
+        <ul>
+          <li>
+            <button
+              type="button"
+              style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 12px', fontSize: 14, fontWeight: 500 }}
+              className={selectedRoomId === null ? styles.sortOption : ''}
+              data-selected={selectedRoomId === null ? 'true' : undefined}
+              onClick={() => { onSelect(null); setIsOpen(false); }}
+            >
+              Hamısı
+            </button>
+          </li>
+          {rooms.length > 0 ? (
+            rooms.map((r) => (
+              <li key={r.id}>
+                <button
+                  type="button"
+                  style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '8px 12px', fontSize: 14, fontWeight: 500 }}
+                  className={selectedRoomId === r.id ? styles.sortOption : ''}
+                  data-selected={selectedRoomId === r.id ? 'true' : undefined}
+                  onClick={() => { onSelect(r.id); setIsOpen(false); }}
+                >
+                  {r.name}
+                </button>
+              </li>
+            ))
+          ) : (
+            <li style={{ padding: '10px', color: '#999' }}>Yüklənir...</li>
+          )}
+        </ul>
+      </div>
+    </div>
+  );
+};
+
 const ColourDropdown = ({ colors, selectedName, onSelect }: { colors: BackendColor[]; selectedName: string; onSelect: (name: string) => void }) => {
   const [isOpen, setIsOpen] = useState(false);
   const displayLabel = selectedName ? `Colour - ${selectedName}` : 'Colour';
@@ -241,7 +299,7 @@ const ColourDropdown = ({ colors, selectedName, onSelect }: { colors: BackendCol
       <button type="button" className={styles.dropdownButton} onClick={() => setIsOpen(!isOpen)}>
         <span>{displayLabel}</span>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ''}`}>
-          <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
       <div className={`${styles.dropdownMenu} ${isOpen ? styles.menuOpen : ''}`}>
@@ -333,6 +391,9 @@ interface DropdownFiltersProps {
   collections?: BackendCollection[];
   selectedCollectionId?: number | null;
   onCollectionSelect?: (id: number | null) => void;
+  rooms?: Room[];
+  selectedRoomId?: number | null;
+  onRoomSelect?: (id: number | null) => void;
   sortBy?: string;
   onSortChange?: (sortBy: string) => void;
 }
@@ -349,6 +410,9 @@ const DropdownFilters = ({
   collections = [],
   selectedCollectionId = null,
   onCollectionSelect,
+  rooms = [],
+  selectedRoomId = null,
+  onRoomSelect,
   sortBy = 'newest',
   onSortChange,
 }: DropdownFiltersProps) => {
@@ -360,17 +424,20 @@ const DropdownFilters = ({
     depth: DepthRange;
     colour: string;
     collection: number | null;
+    room: number | null;
   }>({
     material: selectedMaterialId,
     depth: selectedDepthRange,
     colour: selectedColor,
-    collection: selectedCollectionId
+    collection: selectedCollectionId,
+    room: selectedRoomId
   });
   const [openSections, setOpenSections] = useState({
     material: false,
     depth: false,
     colour: false,
-    collection: false
+    collection: false,
+    room: false
   });
 
   // Xarici rənglər dəyişəndə yenilə
@@ -389,6 +456,10 @@ const DropdownFilters = ({
   useEffect(() => {
     setSelectedFilters((prev) => ({ ...prev, collection: selectedCollectionId }));
   }, [selectedCollectionId]);
+
+  useEffect(() => {
+    setSelectedFilters((prev) => ({ ...prev, room: selectedRoomId }));
+  }, [selectedRoomId]);
 
   useEffect(() => {
     setSelectedFilters((prev) => ({ ...prev, depth: selectedDepthRange }));
@@ -415,11 +486,12 @@ const DropdownFilters = ({
 
   const handleFilterSelect = (category: keyof typeof selectedFilters, value: string | number | DepthRange) => {
     const isDepth = category === 'depth';
+    const isRoom = category === 'room';
     const isMaterial = category === 'material';
     const isCollection = category === 'collection';
     const current = selectedFilters[category];
     const same = isDepth ? isSameDepth(current as DepthRange, value as DepthRange) : current === value;
-    const newValue = same ? (isMaterial || isCollection ? null : isDepth ? null : '') : value;
+    const newValue = same ? (isMaterial || isCollection || isRoom ? null : isDepth ? null : '') : value;
     setSelectedFilters(prev => ({ ...prev, [category]: newValue }));
     if (category === 'colour' && onColorSelect && typeof value === 'string') {
       onColorSelect(value);
@@ -432,6 +504,9 @@ const DropdownFilters = ({
     }
     if (category === 'collection' && onCollectionSelect) {
       onCollectionSelect(typeof newValue === 'number' ? newValue : null);
+    }
+    if (category === 'room' && onRoomSelect) {
+      onRoomSelect(typeof newValue === 'number' ? newValue : null);
     }
   };
 
@@ -468,10 +543,15 @@ const DropdownFilters = ({
           selectedCollectionId={selectedCollectionId ?? null}
           onSelect={(id) => onCollectionSelect?.(id)}
         />
+        <RoomDropdown
+          rooms={rooms}
+          selectedRoomId={selectedRoomId ?? null}
+          onSelect={(id) => onRoomSelect?.(id)}
+        />
       </div>
-      
+
       <div className={styles.rightFilters}>
-        <button 
+        <button
           className={styles.mobileFilterButton}
           onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
         >
@@ -486,138 +566,169 @@ const DropdownFilters = ({
         <span className={styles.itemsCount}>14 items</span>
 
         <div className={`${styles.mobileDropdownMenu} ${isMobileFilterOpen ? styles.open : ''}`}>
-        <div className={styles.mobileDropdownContent}>
-          <div className={styles.mobileDropdownHeader}>
-            <h3>Filters</h3>
-            <button className={styles.closeButton} onClick={handleCancel}>×</button>
-          </div>
-
-          <div className={styles.mobileFilterSection}>
-            <h4
-              className={openSections.material ? styles.open : ''}
-              onClick={() => toggleSection('material')}
-            >
-              Material
-              <span className={styles.arrow}>▼</span>
-            </h4>
-            <div className={`${styles.mobileFilterOptions} ${openSections.material ? styles.open : ''}`}>
-              <div
-                className={`${styles.mobileFilterOption} ${selectedFilters.material === null ? styles.selected : ''}`}
-                onClick={() => handleFilterSelect('material', null)}
-              >
-                Hamısı
-              </div>
-              {materials.length > 0 ? (
-                materials.map((m) => (
-                  <div
-                    key={m.id}
-                    className={`${styles.mobileFilterOption} ${selectedFilters.material === m.id ? styles.selected : ''}`}
-                    onClick={() => handleFilterSelect('material', m.id)}
-                  >
-                    {m.name}
-                  </div>
-                ))
-              ) : (
-                <div style={{ padding: '10px', color: '#999' }}>Yüklənir...</div>
-              )}
+          <div className={styles.mobileDropdownContent}>
+            <div className={styles.mobileDropdownHeader}>
+              <h3>Filters</h3>
+              <button className={styles.closeButton} onClick={handleCancel}>×</button>
             </div>
-          </div>
 
-          <div className={styles.mobileFilterSection}>
-            <h4
-              className={openSections.depth ? styles.open : ''}
-              onClick={() => toggleSection('depth')}
-            >
-              Depth (sm)
-              <span className={styles.arrow}>▼</span>
-            </h4>
-            <div className={`${styles.mobileFilterOptions} ${openSections.depth ? styles.open : ''}`}>
-              {DEPTH_RANGE_OPTIONS.map((opt) => (
+            <div className={styles.mobileFilterSection}>
+              <h4
+                className={openSections.material ? styles.open : ''}
+                onClick={() => toggleSection('material')}
+              >
+                Material
+                <span className={styles.arrow}>▼</span>
+              </h4>
+              <div className={`${styles.mobileFilterOptions} ${openSections.material ? styles.open : ''}`}>
                 <div
-                  key={opt.label}
-                  className={`${styles.mobileFilterOption} ${
-                    (opt.value === null && selectedFilters.depth === null) ||
-                    (opt.value !== null && selectedFilters.depth !== null && opt.value?.min === selectedFilters.depth?.min && opt.value?.max === selectedFilters.depth?.max)
+                  className={`${styles.mobileFilterOption} ${selectedFilters.material === null ? styles.selected : ''}`}
+                  onClick={() => handleFilterSelect('material', null)}
+                >
+                  Hamısı
+                </div>
+                {materials.length > 0 ? (
+                  materials.map((m) => (
+                    <div
+                      key={m.id}
+                      className={`${styles.mobileFilterOption} ${selectedFilters.material === m.id ? styles.selected : ''}`}
+                      onClick={() => handleFilterSelect('material', m.id)}
+                    >
+                      {m.name}
+                    </div>
+                  ))
+                ) : (
+                  <div style={{ padding: '10px', color: '#999' }}>Yüklənir...</div>
+                )}
+              </div>
+            </div>
+
+            <div className={styles.mobileFilterSection}>
+              <h4
+                className={openSections.depth ? styles.open : ''}
+                onClick={() => toggleSection('depth')}
+              >
+                Dərinlik
+                <span className={styles.arrow}>▼</span>
+              </h4>
+              <div className={`${styles.mobileFilterOptions} ${openSections.depth ? styles.open : ''}`}>
+                {DEPTH_RANGE_OPTIONS.map((opt) => (
+                  <div
+                    key={opt.label}
+                    className={`${styles.mobileFilterOption} ${(opt.value === null && selectedFilters.depth === null) ||
+                      (opt.value !== null && selectedFilters.depth !== null && opt.value?.min === selectedFilters.depth?.min && opt.value?.max === selectedFilters.depth?.max)
                       ? styles.selected
                       : ''
-                  }`}
-                  onClick={() => handleFilterSelect('depth', opt.value)}
-                >
-                  {opt.label}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* MOBİL RƏNG FİLTRİ (API-dən) */}
-          <div className={styles.mobileFilterSection}>
-            <h4 
-              className={openSections.colour ? styles.open : ''}
-              onClick={() => toggleSection('colour')}
-            >
-              Colour
-              <span className={styles.arrow}>▼</span>
-            </h4>
-            <div className={`${styles.mobileFilterOptions} ${openSections.colour ? styles.open : ''}`}>
-              {colourOptions.length > 0 ? (
-                <div className={styles.colorSwatches}>
-                  {colourOptions.map((c) => (
-                    <button
-                      key={c.id}
-                      type="button"
-                      className={`${styles.colorSwatch} ${selectedFilters.colour === c.name ? styles.colorSwatchSelected : ''}`}
-                      style={{ background: c.hexCode || '#ccc' }}
-                      title={c.name}
-                      onClick={() => handleFilterSelect('colour', c.name)}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <div style={{ padding: '10px' }}>Yüklənir...</div>
-              )}
-            </div>
-          </div>
-
-          <div className={styles.mobileFilterSection}>
-            <h4
-              className={openSections.collection ? styles.open : ''}
-              onClick={() => toggleSection('collection')}
-            >
-              Kolleksiya
-              <span className={styles.arrow}>▼</span>
-            </h4>
-            <div className={`${styles.mobileFilterOptions} ${openSections.collection ? styles.open : ''}`}>
-              <div
-                className={`${styles.mobileFilterOption} ${selectedFilters.collection === null ? styles.selected : ''}`}
-                onClick={() => handleFilterSelect('collection', null)}
-              >
-                Hamısı
-              </div>
-              {collections.length > 0 ? (
-                collections.map((c) => (
-                  <div
-                    key={c.id}
-                    className={`${styles.mobileFilterOption} ${selectedFilters.collection === c.id ? styles.selected : ''}`}
-                    onClick={() => handleFilterSelect('collection', c.id)}
+                      }`}
+                    onClick={() => handleFilterSelect('depth', opt.value)}
                   >
-                    {c.name}
+                    {opt.label}
                   </div>
-                ))
-              ) : (
-                <div style={{ padding: '10px', color: '#999' }}>Yüklənir...</div>
-              )}
+                ))}
+              </div>
+            </div>
+
+            {/* MOBİL RƏNG FİLTRİ (API-dən) */}
+            <div className={styles.mobileFilterSection}>
+              <h4
+                className={openSections.colour ? styles.open : ''}
+                onClick={() => toggleSection('colour')}
+              >
+                Colour
+                <span className={styles.arrow}>▼</span>
+              </h4>
+              <div className={`${styles.mobileFilterOptions} ${openSections.colour ? styles.open : ''}`}>
+                {colourOptions.length > 0 ? (
+                  <div className={styles.colorSwatches}>
+                    {colourOptions.map((c) => (
+                      <button
+                        key={c.id}
+                        type="button"
+                        className={`${styles.colorSwatch} ${selectedFilters.colour === c.name ? styles.colorSwatchSelected : ''}`}
+                        style={{ background: c.hexCode || '#ccc' }}
+                        title={c.name}
+                        onClick={() => handleFilterSelect('colour', c.name)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{ padding: '10px' }}>Yüklənir...</div>
+                )}
+              </div>
+            </div>
+
+            <div className={styles.mobileFilterSection}>
+              <h4
+                className={openSections.collection ? styles.open : ''}
+                onClick={() => toggleSection('collection')}
+              >
+                Kolleksiya
+                <span className={styles.arrow}>▼</span>
+              </h4>
+              <div className={`${styles.mobileFilterOptions} ${openSections.collection ? styles.open : ''}`}>
+                <div
+                  className={`${styles.mobileFilterOption} ${selectedFilters.collection === null ? styles.selected : ''}`}
+                  onClick={() => handleFilterSelect('collection', null)}
+                >
+                  Hamısı
+                </div>
+                {collections.length > 0 ? (
+                  collections.map((c) => (
+                    <div
+                      key={c.id}
+                      className={`${styles.mobileFilterOption} ${selectedFilters.collection === c.id ? styles.selected : ''}`}
+                      onClick={() => handleFilterSelect('collection', c.id)}
+                    >
+                      {c.name}
+                    </div>
+                  ))
+                ) : (
+                  <div style={{ padding: '10px', color: '#999' }}>Yüklənir...</div>
+                )}
+              </div>
+            </div>
+
+            {/* Otaqlar üçün */}
+            <div className={styles.mobileFilterSection}>
+              <h4
+                className={openSections.room ? styles.open : ''}
+                onClick={() => toggleSection('room')}
+              >
+                Otaqlar
+                <span className={styles.arrow}>▼</span>
+              </h4>
+              <div className={`${styles.mobileFilterOptions} ${openSections.room ? styles.open : ''}`}>
+                <div
+                  className={`${styles.mobileFilterOption} ${selectedFilters.room === null ? styles.selected : ''}`}
+                  onClick={() => handleFilterSelect('room', null)}
+                >
+                  Hamısı
+                </div>
+                {rooms.length > 0 ? (
+                  rooms.map((r) => (
+                    <div
+                      key={r.id}
+                      className={`${styles.mobileFilterOption} ${selectedFilters.room === r.id ? styles.selected : ''}`}
+                      onClick={() => handleFilterSelect('room', r.id)}
+                    >
+                      {r.name}
+                    </div>
+                  ))
+                ) : (
+                  <div style={{ padding: '10px', color: '#999' }}>Yüklənir...</div>
+                )}
+              </div>
+            </div>
+
+            <div className={styles.mobileFilterButtons}>
+              <button className={styles.cancelButton} onClick={handleCancel}>
+                Cancel
+              </button>
+              <button className={styles.applyButton} onClick={handleApply}>
+                Apply
+              </button>
             </div>
           </div>
-
-          <div className={styles.mobileFilterButtons}>
-            <button className={styles.cancelButton} onClick={handleCancel}>
-              Cancel
-            </button>
-            <button className={styles.applyButton} onClick={handleApply}>
-              Apply
-            </button>
-          </div>
-        </div>
         </div>
 
         {/* Sıralama dropdown — backend sortBy: newest | price_asc | price_desc | name_asc | name_desc */}

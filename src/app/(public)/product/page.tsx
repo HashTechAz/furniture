@@ -11,6 +11,7 @@ import { getProducts, type FrontendProduct } from '@/lib/products';
 import { getColors, type BackendColor } from '@/lib/colors';
 import { getMaterials, type Material } from '@/lib/materials';
 import { getCollections, type BackendCollection } from '@/lib/collections';
+import { getRooms, type Room } from '@/lib/rooms';
 import { getCategories, type Category } from '@/lib/categories';
 import styles from './page.module.css';
 
@@ -26,11 +27,21 @@ function ProductGridSkeleton() {
 
 const ProductPage = () => {
   const searchParams = useSearchParams();
-  const roomsIdFromUrl = useMemo(() => {
+  const [selectedRoomId, setSelectedRoomId] = useState<number | null>(() => {
     const v = searchParams.get('roomsId');
-    if (v === null || v === '') return null;
-    const n = parseInt(v, 10);
-    return Number.isNaN(n) ? null : n;
+    return v ? parseInt(v, 10) || null : null;
+  });
+
+  useEffect(() => {
+    const v = searchParams.get('roomsId');
+    if (v) {
+      const n = parseInt(v, 10);
+      if (!Number.isNaN(n)) {
+        setSelectedRoomId(n);
+      }
+    } else {
+      setSelectedRoomId(null);
+    }
   }, [searchParams]);
   const searchFromUrl = searchParams.get('search')?.trim() || null;
 
@@ -42,11 +53,27 @@ const ProductPage = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const [selectedMaterialId, setSelectedMaterialId] = useState<number | null>(null);
   const [selectedDepthRange, setSelectedDepthRange] = useState<{ min: number; max?: number } | null>(null);
-  const [selectedCollectionId, setSelectedCollectionId] = useState<number | null>(null);
+  const [selectedCollectionId, setSelectedCollectionId] = useState<number | null>(() => {
+    const v = searchParams.get('collectionId');
+    return v ? parseInt(v, 10) || null : null;
+  });
   const [sortBy, setSortBy] = useState<string>('newest');
+
+  useEffect(() => {
+    const v = searchParams.get('collectionId');
+    if (v) {
+      const n = parseInt(v, 10);
+      if (!Number.isNaN(n)) {
+        setSelectedCollectionId(n);
+      }
+    } else {
+      setSelectedCollectionId(null);
+    }
+  }, [searchParams]);
   const [colors, setColors] = useState<BackendColor[]>([]);
   const [materials, setMaterials] = useState<Material[]>([]);
   const [collections, setCollections] = useState<BackendCollection[]>([]);
+  const [rooms, setRooms] = useState<Room[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -58,14 +85,14 @@ const ProductPage = () => {
         setLoading(true);
         setCurrentPage(1);
 
-        const [productsData, colorsData, materialsData, collectionsData, categoriesData] = await Promise.all([
+        const [productsData, colorsData, materialsData, collectionsData, roomsData, categoriesData] = await Promise.all([
           getProducts({
             pageNumber: 1,
             pageSize: productsPerPage,
             sortBy,
             ...(searchFromUrl && { searchTerm: searchFromUrl }),
             ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
-            ...(roomsIdFromUrl != null && { roomId: roomsIdFromUrl }),
+            ...(selectedRoomId != null && { roomId: selectedRoomId }),
             ...(selectedMaterialId != null && { materialIds: [selectedMaterialId] }),
             ...(selectedDepthRange != null && {
               minDepth: selectedDepthRange.min,
@@ -76,6 +103,7 @@ const ProductPage = () => {
           getColors(),
           getMaterials(),
           getCollections(),
+          getRooms(),
           getCategories()
         ]);
 
@@ -84,6 +112,7 @@ const ProductPage = () => {
         setColors(Array.isArray(colorsData) ? colorsData : []);
         setMaterials(Array.isArray(materialsData) ? materialsData : []);
         setCollections(Array.isArray(collectionsData) ? collectionsData : []);
+        setRooms(Array.isArray(roomsData) ? roomsData : []);
         setCategories(Array.isArray(categoriesData) ? categoriesData : []);
 
         if (productsData.length < productsPerPage) {
@@ -100,7 +129,7 @@ const ProductPage = () => {
       }
     };
     fetchData();
-  }, [selectedCategoryId, sortBy, roomsIdFromUrl, searchFromUrl, selectedMaterialId, selectedDepthRange, selectedCollectionId]);
+  }, [selectedCategoryId, sortBy, selectedRoomId, searchFromUrl, selectedMaterialId, selectedDepthRange, selectedCollectionId]);
 
   // Daha çox məhsul yüklə
   const loadMoreProducts = async () => {
@@ -115,7 +144,7 @@ const ProductPage = () => {
         sortBy,
         ...(searchFromUrl && { searchTerm: searchFromUrl }),
         ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
-        ...(roomsIdFromUrl != null && { roomId: roomsIdFromUrl }),
+        ...(selectedRoomId != null && { roomId: selectedRoomId }),
         ...(selectedMaterialId != null && { materialIds: [selectedMaterialId] }),
         ...(selectedDepthRange != null && {
           minDepth: selectedDepthRange.min,
@@ -123,20 +152,20 @@ const ProductPage = () => {
         }),
         ...(selectedCollectionId != null && { collectionId: selectedCollectionId }),
       });
-      
+
       if (newProducts.length === 0) {
         setHasMore(false);
         return;
       }
-      
+
       // Yeni məhsulları əlavə et
       const updatedProducts = [...allProducts, ...newProducts];
       setAllProducts(updatedProducts);
       setCurrentPage(nextPage);
-      
+
       // Rəng filtrini tətbiq et
       applyColorFilter(updatedProducts, selectedColor);
-      
+
       // Əgər az məhsul gəlibsə, daha çox yoxdur
       if (newProducts.length < productsPerPage) {
         setHasMore(false);
@@ -161,7 +190,7 @@ const ProductPage = () => {
       return;
     }
 
-    const filtered = productsToFilter.filter(product => 
+    const filtered = productsToFilter.filter(product =>
       product.selectedColorIds.includes(selectedColorObj.id)
     );
     setDisplayedProducts(filtered);
@@ -199,16 +228,19 @@ const ProductPage = () => {
         collections={collections}
         selectedCollectionId={selectedCollectionId}
         onCollectionSelect={setSelectedCollectionId}
+        rooms={rooms}
+        selectedRoomId={selectedRoomId}
+        onRoomSelect={setSelectedRoomId}
         sortBy={sortBy}
         onSortChange={setSortBy}
       />
       {loading ? (
         <ProductGridSkeleton />
       ) : (
-        <ProductGrid 
-          products={displayedProducts} 
-          onLoadMore={loadMoreProducts} 
-          hasMore={hasMore} 
+        <ProductGrid
+          products={displayedProducts}
+          onLoadMore={loadMoreProducts}
+          hasMore={hasMore}
           loadingMore={loadingMore}
         />
       )}

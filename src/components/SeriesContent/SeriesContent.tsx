@@ -4,18 +4,18 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from './SeriesContent.module.css';
 import NavbarCategoryCard from '../NavbarMenuCards/NavbarCategoryCard';
-import { getRooms } from '@/lib/rooms';
+import { getCollections } from '@/lib/collections';
 
 const PLACEHOLDER_IMAGE = 'https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/colours/montana_colourps_amber_camomile_rhubarb_flint_oat.jpg?mode=crop&width=1520&height=2027';
 
 const SeriesContent = () => {
-  const [rooms, setRooms] = useState<{ id: number; name: string; imageUrl?: string }[]>([]);
+  const [collections, setCollections] = useState<{ id: number; name: string; coverImageUrl?: string }[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getRooms()
-      .then((data) => setRooms(Array.isArray(data) ? data : []))
-      .catch(() => setRooms([]))
+    getCollections()
+      .then((data) => setCollections(Array.isArray(data) ? data : []))
+      .catch(() => setCollections([]))
       .finally(() => setLoading(false));
   }, []);
 
@@ -45,18 +45,18 @@ const SeriesContent = () => {
           <div className={styles.gridContainer}>
             {loading ? (
               <div className={styles.loadingState}>Loading...</div>
-            ) : rooms.length === 0 ? (
-              <div className={styles.loadingState}>No rooms yet.</div>
+            ) : collections.length === 0 ? (
+              <div className={styles.loadingState}>No collections yet.</div>
             ) : (
-              rooms.map((room) => {
-                const imageUrl = room.imageUrl
-                  ? (room.imageUrl.startsWith('http') ? room.imageUrl : `${baseUrl}${room.imageUrl.startsWith('/') ? '' : '/'}${room.imageUrl}`)
+              collections.map((collection) => {
+                const imageUrl = collection.coverImageUrl
+                  ? (collection.coverImageUrl.startsWith('http') ? collection.coverImageUrl : `${baseUrl}${collection.coverImageUrl.startsWith('/') ? '' : '/'}${collection.coverImageUrl}`)
                   : PLACEHOLDER_IMAGE;
                 return (
                   <NavbarCategoryCard
-                    key={room.id}
-                    href={`/product?roomsId=${room.id}`}
-                    label={room.name}
+                    key={collection.id}
+                    href={`/product?collectionId=${collection.id}`}
+                    label={collection.name}
                     imageUrl={imageUrl}
                   />
                 );

@@ -138,9 +138,17 @@
 
 .smallCardImageWrapper {
     width: 100%; 
-    height: 120px;
+    height: 160px;
     overflow: hidden;
     flex-shrink: 0;
+}
+
+/* Adjusting for 18+ inch screens (roughly min-width 1600px) */
+@media screen and (min-width: 1600px) {
+    .smallCardImageWrapper {
+        width: calc(100% - 100px);
+        height: 210px;
+    }
 }
 
 .smallCardImageWrapper img {
