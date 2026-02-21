@@ -175,6 +175,8 @@ const Header: React.FC = () => {
     if (styleMap[p]) return styleMap[p];
     if (p.startsWith("/product/") && p !== "/product") return styles.productDetailsHeader;
     if (p.startsWith("/series") && !p.includes("guarantees") && !p.includes("assembly")) return styles.seriesHeader;
+    if (p.includes("/series/guarantees")) return styles.guaranteesHeader;
+    if (p.includes("/series/assembly")) return styles.assemblyHeader;
 
     // Specific colour-inspiration header colors
     if (p.includes("colour-inspiration/colour-class")) return styles.colourClassHeader;

@@ -77,9 +77,10 @@
 .panelContainer {
   position: absolute;
   left: 60px;
-  top: 55%;
+  top: 50%;
   transform: translateY(-50%);
-  width: 420px;
+  width: max-content;
+  min-width: 250px;
   border-radius: 8px;
   z-index: 10;
   animation: fadeIn 0.3s ease-out;

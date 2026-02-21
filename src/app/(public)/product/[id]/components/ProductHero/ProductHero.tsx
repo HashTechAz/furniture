@@ -139,22 +139,19 @@ const ColourPanel = ({
   const listToShow = hasVariants
     ? variants
     : currentProductForSingle
-    ? [currentProductForSingle]
-    : [];
+      ? [currentProductForSingle]
+      : [];
 
   return (
     <div className={styles.panelLayout}>
       <div className={styles.panelContent}>
-        <div className={styles.panelHeader}>
-          <h3>Colour: {currentColor}</h3>
-        </div>
         <div className={styles.panelSubHeader}>
           <span>
             {hasVariants
               ? "Bu məhsulun rəng variantları"
               : listToShow.length === 1
-              ? "Bu məhsulun yalnız bu rəngi var"
-              : ""}
+                ? "Bu məhsulun yalnız bu rəngi var"
+                : ""}
           </span>
         </div>
 
@@ -201,38 +198,55 @@ const ColourPanel = ({
 // --- POSITION PANEL ---
 const PositionPanel = ({
   currentPosition,
-  onSelectPosition,
+  productGroupId,
+  variants,
+  currentProductForSingle,
+  onSelectVariant,
 }: {
   currentPosition: string;
-  onSelectPosition: (position: string) => void;
+  productGroupId: number | null | undefined;
+  variants: FrontendProduct[];
+  currentProductForSingle: FrontendProduct | null;
+  onSelectVariant?: (variantId: number) => void;
 }) => {
-  const positionOptions = [
-    "Plinth H3 cm",
-    "Plinth H7 cm",
-    "Castors H6.8 cm",
-    "Legs H12.6 cm",
-    "No position (used for stacked modules)",
-    "Suspension rail",
-  ];
+  const hasVariants = variants.length > 0;
+
+  // Məhsul qrupuna aid unik pozisiyaları toplamaq üçün
+  const listToShow = hasVariants
+    ? variants
+    : currentProductForSingle
+      ? [currentProductForSingle]
+      : [];
+
+  // Məhsulun eyni adla olanlarını tapırıq, ölçülərinə (W x H) görə qruplayırıq
+  const uniquePositionsMap = new Map<string, FrontendProduct>();
+  listToShow.forEach(v => {
+    const dimLabel = v.width && v.height ? `W ${v.width} × H ${v.height} cm` : "Not specified";
+    if (!uniquePositionsMap.has(dimLabel)) {
+      uniquePositionsMap.set(dimLabel, { ...v, position: dimLabel }); // Display values in position
+    }
+  });
+
+  const uniquePositions = Array.from(uniquePositionsMap.values());
+
   return (
     <div className={styles.panelContent}>
-      <div className={styles.panelHeader}>
-        <h3>Position: {currentPosition}</h3>
-      </div>
-      <ul className={styles.positionList}>
-        {positionOptions.map((option) => (
-          <li
-            key={option}
-            className={`${styles.positionItem} ${
-              currentPosition === option ? styles.activePosition : ""
-            }`}
-            onClick={() => onSelectPosition(option)}
-          >
-            {" "}
-            {option}{" "}
-          </li>
-        ))}
-      </ul>
+      {uniquePositions.length > 0 ? (
+        <ul className={styles.positionList}>
+          {uniquePositions.map((option) => (
+            <li
+              key={option.id}
+              className={`${styles.positionItem} ${currentPosition === option.position ? styles.activePosition : ""
+                }`}
+              onClick={() => onSelectVariant?.(option.id)}
+            >
+              {option.position}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p style={{ padding: "0", margin: "0", color: "#666", fontSize: "14px", whiteSpace: "nowrap" }}>Digər ölçülər tapılmadı.</p>
+      )}
     </div>
   );
 };
@@ -240,31 +254,54 @@ const PositionPanel = ({
 // --- DEPTH PANEL ---
 const DepthPanel = ({
   currentDepth,
-  onSelectDepth,
+  productGroupId,
+  variants,
+  currentProductForSingle,
+  onSelectVariant,
 }: {
   currentDepth: string;
-  onSelectDepth: (depth: string) => void;
+  productGroupId: number | null | undefined;
+  variants: FrontendProduct[];
+  currentProductForSingle: FrontendProduct | null;
+  onSelectVariant?: (variantId: number) => void;
 }) => {
-  const depthOptions = ["Depth 20 cm", "Depth 30 cm", "Depth 38 cm", "Depth 47 cm"];
+  const hasVariants = variants.length > 0;
+
+  const listToShow = hasVariants
+    ? variants
+    : currentProductForSingle
+      ? [currentProductForSingle]
+      : [];
+
+  const uniqueDepthsMap = new Map<string, FrontendProduct>();
+  listToShow.forEach(v => {
+    // Dərinlik `v.depth` obyektində gəlir, "Depth X cm" formatına salaq
+    const depthLabel = v.depth ? `Depth ${v.depth} cm` : "Not specified";
+    if (!uniqueDepthsMap.has(depthLabel)) {
+      uniqueDepthsMap.set(depthLabel, { ...v, depthLabel } as FrontendProduct & { depthLabel: string });
+    }
+  });
+
+  const uniqueDepths = Array.from(uniqueDepthsMap.values()) as Array<FrontendProduct & { depthLabel: string }>;
+
   return (
     <div className={styles.panelContent}>
-      <div className={styles.panelHeader}>
-        <h3>Depth: {currentDepth}</h3>
-      </div>
-      <ul className={styles.positionList}>
-        {depthOptions.map((option) => (
-          <li
-            key={option}
-            className={`${styles.positionItem} ${
-              currentDepth === option ? styles.activePosition : ""
-            }`}
-            onClick={() => onSelectDepth(option)}
-          >
-            {" "}
-            {option}{" "}
-          </li>
-        ))}
-      </ul>
+      {uniqueDepths.length > 0 ? (
+        <ul className={styles.positionList}>
+          {uniqueDepths.map((option) => (
+            <li
+              key={option.id}
+              className={`${styles.positionItem} ${currentDepth === option.depthLabel ? styles.activePosition : ""
+                }`}
+              onClick={() => onSelectVariant?.(option.id)}
+            >
+              {option.depthLabel}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p style={{ padding: "0", margin: "0", color: "#666", fontSize: "14px", whiteSpace: "nowrap" }}>Digər ölçülər tapılmadı.</p>
+      )}
     </div>
   );
 };
@@ -296,9 +333,11 @@ const ProductHero = ({ product }: ProductHeroProps) => {
 
   const [currentProductColor, setCurrentProductColor] = useState(product.color || "White");
   const [currentProductPosition, setCurrentProductPosition] = useState(
-    product.position || "Plinth H3 cm"
+    product.width && product.height ? `W ${product.width} × H ${product.height} cm` : "Not specified"
   );
-  const [currentProductDepth, setCurrentProductDepth] = useState("Depth 38 cm");
+  const [currentProductDepth, setCurrentProductDepth] = useState(
+    product.depth ? `Depth ${product.depth} cm` : "Not specified"
+  );
 
   const [variants, setVariants] = useState<FrontendProduct[]>([]);
   const [allColors, setAllColors] = useState<BackendColor[]>([]);
@@ -338,39 +377,6 @@ const ProductHero = ({ product }: ProductHeroProps) => {
       router.push(`/product/${variantId}`);
     },
     [router]
-  );
-
-  // Şəkil üzərində siçan — lens mövqeyi (şəkil sabit, zoom lens içində hərəkət edir)
-  const handleImageMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      const wrap = imageWrapRef.current;
-      if (!wrap) return;
-      const img = wrap.querySelector("img");
-      if (!img) return;
-      const rect = wrap.getBoundingClientRect();
-      const cx = e.clientX - rect.left;
-      const cy = e.clientY - rect.top;
-      const nw = (img as HTMLImageElement).naturalWidth || rect.width;
-      const nh = (img as HTMLImageElement).naturalHeight || rect.height;
-      const scale = Math.min(rect.width / nw, rect.height / nh);
-      const dispW = nw * scale;
-      const dispH = nh * scale;
-      const offsetX = (rect.width - dispW) / 2;
-      const offsetY = (rect.height - dispH) / 2;
-      const cix = cx - offsetX;
-      const ciy = cy - offsetY;
-      const innerW = dispW * ZOOM_FACTOR;
-      const innerH = dispH * ZOOM_FACTOR;
-      setLensData({
-        lensX: cx,
-        lensY: cy,
-        innerLeft: LENS_SIZE / 2 - cix * ZOOM_FACTOR,
-        innerTop: LENS_SIZE / 2 - ciy * ZOOM_FACTOR,
-        innerWidth: innerW,
-        innerHeight: innerH,
-      });
-    },
-    []
   );
 
   const handleImageMouseLeave = useCallback(() => setLensData(null), []);
@@ -425,7 +431,10 @@ const ProductHero = ({ product }: ProductHeroProps) => {
       panel: (
         <PositionPanel
           currentPosition={currentProductPosition}
-          onSelectPosition={setCurrentProductPosition}
+          productGroupId={product.productGroupId}
+          variants={variants}
+          currentProductForSingle={variants.length === 0 ? product : null}
+          onSelectVariant={handleSelectVariant}
         />
       ),
     },
@@ -445,7 +454,10 @@ const ProductHero = ({ product }: ProductHeroProps) => {
       panel: (
         <DepthPanel
           currentDepth={currentProductDepth}
-          onSelectDepth={setCurrentProductDepth}
+          productGroupId={product.productGroupId}
+          variants={variants}
+          currentProductForSingle={variants.length === 0 ? product : null}
+          onSelectVariant={handleSelectVariant}
         />
       ),
     },
@@ -469,10 +481,10 @@ const ProductHero = ({ product }: ProductHeroProps) => {
     <section className={styles.heroSection}>
       {/* Full Screen Gallery Modal */}
       {isGalleryOpen && (
-        <FullScreenGallery 
-          images={product.galleryImages} 
-          title={product.title} 
-          onClose={() => setIsGalleryOpen(false)} 
+        <FullScreenGallery
+          images={product.galleryImages}
+          title={product.title}
+          onClose={() => setIsGalleryOpen(false)}
         />
       )}
 

@@ -555,13 +555,13 @@
 }
 
 .headerAtTop.guaranteesHeader {
-  background-color: #3B7840 !important;
-  color: #fff !important;
+  background-color: #3B7840;
+  color: #fff;
 }
 
 .headerAtTop.assemblyHeader {
-  background-color: #F4F4F1 !important;
-  color: #000 !important;
+  background-color: #F4F4F1;
+  color: #000;
 }
 
 .headerAtTop.seriesHeader {

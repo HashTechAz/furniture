@@ -6,15 +6,16 @@ export interface SystemHeroProps {
   description?: string;
   backgroundColor?: string;
   color?: string;
+  increasePaddingY?: boolean;
 }
 
-const SystemHero = ({ title, description, backgroundColor, color }: SystemHeroProps) => {
+const SystemHero = ({ title, description, backgroundColor, color, increasePaddingY }: SystemHeroProps) => {
   const sectionStyle = backgroundColor ? { backgroundColor } : {};
   const titleStyle = color ? { color } : {};
 
   return (
     <>
-      <section className={styles.systemHero} style={sectionStyle}>
+      <section className={`${styles.systemHero} ${increasePaddingY ? styles.extraPaddingY : ""}`} style={sectionStyle}>
         <div className={styles.content}>
           <h1 className={styles.title} style={titleStyle}>
             {title}
