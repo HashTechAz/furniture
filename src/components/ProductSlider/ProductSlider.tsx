@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import useEmblaCarousel from "embla-carousel-react";
 import styles from "./ProductSlider.module.css";
 import systemStyles from "./ProductSliderSystem.module.css";
@@ -125,12 +126,17 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
         <div className={currentStyles.embla__container}>
           {currentSlideData.map((slide) => (
             <div className={currentStyles.embla__slide} key={slide.id}>
-              <CategoryCard
-                label={slide.label}
-                imageUrl={slide.imageUrl}
-                variant={variant}
-                size={slide.size as "wide" | "normal" | "default"}
-              />
+              <Link
+                href={`/product?CategoryId=${slide.id}`}
+                style={{ textDecoration: "none", color: "inherit", display: "block" }}
+              >
+                <CategoryCard
+                  label={slide.label}
+                  imageUrl={slide.imageUrl}
+                  variant={variant}
+                  size={slide.size as "wide" | "normal" | "default"}
+                />
+              </Link>
             </div>
           ))}
         </div>

@@ -7,7 +7,7 @@ import { createCategory, getCategories, Category, uploadCategoryImage } from '@/
 import { useAdminModal } from '@/context/admin-modal-context';
 import styles from '../page.module.css';
 
-import { FaSave, FaTags, FaLayerGroup, FaImage, FaUpload } from 'react-icons/fa';
+import { FaSave, FaTags, FaLayerGroup, FaCloudUploadAlt, FaTimes } from 'react-icons/fa';
 
 export default function NewCategoryPage() {
   const router = useRouter();
@@ -94,13 +94,17 @@ export default function NewCategoryPage() {
     }
   };
 
-  // IMAGE HANDLER
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setImageFile(file);
       setImagePreview(URL.createObjectURL(file));
     }
+  };
+
+  const removeNewFile = () => {
+    setImageFile(null);
+    setImagePreview(null);
   };
 
   return (
@@ -144,33 +148,23 @@ export default function NewCategoryPage() {
         {/* SAĞ: Təşkilat və Şəkil */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
-          {/* IMAGE GARD */}
+          {/* IMAGE CARD — eyni UI designers/collections ilə */}
           <div className={styles.card}>
-            <div className={styles.cardTitle}><FaImage /> Category Image</div>
+            <div className={styles.cardTitle}><FaCloudUploadAlt /> Category Image</div>
 
-            <div style={{ marginBottom: 15, textAlign: 'center' }}>
-              {imagePreview ? (
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  style={{ width: '100%', maxWidth: 200, height: 'auto', borderRadius: 8, border: '1px solid #eee' }}
-                />
-              ) : (
-                <div style={{ width: '100%', height: 150, background: '#f5f5f5', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999' }}>
-                  <FaImage size={40} opacity={0.3} />
-                </div>
-              )}
-            </div>
-
-            <input
-              type="file"
-              accept="image/png, image/jpeg, image/jpg"
-              onChange={handleImageChange}
-              style={{ width: '100%', fontSize: 13 }}
-            />
-            <p style={{ fontSize: 12, color: '#666', marginTop: 8 }}>
-              Şəkil kateqoriya yaradılarkən yüklənəcək.
-            </p>
+            {imagePreview ? (
+              <div className={styles.previewWrapper}>
+                <img src={imagePreview} alt="Preview" className={styles.previewImage} />
+                <button type="button" onClick={removeNewFile} className={styles.removeImageBtn} title="Remove"><FaTimes /></button>
+              </div>
+            ) : (
+              <label className={styles.uploadArea}>
+                <input type="file" accept="image/png,image/jpeg,image/jpg" hidden onChange={handleFileChange} />
+                <div style={{ fontSize: 28, color: '#ccc', marginBottom: 8 }}><FaCloudUploadAlt /></div>
+                <span style={{ fontSize: 13, color: '#666', fontWeight: 500 }}>Upload Image</span>
+                <span style={{ fontSize: 12, color: '#999', marginTop: 4 }}>Image will be saved when you create the category.</span>
+              </label>
+            )}
           </div>
 
           <div className={styles.card}>

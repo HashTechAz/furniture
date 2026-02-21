@@ -12,11 +12,15 @@ export interface Category {
   productCount?: number;
 }
 
-type CategoryApiResponse = Category & { ImageUrl?: string };
+type CategoryApiResponse = Category & { ImageUrl?: string; image?: string };
 
 function normalizeCategory(c: CategoryApiResponse): Category {
-  const imageUrl = c.imageUrl ?? c.ImageUrl ?? null;
-  return { ...c, imageUrl };
+  const raw = c.imageUrl ?? c.ImageUrl ?? (c as CategoryApiResponse).image ?? null;
+  const imageUrl = getCategoryImageFullUrl(raw) ?? raw ?? null;
+  const subCategories = Array.isArray(c.subCategories)
+    ? c.subCategories.map((sub) => normalizeCategory(sub as CategoryApiResponse))
+    : c.subCategories;
+  return { ...c, imageUrl, subCategories };
 }
 
 // Backend-ə göndərilən
@@ -64,8 +68,18 @@ export async function deleteCategory(id: number | string, token: string) {
   });
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+export const CATEGORY_API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+const BASE_URL = CATEGORY_API_BASE_URL;
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
+
+/** Relative path-i API əsas URL ilə birləşdirir; artıq tam URL-dirsə olduğu kimi qaytarır */
+export function getCategoryImageFullUrl(imageUrl: string | null | undefined): string | null {
+  if (!imageUrl || typeof imageUrl !== 'string' || !imageUrl.trim()) return null;
+  const trimmed = imageUrl.trim();
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed;
+  const base = BASE_URL.endsWith('/') ? BASE_URL.slice(0, -1) : BASE_URL;
+  return trimmed.startsWith('/') ? `${base}${trimmed}` : `${base}/${trimmed}`;
+}
 
 export function isAllowedCategoryImageFile(file: File): boolean {
   return ALLOWED_IMAGE_TYPES.includes(file.type);

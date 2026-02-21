@@ -50,7 +50,10 @@ const ProductPage = () => {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [selectedColor, setSelectedColor] = useState<string>('');
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(() => {
+    const v = searchParams.get('CategoryId');
+    return v ? parseInt(v, 10) || null : null;
+  });
   const [selectedMaterialId, setSelectedMaterialId] = useState<number | null>(null);
   const [selectedDepthRange, setSelectedDepthRange] = useState<{ min: number; max?: number } | null>(null);
   const [selectedCollectionId, setSelectedCollectionId] = useState<number | null>(() => {
@@ -70,6 +73,19 @@ const ProductPage = () => {
       setSelectedCollectionId(null);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    const v = searchParams.get('CategoryId');
+    if (v) {
+      const n = parseInt(v, 10);
+      if (!Number.isNaN(n)) {
+        setSelectedCategoryId(n);
+      }
+    } else {
+      setSelectedCategoryId(null);
+    }
+  }, [searchParams]);
+
   const [colors, setColors] = useState<BackendColor[]>([]);
   const [materials, setMaterials] = useState<Material[]>([]);
   const [collections, setCollections] = useState<BackendCollection[]>([]);

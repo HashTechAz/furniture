@@ -65,12 +65,18 @@ const nextConfig: NextConfig = {
         hostname: 'themes.muffingroup.com',
         pathname: '/**',
       },
-      // --- YENİ ƏLAVƏ EDİLƏN HİSSƏ (LOCALHOST) ---
+      // --- API backend (kateqoriya və digər şəkillər) ---
       {
         protocol: 'https',
         hostname: 'localhost',
         port: '7042',
-        pathname: '/uploads/**', // Şəkilləriniz burada yerləşir
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '7042',
+        pathname: '/uploads/**',
       },
     ],
   },

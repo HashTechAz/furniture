@@ -7,7 +7,7 @@ import { getCategoryById, updateCategory, deleteCategory, getCategories, Categor
 import { useAdminModal } from '@/context/admin-modal-context';
 import styles from '../page.module.css';
 
-import { FaSave, FaTags, FaLayerGroup, FaEdit, FaTrash, FaPlus, FaImage, FaUpload } from 'react-icons/fa';
+import { FaSave, FaTags, FaLayerGroup, FaEdit, FaTrash, FaPlus, FaCloudUploadAlt, FaTimes } from 'react-icons/fa';
 
 export default function EditCategoryPage() {
   const router = useRouter();
@@ -62,7 +62,6 @@ export default function EditCategoryPage() {
     fetchData();
   }, [id]);
 
-  // SUBMIT
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -70,12 +69,19 @@ export default function EditCategoryPage() {
     try {
       const token = localStorage.getItem('accessToken') || '';
 
+      if (imageFile) {
+        await uploadCategoryImage(id, imageFile, token);
+        const updated = await getCategoryById(id, token);
+        setImageUrl(updated.imageUrl || null);
+        setImageFile(null);
+        setImagePreview(null);
+      }
+
       const payload = {
         name: name,
         description: description,
         parentCategoryId: parentCategoryId === 0 ? null : parentCategoryId
       };
-
       await updateCategory(id, payload, token);
 
       openModal({
@@ -85,7 +91,6 @@ export default function EditCategoryPage() {
         confirmText: 'Back to List',
         onConfirm: () => router.push('/admin/categories')
       });
-
     } catch (error: any) {
       openModal({ type: 'error', title: 'Error', message: error.message || 'Failed to update' });
     } finally {
@@ -93,8 +98,7 @@ export default function EditCategoryPage() {
     }
   };
 
-  // IMAGE HANDLERS
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setImageFile(file);
@@ -102,27 +106,9 @@ export default function EditCategoryPage() {
     }
   };
 
-  const handleImageUpload = async () => {
-    if (!imageFile) {
-      openModal({ type: 'warning', title: 'Xəbərdarlıq', message: 'Zəhmət olmasa şəkil seçin.' });
-      return;
-    }
-    setLoading(true);
-    try {
-      const token = localStorage.getItem('accessToken') || '';
-      await uploadCategoryImage(id, imageFile, token);
-
-      const updated = await getCategoryById(id, token);
-      setImageUrl(updated.imageUrl || null);
-      setImageFile(null);
-      setImagePreview(null);
-
-      openModal({ type: 'success', title: 'Uğurlu', message: 'Şəkil uğurla yükləndi.' });
-    } catch (err: any) {
-      openModal({ type: 'error', title: 'Xəta', message: err.message || 'Şəkil yüklənə bilmədi.' });
-    } finally {
-      setLoading(false);
-    }
+  const removeNewFile = () => {
+    setImageFile(null);
+    setImagePreview(null);
   };
 
   const handleImageDelete = () => {
@@ -194,59 +180,32 @@ export default function EditCategoryPage() {
         {/* SAĞ: Təşkilat və Şəkil */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
-          {/* IMAGE GARD */}
+          {/* IMAGE CARD — eyni UI designers/collections ilə */}
           <div className={styles.card}>
-            <div className={styles.cardTitle}><FaImage /> Category Image</div>
+            <div className={styles.cardTitle}><FaCloudUploadAlt /> Category Image</div>
 
-            <div style={{ marginBottom: 15, textAlign: 'center' }}>
-              {(imagePreview || imageUrl) ? (
-                <div style={{ position: 'relative', display: 'inline-block' }}>
-                  <img
-                    src={imagePreview || imageUrl || ''}
-                    alt="Category"
-                    style={{ width: '100%', maxWidth: 200, height: 'auto', borderRadius: 8, border: '1px solid #eee' }}
-                  />
-                  {imageUrl && !imagePreview && (
-                    <button
-                      type="button"
-                      onClick={handleImageDelete}
-                      style={{
-                        position: 'absolute', top: 5, right: 5, background: '#dc2626', color: '#fff',
-                        border: 'none', borderRadius: '50%', width: 26, height: 26, cursor: 'pointer',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center'
-                      }}
-                      title="Sil"
-                    >
-                      <FaTrash size={12} />
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <div style={{ width: '100%', height: 150, background: '#f5f5f5', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999' }}>
-                  <FaImage size={40} opacity={0.3} />
-                </div>
-              )}
-            </div>
-
-            <input
-              type="file"
-              accept="image/png, image/jpeg, image/jpg"
-              onChange={handleImageChange}
-              style={{ marginBottom: 15, width: '100%', fontSize: 13 }}
-            />
-
-            {imageFile && (
-              <button
-                type="button"
-                onClick={handleImageUpload}
-                disabled={loading}
-                style={{
-                  width: '100%', padding: '10px', background: '#111', color: '#fff', border: 'none',
-                  borderRadius: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
-                }}
-              >
-                <FaUpload /> {loading ? 'Yüklənir...' : 'Şəkli Yüklə'}
-              </button>
+            {imagePreview ? (
+              <div className={styles.previewWrapper}>
+                <img src={imagePreview} alt="New" className={styles.previewImage} />
+                <button type="button" onClick={removeNewFile} className={styles.removeImageBtn} title="Cancel"><FaTimes /></button>
+              </div>
+            ) : (
+              <>
+                {imageUrl && (
+                  <div className={styles.previewWrapper} style={{ marginBottom: 15, borderStyle: 'solid' }}>
+                    <img src={imageUrl} alt="Current" className={styles.previewImage} />
+                    <span style={{ position: 'absolute', bottom: 5, left: 5, background: '#111', color: '#fff', fontSize: 10, padding: '2px 6px', borderRadius: 4 }}>Current</span>
+                    <button type="button" onClick={handleImageDelete} className={styles.removeImageBtn} title="Remove image" style={{ background: 'rgba(239, 68, 68, 0.9)', color: '#fff' }}><FaTrash size={12} /></button>
+                  </div>
+                )}
+                <label className={styles.uploadArea}>
+                  <input type="file" accept="image/png,image/jpeg,image/jpg" hidden onChange={handleFileChange} />
+                  <div style={{ fontSize: 28, color: '#ccc', marginBottom: 8 }}><FaCloudUploadAlt /></div>
+                  <span style={{ fontSize: 13, color: '#666', fontWeight: 500 }}>
+                    {imageUrl ? 'Change Image' : 'Upload Image'}
+                  </span>
+                </label>
+              </>
             )}
           </div>
 
