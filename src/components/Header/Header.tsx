@@ -175,7 +175,24 @@ const Header: React.FC = () => {
     if (styleMap[p]) return styleMap[p];
     if (p.startsWith("/product/") && p !== "/product") return styles.productDetailsHeader;
     if (p.startsWith("/series") && !p.includes("guarantees") && !p.includes("assembly")) return styles.seriesHeader;
+
+    // Specific colour-inspiration header colors
+    if (p.includes("colour-inspiration/colour-class")) return styles.colourClassHeader;
+    if (p.includes("colour-inspiration/colours-of-comfort")) return styles.coloursOfComfortHeader;
+
+    // Generic fallback for any other colour-inspiration page
     if (p.includes("colour-inspiration")) return styles.inspiringStylesHeader;
+
+    // Specific creative-minds header colors
+    if (p.includes("creative-minds/faebrik")) return styles.faebrikHeader;
+    if (p.includes("creative-minds/lumikello")) return styles.lumikelloHeader;
+    if (p.includes("creative-minds/swantje")) return styles.swantjeHeader;
+    if (p.includes("creative-minds/cathrine")) return styles.cathrineHeader;
+    if (p.includes("creative-minds/tekla")) return styles.teklaHeader;
+    if (p.includes("creative-minds/celine")) return styles.celineHeader;
+    if (p.includes("creative-minds/sarah")) return styles.sarahHeader;
+
+    // Generic fallback for any other creative-minds page
     if (p.includes("creative-minds/")) return styles.creativeMindsHeader;
 
     return "";

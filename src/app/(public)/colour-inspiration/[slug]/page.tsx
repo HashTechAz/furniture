@@ -45,11 +45,13 @@ const inspirationPageData: Record<string, PageData> = {
           imageAlt: "Colour Class",
           backgroundColor: "#BDD2DA",
           textColor: "#000",
+          imageClassName: pageStyles.customHeroImage,
+          heroClassName: pageStyles.customHeroLayout,
         },
       },
       { component: "SystemAbout", props: {} },
-      { 
-        component: "CenterInfoText", 
+      {
+        component: "CenterInfoText",
         props: {
           title: "🎨 Master the Art of Color 🎨",
           description: "Welcome to Montana's exclusive Colour Class, where we transform your understanding of color from basic knowledge to professional expertise. This comprehensive program is designed for anyone who wants to create stunning, harmonious spaces that reflect their personal style and enhance their daily life.",
@@ -59,8 +61,8 @@ const inspirationPageData: Record<string, PageData> = {
       { component: "PaletteLeftImage", props: cathrinePaletteRightImageProps },
       { component: "ColourClassCard", props: {} },
       { component: "PaletteRightImage", props: cathrinePalette2RightImageProps },
-      {component: 'Form', props: {}},
-      
+      { component: 'Form', props: {} },
+
     ],
   },
   "colours-of-comfort": {
@@ -71,10 +73,12 @@ const inspirationPageData: Record<string, PageData> = {
           title: 'Colours of comfort - A new palette for serene spaces',
           backgroundColor: '#EFC7C7',
           color: '#000',
+          imageClassName: pageStyles.customHeroImage,
+          heroClassName: pageStyles.customHeroLayout,
         }
       },
-      { 
-        component: "Companies", 
+      {
+        component: "Companies",
         props: {
           title: "The psychology of color in interior design goes far beyond mere aesthetics – curated comfort color palette draws inspiration from nature's most soothing elements, from the gentle warmth of morning sunlight to the calming depths of forest greens and ocean blues. These colors aren't just beautiful to look at; they're scientifically proven to reduce stress, promote relaxation, and create a sense of security and peace in your home environment.",
           author: "Céline Hallas",
@@ -88,17 +92,17 @@ const inspirationPageData: Record<string, PageData> = {
             "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/creative-minds/ceciline-hallas/celinehallasxmontana_color_03.jpg?mode=crop&width=1520&height=10933",
         },
       },
-        { 
-          component: "CenterInfoText", 
-          props: {
-            title: "🌟 Creating Comfort Through Color 🌟",
-            description: "Colors have the remarkable ability to transform not just our spaces, but our emotions and well-being. In our fast-paced world, creating a sanctuary at home has become more important than ever. The right color palette can instantly make a room feel warm and inviting, or cool and calming, depending on what you need most.",
-            secondParagraph: "Our carefully curated collection of comfort colors draws inspiration from nature's most soothing palettes – from the soft blush of a sunset to the deep, grounding tones of earth and stone. These colors aren't just beautiful; they're scientifically proven to promote relaxation, reduce stress, and create a sense of security and peace in your home."
-          }
-        },
+      {
+        component: "CenterInfoText",
+        props: {
+          title: "🌟 Creating Comfort Through Color 🌟",
+          description: "Colors have the remarkable ability to transform not just our spaces, but our emotions and well-being. In our fast-paced world, creating a sanctuary at home has become more important than ever. The right color palette can instantly make a room feel warm and inviting, or cool and calming, depending on what you need most.",
+          secondParagraph: "Our carefully curated collection of comfort colors draws inspiration from nature's most soothing palettes – from the soft blush of a sunset to the deep, grounding tones of earth and stone. These colors aren't just beautiful; they're scientifically proven to promote relaxation, reduce stress, and create a sense of security and peace in your home."
+        }
+      },
       { component: "FrameColors", props: {} },
       { component: "ComfortCard", props: {} },
-       {component: "ProductSlider", props: {}}
+      { component: "ProductSlider", props: {} }
     ],
   },
   'inspiring-styles': {
@@ -115,9 +119,11 @@ const inspirationPageData: Record<string, PageData> = {
           imageAlt: "Colour Class",
           backgroundColor: "#EAEFD9",
           textColor: "#000",
+          imageClassName: pageStyles.customHeroImage,
+          heroClassName: pageStyles.customHeroLayout,
         },
       },
-      {component: "ColourClassCard", props: {allCardsData: []}}
+      { component: "ColourClassCard", props: { allCardsData: [] } }
     ]
   }
 };

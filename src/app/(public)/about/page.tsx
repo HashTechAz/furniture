@@ -1,6 +1,6 @@
 'use client'; // Client komponenti
 
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect } from "react";
 import styles from './page.module.css';
 import Hero from '@/components/Hero/Hero';
 import AboutCompany from './components/AboutCompany/AboutCompany';
@@ -48,7 +48,7 @@ export default function About() {
 
   useEffect(() => {
     if (!mounted) return;
-    
+
     const fetchPalettes = async () => {
       try {
         setLoadingPalettes(true);
@@ -60,10 +60,10 @@ export default function About() {
         const allPaletteData: { aboutPage?: PaletteData[] } = await response.json();
         setAboutPalettes(allPaletteData.aboutPage || []);
       } catch (err) {
-         if (err instanceof Error) {
-            setPaletteError(err.message);
+        if (err instanceof Error) {
+          setPaletteError(err.message);
         } else {
-            setPaletteError('An unknown error occurred while fetching palettes');
+          setPaletteError('An unknown error occurred while fetching palettes');
         }
         console.error("Failed to fetch palettes for about page:", err);
       } finally {
@@ -96,9 +96,11 @@ export default function About() {
         imageAlt="Montana Company"
         backgroundColor="#2c3587"
         textColor="#ffffff"
+        heroClassName={styles.aboutHero}
+        imageClassName={styles.aboutHeroImage}
       />
-      <AboutCompany/>
-      <AboutBigImage/>
+      <AboutCompany />
+      <AboutBigImage />
       <div className={styles.aboutMiddleBanner}>
         <MiddleBanner {...aboutBannerData} />
       </div>
@@ -116,8 +118,8 @@ export default function About() {
 
       <HomeVideo imageUrl="https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/location---radiohuset/montana_home_23_24_ruby_hokkaido_iris_cumin_02_h.jpg?mode=crop&width=828&height=1104" />
 
-       {/* PaletteRightImage 2 */}
-       {mounted && !loadingPalettes && !paletteError &&
+      {/* PaletteRightImage 2 */}
+      {mounted && !loadingPalettes && !paletteError &&
         aboutPalettes.find(p => p.id === 'aboutPaletteRight2') && renderPalette(aboutPalettes.find(p => p.id === 'aboutPaletteRight2')!)
       }
 

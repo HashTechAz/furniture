@@ -4,6 +4,23 @@
   text-align: center;
 }
 
+.aboutHero {
+  padding-top: 3rem !important;
+}
+
+/* === DESKTOP ÜÇÜN ŞƏKİL DAŞMASI (HERO) === */
+@media (min-width: 1025px) {
+  .aboutHeroImage {
+    bottom: -50px !important; /* Şəklin aşağıdan daşması üçün */
+    position: relative;
+    z-index: 2; /* Şəklin background-dan üstdə olması üçün */
+  }
+
+  .aboutHero {
+    margin-bottom: 80px; /* Sonrakı section ilə araya boşluq qoymaq üçün, çünki şəkil daşır */
+  }
+}
+
 .pageHeader h1 {
   font-size: 2.5rem;
   font-weight: 700;

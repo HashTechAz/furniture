@@ -3,13 +3,25 @@
 }
 
 /* Custom Hero styles for colour-inspiration pages */
-@media (min-width: 769px) {
+@media (min-width: 768px) and (max-width: 1024px) {
   .customHeroImage {
-    width: 480px;
-    height: 480px;
-    top: 60%;
-    right: 120px;
-    position: relative;
+    width: 450px;
+    height: 400px;
+    margin: 0 auto;
+    margin-bottom: -80px;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+@media (min-width: 1300px) {
+  .customHeroImage {
+    width: 500px;
+    height: 500px;
+    object-fit: cover;
+    object-position: center;
+    bottom: -3em;
+    right: -5em;
   }
 }
 
