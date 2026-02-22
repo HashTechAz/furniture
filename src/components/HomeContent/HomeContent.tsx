@@ -44,7 +44,10 @@ const PaletteLeftImage = dynamic(() => import('@/components/Palette/PaletteLeftI
 // --- PROPS INTERFACE ---
 interface HomeContentProps {
   products: FrontendProduct[]; // Serverdən gələn məhsullar
+  collections: BackendCollection[]; // Serverdən gələn kolleksiyalar
 }
+
+import { BackendCollection } from "@/lib/collections";
 
 import paletteData from "@/mock/palette/home-palette/index.json";
 
@@ -69,7 +72,7 @@ interface PaletteData {
 }
 
 // === MAIN COMPONENT ===
-const HomeContent = ({ products }: HomeContentProps) => {
+const HomeContent = ({ products, collections }: HomeContentProps) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -98,7 +101,7 @@ const HomeContent = ({ products }: HomeContentProps) => {
       {/* Palette 1 */}
       {mounted && homePalettes.find(p => p.id === 'homePaletteRight1') && renderPalette(homePalettes.find(p => p.id === 'homePaletteRight1')!)}
 
-      <NewsSection limit={4} />
+      <NewsSection limit={4} collections={collections} />
 
       {/* --- DİNAMİK PRODUCT NEWS SLIDER --- */}
       {/* Serverdən gələn 'products' propunu bura ötürürük */}

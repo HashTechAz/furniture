@@ -1,6 +1,6 @@
-'use client'; // Client komponenti olduğunu bildiririk
+'use client';
 
-import React, { useState, useEffect } from "react"; // useState, useEffect əlavə edirik
+import React, { useState, useEffect } from "react";
 import SustainabilityHero from "./components/SustainabilityHero/SustainabilityHero";
 import SustainabilityGallery from "./components/SustainabilityGallery/SustainabilityGallery";
 import SustainabilityCertifications from "./components/SustainabilityCertifications/SustainabilityCertifications";
@@ -47,7 +47,6 @@ interface PaletteData {
 const SustainabilityPage = () => {
   const [mounted, setMounted] = useState(false);
 
-  // Ensure component is mounted on client before rendering dynamic content
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -77,15 +76,9 @@ const SustainabilityPage = () => {
       <FlexImages />
       <Companies />
       <Ecolabel />
-
-      {/* PaletteLeftImage */}
       {mounted && sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteLeft1') && renderPalette(sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteLeft1')!)}
-
       <HomeVideo imageUrl={homeVideoData.homePage.defaultVideo.imageUrl} />
-
-      {/* PaletteRightImage */}
       {mounted && sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteRight1') && renderPalette(sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteRight1')!)}
-
       <Related />
     </>
   );

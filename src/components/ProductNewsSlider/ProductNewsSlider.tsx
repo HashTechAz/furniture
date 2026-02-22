@@ -18,6 +18,7 @@ const ProductNewsSlider = ({ products }: ProductNewsSliderProps) => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const categoryScrollRef = useRef<HTMLDivElement>(null);
 
   const [collections, setCollections] = useState<BackendCollection[]>([]);
   const [selectedCollectionId, setSelectedCollectionId] = useState<number | null>(null);
@@ -25,7 +26,9 @@ const ProductNewsSlider = ({ products }: ProductNewsSliderProps) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getCollections().then((data) => setCollections(Array.isArray(data) ? data : [])).catch(() => setCollections([]));
+    getCollections().then((data) => {
+      setCollections(Array.isArray(data) ? data : []);
+    }).catch(() => setCollections([]));
   }, []);
 
   const displayProducts = selectedCollectionId === null ? products : collectionProducts;
@@ -57,10 +60,16 @@ const ProductNewsSlider = ({ products }: ProductNewsSliderProps) => {
 
   const handlePrevClick = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
+    if (categoryScrollRef.current) {
+      categoryScrollRef.current.scrollBy({ left: -200, behavior: 'smooth' });
+    }
   }, [emblaApi]);
 
   const handleNextClick = useCallback(() => {
     if (emblaApi) emblaApi.scrollNext();
+    if (categoryScrollRef.current) {
+      categoryScrollRef.current.scrollBy({ left: 200, behavior: 'smooth' });
+    }
   }, [emblaApi]);
 
   const handleCategorySelect = (collectionId: number | null) => {
@@ -83,16 +92,18 @@ const ProductNewsSlider = ({ products }: ProductNewsSliderProps) => {
       <div className={styles.sliderHeader}>
         <div className={styles.headerLeft}>
           <h2 className={styles.sectionTitle}>Product News</h2>
-          
-          <div className={styles.categoryLinks}>
-            <button type="button" className={`${styles.categoryLink} ${selectedCollectionId === null ? styles.categoryLinkActive : ''}`} onClick={() => handleCategorySelect(null)}>
-              All
-            </button>
-            {collections.map((col) => (
-              <button type="button" key={col.id} className={`${styles.categoryLink} ${selectedCollectionId === col.id ? styles.categoryLinkActive : ''}`} onClick={() => handleCategorySelect(col.id)}>
-                {col.name}
+
+          <div className={styles.categoryLinksWrapper} ref={categoryScrollRef}>
+            <div className={styles.categoryLinks}>
+              <button type="button" className={`${styles.categoryLink} ${selectedCollectionId === null ? styles.categoryLinkActive : ''}`} onClick={() => handleCategorySelect(null)}>
+                All
               </button>
-            ))}
+              {collections.map((col) => (
+                <button type="button" key={col.id} className={`${styles.categoryLink} ${selectedCollectionId === col.id ? styles.categoryLinkActive : ''}`} onClick={() => handleCategorySelect(col.id)}>
+                  {col.name}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -105,7 +116,7 @@ const ProductNewsSlider = ({ products }: ProductNewsSliderProps) => {
           </button>
         </div>
       </div>
-      
+
       <div className={styles.mobileControls}>
         <div className={styles.mobileCategoryDropdown} ref={dropdownRef}>
           <button className={styles.dropdownButton} onClick={() => setDropdownOpen(!isDropdownOpen)}>
@@ -131,29 +142,29 @@ const ProductNewsSlider = ({ products }: ProductNewsSliderProps) => {
           <div className={styles.loaderSpinner} />
         </div>
       ) : (
-      <div className={styles.embla} ref={emblaRef}>
-        <div className={styles.embla__container}>
-          {displayProducts.map((product) => (
-            <div className={styles.embla__slide} key={product.id}>
-              <ProductCard
-                id={product.id}
-                imageSrc={product.imageSrc}
-                imageSrcHover={product.imageSrcHover}
-                title={product.title}
-                color={product.color}
-                measurements={product.measurements}
-                position={product.position}
-                price={product.price}
-              />
-            </div>
-          ))}
+        <div className={styles.embla} ref={emblaRef}>
+          <div className={styles.embla__container}>
+            {displayProducts.map((product) => (
+              <div className={styles.embla__slide} key={product.id}>
+                <ProductCard
+                  id={product.id}
+                  imageSrc={product.imageSrc}
+                  imageSrcHover={product.imageSrcHover}
+                  title={product.title}
+                  color={product.color}
+                  measurements={product.measurements}
+                  position={product.position}
+                  price={product.price}
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
       )}
 
       <div className={styles.progressBar}>
-        <div 
-          className={styles.progressBarFill} 
+        <div
+          className={styles.progressBarFill}
           style={{ width: `${scrollProgress}%` }}
         />
       </div>

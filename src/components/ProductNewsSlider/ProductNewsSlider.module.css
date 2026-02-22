@@ -36,6 +36,9 @@
 .headerLeft {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-width: 0; /* Ensures flex child can shrink smaller than its content */
+  margin-right: 40px;
 }
 
 .sectionTitle {
@@ -44,10 +47,22 @@
   color: #333;
 }
 
+.categoryLinksWrapper {
+  margin-top: 35px;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  display: flex;
+}
+
+.categoryLinksWrapper::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
 .categoryLinks {
   display: flex;
   gap: 35px;
-  margin-top: 35px;
+  white-space: nowrap;
 }
 
 .categoryLink {
@@ -90,15 +105,15 @@
 
 .categoryLinkActive {
   color: #2c3587;
-}
-
-.categoryLinkActive::after {
-  transform: scaleX(1);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .sliderNav {
   display: flex;
   gap: 10px;
+  align-self: flex-end;
+  margin-bottom: -5px;
 }
 
 .prevButton,

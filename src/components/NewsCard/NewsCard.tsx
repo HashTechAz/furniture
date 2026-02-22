@@ -5,12 +5,13 @@ interface NewsCardProps {
   imageSrc: string;
   title: string;
   description: string;
+  href?: string;
   limit?: number;
 }
 
-const NewsCard = ({ imageSrc, title, description }: NewsCardProps) => {
+const NewsCard = ({ imageSrc, title, description, href = '#' }: NewsCardProps) => {
   return (
-    <Link href='#' className={styles.cardLink}>
+    <Link href={href} className={styles.cardLink}>
       <div className={styles.card}>
         <div className={styles.imageWrapper} style={{ position: "relative" }}>
           <Image

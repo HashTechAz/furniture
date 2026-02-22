@@ -1,31 +1,40 @@
 import React from 'react';
 import styles from "./NewsSection.module.css";
 import NewsCard from "../NewsCard/NewsCard";
-import newsData from "../../mock/newsData.json";
+import { BackendCollection } from "@/lib/collections";
 
 interface NewsSectionProps {
+  collections: BackendCollection[];
   limit?: number;
   showTitle?: boolean;
   customGridClass?: string;
 }
 
-const NewsSection = ({ limit, showTitle = true, customGridClass }: NewsSectionProps) => {
-  const displayData = limit ? newsData.slice(0, limit) : newsData;
-  
+const NewsSection = ({ collections, limit, showTitle = true, customGridClass }: NewsSectionProps) => {
+  const displayData = limit && collections ? collections.slice(0, limit) : collections || [];
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7042";
+
   return (
     <section className={styles.newsSection}>
       {showTitle && (
         <div className={styles.newsHeader}>
-          <h2 className={styles.newsTitle}>Lorem Ipsum News</h2>
+          <h2 className={styles.newsTitle}>Collections</h2>
         </div>
       )}
       <div className={customGridClass || styles.newsGrid}>
-        {displayData.map((newsItem) => (
+        {displayData.map((collection) => (
           <NewsCard
-            key={newsItem.id}
-            imageSrc={newsItem.image}
-            title={newsItem.title}
-            description={newsItem.description}
+            key={collection.id}
+            imageSrc={
+              collection.coverImageUrl
+                ? collection.coverImageUrl.startsWith('http')
+                  ? collection.coverImageUrl
+                  : `${API_URL}${collection.coverImageUrl}`
+                : '/images/placeholder.jpg'
+            }
+            title={collection.name}
+            description={collection.description}
+            href={`/product?collectionId=${collection.id}`}
           />
         ))}
       </div>
