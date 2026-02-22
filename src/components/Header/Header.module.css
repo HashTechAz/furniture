@@ -228,12 +228,17 @@
     text-align: left;
     flex-shrink: 0;
 }
+.mainNav ul {
+  list-style: none !important;
+  padding: 0;
+  margin: 0;
+}
 .mainNav li {
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 .mainNav a {
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 600;
   color: #333;
   text-decoration: none;
 }
@@ -342,7 +347,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
   color: #333;
   text-decoration: none;
@@ -385,7 +390,7 @@
 }
 
 .mobileSubMenu ul {
-  list-style: none;
+  list-style-type: none !important;
   padding: 8px 0;
   margin: 0;
   min-height: 0; 
@@ -412,11 +417,12 @@
 /* Link stilləri (bunlar dəyişməyib) */
 .mobileSubMenu ul li {
   margin-bottom: 4px;
+  list-style: none !important;
 }
 
 .mobileSubMenu ul li a {
   font-size: 14px; 
-  font-weight: 600;
+  font-weight: 500;
   color: #666;
   display: block;
   padding: 8px 0;
@@ -439,8 +445,8 @@
 }
 
 .mainNav a {
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 600;
   color: #333;
   text-decoration: none;
   display: block; 

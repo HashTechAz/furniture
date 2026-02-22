@@ -316,8 +316,8 @@ const Header: React.FC = () => {
 
         <div className={styles.bottomNavWrapper}>
           <ul className={styles.supportNav}>
-            <li><Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>Customer support</Link></li>
-            <li><Link href="/retailers" onClick={() => setIsMobileMenuOpen(false)}>Find retailers</Link></li>
+            <li><Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Sparro</Link></li>
+            <li><Link href="/privacy-policy" onClick={() => setIsMobileMenuOpen(false)}>Privacy Policies</Link></li>
           </ul>
         </div>
       </div>
