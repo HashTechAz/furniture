@@ -5,7 +5,7 @@ import styles from './page.module.css';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
-    name: '', 
+    name: '',
     email: '',
     phoneNumber: '',
     subject: '',
@@ -26,13 +26,13 @@ export default function Contact() {
     const payload = {
       fullName: formData.name,
       email: formData.email,
-      phoneNumber: formData.phoneNumber || "", 
+      phoneNumber: formData.phoneNumber || "",
       subject: formData.subject,
       message: formData.message
     };
 
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
-    
+
     const fetchPromise = fetch(`${baseUrl}/api/Contact`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -44,8 +44,8 @@ export default function Contact() {
 
       if (response.ok) {
         setStatus('success');
-        setFormData({ name: '', email: '', phoneNumber: '', subject: '', message: '' }); 
-        
+        setFormData({ name: '', email: '', phoneNumber: '', subject: '', message: '' });
+
         setTimeout(() => setStatus('idle'), 5000);
       } else {
         const errorText = await response.text();
@@ -60,23 +60,23 @@ export default function Contact() {
 
   return (
     <div className={styles.pageWrapper}>
-      <div className={styles.pageHeader}>
-        <div className="container">
+      <div className={styles.heroSection}>
+        <div className={styles.heroContent}>
           <h1>Contact Us</h1>
           <p>Get in touch with our team for product inquiries or support.</p>
         </div>
       </div>
 
-      <div className="container">
+      <div className={styles.container}>
         <div className={styles.contactGrid}>
-          
+
           <div className={styles.contactInfo}>
             <h2>Get in Touch</h2>
             <p>
-              We are here to help you find the perfect furniture solutions. 
+              We are here to help you find the perfect furniture solutions.
               Fill out the form and we will be in touch shortly.
             </p>
-            
+
             <div className={styles.contactMethod}>
               <h3>Email</h3>
               <p>info@montanafurniture.com</p>
@@ -92,13 +92,13 @@ export default function Contact() {
           </div>
 
           <div className={styles.contactForm}>
-            
+
             {status === 'success' && (
               <div className={styles.successMessage}>
                 ✅ Mesajınız uğurla göndərildi! Sizinlə tezliklə əlaqə saxlayacağıq.
               </div>
             )}
-            
+
             {status === 'error' && (
               <div className={styles.errorMessage}>
                 ❌ Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.
@@ -108,61 +108,61 @@ export default function Contact() {
             <form onSubmit={handleSubmit}>
               <div className={styles.formGroup}>
                 <label htmlFor="name">Full Name *</label>
-                <input 
+                <input
                   className={styles.input}
-                  type="text" id="name" name="name" required 
+                  type="text" id="name" name="name" required
                   placeholder="John Doe"
-                  value={formData.name} onChange={handleChange} 
+                  value={formData.name} onChange={handleChange}
                   disabled={status === 'loading'}
                 />
               </div>
 
               <div className={styles.formGroup}>
                 <label htmlFor="email">Email Address *</label>
-                <input 
+                <input
                   className={styles.input}
-                  type="email" id="email" name="email" required 
+                  type="email" id="email" name="email" required
                   placeholder="john@example.com"
-                  value={formData.email} onChange={handleChange} 
+                  value={formData.email} onChange={handleChange}
                   disabled={status === 'loading'}
                 />
               </div>
 
               <div className={styles.formGroup}>
                 <label htmlFor="phoneNumber">Phone Number</label>
-                <input 
+                <input
                   className={styles.input}
-                  type="text" id="phoneNumber" name="phoneNumber" 
+                  type="text" id="phoneNumber" name="phoneNumber"
                   placeholder="+994 50 000 00 00"
-                  value={formData.phoneNumber} onChange={handleChange} 
+                  value={formData.phoneNumber} onChange={handleChange}
                   disabled={status === 'loading'}
                 />
               </div>
 
               <div className={styles.formGroup}>
                 <label htmlFor="subject">Subject *</label>
-                <input 
+                <input
                   className={styles.input}
-                  type="text" id="subject" name="subject" required 
+                  type="text" id="subject" name="subject" required
                   placeholder="Product Inquiry"
-                  value={formData.subject} onChange={handleChange} 
+                  value={formData.subject} onChange={handleChange}
                   disabled={status === 'loading'}
                 />
               </div>
 
               <div className={styles.formGroup}>
                 <label htmlFor="message">Message *</label>
-                <textarea 
+                <textarea
                   className={styles.textarea}
-                  id="message" name="message" rows={5} required 
+                  id="message" name="message" rows={5} required
                   placeholder="How can we help you?"
-                  value={formData.message} onChange={handleChange} 
+                  value={formData.message} onChange={handleChange}
                   disabled={status === 'loading'}
                 ></textarea>
               </div>
 
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className={styles.submitButton}
                 disabled={status === 'loading'}
               >

@@ -1,104 +1,143 @@
 /* Ümumi Səhifə Stili */
 .pageWrapper {
+  width: 100%;
   padding-bottom: 80px;
 }
 
-/* Header Hissəsi - Minimalist */
-.pageHeader {
-  background-color: #f8f8f8;
-  padding: 80px 0;
-  text-align: center;
+/* Header Hissəsi - Hero Style */
+.heroSection {
+  width: 100%;
+  background-color: #EEE7E1; /* Fərqli soft rəng (məs: Lumikello rəngi) */
+  padding: 130px 80px 40px 80px;
+  display: flex;
+  align-items: center;
   margin-bottom: 60px;
 }
 
-.pageHeader h1 {
-  font-size: 42px;
-  font-weight: 700;
-  margin-bottom: 15px;
-  letter-spacing: -1px;
+.heroContent {
+  width: 85%;
+  margin: 0;
 }
 
-.pageHeader p {
-  color: #666;
+.heroContent h1 {
+  font-size: 40px;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: -0.02em;
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.heroContent p {
+  color: #333;
   font-size: 18px;
   max-width: 600px;
-  margin: 0 auto;
+  margin: 0;
 }
 
 /* Grid Layout */
+.container {
+  width: 85%;
+  margin: 0;
+  padding: 0 80px;
+}
+
+/* Yalnız sağ tərəf - Forma */
 .contactGrid {
   display: grid;
-  grid-template-columns: 1fr 1.5fr; /* Sol tərəf kiçik, sağ tərəf geniş */
-  gap: 80px;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 120px;
   align-items: start;
 }
 
 /* Sol Tərəf - Əlaqə Məlumatları */
 .contactInfo h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  font-weight: 600;
+  font-size: 28px;
+  margin-bottom: 24px;
+  font-weight: 500;
+  color: #111;
+  letter-spacing: -0.01em;
 }
 
 .contactInfo p {
-  color: #666;
-  line-height: 1.6;
+  color: #555;
+  line-height: 1.8;
+  font-size: 16px;
   margin-bottom: 40px;
+  font-weight: 300;
 }
 
 .contactMethod {
-  margin-bottom: 30px;
+  margin-bottom: 35px;
+  position: relative;
+  padding-left: 20px;
+  border-left: 2px solid #eaeaea;
 }
 
 .contactMethod h3 {
-  font-size: 14px;
+  font-size: 13px;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #999;
-  margin-bottom: 8px;
+  letter-spacing: 1.5px;
+  color: #888;
+  margin-bottom: 10px;
+  font-weight: 500;
 }
 
 .contactMethod p {
-  color: #000;
-  font-weight: 500;
-  font-size: 16px;
+  color: #222;
+  font-weight: 400;
+  font-size: 17px;
   margin: 0;
 }
 
 /* Sağ Tərəf - Forma */
+.contactForm {
+  background-color: #fafafa;
+  padding: 50px;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+}
+
 .contactForm h2 {
   font-size: 24px;
   margin-bottom: 30px;
-  font-weight: 600;
+  font-weight: 500;
+  color: #111;
 }
 
 .formGroup {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .formGroup label {
   display: block;
   font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #555;
   letter-spacing: 0.5px;
 }
 
 .input, .textarea {
   width: 100%;
-  padding: 16px;
-  border: 1px solid #e5e5e5;
+  padding: 16px 20px;
+  border: 1px solid #ddd;
   background-color: #fff;
-  font-size: 16px;
+  font-size: 15px;
   transition: all 0.3s ease;
-  border-radius: 0; /* Furniture stili üçün kəskin künclər */
+  border-radius: 6px;
+  color: #333;
+}
+
+.input::placeholder, .textarea::placeholder {
+  color: #aaa;
+  font-weight: 300;
 }
 
 .input:focus, .textarea:focus {
-  border-color: #000;
+  border-color: #888;
   outline: none;
-  background-color: #fafafa;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.03);
 }
 
 .textarea {
@@ -110,17 +149,19 @@
 .submitButton {
   width: 100%;
   padding: 18px;
-  background-color: #000;
+  background-color: #111;
   color: #fff;
   border: none;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s ease;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
 }
 
 .submitButton:hover {
@@ -173,9 +214,41 @@
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .heroSection, .container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
 @media (max-width: 768px) {
+  .heroSection {
+    padding: 140px 20px 60px 20px;
+  }
+
+  .container {
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  .heroContent {
+    width: 100%;
+  }
+
+  .heroContent h1 {
+    font-size: 32px;
+  }
+
   .contactGrid {
     grid-template-columns: 1fr;
     gap: 40px;
+  }
+  
+  .contactForm {
+    padding: 30px 20px;
+  }
+  
+  .input, .textarea {
+    padding: 14px 15px; /* X oxunda padding azaldıldı ki, input darlığını itirməsin */
   }
 }
