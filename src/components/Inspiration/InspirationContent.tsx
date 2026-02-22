@@ -5,6 +5,7 @@ import styles from './InspirationContent.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getRooms } from '@/lib/rooms';
+import { getCollections, BackendCollection } from '@/lib/collections';
 
 const PLACEHOLDER_IMAGE = 'https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/colours/montana_colourps_amber_camomile_rhubarb_flint_oat.jpg?mode=crop&width=1520&height=2027';
 
@@ -19,24 +20,30 @@ const SmallInspirationCard = ({ title, imageUrl, href }: { title: string, imageU
 
 const InspirationContent = () => {
   const [rooms, setRooms] = useState<{ id: number; name: string; imageUrl?: string }[]>([]);
+  const [collections, setCollections] = useState<BackendCollection[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getRooms()
-      .then((data) => setRooms(Array.isArray(data) ? data : []))
-      .catch(() => setRooms([]))
+    Promise.all([
+      getRooms().catch(() => []),
+      getCollections().catch(() => [])
+    ])
+      .then(([roomsData, collectionsData]) => {
+        setRooms(Array.isArray(roomsData) ? roomsData : []);
+
+        // Sort collections by ID descending to get the newest, then take top 5
+        const sortedCollections = Array.isArray(collectionsData)
+          ? [...collectionsData].sort((a, b) => b.id - a.id).slice(0, 5)
+          : [];
+        setCollections(sortedCollections);
+      })
       .finally(() => setLoading(false));
   }, []);
 
   const baseUrl = typeof process !== 'undefined' ? (process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042') : 'https://localhost:7042';
 
 
-  const newsLinks = [
-    "KIMPOP Limited Editions",
-    "Montana Mini – New colours",
-    "Panton Wire – New colours and sizes",
-    "Paradigm – The new language of lounge"
-  ];
+  // unused newsLinks removed
 
   return (
     <section className={styles.inspirationMain}>
@@ -85,16 +92,29 @@ const InspirationContent = () => {
           )}
         </div>
 
-        {/* DEĞİŞİKLİK: Büyük kart yerine artık bu liste var */}
+        {/* Dynamic Collections List */}
         <div className={styles.newsListWrapper}>
-          <h5>News from Montana</h5>
-          <ul>
-            {newsLinks.map((link, index) => (
-              <li key={index}>
-                <Link href="#">{link}</Link>
-              </li>
-            ))}
-          </ul>
+          <h5>✨ New Collections</h5>
+          {loading ? (
+            <ul><li>Loading...</li></ul>
+          ) : collections.length > 0 ? (
+            <ul>
+              {collections.map((collection) => (
+                <li key={collection.id}>
+                  <Link href={`/product?collectionId=${collection.id}`}>
+                    <span className={styles.collectionTitle}>{collection.name}</span>
+                    <span className={styles.collectionDesc}>
+                      {collection.description
+                        ? collection.description
+                        : `Discover the elegant new ${collection.name} collection and explore its exclusive design details.`}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p style={{ fontSize: '14px', color: '#666', marginTop: '10px' }}>No collections found.</p>
+          )}
         </div>
       </div>
     </section>

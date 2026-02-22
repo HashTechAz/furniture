@@ -72,6 +72,16 @@
   justify-items: center;
 }
 
+/* Series bölməsində kartların böyüməməsi üçün maksimum ölçü məhdudiyyəti */
+.gridContainer > a {
+  width: 100% !important;
+  max-width: 220px !important;
+}
+
+.gridContainer > a > div:first-child {
+  height: 250px !important; /* Əvvəlki 250px hündürlüyünə qaytarırıq */
+}
+
 .loadingState {
   grid-column: 1 / -1;
   padding: 40px;
