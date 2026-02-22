@@ -7,40 +7,43 @@ import NavbarCategoryCard from "../NavbarMenuCards/NavbarCategoryCard";
 
 // API & Types
 import { getCategories, Category } from "@/lib/categories";
+import { getProducts, FrontendProduct } from "@/lib/products";
 
 const ProductsContent = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [promoProduct, setPromoProduct] = useState<FrontendProduct | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   // 🔥 QIFIL (Strict Mode Double Fetch-i əngəlləmək üçün)
   const dataFetchedRef = useRef(false);
 
-  // API-dən Kateqoriyaları Çəkirik
+  // API-dən Kateqoriyaları və Məhsulu Çəkirik
   useEffect(() => {
     // Əgər artıq yükləyibsə, bir daha yükləməsin
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
 
-    const fetchCategories = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getCategories();
-        setCategories(data);
+        const [catData, prodData] = await Promise.all([
+          getCategories(),
+          getProducts({ pageSize: 1 }) // Get at least 1 product
+        ]);
+        setCategories(catData);
+        if (prodData && prodData.length > 0) {
+          setPromoProduct(prodData[0]);
+        }
       } catch (error) {
-        console.error("Failed to load product categories:", error);
+        console.error("Failed to load products/categories:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchCategories();
+    fetchData();
   }, []);
 
-  const promoCardData = {
-    id: 1,
-    label: "Montana System",
-    imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/colours/montana_colourps_amber_camomile_rhubarb_flint_oat.jpg?mode=crop&width=1520&height=2027",
-    href: "/system",
-  };
+  // If promoProduct is not fetched, the right side will simply be empty.
 
   return (
     <>
@@ -67,12 +70,12 @@ const ProductsContent = () => {
         <div className={styles.contentWrapper}>
           <div className={styles.gridContainer}>
             <div className={styles.gridItemMain}>
-              
+
               <div className={styles.gridItemMainText}>
                 <div className={styles.listsGrid}>
-                  
+
                   {isLoading ? (
-                    <p style={{color: '#999'}}>Loading categories...</p>
+                    <p style={{ color: '#999' }}>Loading categories...</p>
                   ) : categories.length > 0 ? (
                     categories.map((category) => (
                       <ul key={category.id}>
@@ -93,7 +96,7 @@ const ProductsContent = () => {
                         ) : (
                           <li>
                             <Link href={`/product?CategoryId=${category.id}`}>
-                                View all {category.name}
+                              View all {category.name}
                             </Link>
                           </li>
                         )}
@@ -107,11 +110,13 @@ const ProductsContent = () => {
               </div>
 
               <div className={styles.gridItemMainImage}>
-                <NavbarCategoryCard
-                  href={promoCardData.href}
-                  label={promoCardData.label}
-                  imageUrl={promoCardData.imageUrl}
-                />
+                {promoProduct && (
+                  <NavbarCategoryCard
+                    href={`/product/${promoProduct.id}`}
+                    label={promoProduct.title}
+                    imageUrl={promoProduct.mainImage}
+                  />
+                )}
               </div>
 
             </div>
