@@ -282,7 +282,7 @@ const DepthPanel = ({
   const uniqueDepthsMap = new Map<string, FrontendProduct>();
   listToShow.forEach(v => {
     // Dərinlik `v.depth` obyektində gəlir, "Depth X cm" formatına salaq
-    const depthLabel = v.depth ? `Depth ${v.depth} cm` : "Not specified";
+    const depthLabel = v.depth ? `${v.depth} cm` : "Not specified";
     if (!uniqueDepthsMap.has(depthLabel)) {
       uniqueDepthsMap.set(depthLabel, { ...v, depthLabel } as FrontendProduct & { depthLabel: string });
     }
@@ -342,7 +342,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
     product.width && product.height ? `W ${product.width} × H ${product.height} cm` : "Not specified"
   );
   const [currentProductDepth, setCurrentProductDepth] = useState(
-    product.depth ? `Depth ${product.depth} cm` : "Not specified"
+    product.depth ? `${product.depth} cm` : "Not specified"
   );
 
   const [variants, setVariants] = useState<FrontendProduct[]>([]);
@@ -390,22 +390,22 @@ const ProductHero = ({ product }: ProductHeroProps) => {
     const message =
       "Salam! Bu məhsulla maraqlanıram:" +
       "\n\n" +
-      "🛍️ *Məhsul:* " +
+      "• Məhsul: " +
       title +
       "\n" +
-      "🎨 *Rəng:* " +
+      "• Rəng: " +
       currentProductColor +
       "\n" +
-      "📏 *Ölçü:* " +
+      "• Ölçü: " +
       currentProductPosition +
       "\n" +
-      "📐 *Dərinlik:* " +
+      "• Dərinlik: " +
       depthStr +
       "\n" +
-      "📝 *Təsvir:* " +
+      "• Təsvir: " +
       desc +
       "\n\n" +
-      "🔗 Link: " +
+      "• Link: " +
       productUrl;
     setWaHref(`https://wa.me/994775480896?text=${encodeURIComponent(message)}`);
   }, [
@@ -442,7 +442,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
   const menuItems = [
     {
       key: "colour",
-      label: "Colour",
+      label: "Rəng",
       value: currentProductColor,
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -466,7 +466,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
     },
     {
       key: "position",
-      label: "Position",
+      label: "Ölçülər",
       value: currentProductPosition,
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -486,7 +486,7 @@ const ProductHero = ({ product }: ProductHeroProps) => {
     },
     {
       key: "depth",
-      label: "Depth",
+      label: "Dərinlik",
       value: currentProductDepth,
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -509,8 +509,8 @@ const ProductHero = ({ product }: ProductHeroProps) => {
     },
     {
       key: "gallery",
-      label: "Gallery",
-      value: `${product.galleryImages?.length || 0} images`,
+      label: "Qalareya",
+      value: `${product.galleryImages?.length || 0} şəkil`,
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="3" y="3" width="18" height="18" rx="2" stroke="#333" strokeWidth="2" />

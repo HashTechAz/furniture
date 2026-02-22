@@ -56,12 +56,12 @@ const ProductCard = ({
         {/* Məlumat Hissəsi */}
         <div className={styles.cardInfo}>
           <h3 className={styles.cardTitle}>{title}</h3>
-          <p className={styles.cardText}>Colour: {color}</p>
-          <p className={styles.cardText}>Measurements: {measurements}</p>
-          <p className={styles.cardText}>Position: {position}</p>
+          <p className={styles.cardText}>Rəng: {color}</p>
+          <p className={styles.cardText}>Ölçülər: {measurements}</p>
+          <p className={styles.cardText}>Kolleksiya: {position}</p>
 
           {price && price !== "0" && (
-            <p className={styles.cardPrice}>Displayed model {price} ₼</p>
+            <p className={styles.cardPrice}>Qiymət: {price} ₼</p>
           )}
         </div>
       </div>
