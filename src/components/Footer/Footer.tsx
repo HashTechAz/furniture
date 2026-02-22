@@ -33,77 +33,67 @@ const Footer = () => {
           </div>
 
           <div className={`${styles.footerItem} ${styles.montanaLinks}`}>
-            <h3>Montana</h3>
+            <h3>Products</h3>
             <ul>
               <li>
+                <Link className={styles.footerLink} href={"/product"}>
+                  All Products
+                </Link>
+              </li>
+              <li>
                 <Link className={styles.footerLink} href={"/about"}>
-                  About Montana
+                  About Sparro
                 </Link>
               </li>
               <li>
                 <Link className={styles.footerLink} href={"/system"}>
-                  The Montana system
-                </Link>
-              </li>
-              <li>
-                <Link className={styles.footerLink} href={"/colours"}>
-                  The Montana colors
+                  The Sparro system
                 </Link>
               </li>
               <li>
                 <Link className={styles.footerLink} href={"/sustainability"}>
-                  Environment and quality
+                  Environment & Quality
                 </Link>
               </li>
               <li>
-                <Link className={styles.footerLink} href={"/"}>
-                  Store locator
-                </Link>
-              </li>
-              <li>
-                <Link className={styles.footerLink} href={"/"}>
-                  Showrooms
-                </Link>
-              </li>
-              <li>
-                <Link className={styles.footerLink} href={"/"}>
-                  Career
+                <Link className={styles.footerLink} href={"/colours"}>
+                  41 colors & 2 veneers
                 </Link>
               </li>
             </ul>
           </div>
 
           <div className={`${styles.footerItem} ${styles.ressourcesLinks}`}>
-            <h3>Ressources</h3>
+            <h3>Inspiration</h3>
             <ul>
               <li>
-                <Link className={styles.footerLink} href={"/"}>
-                  Digital Showroom
+                <Link className={styles.footerLink} href={"/creative-minds/swantje"}>
+                  Swantje Hinrichsen
+                </Link>
+              </li>
+              <li>
+                <Link className={styles.footerLink} href={"/creative-minds/cathrine"}>
+                  Cathrine De Lichtenberg
+                </Link>
+              </li>
+              <li>
+                <Link className={styles.footerLink} href={"/creative-minds/tekla"}>
+                  Tekla Evelina Severin
                 </Link>
               </li>
               <li>
                 <Link className={styles.footerLink} href={"/"}>
-                  Downloads
+                  Faebrik
                 </Link>
               </li>
               <li>
                 <Link className={styles.footerLink} href={"/"}>
-                  Press
+                  Colours of comfort
                 </Link>
               </li>
               <li>
-                <Link className={styles.footerLink} href={"/series/assembly"}>
-                  Assembly guides
-                </Link>
-              </li>
-              <li>
-                <Link className={styles.footerLink} href={"/"}>
-                  Montana Academy
-                </Link>
-              </li>
-              <li>
-                <Link className={styles.footerLink} href={"/"}>
-                  Catalogues
+                <Link className={styles.footerLink} href={"/creative-minds"}>
+                  Find more inspiration
                 </Link>
               </li>
             </ul>
@@ -118,18 +108,13 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link className={styles.footerLink} href={"/series/assembly"}>
+                  Assembly guides
+                </Link>
+              </li>
+              <li>
                 <Link className={styles.footerLink} href={"/series/guarantees"}>
                   Guarantees
-                </Link>
-              </li>
-              <li>
-                <Link className={styles.footerLink} href={"/"}>
-                  Materials and care
-                </Link>
-              </li>
-              <li>
-                <Link className={styles.footerLink} href={"/"}>
-                  Competition terms and conditions
                 </Link>
               </li>
               <li>
