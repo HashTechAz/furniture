@@ -1,0 +1,68 @@
+{
+  "designersPage": [
+    {
+      "id": "designersMiddleBannerDefault",
+      "componentType": "MiddleBanner",
+      "props": {
+        "largeImageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/panton-x-montana/montana_pantonova_1xconcave_1xconvex_leatherbrandy_cushion_pantonwire_black_h.jpg?mode=crop&width=1520&height=2027",
+        "smallImageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/designer-portraits/montana_verner_panton.jpg?mode=crop&width=1520&height=1520",
+        "title": "Verner Panton",
+        "description": "Verner Panton is considered one of Denmark's most influential 20th-century furniture and interior designers, not to mention one of the most avant-gardes. During his career, he created innovative and futuristic designs in a variety of materials and in vibrant, exotic colours.",
+        "buttonText": "Explore Now",
+        "buttonLink": "#",
+        "smallImageHeight": "550px"
+      }
+    },
+    {
+      "id": "designersSecondBanner",
+      "componentType": "MiddleBanner",
+      "props": {
+        "largeImageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-joint/montana_joint_chair_1211_yellowstone.jpg?mode=crop&width=1520&height=2027",
+        "smallImageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/designer-portraits/screenshot_50-1-720x840.png?mode=crop&width=1520&height=1520",
+        "title": "Anders Hermansen",
+        "description": "Anders Hermansen is a designer from the Royal Danish Academy of Fine Arts, mastering industrial design and furniture architecture. He graduated in 1982 at the age of only 22. As a recent graduate, he began working for Danish design companies such as Louis Poulsen, Paustian and Bang & Olufsen. Significant for Hermansen is his unique handmade wire sketch furniture.",
+        "buttonText": "Learn more",
+        "buttonLink": "/designers",
+        "smallImageHeight": "550px"
+      }
+    },
+    {
+      "id": "designersRelatedBanner",
+      "componentType": "MiddleBanner",
+      "props": {
+        "largeImageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-szene/lundgaardtranbergarchitects_02-1920x1080.png?mode=crop&width=1520&height=2027",
+        "smallImageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/designer-portraits/lundgaardtranbergarchitects_03-720x840.png?mode=crop&width=1520&height=1520",
+        "title": "Lundgaard & Tranberg",
+        "description": "Lundgaard & Tranberg Architects is a Danish architecture office founded in 1985 by architects Boje Lundgaard and Lene Tranberg. Lundgaard & Tranberg is renowned for their iconic buildings in Denmark, among others the Tietgen Dormitory, Axel Towers and theRoyal Danish Theatre’s Playhouse in Copenhagen.",
+        "buttonText": "Learn more",
+        "buttonLink": "/designers",
+        "smallImageHeight": "550px"
+      }
+    },
+    {
+      "id": "designersNewDataDefault",
+      "componentType": "MiddleBanner",
+      "props": {
+        "largeImageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/panton-x-montana/montana_pantonova_1xconcave_1xconvex_leatherbrandy_cushion_pantonwire_black_h.jpg?mode=crop&width=1520&height=2027",
+        "smallImageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/designer-portraits/jakob_wagner_01.jpg?mode=crop&width=1520&height=2027",
+        "title": "Verner Panton",
+        "description": "Verner Panton is considered one of Denmark's most influential 20th-century furniture and interior designers, not to mention one of the most avant-gardes. During his career, he created innovative and futuristic designs in a variety of materials and in vibrant, exotic colours.",
+        "buttonText": "Explore Now",
+        "buttonLink": "#"
+      }
+    },
+    {
+      "id": "designersLastBanner",
+      "componentType": "MiddleBanner",
+      "props": {
+        "largeImageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/paradigm/montana_home_25_26_paradigmsofa_hero2_pantonwire_kevilounge_h.jpg?mode=crop&width=1520&height=2027",
+        "smallImageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/designer-portraits/montana_erik_rasmussen_portrait_h.jpg?mode=crop&width=1520&height=2027",
+        "title": "Erik Rasmussen",
+        "description": "Rasmussen’s designs are sculptural and minimalist, with a strong sense of form and materiality. With a background in both architecture and graphic design, he approached each project with a sharp eye for composition and space. His work reflects a timeless Scandinavian sensibility.",
+        "buttonText": "Explore Now",
+        "buttonLink": "#",
+        "smallImageHeight": "550px"
+      }
+    }
+  ]
+}

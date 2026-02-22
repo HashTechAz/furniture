@@ -46,29 +46,9 @@ interface HomeContentProps {
   products: FrontendProduct[]; // Serverdən gələn məhsullar
 }
 
-import paletteData from "@/mock/home-palette/index.json";
+import paletteData from "@/mock/palette/home-palette/index.json";
 
-// --- BANNER DATA (Statik) ---
-const bannerDataDefault = {
-  largeImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/panton-x-montana/wire/montana_pantonwire_d35_blackred_rosehiptop_h.jpg",
-  smallImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/panton-x-montana/wire/montana_pantonwire_d35_blackred_detail_h.jpg",
-  title: "New sizes – New colours",
-  description: "The Panton Wire system has always been celebrated for its balance of simplicity and elegance. Now, it takes another step forward with thoughtful updates that enhance its versatility and aesthetic appeal.",
-  buttonText: "Explore Now",
-  buttonLink: "#",
-};
-
-const bannerDataReversed = {
-  largeImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/factory/montana_factory_2022_13_h.jpg?mode=crop&width=1520&height=2027",
-  smallImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/factory/montana_factory_2022_07_w.jpg?mode=crop&width=1520&height=1093",
-  title: "Environment and quality",
-  description: "At Montana, we take our environmental responsibilities seriously...",
-  buttonText: "More about Montana's environmental initiatives",
-  buttonLink: "/sofas",
-  layout: "imageRight",
-  smallImageHeight: "400px",
-  textBlockWidth: "40%",
-} as const;
+import homeBannerData from "@/mock/middle-banner/home-middle/index.json";
 
 // --- PALETTE TYPES ---
 interface PaletteProps {
@@ -124,7 +104,8 @@ const HomeContent = ({ products }: HomeContentProps) => {
       <ProductNewsSlider products={products} />
 
       <div className="hideOnMobile">
-        <MiddleBanner {...bannerDataDefault} />
+        {/* @ts-ignore */}
+        <MiddleBanner {...homeBannerData.homePage[0].props} />
       </div>
       <div className="showOnlyOnMobile">
         <HomeVideo variant="mobile" />
@@ -135,7 +116,8 @@ const HomeContent = ({ products }: HomeContentProps) => {
       {/* Palette 2 */}
       {mounted && homePalettes.find(p => p.id === 'homePaletteRight2') && renderPalette(homePalettes.find(p => p.id === 'homePaletteRight2')!)}
 
-      <MiddleBanner {...bannerDataReversed} />
+      {/* @ts-ignore */}
+      <MiddleBanner {...homeBannerData.homePage[1].props} />
 
       {/* Palette Left 1 */}
       {mounted && homePalettes.find(p => p.id === 'homePaletteLeft1') && renderPalette(homePalettes.find(p => p.id === 'homePaletteLeft1')!)}

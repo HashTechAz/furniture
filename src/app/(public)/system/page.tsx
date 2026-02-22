@@ -7,7 +7,7 @@ import Size from "./components/Size/Size";
 import ProductSlider from "../../../components/ProductSlider/ProductSlider";
 import SystemPalette from "../../../components/Palette/SystemPalette";
 import PaletteLeftImage from "../../../components/Palette/PaletteLeftImage/PaletteLeftImage";
-import systemPaletteData from "@/mock/system-palette/index.json";
+import systemPaletteData from "@/mock/palette/system-palette/index.json";
 
 interface PaletteProps {
   title: string;

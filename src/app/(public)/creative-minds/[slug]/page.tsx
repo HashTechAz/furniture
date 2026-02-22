@@ -2,32 +2,9 @@ import React from "react";
 import { notFound } from "next/navigation";
 import { componentMap, ComponentName } from "@/component-map";
 import pageStyles from "./page.module.css";
+import middleBannerData from "@/mock/middle-banner/creative-minds-middle/index.json";
 
-const firstFabrikBanner = {
-  largeImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/fabrik/montana_fabrik_portrait_ingrid_01_h.jpg?mode=crop&width=1520&height=2027",
-  smallImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/creative-minds/fabrik/montana_fabrik_portrait_doghundre_01_w.jpg?mode=crop&width=1520&height=1093",
-  title: "Ingrid's trolley",
-  description:
-    "Ingrid with her personalised trolley that - much like the office dog, Hundre - follows her around everywhere in the studio. This way she has her sewing gear at hand all day.",
-  buttonText: "Daha Çox Kəşf Et",
-  buttonLink: "/link-unvani",
-  smallImageHeight: "550px",
-};
 
-const secondFabrikBanner = {
-  largeImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/fabrik/montana_fabrik_portrait_jenny_01_h.jpg?mode=crop&width=1520&height=2027",
-  smallImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/creative-minds/fabrik/montana_fabrik_portrait_jenny_02_w.jpg?mode=crop&width=1520&height=1093",
-  title: "Ingrid's trolley",
-  description:
-    "Ingrid with her personalised trolley that - much like the office dog, Hundre - follows her around everywhere in the studio. This way she has her sewing gear at hand all day.",
-  buttonText: "Daha Çox Kəşf Et",
-  buttonLink: "/link-unvani",
-  smallImageHeight: "550px",
-};
 
 const lumikelloHeroProps = {
   title: "Inside the creative mind of",
@@ -43,18 +20,7 @@ const lumikelloHeroProps = {
   heroClassName: pageStyles.customHeroLayout,
 };
 
-const lumikelloBanner1Props = {
-  largeImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/lumikello/montana_march03.jpg?mode=crop&width=1520&height=2027",
-  smallImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/lumikello/montana_lumikello_april10_p.jpg?mode=crop&width=1520&height=2027",
-  title: "KEEP dresser in the entrance hall",
-  description:
-    "The Montana KEEP dresser in Beetroot with Iris handles for scarves, keys and other belongings in Eva's entrance hall.",
-  buttonText: "See the Details",
-  buttonLink: "#",
-  // "normal" ölçü üçün smallImageHeight propertisini vermirik
-};
+
 
 const lumikelloPaletteLeftProps = {
   title: "Eva advice – begin small and invest in help",
@@ -68,18 +34,7 @@ const lumikelloPaletteLeftProps = {
   imageSize: "normal",
 };
 
-const lumikelloBanner2Props = {
-  largeImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/lumikello/lumikello_montana_januar6_p.jpg?mode=crop&width=1520&height=2027",
-  smallImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/creative-minds/lumikello/lumikello_montana_januar2_s.jpg?mode=crop&width=1520&height=1520",
-  title: "Harmony in Design",
-  description:
-    "Every piece is carefully selected to contribute to a cohesive and harmonious interior, balancing form and function.",
-  buttonText: "Learn More",
-  buttonLink: "#",
-  layout: "imageRight", // Reverse banner
-};
+
 
 const lumikelloGalleryProps = {
   layout: "reversed", // Şəkillərin sırasını tərs çevirir
@@ -104,18 +59,7 @@ const swantjeHeroProps = {
   heroClassName: pageStyles.customHeroLayout, // Ümumi stili tətbiq edirik
 };
 
-const swantjeHeroBanner1Props = {
-  largeImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/inriver/product/0hilow160c/circus_hallway._p.jpg?mode=crop&width=1520&height=2027",
-  smallImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/inriver/product/0hilow160c/2020-11-23-13.36.08_l.jpg?mode=crop&width=1520&height=1093",
-  title: "A happy entrance hall",
-  description:
-    "When visiting Swantje, you get welcomed by the CARRY dresser in the energetic colour Parsley. Right beside is a clothing rack in the bold colour Monarch creating an entrance hall with a playful atmosphere.",
-  buttonText: "Shop the look Montana",
-  buttonLink: "#",
-  // "normal" ölçü üçün smallImageHeight propertisini vermirik
-};
+
 
 const swantjeGalleryProps = {
   layout: "reversed", // Şəkillərin sırasını tərs çevirir
@@ -175,17 +119,7 @@ const cathrineGallery2Props = {
   ] as [string, string], // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
 };
 
-const cathrineMiddleBanner1Props = {
-  largeImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg19859_final.jpg?mode=crop&width=1520&height=2027",
-  smallImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg19903_final_v2.jpg?mode=crop&width=1520&height=2027",
-  title: "“The pink we’ve all dreamed about”",
-  description:
-    "The KEEP dresser is the perfect storage solution for the bedroom, living room, or hall. Cathrine has it in her bedroom in the soft pink shade, Ruby.",
-  buttonText: "Explore dressers and drawers",
-  buttonLink: "#",
-};
+
 
 const cathrineGallery3Props = {
   images: [
@@ -195,17 +129,7 @@ const cathrineGallery3Props = {
   ] as [string, string], // TypeScript-ə bunun iki elementli massiv olduğunu bildiririk
 };
 
-const cathrineMiddleBanner2Props = {
-  largeImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg36363.jpg?mode=crop&width=1520&height=2027",
-  smallImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/cathdelichtenberg/montana_cathrinedelicthenberg36356.jpg?mode=crop&width=1520&height=2027",
-  title: "“Cathrine's customised wardrobe”",
-  description:
-    "Cathrine transformed a room into a stylish walk-in closet. Here, she has a custom Montana System wardrobe in deep green Pine. With drawers, open shelves, and glass shelves, it accommodates all her wardrobe favourites – from shoes to blouses and jewellery.",
-  buttonText: "Explore dressers and drawers",
-  buttonLink: "#",
-};
+
 
 const cathrineGallery4Props = {
   images: [
@@ -241,18 +165,7 @@ const teklaHeroProps = {
   heroClassName: pageStyles.customHeroLayout,
 };
 
-const teklaMiddleBanner1Props = {
-  largeImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/tekla/2_dsc3804-1-2.jpg?mode=crop&width=1520&height=2027",
-  smallImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/tekla/img_2124-2.jpg?mode=crop&width=1520&height=2027",
-  title: "Bring joy to the room",
-  description:
-    "Tekla tries to decorate her home with colours as much as she can; walls, art, furniture, objects, flowers, rugs, clothing. All things are carefully selected and placed to bring joy to the room. Teklas latest addition to her kitchen is a new linoleum flooring in lilac, dark pistachio and cream yellow chess pattern. She simply placed the new floor over the original grey linoleum floor in case of the couple moving from the rental apartment. The Montana Mini modules in the colour Camomile bring rays of sunlight to Tekla's kitchen. Montana Mini is a series of uncomplicated, versatile storage modules. Available in three variants and only 10 colours, Montana Mini is the easier choice",
-  buttonText: "Explore dressers and drawers",
-  buttonLink: "#",
-  smallImageHeight: "550px",
-};
+
 
 const teklaPaletteRightImageProps = {
   title: "Cheerful colours",
@@ -298,18 +211,7 @@ const celineHeroProps = {
   heroClassName: pageStyles.customHeroLayout,
 };
 
-const celineMiddleBanner1Props = {
-  largeImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/celine-hallas/celinehallasxmontana_color_02_2020-02-06t17-10-26_conflict.jpg?mode=crop&width=1520&height=2027",
-  smallImageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/celine-hallas/celinehallasxmontana_2019_12_1.jpg?mode=crop&width=1520&height=2027",
-  title: "Colour as therapy",
-  description:
-    "Recently, we painted the livingroom and kitchen in the same colour. We did that to create a coherent look. Our old apartment has a lot of beautifully detailed wood work, and we decided to paint it in a stronger colour to highlight it. The same colour is also used for the flooring in both rooms, creating a perfect canvas for bolder colours and eclectic interior",
-  buttonText: "Explore now",
-  buttonLink: "/news/palette-refresh",
-  smallImageHeight: "550px",
-};
+
 
 const celinePaletteLeftImageProps = {
   title: "Colour as therapy",
@@ -388,7 +290,7 @@ const mindsPageData: Record<string, PageData> = {
       },
       {
         component: "MiddleBanner",
-        props: firstFabrikBanner, // Yuxarıda yaratdığımız obyekti ötürürük
+        props: middleBannerData.firstFabrikBanner, // Yuxarıda yaratdığımız obyekti ötürürük
       },
       {
         component: "HomeVideo",
@@ -404,7 +306,7 @@ const mindsPageData: Record<string, PageData> = {
       },
       {
         component: "MiddleBanner",
-        props: secondFabrikBanner, // Tərs çevrilmiş banner
+        props: middleBannerData.secondFabrikBanner, // Tərs çevrilmiş banner
       },
       {
         component: "HomeVideo",
@@ -427,15 +329,15 @@ const mindsPageData: Record<string, PageData> = {
   lumikello: {
     components: [
       { component: "Hero", props: lumikelloHeroProps },
-      { 
-        component: "CenterInfoText", 
+      {
+        component: "CenterInfoText",
         props: {
           title: "✨ Lumikello's Creative Journey ✨",
           description: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. At minus, nobis porro eius suscipit dolores provident, quam cum laborum sit, officiis odio possimus reprehenderit. Voluptas, rem fugit unde vitae odit voluptate eum accusamus repellendus rerum amet, cupiditate qui distinctio laboriosam!",
           secondParagraph: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatum debitis, deleniti ipsam magnam dolor placeat doloremque at optio vitae incidunt.  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse nesciunt itaque quo aliquam quos distinctio eligendi necessitatibus doloribus vero cumque explicabo laudantium nihil quasi facilis, saepe veniam facere ad veritatis! Dignissimos dicta similique ullam libero ducimus voluptate iusto a assumenda consectetur ea quam, nesciunt aut, eligendi asperiores! Temporibus, officia illum."
         }
       },
-      { component: "MiddleBanner", props: lumikelloBanner1Props },
+      { component: "MiddleBanner", props: middleBannerData.lumikelloBanner1Props },
       { component: "SustainabilityGallery", props: lumikelloGalleryProps },
       {
         component: "HomeVideo",
@@ -444,16 +346,16 @@ const mindsPageData: Record<string, PageData> = {
             "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/creative-minds/lumikello/homestory7_s.jpg?mode=crop&width=1520&height=1093",
         },
       },
-      { 
-        component: "Companies", 
+      {
+        component: "Companies",
         props: {
           title: "Eva's collaboration with Montana Furniture represents the perfect fusion of Scandinavian design principles she shows us that storage doesn't have to be hidden or purely functional – it can be a beautiful, integral part of our home's aesthetic.",
           author: "Eva Kaiser",
           authorTitle: "Creative Director"
         }
       },
-      { 
-        component: "CenterInfoText", 
+      {
+        component: "CenterInfoText",
         props: {
           title: "🎨 Eva's Design Philosophy 🎨",
           description: "Eva's design philosophy centers around the belief that your home should be a reflection of your personality and lifestyle. She encourages people to start small with color experiments, gradually building confidence in their design choices.",
@@ -462,7 +364,7 @@ const mindsPageData: Record<string, PageData> = {
       },
       { component: "FrameColors", props: {} },
       { component: "PaletteLeftImage", props: lumikelloPaletteLeftProps },
-      { component: "MiddleBanner", props: lumikelloBanner2Props },
+      { component: "MiddleBanner", props: middleBannerData.lumikelloBanner2Props },
       { component: "ProductNewsSlider", props: { titleTop: "" } },
       {
         component: "HomeVideo",
@@ -479,7 +381,7 @@ const mindsPageData: Record<string, PageData> = {
     components: [
       { component: "Hero", props: swantjeHeroProps },
       { component: "CenterInfoText", props: {} },
-      { component: "MiddleBanner", props: swantjeHeroBanner1Props },
+      { component: "MiddleBanner", props: middleBannerData.swantjeHeroBanner1Props },
       { component: "SustainabilityGallery", props: swantjeGalleryProps },
       { component: "Companies", props: {} },
       { component: "CenterInfoText", props: {} },
@@ -508,12 +410,12 @@ const mindsPageData: Record<string, PageData> = {
       { component: "SustainabilityGallery", props: cathrineGallery2Props },
       { component: "CenterInfoText", props: {} },
       { component: "FrameColors", props: {} },
-      { component: "MiddleBanner", props: cathrineMiddleBanner1Props },
+      { component: "MiddleBanner", props: middleBannerData.cathrineMiddleBanner1Props },
       { component: "CenterInfoText", props: {} },
       { component: "Companies", props: {} },
       { component: "SustainabilityGallery", props: cathrineGallery3Props },
       { component: "Companies", props: {} },
-      { component: "MiddleBanner", props: cathrineMiddleBanner2Props },
+      { component: "MiddleBanner", props: middleBannerData.cathrineMiddleBanner2Props },
       { component: "SustainabilityGallery", props: cathrineGallery4Props },
       { component: "ProductNewsSlider", props: { titleTop: "" } },
       { component: "PaletteRightImage", props: cathrinePaletteRightImageProps },
@@ -526,11 +428,11 @@ const mindsPageData: Record<string, PageData> = {
       { component: "Hero", props: teklaHeroProps },
       { component: "CenterInfoText", props: {} },
       { component: "Companies", props: {} },
-      { component: "MiddleBanner", props: teklaMiddleBanner1Props },
+      { component: "MiddleBanner", props: middleBannerData.teklaMiddleBanner1Props },
       { component: "PaletteRightImage", props: teklaPaletteRightImageProps },
       { component: "CenterInfoText", props: {} },
       { component: "FrameColors", props: {} },
-      { component: "MiddleBanner", props: teklaMiddleBanner1Props },
+      { component: "MiddleBanner", props: middleBannerData.teklaMiddleBanner1Props },
       { component: "ProductNewsSlider", props: { titleTop: "" } },
       { component: "PaletteRightImage", props: teklaPalette2RightImageProps },
       { component: "CenterInfoText", props: {} },
@@ -544,7 +446,7 @@ const mindsPageData: Record<string, PageData> = {
     components: [
       { component: "Hero", props: celineHeroProps },
       { component: "CenterInfoText", props: {} },
-      { component: "MiddleBanner", props: celineMiddleBanner1Props },
+      { component: "MiddleBanner", props: middleBannerData.celineMiddleBanner1Props },
       { component: "Companies", props: {} },
       {
         component: "HomeVideo",
@@ -571,7 +473,7 @@ const mindsPageData: Record<string, PageData> = {
       { component: "Hero", props: sarahHeroProps },
       { component: "CenterInfoText", props: {} },
       { component: "AboutCompany", props: {} },
-      { component: "MiddleBanner", props: celineMiddleBanner1Props },
+      { component: "MiddleBanner", props: middleBannerData.celineMiddleBanner1Props },
       { component: "CenterInfoText", props: {} },
       { component: "SustainabilityGallery", props: celineGalleryProps },
       { component: "PaletteRightImage", props: teklaPaletteRightImageProps },
@@ -627,7 +529,7 @@ const CreativeMindDetailPage = async ({
           ].includes(block.component)
         ) {
 
-          
+
           return (
             <div key={index} className={pageStyles.bannerWrapper}>
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
@@ -636,7 +538,7 @@ const CreativeMindDetailPage = async ({
           );
         }
 
-        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */ }
         return <Component key={index}  {...(block.props as any)} />;
       })}
     </main>

@@ -9,7 +9,7 @@ import HomeVideo from '@/components/HomeVideo/HomeVideo';
 import ProductSlider from '@/components/ProductSlider/ProductSlider';
 import AboutBigImage from './components/AboutBigImage/AboutBigImage';
 import PaletteRightImage from '@/components/Palette/PaletteRightImage/PaletteRightImage';
-import aboutPaletteData from '@/mock/about-palette/index.json';
+import aboutPaletteData from '@/mock/palette/about-palette/index.json';
 
 interface PaletteProps {
   title: string;
@@ -27,14 +27,7 @@ interface PaletteData {
   props: PaletteProps;
 }
 
-const aboutBannerData = {
-  largeImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/colours/montana_colourps_azure_oat_rosehip.jpg?mode=crop&width=1520&height=2027",
-  smallImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/colours/montana_colourps_amber_camomile_rhubarb_flint_oat.jpg?mode=crop&width=1520&height=2027",
-  title: "Endless possibilities with Montana",
-  description: "Montana Furniture is based on Peter J. Lassen's philosophy that every one of us has a need for freedom and a natural desire to create our own personal spaces. With Montana you get endless possibilities and freedom to create the look that's just right for you.",
-  buttonText: "Learn more about our design",
-  buttonLink: "/design",
-};
+import aboutBannerData from '@/mock/middle-banner/about-middle/index.json';
 
 export default function About() {
   const [mounted, setMounted] = useState(false);
@@ -74,7 +67,8 @@ export default function About() {
       <AboutCompany />
       <AboutBigImage />
       <div className={styles.aboutMiddleBanner}>
-        <MiddleBanner {...aboutBannerData} />
+        {/* @ts-ignore */}
+        <MiddleBanner {...aboutBannerData.aboutPage[0].props} />
       </div>
 
       {/* PaletteRightImage 1 */}

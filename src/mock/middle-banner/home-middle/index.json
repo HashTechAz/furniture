@@ -1,0 +1,30 @@
+{
+  "homePage": [
+    {
+      "id": "homeMiddleBannerDefault",
+      "componentType": "MiddleBanner",
+      "props": {
+        "largeImageUrl": "/images/middle-banner/home/home-middle-1.jpg",
+        "smallImageUrl": "/images/middle-banner/home/home-middle-small.jpg",
+        "title": "Təbiətə Qayğı və Yüksək Keyfiyyət",
+        "description": "Sparro olaraq bizim üçün təkcə estetik məkanlar yaratmaq yox, həm də gələcəyimizi düşünmək önəmlidir. Biz hər mərhələsində təbiətə zərər verməməyə ciddi yanaşırıq. Təbiətdən ilhamlanır, onu qoruyaraq yaradırıq.",
+        "buttonText": "Daha ətraflı oxu",
+        "buttonLink": "#"
+      }
+    },
+    {
+      "id": "homeMiddleBannerReversed",
+      "componentType": "MiddleBanner",
+      "props": {
+        "largeImageUrl": "/images/middle-banner/home/home-middle-2.jpg",
+        "smallImageUrl": "/images/middle-banner/home/home-middle-2-small.jpg",
+        "title": "Environment and quality",
+        "description": "At Montana, we take our environmental responsibilities seriously...",
+        "buttonText": "More about Montana's environmental initiatives",
+        "buttonLink": "/sofas",
+        "layout": "imageRight",
+        "smallImageHeight": "400px"
+      }
+    }
+  ]
+}

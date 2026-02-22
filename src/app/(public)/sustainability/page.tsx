@@ -12,7 +12,7 @@ import PaletteLeftImage from "@/components/Palette/PaletteLeftImage/PaletteLeftI
 import HomeVideo from "@/components/HomeVideo/HomeVideo";
 import PaletteRightImage from "@/components/Palette/PaletteRightImage/PaletteRightImage";
 import Related from "./components/Related/Related";
-import sustainabilityPaletteData from "@/mock/sustainability-palette/index.json";
+import sustainabilityPaletteData from "@/mock/palette/sustainability-palette/index.json";
 
 
 interface PaletteProps {

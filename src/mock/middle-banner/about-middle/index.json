@@ -1,0 +1,16 @@
+{
+  "aboutPage": [
+    {
+      "id": "aboutMiddleBanner",
+      "componentType": "MiddleBanner",
+      "props": {
+        "largeImageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/colours/montana_colourps_azure_oat_rosehip.jpg?mode=crop&width=1520&height=2027",
+        "smallImageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/colours/montana_colourps_amber_camomile_rhubarb_flint_oat.jpg?mode=crop&width=1520&height=2027",
+        "title": "Endless possibilities with Montana",
+        "description": "Montana Furniture is based on Peter J. Lassen's philosophy that every one of us has a need for freedom and a natural desire to create our own personal spaces. With Montana you get endless possibilities and freedom to create the look that's just right for you.",
+        "buttonText": "Learn more about our design",
+        "buttonLink": "/design"
+      }
+    }
+  ]
+}
