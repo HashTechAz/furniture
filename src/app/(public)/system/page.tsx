@@ -1,12 +1,13 @@
 'use client'; // Client komponenti
 
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect } from "react";
 import SystemHero from "./components/SystemHero/SystemHero";
 import SystemAbout from "./components/SystemAbout/SystemAbout";
 import Size from "./components/Size/Size";
 import ProductSlider from "../../../components/ProductSlider/ProductSlider";
 import SystemPalette from "../../../components/Palette/SystemPalette";
 import PaletteLeftImage from "../../../components/Palette/PaletteLeftImage/PaletteLeftImage";
+import systemPaletteData from "@/mock/system-palette/index.json";
 
 interface PaletteProps {
   title: string;
@@ -37,11 +38,7 @@ interface PaletteData {
 }
 
 
-const SystemPage = () => { 
-  // State əlavə edirik
-  const [systemPalettes, setSystemPalettes] = useState<PaletteData[]>([]);
-  const [loadingPalettes, setLoadingPalettes] = useState(false);
-  const [paletteError, setPaletteError] = useState<string | null>(null);
+const SystemPage = () => {
   const [mounted, setMounted] = useState(false);
 
   // Ensure component is mounted on client before rendering dynamic content
@@ -49,33 +46,7 @@ const SystemPage = () => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (!mounted) return;
-    
-    const fetchPalettes = async () => {
-      try {
-        setLoadingPalettes(true);
-        setPaletteError(null);
-        const response = await fetch('/api/palettes');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const allPaletteData: { systemPage?: PaletteData[] } = await response.json();
-        setSystemPalettes(allPaletteData.systemPage || []); 
-      } catch (err) {
-         if (err instanceof Error) {
-            setPaletteError(err.message);
-        } else {
-            setPaletteError('An unknown error occurred while fetching palettes');
-        }
-        console.error("Failed to fetch palettes:", err);
-      } finally {
-        setLoadingPalettes(false);
-      }
-    };
-
-    fetchPalettes();
-  }, [mounted]);
+  const systemPalettes = systemPaletteData.systemPage as PaletteData[];
 
   const renderPalette = (palette: PaletteData) => {
     if (palette.componentType === 'PaletteLeftImage') {
@@ -104,19 +75,13 @@ const SystemPage = () => {
       />
 
       {/* PaletteLeftImage 1 */}
-      {mounted && (loadingPalettes ? <p>Loading palettes...</p> : paletteError ? <p>Error: {paletteError}</p> :
-        systemPalettes.find(p => p.id === 'systemPaletteLeft1') && renderPalette(systemPalettes.find(p => p.id === 'systemPaletteLeft1')!)
-      )}
+      {mounted && systemPalettes.find(p => p.id === 'systemPaletteLeft1') && renderPalette(systemPalettes.find(p => p.id === 'systemPaletteLeft1')!)}
 
       {/* SystemPalette */}
-       {mounted && (loadingPalettes ? null : paletteError ? null :
-        systemPalettes.find(p => p.id === 'systemPaletteSystem1') && renderPalette(systemPalettes.find(p => p.id === 'systemPaletteSystem1')!)
-      )}
+      {mounted && systemPalettes.find(p => p.id === 'systemPaletteSystem1') && renderPalette(systemPalettes.find(p => p.id === 'systemPaletteSystem1')!)}
 
-       {/* PaletteLeftImage 2 */}
-       {mounted && (loadingPalettes ? null : paletteError ? null :
-        systemPalettes.find(p => p.id === 'systemPaletteLeft2') && renderPalette(systemPalettes.find(p => p.id === 'systemPaletteLeft2')!)
-      )}
+      {/* PaletteLeftImage 2 */}
+      {mounted && systemPalettes.find(p => p.id === 'systemPaletteLeft2') && renderPalette(systemPalettes.find(p => p.id === 'systemPaletteLeft2')!)}
 
 
       <div style={{ marginBottom: '40px' }}>

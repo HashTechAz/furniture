@@ -12,6 +12,7 @@ import PaletteLeftImage from "@/components/Palette/PaletteLeftImage/PaletteLeftI
 import HomeVideo from "@/components/HomeVideo/HomeVideo";
 import PaletteRightImage from "@/components/Palette/PaletteRightImage/PaletteRightImage";
 import Related from "./components/Related/Related";
+import sustainabilityPaletteData from "@/mock/sustainability-palette/index.json";
 
 
 interface PaletteProps {
@@ -38,14 +39,11 @@ interface PaletteProps {
 
 interface PaletteData {
   id: string;
-  componentType: 'PaletteRightImage' | 'PaletteLeftImage' | 'SystemPalette'; 
+  componentType: 'PaletteRightImage' | 'PaletteLeftImage' | 'SystemPalette';
   props: PaletteProps;
 }
 
-const SustainabilityPage = () => { 
-  const [sustainabilityPalettes, setSustainabilityPalettes] = useState<PaletteData[]>([]);
-  const [loadingPalettes, setLoadingPalettes] = useState(false);
-  const [paletteError, setPaletteError] = useState<string | null>(null);
+const SustainabilityPage = () => {
   const [mounted, setMounted] = useState(false);
 
   // Ensure component is mounted on client before rendering dynamic content
@@ -53,33 +51,7 @@ const SustainabilityPage = () => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (!mounted) return;
-    
-    const fetchPalettes = async () => {
-      try {
-        setLoadingPalettes(true);
-        setPaletteError(null);
-        const response = await fetch('/api/palettes');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const allPaletteData: { sustainabilityPage?: PaletteData[] } = await response.json();
-        setSustainabilityPalettes(allPaletteData.sustainabilityPage || []); // sustainabilityPage hissəsini alırıq
-      } catch (err) {
-         if (err instanceof Error) {
-            setPaletteError(err.message);
-        } else {
-            setPaletteError('An unknown error occurred while fetching palettes');
-        }
-        console.error("Failed to fetch palettes:", err);
-      } finally {
-        setLoadingPalettes(false);
-      }
-    };
-
-    fetchPalettes();
-  }, [mounted]);
+  const sustainabilityPalettes = sustainabilityPaletteData.sustainabilityPage as PaletteData[];
 
   const renderPalette = (palette: PaletteData) => {
     if (palette.componentType === 'PaletteRightImage') {
@@ -106,18 +78,14 @@ const SustainabilityPage = () => {
       <Ecolabel />
 
       {/* PaletteLeftImage */}
-      {mounted && (loadingPalettes ? <p>Loading palettes...</p> : paletteError ? <p>Error: {paletteError}</p> :
-        sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteLeft1') && renderPalette(sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteLeft1')!)
-      )}
+      {mounted && sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteLeft1') && renderPalette(sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteLeft1')!)}
 
       <HomeVideo />
 
       {/* PaletteRightImage */}
-      {mounted && (loadingPalettes ? null : paletteError ? null :
-        sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteRight1') && renderPalette(sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteRight1')!)
-      )}
+      {mounted && sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteRight1') && renderPalette(sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteRight1')!)}
 
-      <Related/>
+      <Related />
     </>
   );
 };

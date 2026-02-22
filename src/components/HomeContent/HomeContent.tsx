@@ -46,6 +46,8 @@ interface HomeContentProps {
   products: FrontendProduct[]; // Serverdən gələn məhsullar
 }
 
+import paletteData from "@/mock/home-palette/index.json";
+
 // --- BANNER DATA (Statik) ---
 const bannerDataDefault = {
   largeImageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/panton-x-montana/wire/montana_pantonwire_d35_blackred_rosehiptop_h.jpg",
@@ -87,42 +89,13 @@ interface PaletteData {
 
 // === MAIN COMPONENT ===
 const HomeContent = ({ products }: HomeContentProps) => {
-  const [homePalettes, setHomePalettes] = useState<PaletteData[]>([]);
-  const [loadingPalettes, setLoadingPalettes] = useState(false);
-  const [paletteError, setPaletteError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (!mounted) return;
-    
-    const fetchPalettes = async () => {
-      try {
-        setLoadingPalettes(true);
-        setPaletteError(null);
-        const response = await fetch('/api/palettes'); 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const allPaletteData: { homePage?: PaletteData[] } = await response.json();
-        setHomePalettes(allPaletteData.homePage || []);
-      } catch (err) {
-         if (err instanceof Error) {
-            setPaletteError(err.message);
-        } else {
-            setPaletteError('An unknown error occurred while fetching palettes');
-        }
-        console.error("Failed to fetch palettes:", err);
-      } finally {
-        setLoadingPalettes(false);
-      }
-    };
-
-    fetchPalettes();
-  }, [mounted]);
+  const homePalettes = paletteData.homePage as PaletteData[];
 
   const renderPalette = (palette: PaletteData) => {
     if (palette.componentType === 'PaletteRightImage') {
@@ -130,21 +103,19 @@ const HomeContent = ({ products }: HomeContentProps) => {
     } else if (palette.componentType === 'PaletteLeftImage') {
       return <PaletteLeftImage key={palette.id} {...palette.props} />;
     }
-    return null; 
+    return null;
   };
 
   return (
     <>
       <HeroSection backgroundImage="/images/home-hero/home-hero.jpg" />
       <div id="header-trigger" style={{ height: 1 }} />
-      
+
       {/* Product Slider hələlik statik qalır */}
       <ProductSlider />
 
       {/* Palette 1 */}
-      {mounted && (loadingPalettes ? <p>Loading palettes...</p> : paletteError ? <p>Error: {paletteError}</p> :
-        homePalettes.find(p => p.id === 'homePaletteRight1') && renderPalette(homePalettes.find(p => p.id === 'homePaletteRight1')!)
-      )}
+      {mounted && homePalettes.find(p => p.id === 'homePaletteRight1') && renderPalette(homePalettes.find(p => p.id === 'homePaletteRight1')!)}
 
       <NewsSection limit={4} />
 
@@ -158,29 +129,23 @@ const HomeContent = ({ products }: HomeContentProps) => {
       <div className="showOnlyOnMobile">
         <HomeVideo variant="mobile" />
       </div>
-      
+
       <TrustBadges />
 
       {/* Palette 2 */}
-       {mounted && (loadingPalettes ? null : paletteError ? null :
-        homePalettes.find(p => p.id === 'homePaletteRight2') && renderPalette(homePalettes.find(p => p.id === 'homePaletteRight2')!)
-      )}
+      {mounted && homePalettes.find(p => p.id === 'homePaletteRight2') && renderPalette(homePalettes.find(p => p.id === 'homePaletteRight2')!)}
 
       <MiddleBanner {...bannerDataReversed} />
 
       {/* Palette Left 1 */}
-      {mounted && (loadingPalettes ? null : paletteError ? null :
-        homePalettes.find(p => p.id === 'homePaletteLeft1') && renderPalette(homePalettes.find(p => p.id === 'homePaletteLeft1')!)
-      )}
+      {mounted && homePalettes.find(p => p.id === 'homePaletteLeft1') && renderPalette(homePalettes.find(p => p.id === 'homePaletteLeft1')!)}
 
       <div className="hideOnMobile">
         <HomeVideo />
       </div>
 
-       {/* Palette 3 */}
-       {mounted && (loadingPalettes ? null : paletteError ? null :
-        homePalettes.find(p => p.id === 'homePaletteRight3') && renderPalette(homePalettes.find(p => p.id === 'homePaletteRight3')!)
-      )}
+      {/* Palette 3 */}
+      {mounted && homePalettes.find(p => p.id === 'homePaletteRight3') && renderPalette(homePalettes.find(p => p.id === 'homePaletteRight3')!)}
 
       <Form />
     </>

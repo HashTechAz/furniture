@@ -1,0 +1,56 @@
+{
+    "homePage": [
+      {
+        "id": "homePaletteRight1",
+        "componentType": "PaletteRightImage",
+        "props": {
+          "title": "Yeni Rənglər, Yeni Tərz",
+          "description": "Sparro Mini kolleksiyamız yenilənmiş rəng palitrası ilə artıq daha geniş dizayn imkanları təqdim edir. Məqsədiniz istər evinizin ab-havasını isitmək, istər diqqətçəkən cəsur bir fərqlilik yaratmaq, istərsə də incə bir zəriflik toxunuşu əlavə etmək olsun – yeni rəng çeşidlərimiz sizə tamamilə özünüzə məxsus və unikal bir interyer yaratmaq azadlığı verir.",
+          "buttonText": "Kolleksiyanı kəşf et",
+          "buttonLink": "/news/palette-refresh",
+          "imageUrl": "/images/palette/home-palette-1.jpg",
+          "backgroundColor": "#CCC6B8",
+          "imageSize": "normal"
+        }
+      },
+      {
+        "id": "homePaletteRight2",
+        "componentType": "PaletteRightImage",
+        "props": {
+          "title": "İnteryerə Canlılıq Qatın",  
+          "description": "Məkanınızda rənglərin gücündən inamla istifadə etməyə hazırsınız? Sparro-nun xüsusi Rəng Dərsləri layihəsi məhz bunun üçündür. Hər buraxılışda sizi fərqli və cəsur rəng kombinasiyaları olan evlərə qonaq aparır, daxili dizaynda öz fərdi tərzinizi rənglərlə necə ifadə edəcəyinizi bölüşürük.",
+          "buttonText": "Rəng Dərslərini kəşf et",
+          "buttonLink": "/collections/summer",
+          "imageUrl": "/images/palette/home-palette-2.jpg",
+          "backgroundColor": "#BDD2DA",
+          "imageSize": "large"
+        }
+      },
+      {
+        "id": "homePaletteLeft1",
+        "componentType": "PaletteLeftImage",
+        "props": {
+          "title": "Uğurlu dizaynın arxasında əmək dayanır",
+          "description": "Sparro [1982-ci ildə] qurulmuş, evlər və müasir ofis məkanları üçün mebel və saxlama sistemləri sahəsində qabaqcıl ailə şirkətidir. Şirkətin əsası həm də Sparro sisteminin dizayneri olan [Peter J. Lassen] tərəfindən qoyulmuşdur. Bütün Sparro modulları [Danimarkada / Azərbaycanda] dizayn edilir, inkişaf etdirilir və istehsal olunur. Hər gün [istehsalat müəssisəmizdə] 140-dan çox peşəkar əməkdaşımız emal, rəngləmə və quraşdırma üzrə ən yüksək standartları qorumaq üçün yorulmadan çalışır. Əsas məqsədimiz Sparro mebellərinin sizə bir ömür boyu, keyfiyyətlə xidmət etməsini təmin etməkdir.",
+          "buttonText": "Dizaynerlərimizlə tanış olun",
+          "buttonLink": "/collections/summer",
+          "imageUrl": "/images/palette/home-palette-3.jpg",
+          "backgroundColor": "#2C3587",
+          "imageSize": "large"
+        }
+      },
+      {
+        "id": "homePaletteRight3",
+        "componentType": "PaletteRightImage",
+        "props": {
+          "title": "Peşəkarlar üçün Sparro",
+          "description": "Veb-saytımızın xüsusi olaraq interyer dizaynı sahəsində çalışan peşəkarlar üçün yaradılmış bölməsinə daxil olun. Sparro olaraq memarlara, dizaynerlərə, satınalma üzrə mütəxəssislərə və layihə rəhbərlərinə həm funksional, həm də estetik iş mühitləri yaratmaqda dəstək olmaq bizim əsas məqsədimizdir. Satış komandamızla əlaqə vasitələri, məhsullarımız haqqında ətraflı məlumat və digər faydalı resursları buradan kəşf edə bilərsiniz.",
+          "buttonText": "Peşəkarlar üçün Sparro",
+          "buttonLink": "/collections/summer",
+          "imageUrl": "/images/palette/home-palette-4.jpg",
+          "backgroundColor": "#263835",
+          "imageSize": "large"
+        }
+      }
+    ]
+}

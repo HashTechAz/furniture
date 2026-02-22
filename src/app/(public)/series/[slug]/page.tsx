@@ -6,6 +6,7 @@ import { componentMap, ComponentName } from "@/component-map";
 import pageStyles from "./page.module.css";
 import SystemHero, { SystemHeroProps } from "../../system/components/SystemHero/SystemHero";
 import PageBuilder from '@/components/PageBuilder/PageBuilder';
+import seriesGuaranteesData from "@/mock/series-guarantees/index.json";
 
 interface PageComponent {
   component: ComponentName;
@@ -133,33 +134,9 @@ const SeriesDetailPage = () => {
     if (!mounted) return;
 
     if (slug === 'guarantees') {
-      const fetchPalettes = async () => {
-        setLoadingPalettes(true);
-        setPaletteError(null);
-        setPagePalettes([]);
-        try {
-          const response = await fetch('/api/palettes');
-          if (!response.ok) {
-            throw new Error(`Network response was not ok (${response.status})`);
-          }
-          const allPaletteData: { seriesGuaranteesPage?: PaletteData[] } = await response.json();
-          setPagePalettes(allPaletteData.seriesGuaranteesPage || []);
-        } catch (err) {
-          if (err instanceof Error) {
-            setPaletteError(err.message);
-          } else {
-            setPaletteError('An unknown error occurred while fetching palettes');
-          }
-          console.error("Failed to fetch palettes for guarantees:", err);
-        } finally {
-          setLoadingPalettes(false);
-        }
-      };
-      fetchPalettes();
+      setPagePalettes(seriesGuaranteesData.seriesGuaranteesPage as PaletteData[]);
     } else {
-      setLoadingPalettes(false);
       setPagePalettes([]);
-      setPaletteError(null);
     }
   }, [slug, mounted]);
 
@@ -194,13 +171,11 @@ const SeriesDetailPage = () => {
 
       {slug === 'guarantees' && mounted && (
         <div className={pageStyles.bannerWrapper}>
-          {loadingPalettes ? <p>Loading palette...</p> :
-            paletteError ? <p>Error loading palette: {paletteError}</p> :
-              pagePalettes.length > 0 ? (
-                pagePalettes.map(palette => renderPalette(palette))
-              ) :
-                <p>Palette data not found for guarantees.</p>
-          }
+          {pagePalettes.length > 0 ? (
+            pagePalettes.map(palette => renderPalette(palette))
+          ) : (
+            <p>Palette data not found for guarantees.</p>
+          )}
         </div>
       )}
     </main>

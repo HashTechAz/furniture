@@ -1,0 +1,17 @@
+{
+  "seriesGuaranteesPage": [ 
+    {
+      "id": "guaranteesPaletteLeft1",
+      "componentType": "PaletteLeftImage",
+      "props": {
+        "title": "Quality Guarantee - Built to Last a Lifetime",
+        "description": "Every Montana piece is crafted with the highest quality materials and attention to detail. Our furniture is designed to withstand daily use while maintaining its beauty and functionality for generations. We stand behind our products with comprehensive warranties and exceptional customer service.",
+        "buttonText": "Learn more about our quality",
+        "buttonLink": "/series/guarantees", 
+        "imageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/margrethe-collab/montana_3newcolours_2023_margretheodgaard_05_h.jpg?mode=crop&width=540&height=720",
+        "backgroundColor": "#E8F4F8",
+        "imageSize": "normal"
+      }
+    }
+  ]
+}

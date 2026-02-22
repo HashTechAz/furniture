@@ -1,0 +1,30 @@
+{
+  "aboutPage": [ 
+    {
+      "id": "aboutPaletteRight1",
+      "componentType": "PaletteRightImage",
+      "props": {
+        "title": "A poetic range of 41 Montana colours",
+        "description": "Montana’s functional and flexible system is featured in a range of 41 poetic and complex colours developed in close collaboration with the award-winning Danish designer and colour expert Margrethe Odgaard.\n\nColours mean everything. Ambience. Atmosphere. Identity. Colours are paramount in our design. We want to influence and inspire the world of interiors with our take on colours. Bright and light. Dense and deep. There is a colour for any purpose.",
+        "buttonText": "Discover Colour Classes here",
+        "buttonLink": "/collections/summer", 
+        "imageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/designer-portraits/montana_margretheodgaard_newcolours2019_01_s.jpg?mode=crop&width=640&height=640",
+        "backgroundColor": "#BDD2DA",
+        "imageSize": "custom" 
+      }
+    },
+    {
+      "id": "aboutPaletteRight2",
+      "componentType": "PaletteRightImage",
+      "props": {
+        "title": "A poetic range of 41 Montana colours", 
+        "description": "Montana’s functional and flexible system is featured in a range of 41 poetic and complex colours developed in close collaboration with the award-winning Danish designer and colour expert Margrethe Odgaard.\n\nColours mean everything. Ambience. Atmosphere. Identity. Colours are paramount in our design. We want to influence and inspire the world of interiors with our take on colours. Bright and light. Dense and deep. There is a colour for any purpose.",
+        "buttonText": "Discover Colour Classes here",
+        "buttonLink": "/collections/summer",
+        "imageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/designer-portraits/montana_peter_lassen.jpg?mode=crop&width=640&height=640",
+        "backgroundColor": "#2C3587", 
+        "imageSize": "custom" 
+      }
+    }
+  ]
+}
