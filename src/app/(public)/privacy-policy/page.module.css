@@ -1,0 +1,125 @@
+.pageWrapper {
+  width: 100%;
+  min-height: calc(100vh - 400px);
+}
+
+.heroSection {
+  width: 100%;
+  background-color: #f7f7f7;   /* Change this to match the navbar if needed, typically white or transparent */
+  padding: 130px 80px 40px 80px; /* Accounts for header height + matching inspiration 80px horizontal padding */
+  display: flex;
+  align-items: center;
+}
+
+.heroContent {
+  width: 85%; /* Matching HeroSection.module.css width: 85% */
+  margin: 0;   /* Remove center align margin: 0 auto so it matches HeroSection */
+}
+
+.title {
+  font-size: 40px; /* Matching HeroSection.module.css font-size: 40px */
+  font-weight: 700;
+  color: #111;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.container {
+  width: 85%;
+  margin: 0;
+  padding: 60px 80px 100px 80px; /* Aligning left padding to match .heroSection and adding space top/bottom */
+}
+
+.content {
+  color: #555;
+  line-height: 1.8;
+  font-size: 1.05rem;
+  font-weight: 300;
+  max-width: 800px;
+}
+
+.section {
+  margin-bottom: 3rem;
+  position: relative;
+  padding-left: 1.5rem;
+  border-left: 2px solid #eaeaea;
+}
+
+.sectionTitle {
+  font-size: 1.35rem;
+  font-weight: 500;
+  margin-bottom: 1.2rem;
+  color: #222;
+  letter-spacing: -0.01em;
+}
+
+.paragraph {
+  margin-bottom: 1.2rem;
+}
+
+.list {
+  list-style-type: none;
+  padding-left: 0;
+  margin-bottom: 1.5rem;
+}
+
+.listItem {
+  margin-bottom: 0.8rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.listItem::before {
+  content: "•";
+  color: #a0a0a0;
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.contactInfo {
+  margin-top: 2rem;
+  padding: 2rem;
+  background-color: #fafafa;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+}
+
+.contactTitle {
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: #222;
+  font-size: 1.1rem;
+}
+
+.dateStamp {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+@media (max-width: 1024px) {
+  .heroSection, .container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroSection {
+    padding: 140px 20px 60px 20px;
+  }
+  
+  .container {
+    padding: 60px 20px;
+  }
+  
+  .title {
+    font-size: 2.2rem;
+  }
+  
+  .section {
+    padding-left: 1rem;
+  }
+}

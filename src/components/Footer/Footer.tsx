@@ -19,7 +19,7 @@ const Footer = () => {
               src='/images/logo/svlogosparro-01.png'
               alt='Sparro Logo'
               className={styles.footerLogo}
-              sizes='100px' 
+              sizes='100px'
             />
           </Link>
         </div>
@@ -133,7 +133,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link className={styles.footerLink} href={"/"}>
+                <Link className={styles.footerLink} href={"/privacy-policy"}>
                   Privacy policy
                 </Link>
               </li>

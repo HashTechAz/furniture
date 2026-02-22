@@ -47,6 +47,19 @@
 .productDetailsHeader .hamburgerButton span {
     background-color: #333 !important;
 }
+.headerAtTop.privacyPolicyHeader {
+    background-color: #F7F7F7;
+    color: #333;
+}
+.privacyPolicyHeader .navLinks,
+.privacyPolicyHeader .logo,
+.privacyPolicyHeader .searchButton,
+.privacyPolicyHeader .hamburgerButton {
+    color: #333 !important;
+}
+.privacyPolicyHeader .hamburgerButton span {
+    background-color: #333 !important;
+}
 .headerHidden {
     transform: translateY(-110%);
 }

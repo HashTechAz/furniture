@@ -170,6 +170,7 @@ const Header: React.FC = () => {
       "/designers": styles.designersHeader,
       "/productseries": styles.productSeriesHeader,
       "/creative-minds": styles.creativeMindsHeader,
+      "/privacy-policy": styles.privacyPolicyHeader,
     };
 
     if (styleMap[p]) return styleMap[p];
