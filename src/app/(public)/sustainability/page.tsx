@@ -13,6 +13,7 @@ import HomeVideo from "@/components/HomeVideo/HomeVideo";
 import PaletteRightImage from "@/components/Palette/PaletteRightImage/PaletteRightImage";
 import Related from "./components/Related/Related";
 import sustainabilityPaletteData from "@/mock/palette/sustainability-palette/index.json";
+import homeVideoData from "@/mock/home-video/index.json";
 
 
 interface PaletteProps {
@@ -80,7 +81,7 @@ const SustainabilityPage = () => {
       {/* PaletteLeftImage */}
       {mounted && sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteLeft1') && renderPalette(sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteLeft1')!)}
 
-      <HomeVideo />
+      <HomeVideo imageUrl={homeVideoData.homePage.defaultVideo.imageUrl} />
 
       {/* PaletteRightImage */}
       {mounted && sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteRight1') && renderPalette(sustainabilityPalettes.find(p => p.id === 'sustainabilityPaletteRight1')!)}

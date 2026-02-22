@@ -18,9 +18,9 @@
       "props": {
         "largeImageUrl": "/images/middle-banner/home/home-middle-2.jpg",
         "smallImageUrl": "/images/middle-banner/home/home-middle-2-small.jpg",
-        "title": "Environment and quality",
-        "description": "At Montana, we take our environmental responsibilities seriously...",
-        "buttonText": "More about Montana's environmental initiatives",
+        "title": "Ekologiya və Keyfiyyət",
+        "description": "Sparro olaraq, ətraf mühit qarşısında məsuliyyətimizi dərindən dərk edirik. İstehsalın hər mərhələsində həm yüksək keyfiyyəti, həm də təbiətin qorunmasını eyni dərəcədə ciddiyə alırıq...",
+        "buttonText": "Daha ətraflı oxu",
         "buttonLink": "/sofas",
         "layout": "imageRight",
         "smallImageHeight": "400px"

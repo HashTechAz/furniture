@@ -49,6 +49,7 @@ interface HomeContentProps {
 import paletteData from "@/mock/palette/home-palette/index.json";
 
 import homeBannerData from "@/mock/middle-banner/home-middle/index.json";
+import homeVideoData from "@/mock/home-video/index.json";
 
 // --- PALETTE TYPES ---
 interface PaletteProps {
@@ -108,7 +109,7 @@ const HomeContent = ({ products }: HomeContentProps) => {
         <MiddleBanner {...homeBannerData.homePage[0].props} />
       </div>
       <div className="showOnlyOnMobile">
-        <HomeVideo variant="mobile" />
+        <HomeVideo variant="mobile" imageUrl={homeVideoData.homePage.mobileVideo.imageUrl} />
       </div>
 
       <TrustBadges />
@@ -123,7 +124,7 @@ const HomeContent = ({ products }: HomeContentProps) => {
       {mounted && homePalettes.find(p => p.id === 'homePaletteLeft1') && renderPalette(homePalettes.find(p => p.id === 'homePaletteLeft1')!)}
 
       <div className="hideOnMobile">
-        <HomeVideo />
+        <HomeVideo imageUrl={homeVideoData.homePage.defaultVideo.imageUrl} />
       </div>
 
       {/* Palette 3 */}

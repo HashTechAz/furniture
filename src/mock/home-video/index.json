@@ -1,0 +1,10 @@
+{
+  "homePage": {
+    "mobileVideo": {
+      "imageUrl": "/images/video/home/home-video.jpg"
+    },
+    "defaultVideo": {
+      "imageUrl": "/images/video/home/home-video.jpg"
+    }
+  }
+}
