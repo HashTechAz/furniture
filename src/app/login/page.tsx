@@ -54,7 +54,7 @@ export default function LoginPage() {
         <div className={styles.brandContent}>
           <h1 className={styles.brandTitle}>Sparro.</h1>
           <p className={styles.brandSubtitle}>
-            Premium mebel idarəetmə sistemi. Sifarişləri, məhsulları və kolleksiyaları tək mərkəzdən idarə edin.
+            Premium mebel idarəetmə sistemi. Sifarişləri, məhsulları və kolleksiyaları tək mərkəzdən idarə edin
           </p>
         </div>
       </div>
