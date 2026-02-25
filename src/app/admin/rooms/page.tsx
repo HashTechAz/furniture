@@ -7,7 +7,7 @@ import { useAdminModal } from '@/context/admin-modal-context';
 import styles from './page.module.css';
 import { FaPlus, FaEdit, FaTrash, FaDoorOpen } from 'react-icons/fa';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
 
 function roomImageSrc(room: Room): string {
   const url = room.imageUrl ?? '';

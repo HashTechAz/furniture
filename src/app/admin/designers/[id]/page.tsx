@@ -85,7 +85,7 @@ export default function EditDesignerPage() {
   const getFullImageUrl = (url: string) => {
     if (!url) return '';
     if (url.startsWith('http')) return url;
-    return `${process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042'}${url}`;
+    return `${process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az'}${url}`;
   };
 
   if (initialLoading) return <div style={{padding: 40, textAlign: 'center'}}>Loading...</div>;

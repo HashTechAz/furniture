@@ -160,7 +160,7 @@ export interface CreateProductVariantPayload {
 // --- 2. MAPPER ---
 
 const mapBackendToFrontend = (item: BackendProduct): FrontendProduct => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:7042";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://furniture.hashtech.az";
 
   const coverImage =
     item.images?.find((img) => img.isCover) || item.images?.[0];
@@ -392,7 +392,7 @@ export async function uploadProductImages(
 ) {
   const formData = new FormData();
   for (let i = 0; i < files.length; i++) formData.append("files", files[i]);
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:7042";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://furniture.hashtech.az";
   const res = await fetch(`${baseUrl}/api/Products/${id}/images`, {
     method: "POST",
     headers: { Authorization: `Bearer ${token}` },

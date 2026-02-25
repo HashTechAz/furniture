@@ -64,7 +64,7 @@ export async function deleteRoom(id: number | string, token: string) {
   });
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 

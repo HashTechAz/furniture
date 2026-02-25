@@ -31,7 +31,7 @@ export default function Contact() {
       message: formData.message
     };
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
 
     const fetchPromise = fetch(`${baseUrl}/api/Contact`, {
       method: 'POST',

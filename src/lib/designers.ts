@@ -26,7 +26,7 @@ export async function createDesigner(name: string, biography: string, file: File
   formData.append('Biography', biography);
   formData.append('file', file); 
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
   
   const response = await fetch(`${baseUrl}/api/Designers`, {
     method: 'POST',
@@ -54,7 +54,7 @@ export async function updateDesigner(id: number | string, name: string, biograph
     formData.append('file', file);
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
 
   const response = await fetch(`${baseUrl}/api/Designers/${id}`, {
     method: 'PUT',

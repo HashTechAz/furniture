@@ -68,7 +68,7 @@ export async function deleteCategory(id: number | string, token: string) {
   });
 }
 
-export const CATEGORY_API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+export const CATEGORY_API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
 const BASE_URL = CATEGORY_API_BASE_URL;
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 

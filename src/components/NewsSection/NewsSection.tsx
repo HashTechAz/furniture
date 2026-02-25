@@ -12,7 +12,7 @@ interface NewsSectionProps {
 
 const NewsSection = ({ collections, limit, showTitle = true, customGridClass }: NewsSectionProps) => {
   const displayData = limit && collections ? collections.slice(0, limit) : collections || [];
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7042";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://furniture.hashtech.az";
 
   return (
     <section className={styles.newsSection}>
