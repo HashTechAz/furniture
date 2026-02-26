@@ -13,9 +13,7 @@ import ProductSlider from '@/components/ProductSlider/ProductSlider';
 import { getProductById, getProducts } from '@/lib/products'; 
 
 interface ProductDetailsPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
 export const dynamic = 'force-dynamic';

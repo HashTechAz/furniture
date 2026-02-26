@@ -10,10 +10,10 @@ import { FrontendProduct, getProducts } from '@/lib/products';
 import { getCollections, type BackendCollection } from '@/lib/collections';
 
 interface ProductNewsSliderProps {
-  products: FrontendProduct[];
+  products?: FrontendProduct[];
 }
 
-const ProductNewsSlider = ({ products }: ProductNewsSliderProps) => {
+const ProductNewsSlider = ({ products = [] }: ProductNewsSliderProps) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, dragFree: true });
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isDropdownOpen, setDropdownOpen] = useState(false);

@@ -4,14 +4,14 @@ import NewsCard from "../NewsCard/NewsCard";
 import { BackendCollection } from "@/lib/collections";
 
 interface NewsSectionProps {
-  collections: BackendCollection[];
+  collections?: BackendCollection[];
   limit?: number;
   showTitle?: boolean;
   customGridClass?: string;
 }
 
-const NewsSection = ({ collections, limit, showTitle = true, customGridClass }: NewsSectionProps) => {
-  const displayData = limit && collections ? collections.slice(0, limit) : collections || [];
+const NewsSection = ({ collections = [], limit, showTitle = true, customGridClass }: NewsSectionProps) => {
+  const displayData = limit ? collections.slice(0, limit) : collections;
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7042";
 
   return (

@@ -32,14 +32,16 @@ export async function POST(request: NextRequest) {
                 path: '/',
             });
 
-            // Set new refresh token
-            response.cookies.set('refreshToken', refreshResponse.refreshToken, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'strict',
-                maxAge: 60 * 60 * 24 * 7, // 7 days
-                path: '/',
-            });
+            // Set new refresh token (only if API returned one)
+            if (refreshResponse.refreshToken) {
+                response.cookies.set('refreshToken', refreshResponse.refreshToken, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'strict',
+                    maxAge: 60 * 60 * 24 * 7, // 7 days
+                    path: '/',
+                });
+            }
 
             return response;
         } catch (apiError: unknown) {
