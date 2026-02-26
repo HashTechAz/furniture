@@ -68,14 +68,7 @@ const nextConfig: NextConfig = {
       // --- API backend (kateqoriya və digər şəkillər) ---
       {
         protocol: 'https',
-        hostname: 'localhost',
-        port: '7042',
-        pathname: '/uploads/**',
-      },
-      {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '7042',
+        hostname: 'furniture.hashtech.az',
         pathname: '/uploads/**',
       },
     ],

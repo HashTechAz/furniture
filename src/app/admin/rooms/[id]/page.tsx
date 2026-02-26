@@ -8,7 +8,7 @@ import { useAdminModal } from '@/context/admin-modal-context';
 import styles from '../page.module.css';
 import { FaSave, FaCloudUploadAlt, FaTrash } from 'react-icons/fa';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
 
 export default function EditRoomPage() {
   const router = useRouter();

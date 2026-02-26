@@ -29,7 +29,7 @@ const Related = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const baseUrl = typeof process !== 'undefined' ? (process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042') : 'https://localhost:7042';
+  const baseUrl = typeof process !== 'undefined' ? (process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az') : 'https://furniture.hashtech.az';
 
   return (
     <section className={styles.related}>

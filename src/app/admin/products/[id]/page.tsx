@@ -72,7 +72,7 @@ export default function EditProductPage() {
         setRooms(Array.isArray(roomsList) ? roomsList : []);
 
         if (productId) {
-          const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7042";
+          const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://furniture.hashtech.az";
           const res = await fetch(`${baseUrl}/api/Products/${productId}`, { cache: 'no-store' });
           
           if(res.ok) {
@@ -238,7 +238,7 @@ export default function EditProductPage() {
   };
 
   if (initialLoading) return <div style={{padding: 40, textAlign: 'center'}}>Loading...</div>;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7042";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://furniture.hashtech.az";
 
   return (
     <form onSubmit={handleSubmit} className={styles.container}>

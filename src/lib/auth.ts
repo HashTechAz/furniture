@@ -105,7 +105,7 @@ export async function refreshTokenCall(accessToken: string, refreshToken: string
 }
 
 // --- 2b. REFRESH TOKEN (server - API route üçün, birbaşa backend-ə) ---
-const getApiBase = () => process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+const getApiBase = () => process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
 export async function refreshAccessToken(refreshToken: string, accessToken?: string): Promise<LoginResponse> {
   const body = accessToken
     ? { accessToken, refreshToken }

@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   keywords: 'furniture, modern design, Montana, storage solutions, tables, chairs',
 };
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
 
 export default function RootLayout({
   children,

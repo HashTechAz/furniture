@@ -34,7 +34,7 @@ export async function createCollection(name: string, description: string, file: 
   formData.append('Description', description);
   formData.append('file', file); 
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
   
   const response = await fetch(`${baseUrl}/api/Collections`, {
     method: 'POST',
@@ -62,7 +62,7 @@ export async function updateCollection(id: number | string, name: string, descri
     formData.append('file', file);
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7042';
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
 
   const response = await fetch(`${baseUrl}/api/Collections/${id}`, {
     method: 'PUT',
