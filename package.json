@@ -2,6 +2,9 @@
   "name": "furniture",
   "version": "0.1.0",
   "private": true,
+  "overrides": {
+    "next": "15.5.9"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
