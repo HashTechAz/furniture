@@ -49,15 +49,11 @@ export function getTokenExpiryMs(accessToken: string): number | null {
 
 // ================= API METODLARI =================
 
-// Backend login endpoint – istek həmişə https://furniture.hashtech.az/api/Account/login ünvanına gedir (api-client BASE_URL vasitəsilə)
-const LOGIN_ENDPOINT = '/api/Account/login';
-
 // --- 1. LOGIN USER ---
 export async function loginUser(username: string, password: string): Promise<LoginResponse> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
-  console.log("📡 Login sorğusu göndərilir:", `${baseUrl}${LOGIN_ENDPOINT}`);
+  console.log("📡 Login sorğusu göndərilir: /api/Account/login");
 
-  const response: any = await apiRequest(LOGIN_ENDPOINT, {
+  const response: any = await apiRequest('/api/Account/login', {
     method: 'POST',
     data: {
       username: username, 
@@ -65,7 +61,7 @@ export async function loginUser(username: string, password: string): Promise<Log
     }
   });
 
-  const accessToken = response.accessToken || (typeof response === 'string' ? response : null);
+  const accessToken = response.accessToken ?? response.AccessToken ?? (typeof response === 'string' ? response : null);
 
   if (!accessToken) {
      console.error("❌ Token tapılmadı. Cavab:", response);
@@ -94,7 +90,7 @@ export async function loginUser(username: string, password: string): Promise<Log
 
   return {
     accessToken: accessToken,
-    refreshToken: response.refreshToken || '', 
+    refreshToken: response.refreshToken ?? response.RefreshToken ?? '', 
     user: user,
     expiration: response.expiration
   };

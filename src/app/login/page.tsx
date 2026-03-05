@@ -1,13 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { loginUser, setTokens } from '@/lib/auth';
+import { setTokens } from '@/lib/auth';
 import styles from './page.module.css';
 import { FaEye, FaEyeSlash, FaExclamationCircle, FaArrowRight } from 'react-icons/fa';
 
 export default function LoginPage() {
-  const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -20,9 +18,17 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const data = await loginUser(username, password);
-      
-      if (data && data.accessToken) {
+      // Eyni origin-ə (Next.js API route) request atırıq; backend-ə sorğunu server edir — CORS yoxdur
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+        credentials: 'include',
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok && data && data.accessToken) {
         setTokens(data.accessToken, data.refreshToken || '');
         document.cookie = `accessToken=${data.accessToken}; path=/; max-age=${60 * 60 * 24}; SameSite=Strict`;
         if (data.refreshToken) {
@@ -31,13 +37,14 @@ export default function LoginPage() {
         if (data.user) {
           localStorage.setItem('user', JSON.stringify(data.user));
         }
-        window.location.href = '/admin'; 
+        window.location.href = '/admin';
       } else {
-        setError("Giriş uğursuz oldu. Məlumatları yoxlayın.");
+        setError(data?.error || 'İstifadəçi adı və ya şifrə yanlışdır.');
       }
     } catch (err: any) {
-      console.error("Login Error:", err);
+      console.error('Login Error:', err);
       setError('İstifadəçi adı və ya şifrə yanlışdır.');
+    } finally {
       setLoading(false);
     }
   };
