@@ -2,22 +2,29 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getDesigners, deleteDesigner, BackendDesigner } from '@/lib/designers';
+import { getCached, setCached } from '@/lib/admin-prefetch-cache';
+import AdminTableSkeleton from '../components/AdminTableSkeleton';
 import { useAdminModal } from '@/context/admin-modal-context';
 import styles from './designers.module.css';
 
 import { FaPlus, FaEdit, FaTrash, FaUserTie, FaUser } from 'react-icons/fa';
 
 export default function DesignersPage() {
-  const [designers, setDesigners] = useState<BackendDesigner[]>([]);
-  const [loading, setLoading] = useState(true);
+  const cached = getCached<BackendDesigner[]>('designers');
+  const [designers, setDesigners] = useState<BackendDesigner[]>(Array.isArray(cached) ? cached : []);
+  const [loading, setLoading] = useState(!cached);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const { openModal } = useAdminModal();
 
-  const fetchDesigners = async () => {
+  const fetchDesigners = async (showLoader = true) => {
     try {
-      setLoading(true);
+      if (showLoader) setLoading(true);
       const data = await getDesigners();
-      setDesigners(Array.isArray(data) ? data : []);
+      const list = Array.isArray(data) ? data : [];
+      setDesigners(list);
+      setCached('designers', list);
     } catch (error) {
       console.error('Failed to fetch designers', error);
     } finally {
@@ -26,7 +33,7 @@ export default function DesignersPage() {
   };
 
   useEffect(() => {
-    fetchDesigners();
+    fetchDesigners(!cached);
   }, []);
 
   // DELETE MODAL
@@ -41,6 +48,46 @@ export default function DesignersPage() {
         const token = localStorage.getItem('accessToken') || '';
         await deleteDesigner(id, token);
         setDesigners(prev => prev.filter(d => d.id !== id));
+        setSelectedIds(prev => prev.filter(selectedId => selectedId !== id));
+      }
+    });
+  };
+
+  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) setSelectedIds(designers.map(d => d.id));
+    else setSelectedIds([]);
+  };
+
+  const handleSelectOne = (id: number) => {
+    setSelectedIds(prev =>
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
+  };
+
+  const handleBulkDelete = () => {
+    openModal({
+      type: 'warning',
+      title: 'Toplu Silinmə',
+      message: `Seçilmiş ${selectedIds.length} dizayneri silmək istədiyinizə əminsiniz? Bu geriyə alına bilməz.`,
+      confirmText: 'Bəli, Sil',
+      cancelText: 'Ləğv et',
+      onConfirm: async () => {
+        const token = localStorage.getItem('accessToken') || '';
+        setLoading(true);
+        try {
+          const results = await Promise.allSettled(
+            selectedIds.map(id => deleteDesigner(id, token))
+          );
+          const successIds = results
+            .map((r, idx) => r.status === 'fulfilled' ? selectedIds[idx] : null)
+            .filter(Boolean) as number[];
+          setDesigners(prev => prev.filter(item => !successIds.includes(item.id)));
+          setSelectedIds([]);
+        } catch (error) {
+          console.error("Toplu silinmə xətası", error);
+        } finally {
+          setLoading(false);
+        }
       }
     });
   };
@@ -54,18 +101,28 @@ export default function DesignersPage() {
   return (
     <div className={styles.container}>
       
-      {/* Header */}
       <div className={styles.header}>
         <h1 className={styles.title}>Designers</h1>
-        <Link href="/admin/designers/new" className={styles.addButton}>
-          <FaPlus /> New Designer
-        </Link>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          {selectedIds.length > 0 && (
+            <button 
+              onClick={handleBulkDelete} 
+              className={styles.addButton} 
+              style={{ backgroundColor: '#ef4444', color: 'white' }}
+            >
+              <FaTrash /> Seçilmişləri Sil ({selectedIds.length})
+            </button>
+          )}
+          <Link href="/admin/designers/new" className={styles.addButton}>
+            <FaPlus /> New Designer
+          </Link>
+        </div>
       </div>
 
       {/* Table Card */}
       <div className={styles.tableCard}>
         {loading ? (
-           <div style={{padding: 50, textAlign: 'center', color: '#666'}}>Loading...</div>
+          <AdminTableSkeleton rows={8} />
         ) : designers.length === 0 ? (
            <div style={{padding: 60, textAlign: 'center', color: '#666'}}>
              <FaUserTie size={40} style={{marginBottom: 10, opacity: 0.3}}/>
@@ -86,10 +143,17 @@ export default function DesignersPage() {
                 return (
                   <tr key={designer.id}>
                     <td>
+                      <input 
+                        type="checkbox" 
+                        checked={selectedIds.includes(designer.id)}
+                        onChange={() => handleSelectOne(designer.id)}
+                      />
+                    </td>
+                    <td>
                       <div className={styles.cellContent}>
                         <div className={styles.imageWrapper}>
                           {imgUrl ? (
-                            <img src={imgUrl} alt={designer.name} className={styles.image} />
+                            <Image src={imgUrl} alt={designer.name} width={48} height={48} className={styles.image} loading="lazy" />
                           ) : (
                             <div style={{width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc'}}>
                               <FaUser />

@@ -1,25 +1,24 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import styles from '../product-form.module.css';
 
-import { 
-  getProductById, updateProduct, uploadProductImages, deleteProductImage, 
-  setProductCoverImage 
-} from '@/lib/products';
+import { updateProduct, uploadProductImages, deleteProductImage, setProductCoverImage } from '@/lib/products';
 import { getCategories } from '@/lib/categories';
 import { getDesigners } from '@/lib/designers';
 import { getCollections } from '@/lib/collections';
 import { getColors } from '@/lib/colors';
 import { getMaterials } from '@/lib/materials';
 import { getRooms } from '@/lib/rooms';
-
-// YENİ: Modal Hook
+import { getCached } from '@/lib/admin-prefetch-cache';
 import { useAdminModal } from '@/context/admin-modal-context';
 
 import { FaSave, FaTimes, FaCloudUploadAlt, FaCube, FaTag, FaPalette, FaRulerCombined, FaTrash, FaArrowLeft, FaStar, FaRegStar, FaDoorOpen } from 'react-icons/fa';
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
 
 export default function EditProductPage() {
   const router = useRouter();
@@ -54,16 +53,29 @@ export default function EditProductPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        // 1. Seçimləri gətir (Categories, Designers, etc.)
-        const [cats, des, cols, colsList, mats, roomsList] = await Promise.all([
-          getCategories(),
-          getDesigners(),
-          getCollections(),
-          getColors(),
-          getMaterials(),
-          getRooms()
+        const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') || '' : '';
+        // Cache-dən istifadə et, yoxdursa fetch – sürət üçün
+        const cachedCats = getCached<any[]>('categories');
+        const cachedDes = getCached<any[]>('designers');
+        const cachedCols = getCached<any[]>('collections');
+        const cachedColors = getCached<any[]>('colors');
+        const cachedMats = getCached<any[]>('materials');
+        const cachedRooms = getCached<any[]>('rooms');
+
+        const fetchOptions = Promise.all([
+          cachedCats ? Promise.resolve(cachedCats) : getCategories(),
+          cachedDes ? Promise.resolve(cachedDes) : getDesigners(),
+          cachedCols ? Promise.resolve(cachedCols) : getCollections(),
+          cachedColors ? Promise.resolve(cachedColors) : getColors(),
+          cachedMats ? Promise.resolve(cachedMats) : getMaterials(),
+          cachedRooms ? Promise.resolve(cachedRooms) : getRooms(token),
         ]);
-        
+        const fetchProduct = productId
+          ? fetch(`${API_BASE}/api/Products/${productId}`, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null))
+          : Promise.resolve(null);
+
+        const [[cats, des, cols, colsList, mats, roomsList], product] = await Promise.all([fetchOptions, fetchProduct]);
+
         setCategories(Array.isArray(cats) ? cats : []);
         setDesigners(Array.isArray(des) ? des : []);
         setCollections(Array.isArray(cols) ? cols : []);
@@ -71,18 +83,7 @@ export default function EditProductPage() {
         setMaterials(Array.isArray(mats) ? mats : []);
         setRooms(Array.isArray(roomsList) ? roomsList : []);
 
-        if (productId) {
-          const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://furniture.hashtech.az";
-          const res = await fetch(`${baseUrl}/api/Products/${productId}`, { cache: 'no-store' });
-          
-          if(res.ok) {
-              const product = await res.json();
-              
-              // *** DÜZƏLİŞ BURADADIR ***
-              // Həm birbaşa ID-ni yoxlayırıq (product.categoryId),
-              // Həm də iç-içə obyektin ID-sini (product.category?.id).
-              // Hansı varsa onu götürürük.
-              
+        if (product) {
               const catId = product.categoryId || product.category?.id || 0;
               const desId = product.designerId || product.designer?.id || 0;
               const colId = product.collectionId || product.collection?.id || 0;
@@ -112,9 +113,7 @@ export default function EditProductPage() {
                 selectedRoomIds: roomIdsFiltered
               });
 
-              // Şəkilləri yüklə
               setExistingImages(product.images || []);
-          }
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -238,7 +237,6 @@ export default function EditProductPage() {
   };
 
   if (initialLoading) return <div style={{padding: 40, textAlign: 'center'}}>Loading...</div>;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://furniture.hashtech.az";
 
   return (
     <form onSubmit={handleSubmit} className={styles.container}>
@@ -273,8 +271,8 @@ export default function EditProductPage() {
                     <label className={styles.label}>Existing Images (Click Star to Set Cover)</label>
                     <div className={styles.imageGrid}>
                         {existingImages.map((img) => (
-                        <div key={img.id} className={styles.previewItem} style={{borderColor: img.isCover ? '#fbbf24' : '#eaeaea', borderWidth: img.isCover ? '2px' : '1px'}}>
-                            <img src={`${baseUrl}${img.imageUrl}`} alt="Existing" className={styles.previewImage} />
+                        <div key={img.id} className={styles.previewItem} style={{ borderColor: img.isCover ? '#fbbf24' : '#eaeaea', borderWidth: img.isCover ? '2px' : '1px', position: 'relative' }}>
+                            <Image src={`${API_BASE}${img.imageUrl}`} alt="Existing" fill className={styles.previewImage} sizes="100px" />
                             
                             {/* Delete (Modal çağırır) */}
                             <button type="button" onClick={() => removeExistingImage(img.id)} className={styles.removeImageBtn}><FaTrash /></button>
@@ -299,8 +297,8 @@ export default function EditProductPage() {
                     <label className={styles.label}>New Uploads (Save to add)</label>
                     <div className={styles.imageGrid}>
                         {newPreviews.map((url, index) => (
-                        <div key={index} className={styles.previewItem} style={{border: '1px dashed #2563eb'}}>
-                            <img src={url} alt="New" className={styles.previewImage} />
+                        <div key={index} className={styles.previewItem} style={{ border: '1px dashed #2563eb', position: 'relative' }}>
+                            <Image src={url} alt="New" fill className={styles.previewImage} sizes="100px" unoptimized />
                             <button type="button" onClick={() => removeNewFile(index)} className={styles.removeImageBtn}><FaTimes /></button>
                         </div>
                         ))}

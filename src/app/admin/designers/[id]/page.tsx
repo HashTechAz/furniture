@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { getDesignerById, updateDesigner } from '@/lib/designers';
@@ -119,15 +120,15 @@ export default function EditDesignerPage() {
           <div className={styles.cardTitle}><FaCloudUploadAlt /> Profile Photo</div>
           
           {previewUrl ? (
-            <div className={styles.previewWrapper}>
-              <img src={previewUrl} alt="New" className={styles.previewImage} />
+            <div className={styles.previewWrapper} style={{ position: 'relative' }}>
+              <Image src={previewUrl} alt="New" fill className={styles.previewImage} sizes="300px" unoptimized />
               <button type="button" onClick={removeNewFile} className={styles.removeImageBtn}><FaTimes /></button>
             </div>
           ) : (
             <>
               {currentImageUrl && (
-                <div className={styles.previewWrapper} style={{marginBottom: 15, borderStyle: 'solid'}}>
-                  <img src={getFullImageUrl(currentImageUrl)} alt="Current" className={styles.previewImage} />
+                <div className={styles.previewWrapper} style={{ marginBottom: 15, borderStyle: 'solid', position: 'relative' }}>
+                  <Image src={getFullImageUrl(currentImageUrl)} alt="Current" fill className={styles.previewImage} sizes="300px" />
                   <span style={{position: 'absolute', bottom: 5, left: 5, background: '#111', color: '#fff', fontSize: 10, padding: '2px 6px', borderRadius: 4}}>Current</span>
                 </div>
               )}

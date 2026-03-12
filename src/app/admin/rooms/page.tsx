@@ -2,7 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getRooms, deleteRoom, Room } from '@/lib/rooms';
+import { getCached, setCached } from '@/lib/admin-prefetch-cache';
+import AdminTableSkeleton from '../components/AdminTableSkeleton';
 import { useAdminModal } from '@/context/admin-modal-context';
 import styles from './page.module.css';
 import { FaPlus, FaEdit, FaTrash, FaDoorOpen } from 'react-icons/fa';
@@ -17,16 +20,20 @@ function roomImageSrc(room: Room): string {
 }
 
 export default function RoomsPage() {
-  const [rooms, setRooms] = useState<Room[]>([]);
-  const [loading, setLoading] = useState(true);
+  const cached = getCached<Room[]>('rooms');
+  const [rooms, setRooms] = useState<Room[]>(Array.isArray(cached) ? cached : []);
+  const [loading, setLoading] = useState(!cached);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const { openModal } = useAdminModal();
 
-  const fetchData = async () => {
+  const fetchData = async (showLoader = true) => {
     try {
-      setLoading(true);
+      if (showLoader) setLoading(true);
       const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') || '' : '';
       const data = await getRooms(token);
-      setRooms(Array.isArray(data) ? data : []);
+      const list = Array.isArray(data) ? data : [];
+      setRooms(list);
+      setCached('rooms', list);
     } catch (error) {
       console.error(error);
     } finally {
@@ -35,11 +42,12 @@ export default function RoomsPage() {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData(!cached);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    const onFocus = () => fetchData();
+    const onFocus = () => fetchData(false);
     window.addEventListener('focus', onFocus);
     return () => window.removeEventListener('focus', onFocus);
   }, []);
@@ -55,14 +63,62 @@ export default function RoomsPage() {
         const token = localStorage.getItem('accessToken') || '';
         await deleteRoom(id, token);
         setRooms((prev) => prev.filter((r) => r.id !== id));
+        setSelectedIds((prev) => prev.filter(selectedId => selectedId !== id));
       },
+    });
+  };
+
+  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) setSelectedIds(rooms.map(r => r.id));
+    else setSelectedIds([]);
+  };
+
+  const handleSelectOne = (id: number) => {
+    setSelectedIds(prev =>
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
+  };
+
+  const handleBulkDelete = () => {
+    openModal({
+      type: 'warning',
+      title: 'Toplu Silinmə',
+      message: `Seçilmiş ${selectedIds.length} otağı silmək istədiyinizə əminsiniz? Bu geriyə alına bilməz.`,
+      confirmText: 'Bəli, Sil',
+      cancelText: 'Ləğv et',
+      onConfirm: async () => {
+        const token = localStorage.getItem('accessToken') || '';
+        setLoading(true);
+        try {
+          const results = await Promise.allSettled(
+            selectedIds.map(id => deleteRoom(id, token))
+          );
+          const successIds = results
+            .map((r, idx) => r.status === 'fulfilled' ? selectedIds[idx] : null)
+            .filter(Boolean) as number[];
+          setRooms(prev => prev.filter(item => !successIds.includes(item.id)));
+          setSelectedIds([]);
+        } catch (error) {
+          console.error("Toplu silinmə xətası", error);
+        } finally {
+          setLoading(false);
+        }
+      }
     });
   };
 
   if (loading) {
     return (
       <div className={styles.container}>
-        <div style={{ padding: 50, textAlign: 'center', color: '#666' }}>Yüklənir...</div>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Rooms</h1>
+          <Link href="/admin/rooms/new" className={styles.addButton}>
+            <FaPlus /> New Room
+          </Link>
+        </div>
+        <div className={styles.tableCard}>
+          <AdminTableSkeleton rows={8} />
+        </div>
       </div>
     );
   }
@@ -71,9 +127,20 @@ export default function RoomsPage() {
     <div className={styles.container}>
       <div className={styles.header}>
         <h1 className={styles.title}>Rooms</h1>
-        <Link href="/admin/rooms/new" className={styles.addButton}>
-          <FaPlus /> New Room
-        </Link>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          {selectedIds.length > 0 && (
+            <button 
+              onClick={handleBulkDelete} 
+              className={styles.addButton} 
+              style={{ backgroundColor: '#ef4444', color: 'white' }}
+            >
+              <FaTrash /> Seçilmişləri Sil ({selectedIds.length})
+            </button>
+          )}
+          <Link href="/admin/rooms/new" className={styles.addButton}>
+            <FaPlus /> New Room
+          </Link>
+        </div>
       </div>
 
       <div className={styles.tableCard}>
@@ -86,6 +153,13 @@ export default function RoomsPage() {
           <table className={styles.table}>
             <thead>
               <tr>
+                <th style={{ width: 40 }}>
+                  <input 
+                    type="checkbox" 
+                    onChange={handleSelectAll} 
+                    checked={rooms.length > 0 && selectedIds.length === rooms.length}
+                  />
+                </th>
                 <th>Room</th>
                 <th>Description</th>
                 <th style={{ textAlign: 'right' }}>Actions</th>
@@ -95,10 +169,17 @@ export default function RoomsPage() {
               {rooms.map((room) => (
                 <tr key={room.id}>
                   <td>
+                    <input 
+                      type="checkbox" 
+                      checked={selectedIds.includes(room.id)}
+                      onChange={() => handleSelectOne(room.id)}
+                    />
+                  </td>
+                  <td>
                     <div className={styles.cellContent}>
                       <div className={styles.imageWrapper}>
                         {room.imageUrl ? (
-                          <img src={roomImageSrc(room)} alt={room.name} />
+                          <Image src={roomImageSrc(room)} alt={room.name} width={48} height={48} className={styles.image} loading="lazy" />
                         ) : (
                           <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc', fontSize: 20 }}>⌂</div>
                         )}

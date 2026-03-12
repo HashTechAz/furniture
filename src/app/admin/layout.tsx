@@ -10,8 +10,26 @@ import {
   FaHome, FaPaintBrush, FaFolder, FaEnvelope, FaBuilding, FaCube 
 } from 'react-icons/fa';
 
-import { AdminModalProvider, useAdminModal } from '@/context/admin-modal-context';
-import { getTokenExpiryMs } from '@/lib/auth';
+import { AdminModalProvider } from '@/context/admin-modal-context';
+
+function NavLink({
+  href,
+  active,
+  children,
+}: {
+  href: string;
+  active: boolean | string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className={`${styles.navLink} ${active === true || active === styles.activeLink ? styles.activeLink : ''}`}
+    >
+      {children}
+    </Link>
+  );
+}
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -19,7 +37,6 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   
   const router = useRouter();
   const pathname = usePathname();
-  const { openModal } = useAdminModal();
 
   // Səhifə Başlıqları
   const getPageTitle = () => {
@@ -82,83 +99,12 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // *** TOKEN YOXLAMASI VƏ INTERCEPTOR DİNLƏYİCİSİ ***
+  // User Load
+
   useEffect(() => {
-    // 1. Token ümumiyyətlə varmı?
     const token = document.cookie.includes('accessToken') || localStorage.getItem('user');
-    if (!token) {
-      router.push('/login');
-    }
-
-    // 2. "auth-error" hadisəsini dinlə (api-client.ts göndərir)
-    const handleAuthError = () => {
-      openModal({
-        type: 'error',
-        title: 'Sessiya Bitdi 🔒',
-        message: 'Təhlükəsizlik səbəbilə sessiyanızın vaxtı bitib. Zəhmət olmasa yenidən daxil olun.',
-        confirmText: 'Daxil ol',
-        onConfirm: () => {
-           handleLogout(); // Yuxarıdakı logout funksiyasını çağırırıq
-        },
-        cancelText: '' // Cancel düyməsini gizlədirik ki, məcbur çıxsın
-      });
-    };
-
-    window.addEventListener('auth-error', handleAuthError);
-
-    return () => {
-      window.removeEventListener('auth-error', handleAuthError);
-    };
-  }, [router, openModal]);
-
-  // *** PROAKTİV TOKEN YENİLƏMƏ (15 dəq bitməzdən əvvəl refresh) ***
-  useEffect(() => {
-    const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-    if (!accessToken) return;
-
-    const expiryMs = getTokenExpiryMs(accessToken);
-    const now = Date.now();
-    const twoMinutes = 2 * 60 * 1000;
-
-    const scheduleRefresh = (delayMs: number): (() => void) => {
-      if (delayMs <= 0) return () => {};
-      const t = setTimeout(async () => {
-        try {
-          const res = await fetch('/api/admin/refresh', { method: 'POST', credentials: 'include' });
-          if (res.ok) {
-            const data = await res.json();
-            if (data.accessToken) {
-              localStorage.setItem('accessToken', data.accessToken);
-              if (data.refreshToken) localStorage.setItem('refreshToken', data.refreshToken);
-            }
-            const nextExp = getTokenExpiryMs(data.accessToken);
-            if (nextExp != null) scheduleRefresh(nextExp - Date.now() - twoMinutes);
-          }
-        } catch {
-          // Səssiz uğursuz; 401 olanda auth-error ilə idarə olunacaq
-        }
-      }, delayMs);
-      return () => clearTimeout(t);
-    };
-
-    if (expiryMs == null) return;
-    const delay = expiryMs - now - twoMinutes;
-    if (delay <= 0) {
-      fetch('/api/admin/refresh', { method: 'POST', credentials: 'include' })
-        .then(async (res) => {
-          if (res.ok) {
-            const data = await res.json();
-            if (data.accessToken) {
-              localStorage.setItem('accessToken', data.accessToken);
-              if (data.refreshToken) localStorage.setItem('refreshToken', data.refreshToken);
-            }
-          }
-        })
-        .catch(() => {});
-      return;
-    }
-    return scheduleRefresh(delay);
-  }, []);
+    if (!token) router.push('/login');
+  }, [router]);
 
   const isActive = (path: string) => pathname === path || pathname.startsWith(path + '/') ? styles.activeLink : '';
 
@@ -186,51 +132,36 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         
         <nav className={styles.sidebarNav} style={{paddingTop: '20px'}}>
           
-          <Link href="/admin" className={`${styles.navLink} ${pathname === '/admin' ? styles.activeLink : ''}`}>
+          <NavLink href="/admin" active={pathname === '/admin'}>
             <FaHome /> Dashboard
-          </Link>
-          
-          <Link href="/admin/products" className={`${styles.navLink} ${isActive('/admin/products')}`}>
+          </NavLink>
+          <NavLink href="/admin/products" active={isActive('/admin/products')}>
             <FaBox /> Products
-          </Link>
-
-          <Link href="/admin/categories" className={`${styles.navLink} ${isActive('/admin/categories')}`}>
+          </NavLink>
+          <NavLink href="/admin/categories" active={isActive('/admin/categories')}>
             <FaTags /> Categories
-          </Link>
-
-          <Link href="/admin/collections" className={`${styles.navLink} ${isActive('/admin/collections')}`}>
+          </NavLink>
+          <NavLink href="/admin/collections" active={isActive('/admin/collections')}>
             <FaFolder /> Collections
-          </Link>
-
-          <Link href="/admin/designers" className={`${styles.navLink} ${isActive('/admin/designers')}`}>
+          </NavLink>
+          <NavLink href="/admin/designers" active={isActive('/admin/designers')}>
             <FaPaintBrush /> Designers
-          </Link>
-
-          <Link href="/admin/colors" className={`${styles.navLink} ${isActive('/admin/colors')}`}>
+          </NavLink>
+          <NavLink href="/admin/colors" active={isActive('/admin/colors')}>
             <FaPalette /> Colors
-          </Link>
-
-          <Link href="/admin/materials" className={`${styles.navLink} ${isActive('/admin/materials')}`}>
+          </NavLink>
+          <NavLink href="/admin/materials" active={isActive('/admin/materials')}>
             <FaCube /> Materials
-          </Link>
-
-          {/* Tags — commentə alınıb
-          <Link href="/admin/tags" className={`${styles.navLink} ${isActive('/admin/tags')}`}>
-            <FaTag /> Tags
-          </Link>
-          */}
-
-          <Link href="/admin/rooms" className={`${styles.navLink} ${isActive('/admin/rooms')}`}>
+          </NavLink>
+          <NavLink href="/admin/rooms" active={isActive('/admin/rooms')}>
             <FaBuilding /> Rooms
-          </Link>
-
-          <Link href="/admin/contact" className={`${styles.navLink} ${isActive('/admin/contact')}`}>
+          </NavLink>
+          <NavLink href="/admin/contact" active={isActive('/admin/contact')}>
             <FaEnvelope /> Messages
-          </Link>
-
-          <Link href="/admin/change-password" className={`${styles.navLink} ${isActive('/admin/change-password')}`}>
+          </NavLink>
+          <NavLink href="/admin/change-password" active={isActive('/admin/change-password')}>
             <FaLock /> Security
-          </Link>
+          </NavLink>
         </nav>
 
         {/* SIDEBAR FOOTER */}
@@ -272,10 +203,13 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   );
 }
 
+import SessionKeepAlive from './components/SessionKeepAlive';
+
 // --- ƏSAS LAYOUT (Wrapper) ---
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <AdminModalProvider>
+      <SessionKeepAlive />
       <LayoutContent>{children}</LayoutContent>
     </AdminModalProvider>
   );

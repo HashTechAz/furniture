@@ -1,80 +1,83 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { refreshAccessToken } from '@/lib/auth';
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
 
 export async function POST(request: NextRequest) {
     try {
-        const accessToken = request.cookies.get('accessToken')?.value;
-        const refreshToken = request.cookies.get('refreshToken')?.value;
+        // 1. Authorization header-i oxuyuruq
+        const authHeader = request.headers.get('authorization');
+        
+        let token = '';
+        if (authHeader && authHeader.startsWith('Bearer ')) {
+            token = authHeader.split(' ')[1];
+        } else {
+            // Əgər header yoxdursa, bəlkə local HTTP cookie-dən gəlib
+            token = request.cookies.get('accessToken')?.value || '';
+        }
 
-        if (!refreshToken) {
+        if (!token) {
             return NextResponse.json(
-                { error: 'Refresh token not found' },
+                { error: 'Giriş icazəsi yoxdur (Token tapılmadı)' },
                 { status: 401 }
             );
         }
 
-        try {
-            const refreshResponse = await refreshAccessToken(refreshToken, accessToken ?? undefined);
+        // 2. Browser-dən gələn cookieləri (və ya başqa lazımlı headerləri) backend-ə ötürürük
+        const incomingCookies = request.headers.get('cookie');
+
+        // Backend-ə birbaşa sorğu atırıq
+        const response = await fetch(`${BASE_URL}/api/Account/refresh`, {
+            method: 'POST',
+            headers: {
+                'Accept': '*/*',
+                'Authorization': `Bearer ${token}`,
+                ...(incomingCookies && { 'Cookie': incomingCookies })
+            },
+            body: '' // Swagger-ə oxşar olaraq body boşdur
+        });
+
+        if (!response.ok) {
+            const errText = await response.text();
+            console.error('[Next.js Proxy] Refresh backend xətası:', response.status, errText);
             
-            // Body-də token qaytarırıq ki, client localStorage-ı yeniləyə bilsin (admin paneldə apiRequest token oradan oxuyur)
-            const response = NextResponse.json({
-                message: 'Token refreshed successfully',
-                accessToken: refreshResponse.accessToken,
-                refreshToken: refreshResponse.refreshToken,
-            });
-
-            // Set new access token
-            response.cookies.set('accessToken', refreshResponse.accessToken, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'strict',
-                maxAge: 60 * 60 * 24, // 24 hours
-                path: '/',
-            });
-
-            // Set new refresh token (only if API returned one)
-            if (refreshResponse.refreshToken) {
-                response.cookies.set('refreshToken', refreshResponse.refreshToken, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',
-                    sameSite: 'strict',
-                    maxAge: 60 * 60 * 24 * 7, // 7 days
-                    path: '/',
-                });
-            }
-
-            return response;
-        } catch (apiError: unknown) {
-            // If refresh fails, clear tokens and redirect to login
-            const errorMessage = apiError instanceof Error ? apiError.message : 'Token refresh failed';
-            const response = NextResponse.json(
-                { error: errorMessage },
+            // Xətaya rəğmən mövcud cookieləri silmirik ki, user proaktiv olaraq təkrar cəhd edə bilsin
+            return NextResponse.json(
+                { error: 'Backend tokeni yeniləyə bilmədi' },
                 { status: 401 }
             );
-
-            // Clear tokens
-            response.cookies.set('accessToken', '', {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'strict',
-                maxAge: 0,
-                path: '/',
-            });
-
-            response.cookies.set('refreshToken', '', {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'strict',
-                maxAge: 0,
-                path: '/',
-            });
-
-            return response;
         }
+
+        // 3. Backend-dən gələn yeni tokeni oxuyuruq
+        const data = await response.json();
+        const newAccessToken = data.accessToken || data.AccessToken;
+
+        if (!newAccessToken) {
+            return NextResponse.json(
+                { error: 'Backend yeni token qaytarmadı' },
+                { status: 500 }
+            );
+        }
+
+        // 4. Yeni tokeni həm JSON cavabında, həm də HTTP-Only cookie-də qaytarırıq
+        const res = NextResponse.json({
+            message: 'Token uğurla yeniləndi',
+            accessToken: newAccessToken
+        });
+
+        res.cookies.set('accessToken', newAccessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 60 * 60 * 24, // 1 gün
+            path: '/',
+        });
+
+        return res;
+
     } catch (error) {
-        console.error('Refresh token error:', error);
+        console.error('[Next.js Proxy] Catch Error:', error);
         return NextResponse.json(
-            { error: 'Internal server error' },
+            { error: 'Daxili server xətası' },
             { status: 500 }
         );
     }

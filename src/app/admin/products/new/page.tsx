@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from '../product-form.module.css';
@@ -200,8 +201,8 @@ export default function CreateProductPage() {
             {previewUrls.length > 0 && (
               <div className={styles.imageGrid}>
                 {previewUrls.map((url, index) => (
-                  <div key={index} className={styles.previewItem} style={{ borderColor: index === coverIndex ? '#fbbf24' : '#eaeaea', borderWidth: index === coverIndex ? '2px' : '1px' }}>
-                    <img src={url} alt="Preview" className={styles.previewImage} />
+                  <div key={index} className={styles.previewItem} style={{ borderColor: index === coverIndex ? '#fbbf24' : '#eaeaea', borderWidth: index === coverIndex ? '2px' : '1px', position: 'relative' }}>
+                    <Image src={url} alt="Preview" fill className={styles.previewImage} sizes="100px" unoptimized />
                     <button type="button" onClick={() => removeFile(index)} className={styles.removeImageBtn}><FaTimes /></button>
                     <button type="button" onClick={() => handleSetCover(index)} style={{ position: 'absolute', bottom: 5, right: 5, background: 'rgba(255,255,255,0.9)', border: 'none', borderRadius: '50%', width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: index === coverIndex ? '#fbbf24' : '#ccc', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>{index === coverIndex ? <FaStar /> : <FaRegStar />}</button>
                     {index === coverIndex && <span style={{ position: 'absolute', top: 5, left: 5, background: '#fbbf24', color: '#fff', fontSize: 10, padding: '2px 6px', borderRadius: 4, fontWeight: 700 }}>Cover</span>}

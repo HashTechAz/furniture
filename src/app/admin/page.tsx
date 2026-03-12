@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FaEnvelope, FaChair, FaThLarge, FaUser, FaFolderOpen, FaInbox } from 'react-icons/fa';
 import styles from './page.module.css';
+import AdminDashboardSkeleton from './components/AdminDashboardSkeleton';
+import { getCached } from '@/lib/admin-prefetch-cache';
 
 import { getProducts } from '@/lib/products';
 import { getCategories } from '@/lib/categories';
@@ -11,16 +13,36 @@ import { getDesigners } from '@/lib/designers';
 import { getCollections } from '@/lib/collections';
 import { getMessages, type ContactMessage } from '@/lib/contact';
 
+type DashboardCache = {
+  products: unknown[];
+  categories: unknown[];
+  designers: unknown[];
+  collections: unknown[];
+  messages: { messages?: ContactMessage[]; totalCount?: number } | ContactMessage[];
+};
+
+function fromCache(cached: DashboardCache | null) {
+  if (!cached) return { stats: { products: 0, categories: 0, designers: 0, collections: 0, messages: 0 }, recent: [] };
+  const pl = Array.isArray(cached.products) ? cached.products : [];
+  const cl = Array.isArray(cached.categories) ? cached.categories : [];
+  const dl = Array.isArray(cached.designers) ? cached.designers : [];
+  const col = Array.isArray(cached.collections) ? cached.collections : [];
+  const msg = cached.messages;
+  const ml = Array.isArray(msg) ? msg : (msg as { messages?: ContactMessage[] })?.messages ?? [];
+  const mc = (msg as { totalCount?: number })?.totalCount ?? ml.length;
+  return {
+    stats: { products: pl.length, categories: cl.length, designers: dl.length, collections: col.length, messages: mc },
+    recent: Array.isArray(ml) ? ml.slice(0, 5) : [],
+  };
+}
+
 export default function AdminDashboard() {
-  const [stats, setStats] = useState({
-    products: 0,
-    categories: 0,
-    designers: 0,
-    collections: 0,
-    messages: 0,
-  });
-  const [recentMessages, setRecentMessages] = useState<ContactMessage[]>([]);
-  const [loading, setLoading] = useState(true);
+  const cached = getCached<DashboardCache>('dashboard');
+  const { stats: initStats, recent: initRecent } = fromCache(cached);
+
+  const [stats, setStats] = useState(initStats);
+  const [recentMessages, setRecentMessages] = useState<ContactMessage[]>(initRecent);
+  const [loading, setLoading] = useState(!cached);
 
   const today = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
@@ -30,7 +52,8 @@ export default function AdminDashboard() {
   });
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchData(showLoader: boolean) {
+      if (showLoader) setLoading(true);
       try {
         const token = localStorage.getItem('accessToken') || '';
         const [productsData, categoriesData, designersData, collectionsData, messagesData] =
@@ -42,38 +65,33 @@ export default function AdminDashboard() {
             getMessages(1, 5, token).catch(() => ({ messages: [], totalCount: 0 })),
           ]);
 
-        const productList = Array.isArray(productsData) ? productsData : [];
-        const categoriesList = Array.isArray(categoriesData) ? categoriesData : [];
-        const designersList = Array.isArray(designersData) ? designersData : [];
-        const collectionsList = Array.isArray(collectionsData) ? collectionsData : [];
+        const pl = Array.isArray(productsData) ? productsData : [];
+        const cl = Array.isArray(categoriesData) ? categoriesData : [];
+        const dl = Array.isArray(designersData) ? designersData : [];
+        const col = Array.isArray(collectionsData) ? collectionsData : [];
 
         const msgRes = messagesData as { messages?: ContactMessage[]; totalCount?: number };
-        const messagesList = msgRes.messages ?? (Array.isArray(messagesData) ? messagesData : []);
-        const messageCount = msgRes.totalCount ?? messagesList.length;
+        const ml = msgRes.messages ?? (Array.isArray(messagesData) ? messagesData : []);
+        const mc = msgRes.totalCount ?? ml.length;
 
         setStats({
-          products: productList.length,
-          categories: categoriesList.length,
-          designers: designersList.length,
-          collections: collectionsList.length,
-          messages: messageCount,
+          products: pl.length,
+          categories: cl.length,
+          designers: dl.length,
+          collections: col.length,
+          messages: mc,
         });
-        setRecentMessages(Array.isArray(messagesList) ? messagesList.slice(0, 5) : []);
+        setRecentMessages(Array.isArray(ml) ? ml.slice(0, 5) : []);
       } catch (error) {
         console.error('Error:', error);
       } finally {
         setLoading(false);
       }
     }
-    fetchData();
+    fetchData(!cached);
   }, []);
 
-  if (loading)
-    return (
-      <div style={{ padding: '50px', textAlign: 'center', color: '#666' }}>
-        Dashboard Loading...
-      </div>
-    );
+  if (loading) return <AdminDashboardSkeleton />;
 
   return (
     <div className={styles.container}>

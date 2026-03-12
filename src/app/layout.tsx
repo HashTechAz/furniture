@@ -40,6 +40,9 @@ export const metadata: Metadata = {
   title: 'Montana Furniture - Modern Design Solutions',
   description: 'Discover Montana Furniture\'s innovative design solutions for modern living and working spaces.',
   keywords: 'furniture, modern design, Montana, storage solutions, tables, chairs',
+  icons: {
+    icon: '/images/logo/svlogosparro.svg',
+  },
 };
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
