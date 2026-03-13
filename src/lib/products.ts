@@ -1,6 +1,6 @@
 // src/lib/products.ts
 import { unstable_cache } from "next/cache";
-import { apiRequest } from "./api-client";
+import { apiRequest, getValidToken } from "./api-client";
 
 // --- 1. INTERFACE-LƏR ---
 
@@ -390,12 +390,14 @@ export async function uploadProductImages(
   files: FileList,
   token: string,
 ) {
+  const validToken = await getValidToken();
+  const tokenToUse = validToken ?? token;
   const formData = new FormData();
   for (let i = 0; i < files.length; i++) formData.append("files", files[i]);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://furniture.hashtech.az";
   const res = await fetch(`${baseUrl}/api/Products/${id}/images`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${tokenToUse}` },
     body: formData,
   });
   if (!res.ok) throw new Error("Şəkillər yüklənmədi.");
