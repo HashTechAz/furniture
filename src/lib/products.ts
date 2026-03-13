@@ -1,6 +1,6 @@
 // src/lib/products.ts
 import { unstable_cache } from "next/cache";
-import { apiRequest, getValidToken } from "./api-client";
+import { apiRequest } from "./api-client";
 
 // --- 1. INTERFACE-LƏR ---
 
@@ -390,7 +390,7 @@ export async function uploadProductImages(
   files: FileList,
   token: string,
 ) {
-  const validToken = await getValidToken();
+  const validToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
   const tokenToUse = validToken ?? token;
   const formData = new FormData();
   for (let i = 0; i < files.length; i++) formData.append("files", files[i]);

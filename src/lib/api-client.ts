@@ -23,9 +23,14 @@ async function doRefresh(): Promise<string | null> {
   refreshPromise = (async () => {
     try {
       console.log('[api-client] /api/admin/refresh proksi çağırılır...');
+      const currentToken = localStorage.getItem('accessToken');
+      
       const res = await fetch('/api/admin/refresh', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(currentToken ? { 'Authorization': `Bearer ${currentToken}` } : {})
+        },
         credentials: 'include'
       });
 

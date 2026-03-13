@@ -204,7 +204,7 @@ export default function AdminProducts() {
                       {product.specifications?.material ?? '—'}
                     </td><td style={{ color: '#555' }}>
                       {product.designer}
-                    </td>                    <td>
+                    </td><td>
                       <div className={shared.actions}>
                         <Link
                           href={`/admin/products/${product.id}`}
