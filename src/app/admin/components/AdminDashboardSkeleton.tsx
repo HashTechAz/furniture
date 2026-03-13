@@ -9,6 +9,23 @@ export default function AdminDashboardSkeleton() {
         <div style={{ width: 280, height: 28, background: '#eee', borderRadius: 6, marginBottom: 8 }} />
         <div style={{ width: 320, height: 16, background: '#f0f0f0', borderRadius: 4 }} />
       </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, marginBottom: 24 }}>
+        {[1, 2, 3, 4].map((i) => (
+          <div
+            key={i}
+            style={{
+              padding: 24,
+              background: '#fff',
+              borderRadius: 12,
+              border: '1px solid #eee',
+            }}
+          >
+            <div style={{ width: 40, height: 40, background: '#eee', borderRadius: 10, marginBottom: 16 }} />
+            <div style={{ width: 36, height: 28, background: '#eee', borderRadius: 4, marginBottom: 8 }} />
+            <div style={{ width: 80, height: 14, background: '#f5f5f5', borderRadius: 4 }} />
+          </div>
+        ))}
+      </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, marginBottom: 32 }}>
         {[1, 2, 3, 4].map((i) => (
           <div

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { FaEnvelope, FaChair, FaThLarge, FaUser, FaFolderOpen, FaInbox } from 'react-icons/fa';
+import { FaEnvelope, FaChair, FaThLarge, FaUser, FaFolderOpen, FaInbox, FaLayerGroup, FaPalette, FaCube, FaDoorOpen } from 'react-icons/fa';
 import styles from './page.module.css';
 import AdminDashboardSkeleton from './components/AdminDashboardSkeleton';
 import { getCached } from '@/lib/admin-prefetch-cache';
@@ -11,6 +11,9 @@ import { getProducts } from '@/lib/products';
 import { getCategories } from '@/lib/categories';
 import { getDesigners } from '@/lib/designers';
 import { getCollections } from '@/lib/collections';
+import { getColors } from '@/lib/colors';
+import { getMaterials } from '@/lib/materials';
+import { getRooms } from '@/lib/rooms';
 import { getMessages, type ContactMessage } from '@/lib/contact';
 
 type DashboardCache = {
@@ -18,20 +21,40 @@ type DashboardCache = {
   categories: unknown[];
   designers: unknown[];
   collections: unknown[];
+  colors: unknown[];
+  materials: unknown[];
+  rooms: unknown[];
   messages: { messages?: ContactMessage[]; totalCount?: number } | ContactMessage[];
 };
 
 function fromCache(cached: DashboardCache | null) {
-  if (!cached) return { stats: { products: 0, categories: 0, designers: 0, collections: 0, messages: 0 }, recent: [] };
+  if (!cached) {
+    return {
+      stats: { products: 0, categories: 0, designers: 0, collections: 0, colors: 0, materials: 0, rooms: 0, messages: 0 },
+      recent: [],
+    };
+  }
   const pl = Array.isArray(cached.products) ? cached.products : [];
   const cl = Array.isArray(cached.categories) ? cached.categories : [];
   const dl = Array.isArray(cached.designers) ? cached.designers : [];
   const col = Array.isArray(cached.collections) ? cached.collections : [];
+  const colors = Array.isArray(cached.colors) ? cached.colors : [];
+  const mats = Array.isArray(cached.materials) ? cached.materials : [];
+  const rooms = Array.isArray(cached.rooms) ? cached.rooms : [];
   const msg = cached.messages;
   const ml = Array.isArray(msg) ? msg : (msg as { messages?: ContactMessage[] })?.messages ?? [];
   const mc = (msg as { totalCount?: number })?.totalCount ?? ml.length;
   return {
-    stats: { products: pl.length, categories: cl.length, designers: dl.length, collections: col.length, messages: mc },
+    stats: {
+      products: pl.length,
+      categories: cl.length,
+      designers: dl.length,
+      collections: col.length,
+      colors: colors.length,
+      materials: mats.length,
+      rooms: rooms.length,
+      messages: mc,
+    },
     recent: Array.isArray(ml) ? ml.slice(0, 5) : [],
   };
 }
@@ -56,19 +79,33 @@ export default function AdminDashboard() {
       if (showLoader) setLoading(true);
       try {
         const token = localStorage.getItem('accessToken') || '';
-        const [productsData, categoriesData, designersData, collectionsData, messagesData] =
-          await Promise.all([
-            getProducts({ pageSize: 100 }).catch(() => []),
-            getCategories().catch(() => []),
-            getDesigners().catch(() => []),
-            getCollections().catch(() => []),
-            getMessages(1, 5, token).catch(() => ({ messages: [], totalCount: 0 })),
-          ]);
+        const [
+          productsData,
+          categoriesData,
+          designersData,
+          collectionsData,
+          colorsData,
+          materialsData,
+          roomsData,
+          messagesData,
+        ] = await Promise.all([
+          getProducts({ pageSize: 100 }).catch(() => []),
+          getCategories().catch(() => []),
+          getDesigners().catch(() => []),
+          getCollections().catch(() => []),
+          getColors().catch(() => []),
+          getMaterials().catch(() => []),
+          getRooms(token).catch(() => []),
+          getMessages(1, 5, token).catch(() => ({ messages: [], totalCount: 0 })),
+        ]);
 
         const pl = Array.isArray(productsData) ? productsData : [];
         const cl = Array.isArray(categoriesData) ? categoriesData : [];
         const dl = Array.isArray(designersData) ? designersData : [];
         const col = Array.isArray(collectionsData) ? collectionsData : [];
+        const colors = Array.isArray(colorsData) ? colorsData : [];
+        const mats = Array.isArray(materialsData) ? materialsData : [];
+        const rooms = Array.isArray(roomsData) ? roomsData : [];
 
         const msgRes = messagesData as { messages?: ContactMessage[]; totalCount?: number };
         const ml = msgRes.messages ?? (Array.isArray(messagesData) ? messagesData : []);
@@ -79,6 +116,9 @@ export default function AdminDashboard() {
           categories: cl.length,
           designers: dl.length,
           collections: col.length,
+          colors: colors.length,
+          materials: mats.length,
+          rooms: rooms.length,
           messages: mc,
         });
         setRecentMessages(Array.isArray(ml) ? ml.slice(0, 5) : []);
@@ -103,7 +143,7 @@ export default function AdminDashboard() {
         <div className={styles.dateBadge}>📅 {today}</div>
       </div>
 
-      {/* Yalnız real statistikalar (API-dan) */}
+      {/* Real statistikalar (API-dan) - Sətir 1 */}
       <div className={styles.statsGrid}>
         <div className={styles.statCard}>
           <div className={styles.cardHeader}>
@@ -160,6 +200,49 @@ export default function AdminDashboard() {
         </div>
       </div>
 
+      {/* Sətir 2: Collections, Colors, Materials, Rooms */}
+      <div className={styles.statsGrid}>
+        <Link href="/admin/collections" className={styles.statCard}>
+          <div className={styles.cardHeader}>
+            <div className={`${styles.iconWrapper} ${styles.teal}`}>
+              <FaLayerGroup />
+            </div>
+          </div>
+          <div className={styles.statValue}>{stats.collections}</div>
+          <div className={styles.statLabel}>Collections</div>
+        </Link>
+
+        <Link href="/admin/colors" className={styles.statCard}>
+          <div className={styles.cardHeader}>
+            <div className={`${styles.iconWrapper} ${styles.rose}`}>
+              <FaPalette />
+            </div>
+          </div>
+          <div className={styles.statValue}>{stats.colors}</div>
+          <div className={styles.statLabel}>Colors</div>
+        </Link>
+
+        <Link href="/admin/materials" className={styles.statCard}>
+          <div className={styles.cardHeader}>
+            <div className={`${styles.iconWrapper} ${styles.amber}`}>
+              <FaCube />
+            </div>
+          </div>
+          <div className={styles.statValue}>{stats.materials}</div>
+          <div className={styles.statLabel}>Materials</div>
+        </Link>
+
+        <Link href="/admin/rooms" className={styles.statCard}>
+          <div className={styles.cardHeader}>
+            <div className={`${styles.iconWrapper} ${styles.indigo}`}>
+              <FaDoorOpen />
+            </div>
+          </div>
+          <div className={styles.statValue}>{stats.rooms}</div>
+          <div className={styles.statLabel}>Rooms</div>
+        </Link>
+      </div>
+
       {/* Real məlumatlar: Son mesajlar + Kataloq keçidlər */}
       <div className={styles.contentGrid}>
         <div className={styles.sectionCard}>
@@ -213,6 +296,9 @@ export default function AdminDashboard() {
             <FaFolderOpen style={{ color: '#6366f1' }} />
           </div>
           <div className={styles.quickLinks}>
+            <Link href="/admin/products" className={styles.quickLink}>
+              <FaChair /> Products ({stats.products})
+            </Link>
             <Link href="/admin/categories" className={styles.quickLink}>
               <FaThLarge /> Categories ({stats.categories})
             </Link>
@@ -220,10 +306,16 @@ export default function AdminDashboard() {
               <FaUser /> Designers ({stats.designers})
             </Link>
             <Link href="/admin/collections" className={styles.quickLink}>
-              <FaFolderOpen /> Collections ({stats.collections})
+              <FaLayerGroup /> Collections ({stats.collections})
             </Link>
-            <Link href="/admin/products" className={styles.quickLink}>
-              <FaChair /> Products ({stats.products})
+            <Link href="/admin/colors" className={styles.quickLink}>
+              <FaPalette /> Colors ({stats.colors})
+            </Link>
+            <Link href="/admin/materials" className={styles.quickLink}>
+              <FaCube /> Materials ({stats.materials})
+            </Link>
+            <Link href="/admin/rooms" className={styles.quickLink}>
+              <FaDoorOpen /> Rooms ({stats.rooms})
             </Link>
             <Link href="/admin/contact" className={styles.quickLink}>
               <FaInbox /> Messages ({stats.messages})

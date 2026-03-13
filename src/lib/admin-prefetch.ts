@@ -52,16 +52,29 @@ export async function prefetchAdminRoute(key: AdminRouteKey): Promise<void> {
         setCached('contact', list);
         break;
       }
-      case 'dashboard':
-        const [p, c, d, col, m] = await Promise.all([
+      case 'dashboard': {
+        const [p, c, d, col, colors, mats, rooms, m] = await Promise.all([
           getProducts({ pageSize: 100 }).catch(() => []),
           getCategories().catch(() => []),
           getDesigners().catch(() => []),
           getCollections().catch(() => []),
+          getColors().catch(() => []),
+          getMaterials().catch(() => []),
+          getRooms(token).catch(() => []),
           getMessages(1, 5, token).catch(() => ({ messages: [], totalCount: 0 })),
         ]);
-        setCached('dashboard', { products: p, categories: c, designers: d, collections: col, messages: m });
+        setCached('dashboard', {
+          products: p,
+          categories: c,
+          designers: d,
+          collections: col,
+          colors,
+          materials: mats,
+          rooms,
+          messages: m,
+        });
         break;
+      }
     }
   } catch {
     // Səssiz uğursuzluq
