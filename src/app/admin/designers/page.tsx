@@ -6,9 +6,10 @@ import Image from 'next/image';
 import { getDesigners, deleteDesigner, BackendDesigner } from '@/lib/designers';
 import { getCached, setCached } from '@/lib/admin-prefetch-cache';
 import AdminTableSkeleton from '../components/AdminTableSkeleton';
+import { AdminCheckbox } from '../components/AdminCheckbox';
 import { useAdminModal } from '@/context/admin-modal-context';
+import shared from '../components/admin-shared.module.css';
 import styles from './designers.module.css';
-
 import { FaPlus, FaEdit, FaTrash, FaUserTie, FaUser } from 'react-icons/fa';
 
 export default function DesignersPage() {
@@ -99,54 +100,56 @@ export default function DesignersPage() {
   };
 
   return (
-    <div className={styles.container}>
-      
-      <div className={styles.header}>
-        <h1 className={styles.title}>Designers</h1>
-        <div style={{ display: 'flex', gap: '10px' }}>
+    <div className={shared.container}>
+      <div className={shared.header}>
+        <h1 className={shared.title}>Designers</h1>
+        <div className={shared.headerActions}>
           {selectedIds.length > 0 && (
-            <button 
-              onClick={handleBulkDelete} 
-              className={styles.addButton} 
-              style={{ backgroundColor: '#ef4444', color: 'white' }}
-            >
+            <button onClick={handleBulkDelete} className={`${shared.addButton} ${shared.bulkDeleteBtn}`}>
               <FaTrash /> Seçilmişləri Sil ({selectedIds.length})
             </button>
           )}
-          <Link href="/admin/designers/new" className={styles.addButton}>
+          <Link href="/admin/designers/new" className={shared.addButton}>
             <FaPlus /> New Designer
           </Link>
         </div>
       </div>
 
-      {/* Table Card */}
-      <div className={styles.tableCard}>
+      <div className={shared.tableCard}>
         {loading ? (
           <AdminTableSkeleton rows={8} />
         ) : designers.length === 0 ? (
-           <div style={{padding: 60, textAlign: 'center', color: '#666'}}>
-             <FaUserTie size={40} style={{marginBottom: 10, opacity: 0.3}}/>
-             <p>No designers found.</p>
-           </div>
+          <div className={shared.emptyState}>
+            <FaUserTie size={48} className={shared.emptyStateIcon} />
+            <p>No designers found.</p>
+          </div>
         ) : (
-          <table className={styles.table}>
+          <table className={shared.table}>
             <thead>
               <tr>
+                <th>
+                  <AdminCheckbox
+                    checked={designers.length > 0 && selectedIds.length === designers.length}
+                    onChange={handleSelectAll}
+                    indeterminate={selectedIds.length > 0 && selectedIds.length < designers.length}
+                    aria-label="Hamısını seç"
+                  />
+                </th>
                 <th>Designer</th>
                 <th>Biography</th>
-                <th style={{textAlign: 'right'}}>Actions</th>
+                <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {designers.map((designer) => {
                 const imgUrl = getImageUrl(designer.imageUrl);
                 return (
-                  <tr key={designer.id}>
+                  <tr key={designer.id} className={selectedIds.includes(designer.id) ? shared.selected : ''}>
                     <td>
-                      <input 
-                        type="checkbox" 
+                      <AdminCheckbox
                         checked={selectedIds.includes(designer.id)}
                         onChange={() => handleSelectOne(designer.id)}
+                        aria-label={`Dizayner ${designer.name} seç`}
                       />
                     </td>
                     <td>
@@ -170,11 +173,11 @@ export default function DesignersPage() {
                       {designer.biography ? designer.biography.substring(0, 60) + (designer.biography.length > 60 ? '...' : '') : '—'}
                     </td>
                     <td>
-                      <div className={styles.actions}>
-                        <Link href={`/admin/designers/${designer.id}`} className={`${styles.actionBtn} ${styles.editBtn}`} title="Edit">
+                      <div className={shared.actions}>
+                        <Link href={`/admin/designers/${designer.id}`} className={`${shared.actionBtn} ${shared.editBtn}`} title="Edit">
                           <FaEdit />
                         </Link>
-                        <button onClick={() => handleDelete(designer.id)} className={`${styles.actionBtn} ${styles.deleteBtn}`} title="Delete">
+                        <button onClick={() => handleDelete(designer.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
                           <FaTrash />
                         </button>
                       </div>

@@ -2,13 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import AdminTableSkeleton from '../components/AdminTableSkeleton';
+import { AdminCheckbox } from '../components/AdminCheckbox';
 import Link from 'next/link';
 import { getMessages, deleteMessage, ContactMessage, ContactResponse } from '@/lib/contact';
 import { getCached, setCached } from '@/lib/admin-prefetch-cache';
 import { useAdminModal } from '@/context/admin-modal-context';
+import shared from '../components/admin-shared.module.css';
 import styles from './contact.module.css';
-
-import { FaEnvelope, FaTrash, FaEye, FaInbox } from 'react-icons/fa';
+import { FaTrash, FaEye, FaInbox } from 'react-icons/fa';
 
 function parseMessages(data: ContactMessage[] | ContactResponse): ContactMessage[] {
   if (Array.isArray(data)) return data;
@@ -113,68 +114,56 @@ export default function ContactListPage() {
   };
 
   return (
-    <div className={styles.container}>
-      
-      <div className={styles.header} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 className={styles.title}>Inbox ({messages.length})</h1>
+    <div className={shared.container}>
+      <div className={shared.header}>
+        <h1 className={shared.title}>Inbox ({messages.length})</h1>
         {selectedIds.length > 0 && (
-          <button 
-            onClick={handleBulkDelete} 
-            className={styles.addButton} 
-            style={{ 
-              backgroundColor: '#ef4444', 
-              color: 'white', 
-              padding: '10px 16px', 
-              borderRadius: '8px',
-              border: 'none',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              fontWeight: 600
-            }}
-          >
+          <button onClick={handleBulkDelete} className={`${shared.addButton} ${shared.bulkDeleteBtn}`}>
             <FaTrash /> Seçilmişləri Sil ({selectedIds.length})
           </button>
         )}
       </div>
 
-      <div className={styles.tableCard}>
+      <div className={shared.tableCard}>
         {loading ? (
           <AdminTableSkeleton rows={6} />
         ) : messages.length === 0 ? (
-           <div style={{padding: 60, textAlign: 'center', color: '#666'}}>
-             <FaInbox size={40} style={{marginBottom: 10, opacity: 0.3}}/>
-             <p>No messages found.</p>
-           </div>
+          <div className={shared.emptyState}>
+            <FaInbox size={48} className={shared.emptyStateIcon} />
+            <p>No messages found.</p>
+          </div>
         ) : (
           <>
-            <table className={styles.table}>
-                <thead>
+            <table className={shared.table}>
+              <thead>
                 <tr>
-                    <th style={{ width: 40 }}>
-                      <input 
-                        type="checkbox" 
-                        onChange={handleSelectAll} 
-                        checked={messages.length > 0 && selectedIds.length === messages.length}
-                      />
-                    </th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Sender</th>
-                    <th>Subject</th>
-                    <th>Email</th>
-                    <th style={{textAlign: 'right'}}>Actions</th>
+                  <th>
+                    <AdminCheckbox
+                      checked={messages.length > 0 && selectedIds.length === messages.length}
+                      onChange={handleSelectAll}
+                      indeterminate={selectedIds.length > 0 && selectedIds.length < messages.length}
+                      aria-label="Hamısını seç"
+                    />
+                  </th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Sender</th>
+                  <th>Subject</th>
+                  <th>Email</th>
+                  <th style={{ textAlign: 'right' }}>Actions</th>
                 </tr>
-                </thead>
-                <tbody>
+              </thead>
+              <tbody>
                 {messages.map((msg) => (
-                    <tr key={msg.id} className={!msg.isRead ? styles.unreadRow : ''}>
+                  <tr
+                    key={msg.id}
+                    className={`${selectedIds.includes(msg.id) ? shared.selected : ''} ${!msg.isRead ? styles.unreadRow : ''}`}
+                  >
                     <td>
-                      <input 
-                        type="checkbox" 
+                      <AdminCheckbox
                         checked={selectedIds.includes(msg.id)}
                         onChange={() => handleSelectOne(msg.id)}
+                        aria-label={`Mesaj ${msg.subject} seç`}
                       />
                     </td>
                     <td>
@@ -187,39 +176,36 @@ export default function ContactListPage() {
                     <td>{msg.subject}</td>
                     <td style={{color: '#666'}}>{msg.email}</td>
                     <td>
-                        <div className={styles.actions}>
-                        <Link href={`/admin/contact/${msg.id}`} className={`${styles.actionBtn} ${styles.viewBtn}`} title="View">
-                            <FaEye />
+                      <div className={shared.actions}>
+                        <Link href={`/admin/contact/${msg.id}`} className={`${shared.actionBtn} ${shared.viewBtn}`} title="View">
+                          <FaEye />
                         </Link>
-                        <button onClick={() => handleDelete(msg.id)} className={`${styles.actionBtn} ${styles.deleteBtn}`} title="Delete">
-                            <FaTrash />
+                        <button onClick={() => handleDelete(msg.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
+                          <FaTrash />
                         </button>
-                        </div>
+                      </div>
                     </td>
                     </tr>
                 ))}
                 </tbody>
             </table>
 
-            {/* Pagination (Table Card-ın içində və ya altında ola bilər) */}
-            <div style={{padding: '20px', borderTop: '1px solid #eee'}}>
-                 <div className={styles.pagination} style={{marginTop: 0}}>
-                    <button 
-                        className={styles.pageBtn} 
-                        disabled={page === 1} 
-                        onClick={() => setPage(p => p - 1)}
-                    >
-                        &larr; Previous
-                    </button>
-                    <span style={{fontSize: 14, color: '#666'}}>Page {page}</span>
-                    <button 
-                        className={styles.pageBtn} 
-                        disabled={messages.length < 10} 
-                        onClick={() => setPage(p => p + 1)}
-                    >
-                        Next &rarr;
-                    </button>
-                </div>
+            <div className={shared.pagination}>
+              <button
+                className={shared.pageBtn}
+                disabled={page === 1}
+                onClick={() => setPage(p => p - 1)}
+              >
+                &larr; Previous
+              </button>
+              <span style={{ fontSize: 14, color: '#6b7280', fontWeight: 600 }}>Page {page}</span>
+              <button
+                className={shared.pageBtn}
+                disabled={messages.length < 10}
+                onClick={() => setPage(p => p + 1)}
+              >
+                Next &rarr;
+              </button>
             </div>
           </>
         )}

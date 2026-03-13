@@ -2,10 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import AdminTableSkeleton from '../components/AdminTableSkeleton';
+import { AdminCheckbox } from '../components/AdminCheckbox';
 import Link from 'next/link';
 import { getMaterials, deleteMaterial, Material } from '@/lib/materials';
 import { getCached, setCached } from '@/lib/admin-prefetch-cache';
 import { useAdminModal } from '@/context/admin-modal-context';
+import shared from '../components/admin-shared.module.css';
 import styles from './page.module.css';
 import { FaPlus, FaEdit, FaTrash, FaCube } from 'react-icons/fa';
 
@@ -91,14 +93,14 @@ export default function MaterialsPage() {
 
   if (loading) {
     return (
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>Materials</h1>
-          <Link href="/admin/materials/new" className={styles.addButton}>
+      <div className={shared.container}>
+        <div className={shared.header}>
+          <h1 className={shared.title}>Materials</h1>
+          <Link href="/admin/materials/new" className={shared.addButton}>
             <FaPlus /> New Material
           </Link>
         </div>
-        <div className={styles.tableCard}>
+        <div className={shared.tableCard}>
           <AdminTableSkeleton rows={8} />
         </div>
       </div>
@@ -106,40 +108,37 @@ export default function MaterialsPage() {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>Materials</h1>
-        <div style={{ display: 'flex', gap: '10px' }}>
+    <div className={shared.container}>
+      <div className={shared.header}>
+        <h1 className={shared.title}>Materials</h1>
+        <div className={shared.headerActions}>
           {selectedIds.length > 0 && (
-            <button 
-              onClick={handleBulkDelete} 
-              className={styles.addButton} 
-              style={{ backgroundColor: '#ef4444', color: 'white' }}
-            >
+            <button onClick={handleBulkDelete} className={`${shared.addButton} ${shared.bulkDeleteBtn}`}>
               <FaTrash /> Seçilmişləri Sil ({selectedIds.length})
             </button>
           )}
-          <Link href="/admin/materials/new" className={styles.addButton}>
+          <Link href="/admin/materials/new" className={shared.addButton}>
             <FaPlus /> New Material
           </Link>
         </div>
       </div>
 
-      <div className={styles.tableCard}>
+      <div className={shared.tableCard}>
         {materials.length === 0 ? (
-          <div style={{ padding: 60, textAlign: 'center', color: '#666' }}>
-            <FaCube size={40} style={{ marginBottom: 10, opacity: 0.3 }} />
+          <div className={shared.emptyState}>
+            <FaCube size={48} className={shared.emptyStateIcon} />
             <p>Heç bir material tapılmadı.</p>
           </div>
         ) : (
-          <table className={styles.table}>
+          <table className={shared.table}>
             <thead>
               <tr>
-                <th style={{ width: 40 }}>
-                  <input 
-                    type="checkbox" 
-                    onChange={handleSelectAll} 
+                <th>
+                  <AdminCheckbox
                     checked={materials.length > 0 && selectedIds.length === materials.length}
+                    onChange={handleSelectAll}
+                    indeterminate={selectedIds.length > 0 && selectedIds.length < materials.length}
+                    aria-label="Hamısını seç"
                   />
                 </th>
                 <th>Material</th>
@@ -149,12 +148,12 @@ export default function MaterialsPage() {
             </thead>
             <tbody>
               {materials.map((mat) => (
-                <tr key={mat.id}>
+                <tr key={mat.id} className={selectedIds.includes(mat.id) ? shared.selected : ''}>
                   <td>
-                    <input 
-                      type="checkbox" 
+                    <AdminCheckbox
                       checked={selectedIds.includes(mat.id)}
                       onChange={() => handleSelectOne(mat.id)}
+                      aria-label={`Material ${mat.name} seç`}
                     />
                   </td>
                   <td>
@@ -173,10 +172,10 @@ export default function MaterialsPage() {
                       : '—'}
                   </td>
                   <td>
-                    <div className={styles.actions}>
+                    <div className={shared.actions}>
                       <Link
                         href={`/admin/materials/${mat.id}`}
-                        className={`${styles.actionBtn} ${styles.editBtn}`}
+                        className={`${shared.actionBtn} ${shared.editBtn}`}
                         title="Edit"
                       >
                         <FaEdit />
@@ -184,7 +183,7 @@ export default function MaterialsPage() {
                       <button
                         type="button"
                         onClick={() => handleDelete(mat.id)}
-                        className={`${styles.actionBtn} ${styles.deleteBtn}`}
+                        className={`${shared.actionBtn} ${shared.deleteBtn}`}
                         title="Delete"
                       >
                         <FaTrash />

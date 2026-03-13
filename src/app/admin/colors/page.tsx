@@ -3,11 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import { getCached, setCached } from '@/lib/admin-prefetch-cache';
 import AdminTableSkeleton from '../components/AdminTableSkeleton';
+import { AdminCheckbox } from '../components/AdminCheckbox';
 import Link from 'next/link';
 import { getColors, deleteColor, BackendColor } from '@/lib/colors';
 import { useAdminModal } from '@/context/admin-modal-context';
+import shared from '../components/admin-shared.module.css';
 import styles from './colors.module.css';
-
 import { FaPlus, FaEdit, FaTrash, FaPalette } from 'react-icons/fa';
 
 export default function ColorsPage() {
@@ -92,52 +93,54 @@ export default function ColorsPage() {
   };
 
   return (
-    <div className={styles.container}>
-      
-      <div className={styles.header}>
-        <h1 className={styles.title}>Colors</h1>
-        <div style={{ display: 'flex', gap: '10px' }}>
+    <div className={shared.container}>
+      <div className={shared.header}>
+        <h1 className={shared.title}>Colors</h1>
+        <div className={shared.headerActions}>
           {selectedIds.length > 0 && (
-            <button 
-              onClick={handleBulkDelete} 
-              className={styles.addButton} 
-              style={{ backgroundColor: '#ef4444', color: 'white' }}
-            >
+            <button onClick={handleBulkDelete} className={`${shared.addButton} ${shared.bulkDeleteBtn}`}>
               <FaTrash /> Seçilmişləri Sil ({selectedIds.length})
             </button>
           )}
-          <Link href="/admin/colors/new" className={styles.addButton}>
+          <Link href="/admin/colors/new" className={shared.addButton}>
             <FaPlus /> New Color
           </Link>
         </div>
       </div>
 
-      {/* Table Card */}
-      <div className={styles.tableCard}>
+      <div className={shared.tableCard}>
         {loading ? (
           <AdminTableSkeleton rows={8} />
         ) : colors.length === 0 ? (
-           <div style={{padding: 60, textAlign: 'center', color: '#666'}}>
-             <FaPalette size={40} style={{marginBottom: 10, opacity: 0.3}}/>
-             <p>No colors found.</p>
-           </div>
+          <div className={shared.emptyState}>
+            <FaPalette size={48} className={shared.emptyStateIcon} />
+            <p>No colors found.</p>
+          </div>
         ) : (
-          <table className={styles.table}>
+          <table className={shared.table}>
             <thead>
               <tr>
+                <th>
+                  <AdminCheckbox
+                    checked={colors.length > 0 && selectedIds.length === colors.length}
+                    onChange={handleSelectAll}
+                    indeterminate={selectedIds.length > 0 && selectedIds.length < colors.length}
+                    aria-label="Hamısını seç"
+                  />
+                </th>
                 <th>Color Name</th>
                 <th>Hex Code</th>
-                <th style={{textAlign: 'right'}}>Actions</th>
+                <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {colors.map((color) => (
-                <tr key={color.id}>
+                <tr key={color.id} className={selectedIds.includes(color.id) ? shared.selected : ''}>
                   <td>
-                    <input 
-                      type="checkbox" 
+                    <AdminCheckbox
                       checked={selectedIds.includes(color.id)}
                       onChange={() => handleSelectOne(color.id)}
+                      aria-label={`Rəng ${color.name} seç`}
                     />
                   </td>
                   <td>
@@ -156,11 +159,11 @@ export default function ColorsPage() {
                     <span className={styles.hexBadge}>{color.hexCode}</span>
                   </td>
                   <td>
-                    <div className={styles.actions}>
-                      <Link href={`/admin/colors/${color.id}`} className={`${styles.actionBtn} ${styles.editBtn}`} title="Edit">
+                    <div className={shared.actions}>
+                      <Link href={`/admin/colors/${color.id}`} className={`${shared.actionBtn} ${shared.editBtn}`} title="Edit">
                         <FaEdit />
                       </Link>
-                      <button onClick={() => handleDelete(color.id)} className={`${styles.actionBtn} ${styles.deleteBtn}`} title="Delete">
+                      <button onClick={() => handleDelete(color.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
                         <FaTrash />
                       </button>
                     </div>

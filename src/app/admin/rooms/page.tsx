@@ -6,7 +6,9 @@ import Image from 'next/image';
 import { getRooms, deleteRoom, Room } from '@/lib/rooms';
 import { getCached, setCached } from '@/lib/admin-prefetch-cache';
 import AdminTableSkeleton from '../components/AdminTableSkeleton';
+import { AdminCheckbox } from '../components/AdminCheckbox';
 import { useAdminModal } from '@/context/admin-modal-context';
+import shared from '../components/admin-shared.module.css';
 import styles from './page.module.css';
 import { FaPlus, FaEdit, FaTrash, FaDoorOpen } from 'react-icons/fa';
 
@@ -109,14 +111,14 @@ export default function RoomsPage() {
 
   if (loading) {
     return (
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>Rooms</h1>
-          <Link href="/admin/rooms/new" className={styles.addButton}>
+      <div className={shared.container}>
+        <div className={shared.header}>
+          <h1 className={shared.title}>Rooms</h1>
+          <Link href="/admin/rooms/new" className={shared.addButton}>
             <FaPlus /> New Room
           </Link>
         </div>
-        <div className={styles.tableCard}>
+        <div className={shared.tableCard}>
           <AdminTableSkeleton rows={8} />
         </div>
       </div>
@@ -124,40 +126,37 @@ export default function RoomsPage() {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>Rooms</h1>
-        <div style={{ display: 'flex', gap: '10px' }}>
+    <div className={shared.container}>
+      <div className={shared.header}>
+        <h1 className={shared.title}>Rooms</h1>
+        <div className={shared.headerActions}>
           {selectedIds.length > 0 && (
-            <button 
-              onClick={handleBulkDelete} 
-              className={styles.addButton} 
-              style={{ backgroundColor: '#ef4444', color: 'white' }}
-            >
+            <button onClick={handleBulkDelete} className={`${shared.addButton} ${shared.bulkDeleteBtn}`}>
               <FaTrash /> Seçilmişləri Sil ({selectedIds.length})
             </button>
           )}
-          <Link href="/admin/rooms/new" className={styles.addButton}>
+          <Link href="/admin/rooms/new" className={shared.addButton}>
             <FaPlus /> New Room
           </Link>
         </div>
       </div>
 
-      <div className={styles.tableCard}>
+      <div className={shared.tableCard}>
         {rooms.length === 0 ? (
-          <div style={{ padding: 60, textAlign: 'center', color: '#666' }}>
-            <FaDoorOpen size={40} style={{ marginBottom: 10, opacity: 0.3 }} />
+          <div className={shared.emptyState}>
+            <FaDoorOpen size={48} className={shared.emptyStateIcon} />
             <p>Heç bir otaq tapılmadı.</p>
           </div>
         ) : (
-          <table className={styles.table}>
+          <table className={shared.table}>
             <thead>
               <tr>
-                <th style={{ width: 40 }}>
-                  <input 
-                    type="checkbox" 
-                    onChange={handleSelectAll} 
+                <th>
+                  <AdminCheckbox
                     checked={rooms.length > 0 && selectedIds.length === rooms.length}
+                    onChange={handleSelectAll}
+                    indeterminate={selectedIds.length > 0 && selectedIds.length < rooms.length}
+                    aria-label="Hamısını seç"
                   />
                 </th>
                 <th>Room</th>
@@ -167,12 +166,12 @@ export default function RoomsPage() {
             </thead>
             <tbody>
               {rooms.map((room) => (
-                <tr key={room.id}>
+                <tr key={room.id} className={selectedIds.includes(room.id) ? shared.selected : ''}>
                   <td>
-                    <input 
-                      type="checkbox" 
+                    <AdminCheckbox
                       checked={selectedIds.includes(room.id)}
                       onChange={() => handleSelectOne(room.id)}
+                      aria-label={`Otaq ${room.name} seç`}
                     />
                   </td>
                   <td>
@@ -198,10 +197,10 @@ export default function RoomsPage() {
                       : '—'}
                   </td>
                   <td>
-                    <div className={styles.actions}>
+                    <div className={shared.actions}>
                       <Link
                         href={`/admin/rooms/${room.id}`}
-                        className={`${styles.actionBtn} ${styles.editBtn}`}
+                        className={`${shared.actionBtn} ${shared.editBtn}`}
                         title="Edit"
                       >
                         <FaEdit />
@@ -209,7 +208,7 @@ export default function RoomsPage() {
                       <button
                         type="button"
                         onClick={() => handleDelete(room.id)}
-                        className={`${styles.actionBtn} ${styles.deleteBtn}`}
+                        className={`${shared.actionBtn} ${shared.deleteBtn}`}
                         title="Delete"
                       >
                         <FaTrash />

@@ -6,10 +6,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getProducts, deleteProduct, FrontendProduct } from '@/lib/products';
 import { getCached, setCached } from '@/lib/admin-prefetch-cache';
+import { prefetchAdminRoute } from '@/lib/admin-prefetch';
 import styles from './page.module.css';
+import shared from '../components/admin-shared.module.css';
 import { FaPlus, FaSearch, FaEdit, FaTrash, FaBoxOpen, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { useAdminModal } from '@/context/admin-modal-context';
 import AdminTableSkeleton from '../components/AdminTableSkeleton';
+import { AdminCheckbox } from '../components/AdminCheckbox';
 
 export default function AdminProducts() {
   const router = useRouter();
@@ -108,57 +111,53 @@ export default function AdminProducts() {
   };
 
   return (
-    <div className={styles.container}>
-
-      <div className={styles.header}>
-        <h1 className={styles.title}>Products</h1>
-        <div style={{ display: 'flex', gap: '10px' }}>
+    <div className={shared.container}>
+      <div className={shared.header}>
+        <h1 className={shared.title}>Products</h1>
+        <div className={shared.headerActions}>
           {selectedIds.length > 0 && (
-            <button 
-              onClick={handleBulkDelete} 
-              className={styles.addButton} 
-              style={{ backgroundColor: '#ef4444', color: 'white' }}
-            >
+            <button onClick={handleBulkDelete} className={`${shared.addButton} ${shared.bulkDeleteBtn}`}>
               <FaTrash /> Seçilmişləri Sil ({selectedIds.length})
             </button>
           )}
-          <Link href="/admin/products/new" className={styles.addButton}>
+          <Link href="/admin/products/new" className={shared.addButton}>
             <FaPlus /> Add Product
           </Link>
         </div>
       </div>
 
-      <div className={styles.filtersBar}>
-        <div className={styles.searchWrapper}>
-          <FaSearch className={styles.searchIcon} />
+      <div className={shared.filtersBar}>
+        <div className={shared.searchWrapper}>
+          <FaSearch className={shared.searchIcon} />
           <input
             type="text"
             placeholder="Search by product name..."
-            className={styles.searchInput}
+            className={shared.searchInput}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
       </div>
 
-      <div className={styles.tableCard}>
+      <div className={shared.tableCard}>
         {loading ? (
           <AdminTableSkeleton rows={8} />
         ) : products.length === 0 ? (
-          <div style={{ padding: '60px', textAlign: 'center', color: '#666' }}>
-            <FaBoxOpen size={40} style={{ marginBottom: 10, opacity: 0.3 }} />
+          <div className={shared.emptyState}>
+            <FaBoxOpen size={48} className={shared.emptyStateIcon} />
             <p>Heç bir məhsul tapılmadı.</p>
           </div>
         ) : (
           <>
-            <table className={styles.table}>
+            <table className={shared.table}>
               <thead>
                 <tr>
-                  <th style={{ width: 40 }}>
-                    <input 
-                      type="checkbox" 
-                      onChange={handleSelectAll} 
+                  <th>
+                    <AdminCheckbox
                       checked={products.length > 0 && selectedIds.length === products.length}
+                      onChange={handleSelectAll}
+                      indeterminate={selectedIds.length > 0 && selectedIds.length < products.length}
+                      aria-label="Hamısını seç"
                     />
                   </th>
                   <th>Product</th><th>Price</th><th>Category</th><th>Color</th><th>Materials</th><th>Designer</th><th style={{ textAlign: 'right' }}>Actions</th>
@@ -166,12 +165,12 @@ export default function AdminProducts() {
               </thead>
               <tbody>
                 {products.map((product) => (
-                  <tr key={product.id}>
+                  <tr key={product.id} className={selectedIds.includes(product.id) ? shared.selected : ''}>
                     <td>
-                      <input 
-                        type="checkbox" 
+                      <AdminCheckbox
                         checked={selectedIds.includes(product.id)}
                         onChange={() => handleSelectOne(product.id)}
+                        aria-label={`Məhsul ${product.title} seç`}
                       />
                     </td>
                     <td>
@@ -205,16 +204,17 @@ export default function AdminProducts() {
                       {product.specifications?.material ?? '—'}
                     </td><td style={{ color: '#555' }}>
                       {product.designer}
-                    </td><td>
-                      <div className={styles.actions}>
+                    </td>                    <td>
+                      <div className={shared.actions}>
                         <Link
                           href={`/admin/products/${product.id}`}
-                          className={`${styles.actionBtn} ${styles.editBtn}`}
+                          className={`${shared.actionBtn} ${shared.editBtn}`}
                           title="Edit"
+                          onMouseEnter={() => router.prefetch(`/admin/products/${product.id}`)}
                         >
                           <FaEdit />
                         </Link>
-                        <button onClick={() => handleDelete(product.id)} className={`${styles.actionBtn} ${styles.deleteBtn}`} title="Delete">
+                        <button onClick={() => handleDelete(product.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
                           <FaTrash />
                         </button>
                       </div>
@@ -223,17 +223,17 @@ export default function AdminProducts() {
               </tbody>
             </table>
 
-            <div className={styles.pagination}>
+            <div className={shared.pagination}>
               <button
-                className={styles.pageBtn}
+                className={shared.pageBtn}
                 disabled={page === 1}
                 onClick={() => setPage(p => p - 1)}
               >
                 <FaChevronLeft style={{ fontSize: 10 }} /> Previous
               </button>
-              <span style={{ fontSize: 13, color: '#666', fontWeight: 600 }}>Page {page}</span>
+              <span style={{ fontSize: 14, color: '#6b7280', fontWeight: 600 }}>Page {page}</span>
               <button
-                className={styles.pageBtn}
+                className={shared.pageBtn}
                 disabled={products.length < 10}
                 onClick={() => setPage(p => p + 1)}
               >

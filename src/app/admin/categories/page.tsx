@@ -6,8 +6,10 @@ import Image from 'next/image';
 import { getCategories, deleteCategory, Category } from '@/lib/categories';
 import { getCached, setCached } from '@/lib/admin-prefetch-cache';
 import AdminTableSkeleton from '../components/AdminTableSkeleton';
-import { useAdminModal } from '@/context/admin-modal-context'; 
-import styles from './page.module.css'; 
+import { AdminCheckbox } from '../components/AdminCheckbox';
+import { useAdminModal } from '@/context/admin-modal-context';
+import shared from '../components/admin-shared.module.css';
+import styles from './page.module.css';
 import { FaPlus, FaEdit, FaTrash, FaTags, FaBoxOpen } from 'react-icons/fa';
 
 export default function AdminCategories() {
@@ -92,60 +94,54 @@ export default function AdminCategories() {
   };
 
   return (
-    <div className={styles.container}>
-      
-      {/* Header */}
-      <div className={styles.header}>
-        <h1 className={styles.title}>Categories</h1>
-        <div style={{ display: 'flex', gap: '10px' }}>
+    <div className={shared.container}>
+      <div className={shared.header}>
+        <h1 className={shared.title}>Categories</h1>
+        <div className={shared.headerActions}>
           {selectedIds.length > 0 && (
-            <button 
-              onClick={handleBulkDelete} 
-              className={styles.addButton} 
-              style={{ backgroundColor: '#ef4444', color: 'white' }}
-            >
+            <button onClick={handleBulkDelete} className={`${shared.addButton} ${shared.bulkDeleteBtn}`}>
               <FaTrash /> Seçilmişləri Sil ({selectedIds.length})
             </button>
           )}
-          <Link href="/admin/categories/new" className={styles.addButton}>
+          <Link href="/admin/categories/new" className={shared.addButton}>
             <FaPlus /> Add Category
           </Link>
         </div>
       </div>
 
-      {/* Table Card */}
-      <div className={styles.tableCard}>
+      <div className={shared.tableCard}>
         {loading ? (
           <AdminTableSkeleton rows={8} />
         ) : categories.length === 0 ? (
-           <div style={{padding: 60, textAlign: 'center', color: '#666'}}>
-             <FaBoxOpen size={40} style={{marginBottom: 10, opacity: 0.3}}/>
-             <p>No categories found.</p>
-           </div>
+          <div className={shared.emptyState}>
+            <FaBoxOpen size={48} className={shared.emptyStateIcon} />
+            <p>No categories found.</p>
+          </div>
         ) : (
-          <table className={styles.table}>
+          <table className={shared.table}>
             <thead>
               <tr>
-                <th style={{ width: 40 }}>
-                  <input 
-                    type="checkbox" 
-                    onChange={handleSelectAll} 
+                <th>
+                  <AdminCheckbox
                     checked={categories.length > 0 && selectedIds.length === categories.length}
+                    onChange={handleSelectAll}
+                    indeterminate={selectedIds.length > 0 && selectedIds.length < categories.length}
+                    aria-label="Hamısını seç"
                   />
                 </th>
                 <th>Category</th>
                 <th>Description</th>
-                <th style={{textAlign: 'right'}}>Actions</th>
+                <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {categories.map((cat) => (
-                <tr key={cat.id}>
+                <tr key={cat.id} className={selectedIds.includes(cat.id) ? shared.selected : ''}>
                   <td>
-                    <input 
-                      type="checkbox" 
+                    <AdminCheckbox
                       checked={selectedIds.includes(cat.id)}
                       onChange={() => handleSelectOne(cat.id)}
+                      aria-label={`Kateqoriya ${cat.name} seç`}
                     />
                   </td>
                   <td>
@@ -169,11 +165,11 @@ export default function AdminCategories() {
                     {cat.description || '—'}
                   </td>
                   <td>
-                    <div className={styles.actions}>
-                      <Link href={`/admin/categories/${cat.id}`} className={`${styles.actionBtn} ${styles.editBtn}`} title="Edit">
+                    <div className={shared.actions}>
+                      <Link href={`/admin/categories/${cat.id}`} className={`${shared.actionBtn} ${shared.editBtn}`} title="Edit">
                         <FaEdit />
                       </Link>
-                      <button onClick={() => handleDelete(cat.id)} className={`${styles.actionBtn} ${styles.deleteBtn}`} title="Delete">
+                      <button onClick={() => handleDelete(cat.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
                         <FaTrash />
                       </button>
                     </div>

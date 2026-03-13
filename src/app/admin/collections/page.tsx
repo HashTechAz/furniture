@@ -6,9 +6,10 @@ import Image from 'next/image';
 import { getCollections, deleteCollection, BackendCollection } from '@/lib/collections';
 import { getCached, setCached } from '@/lib/admin-prefetch-cache';
 import AdminTableSkeleton from '../components/AdminTableSkeleton';
-import { useAdminModal } from '@/context/admin-modal-context'; // Modal Hook
+import { AdminCheckbox } from '../components/AdminCheckbox';
+import { useAdminModal } from '@/context/admin-modal-context';
+import shared from '../components/admin-shared.module.css';
 import styles from './collections.module.css';
-
 import { FaPlus, FaEdit, FaTrash, FaLayerGroup, FaImage } from 'react-icons/fa';
 
 export default function CollectionsPage() {
@@ -99,62 +100,56 @@ export default function CollectionsPage() {
   };
 
   return (
-    <div className={styles.container}>
-      
-      {/* Header */}
-      <div className={styles.header}>
-        <h1 className={styles.title}>Collections</h1>
-        <div style={{ display: 'flex', gap: '10px' }}>
+    <div className={shared.container}>
+      <div className={shared.header}>
+        <h1 className={shared.title}>Collections</h1>
+        <div className={shared.headerActions}>
           {selectedIds.length > 0 && (
-            <button 
-              onClick={handleBulkDelete} 
-              className={styles.addButton} 
-              style={{ backgroundColor: '#ef4444', color: 'white' }}
-            >
+            <button onClick={handleBulkDelete} className={`${shared.addButton} ${shared.bulkDeleteBtn}`}>
               <FaTrash /> Seçilmişləri Sil ({selectedIds.length})
             </button>
           )}
-          <Link href="/admin/collections/new" className={styles.addButton}>
+          <Link href="/admin/collections/new" className={shared.addButton}>
             <FaPlus /> New Collection
           </Link>
         </div>
       </div>
 
-      {/* Table Card */}
-      <div className={styles.tableCard}>
+      <div className={shared.tableCard}>
         {loading ? (
           <AdminTableSkeleton rows={8} />
         ) : collections.length === 0 ? (
-           <div style={{padding: 60, textAlign: 'center', color: '#666'}}>
-             <FaLayerGroup size={40} style={{marginBottom: 10, opacity: 0.3}}/>
-             <p>No collections found.</p>
-           </div>
+          <div className={shared.emptyState}>
+            <FaLayerGroup size={48} className={shared.emptyStateIcon} />
+            <p>No collections found.</p>
+          </div>
         ) : (
-          <table className={styles.table}>
+          <table className={shared.table}>
             <thead>
               <tr>
-                <th style={{ width: 40 }}>
-                  <input 
-                    type="checkbox" 
-                    onChange={handleSelectAll} 
+                <th>
+                  <AdminCheckbox
                     checked={collections.length > 0 && selectedIds.length === collections.length}
+                    onChange={handleSelectAll}
+                    indeterminate={selectedIds.length > 0 && selectedIds.length < collections.length}
+                    aria-label="Hamısını seç"
                   />
                 </th>
                 <th>Collection</th>
                 <th>Description</th>
-                <th style={{textAlign: 'right'}}>Actions</th>
+                <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {collections.map((col) => {
                 const imgUrl = getImageUrl(col.coverImageUrl);
                 return (
-                  <tr key={col.id}>
+                  <tr key={col.id} className={selectedIds.includes(col.id) ? shared.selected : ''}>
                     <td>
-                      <input 
-                        type="checkbox" 
+                      <AdminCheckbox
                         checked={selectedIds.includes(col.id)}
                         onChange={() => handleSelectOne(col.id)}
+                        aria-label={`Kolleksiya ${col.name} seç`}
                       />
                     </td>
                     <td>
@@ -178,11 +173,11 @@ export default function CollectionsPage() {
                       {col.description ? col.description.substring(0, 60) + (col.description.length > 60 ? '...' : '') : '—'}
                     </td>
                     <td>
-                      <div className={styles.actions}>
-                        <Link href={`/admin/collections/${col.id}`} className={`${styles.actionBtn} ${styles.editBtn}`} title="Edit">
+                      <div className={shared.actions}>
+                        <Link href={`/admin/collections/${col.id}`} className={`${shared.actionBtn} ${shared.editBtn}`} title="Edit">
                           <FaEdit />
                         </Link>
-                        <button onClick={() => handleDelete(col.id)} className={`${styles.actionBtn} ${styles.deleteBtn}`} title="Delete">
+                        <button onClick={() => handleDelete(col.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
                           <FaTrash />
                         </button>
                       </div>
