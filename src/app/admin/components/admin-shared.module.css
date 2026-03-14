@@ -123,7 +123,12 @@
   color: #6b7280;
   font-weight: 700;
   letter-spacing: 0.08em;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.table th:last-child {
+  border-right: none;
 }
 
 .table th:first-child {
@@ -134,11 +139,16 @@
 
 .table td {
   padding: 18px 28px;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
   vertical-align: middle;
   color: #374151;
   font-size: 14px;
   font-weight: 500;
+}
+
+.table td:last-child {
+  border-right: none;
 }
 
 .table td:first-child {

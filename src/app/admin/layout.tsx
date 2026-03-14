@@ -189,10 +189,18 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       <div className={styles.mainContent}>
         
         <header className={styles.header}>
-            <button className={styles.menuButton} onClick={() => setIsSidebarOpen(true)}>
-              <FaBars />
-            </button>
-            <h2 className={styles.pageTitle}>{getPageTitle()}</h2>
+            <div className={styles.headerLeft}>
+              <button className={styles.menuButton} onClick={() => setIsSidebarOpen(true)}>
+                <FaBars />
+              </button>
+              <h2 className={styles.pageTitle}>{getPageTitle()}</h2>
+            </div>
+            <div className={styles.headerRight}>
+              <div className={styles.adminAvatar}>
+                {user?.email?.charAt(0).toUpperCase() ?? 'A'}
+              </div>
+              <span className={styles.adminLabel}>Admin</span>
+            </div>
         </header>
 
         <main className={styles.content}>

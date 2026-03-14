@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { FaEnvelope, FaChair, FaThLarge, FaUser, FaFolderOpen, FaInbox, FaLayerGroup, FaPalette, FaCube, FaDoorOpen } from 'react-icons/fa';
+import { FaEnvelope, FaChair, FaThLarge, FaUser, FaFolderOpen, FaInbox, FaLayerGroup, FaPalette, FaCube, FaDoorOpen, FaChevronRight } from 'react-icons/fa';
 import styles from './page.module.css';
 import AdminDashboardSkeleton from './components/AdminDashboardSkeleton';
 import { getCached } from '@/lib/admin-prefetch-cache';
@@ -145,7 +145,7 @@ export default function AdminDashboard() {
 
       {/* Real statistikalar (API-dan) - Sətir 1 */}
       <div className={styles.statsGrid}>
-        <div className={styles.statCard}>
+        <Link href="/admin/products" className={styles.statCard}>
           <div className={styles.cardHeader}>
             <div className={`${styles.iconWrapper} ${styles.purple}`}>
               <FaChair />
@@ -153,9 +153,13 @@ export default function AdminDashboard() {
           </div>
           <div className={styles.statValue}>{stats.products}</div>
           <div className={styles.statLabel}>Active Products</div>
-        </div>
+          <div className={styles.cardFooter}>
+            <span>View</span>
+            <FaChevronRight />
+          </div>
+        </Link>
 
-        <div className={styles.statCard}>
+        <Link href="/admin/categories" className={styles.statCard}>
           <div className={styles.cardHeader}>
             <div className={`${styles.iconWrapper} ${styles.blue}`}>
               <FaThLarge />
@@ -163,9 +167,13 @@ export default function AdminDashboard() {
           </div>
           <div className={styles.statValue}>{stats.categories}</div>
           <div className={styles.statLabel}>Categories</div>
-        </div>
+          <div className={styles.cardFooter}>
+            <span>View</span>
+            <FaChevronRight />
+          </div>
+        </Link>
 
-        <div className={styles.statCard}>
+        <Link href="/admin/designers" className={styles.statCard}>
           <div className={styles.cardHeader}>
             <div className={`${styles.iconWrapper} ${styles.green}`}>
               <FaUser />
@@ -173,31 +181,30 @@ export default function AdminDashboard() {
           </div>
           <div className={styles.statValue}>{stats.designers}</div>
           <div className={styles.statLabel}>Designers</div>
-        </div>
+          <div className={styles.cardFooter}>
+            <span>View</span>
+            <FaChevronRight />
+          </div>
+        </Link>
 
-        <div className={styles.statCard}>
+        <Link href="/admin/contact" className={styles.statCard}>
           <div className={styles.cardHeader}>
             <div className={`${styles.iconWrapper} ${styles.orange}`}>
               <FaEnvelope />
             </div>
             {stats.messages > 0 && (
-              <div
-                style={{
-                  background: '#ffedd5',
-                  color: '#c2410c',
-                  padding: '4px 8px',
-                  borderRadius: '6px',
-                  fontSize: '11px',
-                  fontWeight: '700',
-                }}
-              >
+              <div className={styles.actionBadge}>
                 Action Needed
               </div>
             )}
           </div>
           <div className={styles.statValue}>{stats.messages}</div>
           <div className={styles.statLabel}>New Messages</div>
-        </div>
+          <div className={styles.cardFooter}>
+            <span>View</span>
+            <FaChevronRight />
+          </div>
+        </Link>
       </div>
 
       {/* Sətir 2: Collections, Colors, Materials, Rooms */}
@@ -210,6 +217,10 @@ export default function AdminDashboard() {
           </div>
           <div className={styles.statValue}>{stats.collections}</div>
           <div className={styles.statLabel}>Collections</div>
+          <div className={styles.cardFooter}>
+            <span>View</span>
+            <FaChevronRight />
+          </div>
         </Link>
 
         <Link href="/admin/colors" className={styles.statCard}>
@@ -220,6 +231,10 @@ export default function AdminDashboard() {
           </div>
           <div className={styles.statValue}>{stats.colors}</div>
           <div className={styles.statLabel}>Colors</div>
+          <div className={styles.cardFooter}>
+            <span>View</span>
+            <FaChevronRight />
+          </div>
         </Link>
 
         <Link href="/admin/materials" className={styles.statCard}>
@@ -230,6 +245,10 @@ export default function AdminDashboard() {
           </div>
           <div className={styles.statValue}>{stats.materials}</div>
           <div className={styles.statLabel}>Materials</div>
+          <div className={styles.cardFooter}>
+            <span>View</span>
+            <FaChevronRight />
+          </div>
         </Link>
 
         <Link href="/admin/rooms" className={styles.statCard}>
@@ -240,6 +259,10 @@ export default function AdminDashboard() {
           </div>
           <div className={styles.statValue}>{stats.rooms}</div>
           <div className={styles.statLabel}>Rooms</div>
+          <div className={styles.cardFooter}>
+            <span>View</span>
+            <FaChevronRight />
+          </div>
         </Link>
       </div>
 

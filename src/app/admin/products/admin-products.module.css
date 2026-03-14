@@ -67,11 +67,16 @@
   letter-spacing: 0.05em;
   padding: 16px 24px;
   text-align: left;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.table thead th:last-child {
+  border-right: none;
 }
 
 .table tbody tr {
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   transition: background-color 0.2s;
 }
 
@@ -84,6 +89,11 @@
   vertical-align: middle;
   color: #374151;
   font-size: 14px;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.table td:last-child {
+  border-right: none;
 }
 
 /* Şəkil */
