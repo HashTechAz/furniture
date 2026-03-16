@@ -10,7 +10,7 @@ import Form from "@/components/Form/Form";
 const ProductSeriesPage = () => {
   return (
     <div>
-      <HeroSection 
+      <HeroSection
         title="Series"
         titleSpan="Find our top product series and latest news"
         buttonText="Explore Series"
@@ -19,9 +19,9 @@ const ProductSeriesPage = () => {
         variant="productseries"
       />
       <div id="header-trigger" style={{ height: 1 }} />
-      <SeriesText/>
-      <NewsSection showTitle={false}/>
-      <ProductNewsSlider/>
+      <SeriesText />
+      <NewsSection showTitle={false} />
+      <ProductNewsSlider />
       <PaletteLeftImage
         title='Unique Montana creations in your favourite colours'
         description='Design the home of your dreams with classic Montana. 36 basic modules, 4 depths, and 41 colours let you create storage solutions with character. Make your composition with our many modules. Customise it with your choice of components. And finish it all off with your favourite colours. Very simple – and with plenty of room for personality.'
@@ -31,7 +31,7 @@ const ProductSeriesPage = () => {
         backgroundColor='#FEF4BD'
         imageSize='large'
       />
-      <Form/>
+      <Form />
     </div>
   );
 };

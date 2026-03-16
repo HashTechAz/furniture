@@ -17,14 +17,14 @@ const CreativeMindsPage = () => {
         textColor="#000"
       />
       <div style={{ marginTop: '50px' }}>
-        <SeriesText/>
+        <SeriesText />
       </div>
-      <NewsSection 
-        showTitle={false} 
+      <NewsSection
+        showTitle={false}
         customGridClass="creative-minds-grid"
       />
       <NewsSection limit={4} />
-      <Form/>
+      <Form />
     </>
   );
 };
