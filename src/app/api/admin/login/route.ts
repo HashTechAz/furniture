@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
 
             // 3. Uğurlu cavab hazırlayırıq
             const response = NextResponse.json({
-                message: 'Giriş uğurludur',
+                message: 'Giriş uğurludur!',
                 user: loginResponse.user,
                 accessToken: loginResponse.accessToken, // Frontend üçün
                 refreshToken: loginResponse.refreshToken
