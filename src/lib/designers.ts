@@ -24,10 +24,10 @@ export async function createDesigner(name: string, biography: string, file: File
   const formData = new FormData();
   formData.append('Name', name);
   formData.append('Biography', biography);
-  formData.append('file', file); 
+  formData.append('file', file);
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
-  
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.elforduniversity.com';
+
   const response = await fetch(`${baseUrl}/api/Designers`, {
     method: 'POST',
     headers: {
@@ -49,7 +49,7 @@ export async function updateDesigner(id: number | string, name: string, biograph
   const formData = new FormData();
   formData.append('Name', name);
   formData.append('Biography', biography);
-  
+
   if (file) {
     formData.append('file', file);
   }
@@ -65,11 +65,11 @@ export async function updateDesigner(id: number | string, name: string, biograph
   });
 
   if (!response.ok) {
-     if (response.status === 204) return true;
-     const errorText = await response.text();
-     throw new Error(`Xəta: ${response.status} - ${errorText}`);
+    if (response.status === 204) return true;
+    const errorText = await response.text();
+    throw new Error(`Xəta: ${response.status} - ${errorText}`);
   }
-  
+
   return true;
 }
 

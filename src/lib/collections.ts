@@ -4,7 +4,7 @@ export interface CollectionProduct {
   id: number;
   name: string;
   price: number;
-  coverImageUrl?: string; 
+  coverImageUrl?: string;
   discountPrice?: number;
 }
 
@@ -13,8 +13,8 @@ export interface BackendCollection {
   id: number;
   name: string;
   description: string;
-  coverImageUrl: string; 
-  products?: CollectionProduct[]; 
+  coverImageUrl: string;
+  products?: CollectionProduct[];
 }
 
 // --- 1. GET ALL (Siyahı) ---
@@ -32,10 +32,10 @@ export async function createCollection(name: string, description: string, file: 
   const formData = new FormData();
   formData.append('Name', name);
   formData.append('Description', description);
-  formData.append('file', file); 
+  formData.append('file', file);
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
-  
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.elforduniversity.com';
+
   const response = await fetch(`${baseUrl}/api/Collections`, {
     method: 'POST',
     headers: {
@@ -57,7 +57,7 @@ export async function updateCollection(id: number | string, name: string, descri
   const formData = new FormData();
   formData.append('Name', name);
   formData.append('Description', description);
-  
+
   if (file) {
     formData.append('file', file);
   }
@@ -73,11 +73,11 @@ export async function updateCollection(id: number | string, name: string, descri
   });
 
   if (!response.ok) {
-     if (response.status === 204) return true;
-     const errorText = await response.text();
-     throw new Error(`Xəta: ${response.status} - ${errorText}`);
+    if (response.status === 204) return true;
+    const errorText = await response.text();
+    throw new Error(`Xəta: ${response.status} - ${errorText}`);
   }
-  
+
   return true;
 }
 

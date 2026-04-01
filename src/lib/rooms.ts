@@ -25,7 +25,7 @@ export interface RoomInput {
 
 // --- 1. GET ALL (Siyahı) ---
 export async function getRooms(token?: string): Promise<Room[]> {
-  const data = await apiRequest<RoomApiResponse[]>('/api/Rooms', { 
+  const data = await apiRequest<RoomApiResponse[]>('/api/Rooms', {
     next: { revalidate: 3600 },
     ...(token ? { token } : {})
   });

@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.elforduniversity.com';
 
 export async function POST(request: NextRequest) {
     try {
         // 1. Authorization header-i oxuyuruq
         const authHeader = request.headers.get('authorization');
-        
+
         let token = '';
         if (authHeader && authHeader.startsWith('Bearer ')) {
             token = authHeader.split(' ')[1];
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
         if (!response.ok) {
             const errText = await response.text();
             console.error('[Next.js Proxy] Refresh backend xətası:', response.status, errText);
-            
+
             // Xətaya rəğmən mövcud cookieləri silmirik ki, user proaktiv olaraq təkrar cəhd edə bilsin
             return NextResponse.json(
                 { error: 'Backend tokeni yeniləyə bilmədi' },
