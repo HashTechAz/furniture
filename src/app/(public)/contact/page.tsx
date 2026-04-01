@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { FiMail, FiPhone, FiMapPin, FiSend } from 'react-icons/fi';
 import styles from './page.module.css';
+import { getApiBaseUrl } from '@/lib/api-base';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -32,7 +33,7 @@ export default function Contact() {
       message: formData.message
     };
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
+    const baseUrl = getApiBaseUrl();
 
     const fetchPromise = fetch(`${baseUrl}/api/Contact`, {
       method: 'POST',

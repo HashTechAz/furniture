@@ -11,6 +11,7 @@ import { useAdminModal } from '@/context/admin-modal-context';
 import shared from '../components/admin-shared.module.css';
 import styles from './collections.module.css';
 import { FaPlus, FaEdit, FaTrash, FaLayerGroup, FaImage } from 'react-icons/fa';
+import { getApiBaseUrl } from '@/lib/api-base';
 
 export default function CollectionsPage() {
   const cached = getCached<BackendCollection[]>('collections');
@@ -96,7 +97,7 @@ export default function CollectionsPage() {
   const getImageUrl = (url: string) => {
     if (!url) return null;
     if (url.startsWith('http')) return url;
-    return `${process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az'}${url}`;
+    return `${getApiBaseUrl()}${url}`;
   };
 
   return (

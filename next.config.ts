@@ -69,7 +69,7 @@ const nextConfig: NextConfig = {
       // --- API backend (kateqoriya və digər şəkillər) ---
       {
         protocol: 'https',
-        hostname: 'furniture.hashtech.az',
+        hostname: 'furniture.elforduniversity.com',
         pathname: '/uploads/**',
       },
     ],

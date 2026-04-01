@@ -102,7 +102,7 @@ src/
 ## Backend Integration
 
 The frontend is designed to work with a separate backend API at:
-`http://furniture.hashtech.az/swagger/index.html`
+`https://furniture.elforduniversity.com/swagger/index.html`
 
 Currently, the admin panel uses mock data. To integrate with the real backend:
 

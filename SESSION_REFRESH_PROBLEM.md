@@ -10,7 +10,7 @@ Admin panelimdə JWT sessiya problemi var. Next.js 15 + ASP.NET Core backend ist
 
 **İstədiyim:** Access token bitməsinə 1–2 dəq qalmış refresh avtomatik işləməli. İstifadəçi heç vaxt atılmamalı, yalnız özü "Log Out" basanda çıxmalıdır.
 
-**Backend API:** `POST https://furniture.hashtech.az/api/Account/refresh`
+**Backend API:** `POST https://furniture.elforduniversity.com/api/Account/refresh`
 - Swagger: body boş, yalnız `Authorization: Bearer <accessToken>` header
 - CURL işləyir: `curl -X POST ... -H 'Authorization: Bearer <token>' -d ''`
 - Cavab: `{ accessToken, expiration }`

@@ -15,10 +15,11 @@ import { getMaterials } from '@/lib/materials';
 import { getRooms } from '@/lib/rooms';
 import { getCached } from '@/lib/admin-prefetch-cache';
 import { useAdminModal } from '@/context/admin-modal-context';
+import { getApiBaseUrl } from '@/lib/api-base';
 
 import { FaSave, FaTimes, FaCloudUploadAlt, FaCube, FaTag, FaPalette, FaRulerCombined, FaTrash, FaArrowLeft, FaStar, FaRegStar, FaDoorOpen } from 'react-icons/fa';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
+const API_BASE = getApiBaseUrl();
 
 export default function EditProductPage() {
   const router = useRouter();

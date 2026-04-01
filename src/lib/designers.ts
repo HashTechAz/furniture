@@ -1,5 +1,6 @@
 // src/lib/designers.ts
 import { apiRequest } from '@/lib/api-client';
+import { getApiBaseUrl } from '@/lib/api-base';
 
 export interface BackendDesigner {
   id: number;
@@ -26,7 +27,7 @@ export async function createDesigner(name: string, biography: string, file: File
   formData.append('Biography', biography);
   formData.append('file', file);
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.elforduniversity.com';
+  const baseUrl = getApiBaseUrl();
 
   const response = await fetch(`${baseUrl}/api/Designers`, {
     method: 'POST',
@@ -54,7 +55,7 @@ export async function updateDesigner(id: number | string, name: string, biograph
     formData.append('file', file);
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
+  const baseUrl = getApiBaseUrl();
 
   const response = await fetch(`${baseUrl}/api/Designers/${id}`, {
     method: 'PUT',

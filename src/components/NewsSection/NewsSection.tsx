@@ -2,6 +2,7 @@ import React from 'react';
 import styles from "./NewsSection.module.css";
 import NewsCard from "../NewsCard/NewsCard";
 import { BackendCollection } from "@/lib/collections";
+import { getApiBaseUrl } from '@/lib/api-base';
 
 interface NewsSectionProps {
   collections?: BackendCollection[];
@@ -12,7 +13,7 @@ interface NewsSectionProps {
 
 const NewsSection = ({ collections = [], limit, showTitle = true, customGridClass }: NewsSectionProps) => {
   const displayData = limit ? collections.slice(0, limit) : collections;
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://furniture.hashtech.az";
+  const API_URL = getApiBaseUrl();
 
   return (
     <section className={styles.newsSection}>

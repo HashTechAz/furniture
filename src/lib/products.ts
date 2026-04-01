@@ -1,6 +1,7 @@
 // src/lib/products.ts
 import { unstable_cache } from "next/cache";
 import { apiRequest } from "./api-client";
+import { getApiBaseUrl } from "./api-base";
 
 // --- 1. INTERFACE-LƏR ---
 
@@ -160,7 +161,7 @@ export interface CreateProductVariantPayload {
 // --- 2. MAPPER ---
 
 const mapBackendToFrontend = (item: BackendProduct): FrontendProduct => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://furniture.hashtech.az";
+  const baseUrl = getApiBaseUrl();
 
   const coverImage =
     item.images?.find((img) => img.isCover) || item.images?.[0];
@@ -394,7 +395,7 @@ export async function uploadProductImages(
   const tokenToUse = validToken ?? token;
   const formData = new FormData();
   for (let i = 0; i < files.length; i++) formData.append("files", files[i]);
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://furniture.hashtech.az";
+  const baseUrl = getApiBaseUrl();
   const res = await fetch(`${baseUrl}/api/Products/${id}/images`, {
     method: "POST",
     headers: { Authorization: `Bearer ${tokenToUse}` },

@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { getDesignerById, updateDesigner } from '@/lib/designers';
 import { useAdminModal } from '@/context/admin-modal-context';
 import styles from '../designers.module.css';
+import { getApiBaseUrl } from '@/lib/api-base';
 
 import { FaSave, FaUserTie, FaCloudUploadAlt, FaTimes } from 'react-icons/fa';
 
@@ -86,7 +87,7 @@ export default function EditDesignerPage() {
   const getFullImageUrl = (url: string) => {
     if (!url) return '';
     if (url.startsWith('http')) return url;
-    return `${process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az'}${url}`;
+    return `${getApiBaseUrl()}${url}`;
   };
 
   if (initialLoading) return <div style={{padding: 40, textAlign: 'center'}}>Loading...</div>;

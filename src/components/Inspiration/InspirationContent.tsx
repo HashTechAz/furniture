@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getRooms } from '@/lib/rooms';
 import { getCollections, BackendCollection } from '@/lib/collections';
+import { getApiBaseUrl } from '@/lib/api-base';
 
 const PLACEHOLDER_IMAGE = 'https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/colours/montana_colourps_amber_camomile_rhubarb_flint_oat.jpg?mode=crop&width=1520&height=2027';
 
@@ -40,7 +41,7 @@ const InspirationContent = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const baseUrl = typeof process !== 'undefined' ? (process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az') : 'https://furniture.hashtech.az';
+  const baseUrl = getApiBaseUrl();
 
 
   // unused newsLinks removed

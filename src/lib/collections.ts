@@ -1,4 +1,5 @@
 import { apiRequest } from '@/lib/api-client';
+import { getApiBaseUrl } from '@/lib/api-base';
 
 export interface CollectionProduct {
   id: number;
@@ -34,7 +35,7 @@ export async function createCollection(name: string, description: string, file: 
   formData.append('Description', description);
   formData.append('file', file);
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.elforduniversity.com';
+  const baseUrl = getApiBaseUrl();
 
   const response = await fetch(`${baseUrl}/api/Collections`, {
     method: 'POST',
@@ -62,7 +63,7 @@ export async function updateCollection(id: number | string, name: string, descri
     formData.append('file', file);
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
+  const baseUrl = getApiBaseUrl();
 
   const response = await fetch(`${baseUrl}/api/Collections/${id}`, {
     method: 'PUT',

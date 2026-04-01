@@ -1,4 +1,5 @@
 import { apiRequest } from "./api-client";
+import { getApiBaseUrl } from "./api-base";
 
 // Backend-dən gələn
 export interface Category {
@@ -68,7 +69,7 @@ export async function deleteCategory(id: number | string, token: string) {
   });
 }
 
-export const CATEGORY_API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
+export const CATEGORY_API_BASE_URL = getApiBaseUrl();
 const BASE_URL = CATEGORY_API_BASE_URL;
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 

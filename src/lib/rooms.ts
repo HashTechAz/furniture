@@ -1,5 +1,6 @@
 // src/lib/rooms.ts
 import { apiRequest } from '@/lib/api-client';
+import { getApiBaseUrl } from '@/lib/api-base';
 
 export interface Room {
   id: number;
@@ -64,7 +65,7 @@ export async function deleteRoom(id: number | string, token: string) {
   });
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
+const BASE_URL = getApiBaseUrl();
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 

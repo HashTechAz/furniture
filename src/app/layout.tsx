@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Poppins, Playfair_Display, Cinzel, Bebas_Neue } from 'next/font/google';
 import './globals.css';
+import { getApiBaseUrl } from '@/lib/api-base';
 
 // Əsas şriftlər – ilk çəkimdə (critical)
 const poppins = Poppins({
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
   },
 };
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
+const apiUrl = getApiBaseUrl();
 
 export default function RootLayout({
   children,

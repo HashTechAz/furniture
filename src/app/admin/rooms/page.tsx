@@ -11,8 +11,9 @@ import { useAdminModal } from '@/context/admin-modal-context';
 import shared from '../components/admin-shared.module.css';
 import styles from './page.module.css';
 import { FaPlus, FaEdit, FaTrash, FaDoorOpen } from 'react-icons/fa';
+import { getApiBaseUrl } from '@/lib/api-base';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
+const API_BASE = getApiBaseUrl();
 
 function roomImageSrc(room: Room): string {
   const url = room.imageUrl ?? '';
