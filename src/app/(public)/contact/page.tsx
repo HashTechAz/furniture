@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { FiMail, FiPhone, FiMapPin, FiSend } from 'react-icons/fi';
 import styles from './page.module.css';
 
 export default function Contact() {
@@ -78,16 +79,25 @@ export default function Contact() {
             </p>
 
             <div className={styles.contactMethod}>
-              <h3>Email</h3>
-              <p>info@montanafurniture.com</p>
+              <div className={styles.iconWrapper}><FiMail /></div>
+              <div>
+                <h3>Email</h3>
+                <p>info@montanafurniture.com</p>
+              </div>
             </div>
             <div className={styles.contactMethod}>
-              <h3>Phone</h3>
-              <p>+994 (55) 123-4567</p>
+              <div className={styles.iconWrapper}><FiPhone /></div>
+              <div>
+                <h3>Phone</h3>
+                <p>+994 (55) 123-4567</p>
+              </div>
             </div>
             <div className={styles.contactMethod}>
-              <h3>Showroom</h3>
-              <p>Baku, Narimanov, Ahmad Rajabli 15</p>
+              <div className={styles.iconWrapper}><FiMapPin /></div>
+              <div>
+                <h3>Showroom</h3>
+                <p>Baku, Narimanov, Ahmad Rajabli 15</p>
+              </div>
             </div>
           </div>
 
@@ -106,48 +116,52 @@ export default function Contact() {
             )}
 
             <form onSubmit={handleSubmit}>
-              <div className={styles.formGroup}>
-                <label htmlFor="name">Full Name *</label>
-                <input
-                  className={styles.input}
-                  type="text" id="name" name="name" required
-                  placeholder="John Doe"
-                  value={formData.name} onChange={handleChange}
-                  disabled={status === 'loading'}
-                />
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label htmlFor="name">Full Name *</label>
+                  <input
+                    className={styles.input}
+                    type="text" id="name" name="name" required
+                    placeholder="John Doe"
+                    value={formData.name} onChange={handleChange}
+                    disabled={status === 'loading'}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="email">Email Address *</label>
+                  <input
+                    className={styles.input}
+                    type="email" id="email" name="email" required
+                    placeholder="john@example.com"
+                    value={formData.email} onChange={handleChange}
+                    disabled={status === 'loading'}
+                  />
+                </div>
               </div>
 
-              <div className={styles.formGroup}>
-                <label htmlFor="email">Email Address *</label>
-                <input
-                  className={styles.input}
-                  type="email" id="email" name="email" required
-                  placeholder="john@example.com"
-                  value={formData.email} onChange={handleChange}
-                  disabled={status === 'loading'}
-                />
-              </div>
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label htmlFor="phoneNumber">Phone Number</label>
+                  <input
+                    className={styles.input}
+                    type="text" id="phoneNumber" name="phoneNumber"
+                    placeholder="+994 50 000 00 00"
+                    value={formData.phoneNumber} onChange={handleChange}
+                    disabled={status === 'loading'}
+                  />
+                </div>
 
-              <div className={styles.formGroup}>
-                <label htmlFor="phoneNumber">Phone Number</label>
-                <input
-                  className={styles.input}
-                  type="text" id="phoneNumber" name="phoneNumber"
-                  placeholder="+994 50 000 00 00"
-                  value={formData.phoneNumber} onChange={handleChange}
-                  disabled={status === 'loading'}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="subject">Subject *</label>
-                <input
-                  className={styles.input}
-                  type="text" id="subject" name="subject" required
-                  placeholder="Product Inquiry"
-                  value={formData.subject} onChange={handleChange}
-                  disabled={status === 'loading'}
-                />
+                <div className={styles.formGroup}>
+                  <label htmlFor="subject">Subject *</label>
+                  <input
+                    className={styles.input}
+                    type="text" id="subject" name="subject" required
+                    placeholder="Product Inquiry"
+                    value={formData.subject} onChange={handleChange}
+                    disabled={status === 'loading'}
+                  />
+                </div>
               </div>
 
               <div className={styles.formGroup}>
@@ -171,7 +185,9 @@ export default function Contact() {
                     <span className={styles.spinner}></span> Sending...
                   </>
                 ) : (
-                  'Send Message'
+                  <>
+                    Send Message <FiSend />
+                  </>
                 )}
               </button>
             </form>

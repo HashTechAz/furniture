@@ -100,7 +100,8 @@
   flex-shrink: 0;
 }
 
-.imageWrapper img {
+.imageWrapper img,
+.image {
   width: 100%;
   height: 100%;
   object-fit: cover;

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { getCategoryById, updateCategory, deleteCategory, getCategories, Category, uploadCategoryImage, deleteCategoryImage } from '@/lib/categories';
@@ -185,15 +186,15 @@ export default function EditCategoryPage() {
             <div className={styles.cardTitle}><FaCloudUploadAlt /> Category Image</div>
 
             {imagePreview ? (
-              <div className={styles.previewWrapper}>
-                <img src={imagePreview} alt="New" className={styles.previewImage} />
+              <div className={styles.previewWrapper} style={{ position: 'relative' }}>
+                <Image src={imagePreview} alt="New" fill className={styles.previewImage} sizes="300px" unoptimized />
                 <button type="button" onClick={removeNewFile} className={styles.removeImageBtn} title="Cancel"><FaTimes /></button>
               </div>
             ) : (
               <>
                 {imageUrl && (
-                  <div className={styles.previewWrapper} style={{ marginBottom: 15, borderStyle: 'solid' }}>
-                    <img src={imageUrl} alt="Current" className={styles.previewImage} />
+                  <div className={styles.previewWrapper} style={{ marginBottom: 15, borderStyle: 'solid', position: 'relative' }}>
+                    <Image src={imageUrl} alt="Current" fill className={styles.previewImage} sizes="300px" />
                     <span style={{ position: 'absolute', bottom: 5, left: 5, background: '#111', color: '#fff', fontSize: 10, padding: '2px 6px', borderRadius: 4 }}>Current</span>
                     <button type="button" onClick={handleImageDelete} className={styles.removeImageBtn} title="Remove image" style={{ background: 'rgba(239, 68, 68, 0.9)', color: '#fff' }}><FaTrash size={12} /></button>
                   </div>

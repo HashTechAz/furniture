@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createDesigner } from '@/lib/designers';
@@ -112,8 +113,8 @@ export default function NewDesignerPage() {
               <span style={{fontSize: 13, color: '#666', fontWeight: 500}}>Upload Photo</span>
             </label>
           ) : (
-            <div className={styles.previewWrapper}>
-              <img src={previewUrl} alt="Preview" className={styles.previewImage} />
+            <div className={styles.previewWrapper} style={{ position: 'relative' }}>
+              <Image src={previewUrl} alt="Preview" fill className={styles.previewImage} sizes="300px" unoptimized />
               <button type="button" onClick={removeFile} className={styles.removeImageBtn}>
                 <FaTimes />
               </button>

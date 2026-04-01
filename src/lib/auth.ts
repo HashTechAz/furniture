@@ -30,17 +30,29 @@ function decodeJWT(token: string): any {
     const tokenParts = token.split('.');
     if (tokenParts.length !== 3) return null;
     
-    const payload = tokenParts[1];
+    let payload = tokenParts[1];
+    
+    // Base64Url -> Base64
+    payload = payload.replace(/-/g, '+').replace(/_/g, '/');
+    
+    // Padding əlavə etmək (atob xəta verməsin deyə)
+    const padding = payload.length % 4;
+    if (padding > 0) {
+      payload += '='.repeat(4 - padding);
+    }
+
     const decoded = typeof window !== 'undefined' 
-      ? atob(payload) 
+      ? decodeURIComponent(escape(atob(payload))) // UTF-8 dəstəyi üçün
       : Buffer.from(payload, 'base64').toString('utf-8');
+      
     return JSON.parse(decoded);
   } catch (e) {
+    console.error('[auth] decodeJWT xətası:', e);
     return null;
   }
 }
 
-/** JWT-nin bitmə vaxtını millisaniyə qaytarır (Date.now() ilə müqayisə). */
+/** JWT-nin bitmə vaxtını millisaniyə qaytarır (Date.now() ilə müqayisə üçün) */
 export function getTokenExpiryMs(accessToken: string): number | null {
   const payload = decodeJWT(accessToken);
   if (!payload || typeof payload.exp !== 'number') return null;
@@ -96,37 +108,7 @@ export async function loginUser(username: string, password: string): Promise<Log
   };
 }
 
-// --- 2. REFRESH TOKEN (client - localStorage ilə) ---
-export async function refreshTokenCall(accessToken: string, refreshToken: string): Promise<LoginResponse> {
-  return apiRequest('/api/Account/refresh', {
-    method: 'POST',
-    data: { accessToken, refreshToken },
-  });
-}
-
-// --- 2b. REFRESH TOKEN (server - API route üçün, birbaşa backend-ə) ---
-const getApiBase = () => process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
-export async function refreshAccessToken(refreshToken: string, accessToken?: string): Promise<LoginResponse> {
-  const body = accessToken
-    ? { accessToken, refreshToken }
-    : { refreshToken };
-  const res = await fetch(`${getApiBase()}/api/Account/refresh`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(text || 'Token yenilənmədi');
-  }
-  const data = await res.json();
-  return {
-    accessToken: data.accessToken ?? data.AccessToken ?? '',
-    refreshToken: data.refreshToken ?? data.RefreshToken ?? refreshToken,
-  };
-}
-
-// --- 3. CHANGE PASSWORD (YENİ) ---
+// --- 2. CHANGE PASSWORD ---
 export async function changePassword(payload: ChangePasswordPayload, token: string) {
   return apiRequest('/api/Account/change-password', {
     method: 'POST',
@@ -139,7 +121,7 @@ export async function changePassword(payload: ChangePasswordPayload, token: stri
   });
 }
 
-// --- 4. LOGOUT  ---
+// --- 3. LOGOUT ---
 export async function logoutUser(accessToken: string) {
   try {
     await apiRequest<void>('/api/Account/logout', { 

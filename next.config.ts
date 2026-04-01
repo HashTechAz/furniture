@@ -4,11 +4,12 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // react-icons və böyük paketlərdən yalnız istifadə olunan iconlar bundle-a daxil olur – JS ölçüsü azalır
+  // optimizePackageImports + react-icons Turbopack-da chunk xətası verir – dev üçün söndürülüb
   experimental: {
-    optimizePackageImports: ['react-icons'],
+    // optimizePackageImports: ['react-icons'],
   },
   images: {
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',

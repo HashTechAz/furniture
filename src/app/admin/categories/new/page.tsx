@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { createCategory, getCategories, Category, uploadCategoryImage } from '@/lib/categories';
@@ -153,8 +154,8 @@ export default function NewCategoryPage() {
             <div className={styles.cardTitle}><FaCloudUploadAlt /> Category Image</div>
 
             {imagePreview ? (
-              <div className={styles.previewWrapper}>
-                <img src={imagePreview} alt="Preview" className={styles.previewImage} />
+              <div className={styles.previewWrapper} style={{ position: 'relative' }}>
+                <Image src={imagePreview} alt="Preview" fill className={styles.previewImage} sizes="300px" unoptimized />
                 <button type="button" onClick={removeNewFile} className={styles.removeImageBtn} title="Remove"><FaTimes /></button>
               </div>
             ) : (

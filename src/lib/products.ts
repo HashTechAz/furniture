@@ -390,12 +390,14 @@ export async function uploadProductImages(
   files: FileList,
   token: string,
 ) {
+  const validToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+  const tokenToUse = validToken ?? token;
   const formData = new FormData();
   for (let i = 0; i < files.length; i++) formData.append("files", files[i]);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://furniture.hashtech.az";
   const res = await fetch(`${baseUrl}/api/Products/${id}/images`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${tokenToUse}` },
     body: formData,
   });
   if (!res.ok) throw new Error("Şəkillər yüklənmədi.");

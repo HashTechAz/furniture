@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { getRoomById, updateRoom, uploadRoomImage, deleteRoomImage, isAllowedRoomImageFile } from '@/lib/rooms';
@@ -170,8 +171,8 @@ export default function EditRoomPage() {
             <h2 className={styles.imageCardTitle}><FaCloudUploadAlt /> Otaq şəkli (PC-dən yüklə)</h2>
             {formData.imageUrl ? (
               <>
-                <div className={styles.previewWrapper}>
-                  <img src={getFullImageUrl(formData.imageUrl)} alt={formData.name} className={styles.previewImage} />
+                <div className={styles.previewWrapper} style={{ position: 'relative' }}>
+                  <Image src={getFullImageUrl(formData.imageUrl)} alt={formData.name} fill className={styles.previewImage} sizes="300px" />
                   <button
                     type="button"
                     className={styles.removeImageBtn}

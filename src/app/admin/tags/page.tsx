@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import AdminTableSkeleton from '../components/AdminTableSkeleton';
 import Link from 'next/link';
 import { getTags, deleteTag, Tag } from '@/lib/tags';
 import { useAdminModal } from '@/context/admin-modal-context';
@@ -46,7 +47,15 @@ export default function TagsPage() {
   if (loading) {
     return (
       <div className={styles.container}>
-        <div style={{ padding: 50, textAlign: 'center', color: '#666' }}>Yüklənir...</div>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Tags</h1>
+          <Link href="/admin/tags/new" className={styles.addButton}>
+            <FaPlus /> New Tag
+          </Link>
+        </div>
+        <div className={styles.tableCard}>
+          <AdminTableSkeleton rows={8} />
+        </div>
       </div>
     );
   }

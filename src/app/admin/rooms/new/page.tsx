@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createRoom, uploadRoomImage, isAllowedRoomImageFile } from '@/lib/rooms';
@@ -107,8 +108,8 @@ export default function NewRoomPage() {
               .jpg, .jpeg və ya .png seçin. İstəyə bağlıdır.
             </p>
             {previewUrl ? (
-              <div className={styles.previewWrapper}>
-                <img src={previewUrl} alt="Önizləmə" className={styles.previewImage} />
+              <div className={styles.previewWrapper} style={{ position: 'relative' }}>
+                <Image src={previewUrl} alt="Önizləmə" fill className={styles.previewImage} sizes="300px" unoptimized />
                 <button type="button" onClick={removeFile} className={styles.removeImageBtn} title="Şəkli sil">
                   <FaTimes />
                 </button>

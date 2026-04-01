@@ -2,21 +2,30 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getCategories, deleteCategory, Category } from '@/lib/categories';
-import { useAdminModal } from '@/context/admin-modal-context'; 
-import styles from './page.module.css'; 
+import { getCached, setCached } from '@/lib/admin-prefetch-cache';
+import AdminTableSkeleton from '../components/AdminTableSkeleton';
+import { AdminCheckbox } from '../components/AdminCheckbox';
+import { useAdminModal } from '@/context/admin-modal-context';
+import shared from '../components/admin-shared.module.css';
+import styles from './page.module.css';
 import { FaPlus, FaEdit, FaTrash, FaTags, FaBoxOpen } from 'react-icons/fa';
 
 export default function AdminCategories() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+  const cached = getCached<Category[]>('categories');
+  const [categories, setCategories] = useState<Category[]>(Array.isArray(cached) ? cached : []);
+  const [loading, setLoading] = useState(!cached);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const { openModal } = useAdminModal();
 
-  const fetchCategories = async () => {
+  const fetchCategories = async (showLoader = true) => {
     try {
-      setLoading(true);
+      if (showLoader) setLoading(true);
       const data = await getCategories();
-      setCategories(Array.isArray(data) ? data : []);
+      const list = Array.isArray(data) ? data : [];
+      setCategories(list);
+      setCached('categories', list);
     } catch (error) {
       console.error(error);
     } finally {
@@ -25,7 +34,7 @@ export default function AdminCategories() {
   };
 
   useEffect(() => {
-    fetchCategories();
+    fetchCategories(!cached);
   }, []);
 
   // DELETE MODAL
@@ -40,47 +49,106 @@ export default function AdminCategories() {
         const token = localStorage.getItem('accessToken') || '';
         await deleteCategory(id, token);
         setCategories(prev => prev.filter(c => c.id !== id));
+        setSelectedIds(prev => prev.filter(selectedId => selectedId !== id));
+      }
+    });
+  };
+
+  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) setSelectedIds(categories.map(c => c.id));
+    else setSelectedIds([]);
+  };
+
+  const handleSelectOne = (id: number) => {
+    setSelectedIds(prev =>
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
+  };
+
+  const handleBulkDelete = () => {
+    openModal({
+      type: 'warning',
+      title: 'Toplu Silinmə',
+      message: `Seçilmiş ${selectedIds.length} kateqoriyanı silmək istədiyinizə əminsiniz? Bu geriyə alına bilməz.`,
+      confirmText: 'Bəli, Sil',
+      cancelText: 'Ləğv et',
+      onConfirm: async () => {
+        const token = localStorage.getItem('accessToken') || '';
+        setLoading(true);
+        try {
+          const results = await Promise.allSettled(
+            selectedIds.map(id => deleteCategory(id, token))
+          );
+          const successIds = results
+            .map((r, idx) => r.status === 'fulfilled' ? selectedIds[idx] : null)
+            .filter(Boolean) as number[];
+          setCategories(prev => prev.filter(item => !successIds.includes(item.id)));
+          setSelectedIds([]);
+        } catch (error) {
+          console.error("Toplu silinmə xətası", error);
+        } finally {
+          setLoading(false);
+        }
       }
     });
   };
 
   return (
-    <div className={styles.container}>
-      
-      {/* Header */}
-      <div className={styles.header}>
-        <h1 className={styles.title}>Categories</h1>
-        <Link href="/admin/categories/new" className={styles.addButton}>
-          <FaPlus /> Add Category
-        </Link>
+    <div className={shared.container}>
+      <div className={shared.header}>
+        <h1 className={shared.title}>Categories</h1>
+        <div className={shared.headerActions}>
+          {selectedIds.length > 0 && (
+            <button onClick={handleBulkDelete} className={`${shared.addButton} ${shared.bulkDeleteBtn}`}>
+              <FaTrash /> Seçilmişləri Sil ({selectedIds.length})
+            </button>
+          )}
+          <Link href="/admin/categories/new" className={shared.addButton}>
+            <FaPlus /> Add Category
+          </Link>
+        </div>
       </div>
 
-      {/* Table Card */}
-      <div className={styles.tableCard}>
+      <div className={shared.tableCard}>
         {loading ? (
-           <div style={{padding: 50, textAlign: 'center', color: '#666'}}>Loading...</div>
+          <AdminTableSkeleton rows={8} />
         ) : categories.length === 0 ? (
-           <div style={{padding: 60, textAlign: 'center', color: '#666'}}>
-             <FaBoxOpen size={40} style={{marginBottom: 10, opacity: 0.3}}/>
-             <p>No categories found.</p>
-           </div>
+          <div className={shared.emptyState}>
+            <FaBoxOpen size={48} className={shared.emptyStateIcon} />
+            <p>No categories found.</p>
+          </div>
         ) : (
-          <table className={styles.table}>
+          <table className={shared.table}>
             <thead>
               <tr>
+                <th>
+                  <AdminCheckbox
+                    checked={categories.length > 0 && selectedIds.length === categories.length}
+                    onChange={handleSelectAll}
+                    indeterminate={selectedIds.length > 0 && selectedIds.length < categories.length}
+                    aria-label="Hamısını seç"
+                  />
+                </th>
                 <th>Category</th>
                 <th>Description</th>
-                <th style={{textAlign: 'right'}}>Actions</th>
+                <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {categories.map((cat) => (
-                <tr key={cat.id}>
+                <tr key={cat.id} className={selectedIds.includes(cat.id) ? shared.selected : ''}>
+                  <td>
+                    <AdminCheckbox
+                      checked={selectedIds.includes(cat.id)}
+                      onChange={() => handleSelectOne(cat.id)}
+                      aria-label={`Kateqoriya ${cat.name} seç`}
+                    />
+                  </td>
                   <td>
                     <div className={styles.cellContent}>
                       <div className={styles.imageWrapper}>
                         {cat.imageUrl ? (
-                          <img src={cat.imageUrl} alt={cat.name} className={styles.image} />
+                          <Image src={cat.imageUrl} alt={cat.name} width={48} height={48} className={styles.image} loading="lazy" />
                         ) : (
                           <div style={{width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc'}}>
                             <FaTags />
@@ -97,11 +165,11 @@ export default function AdminCategories() {
                     {cat.description || '—'}
                   </td>
                   <td>
-                    <div className={styles.actions}>
-                      <Link href={`/admin/categories/${cat.id}`} className={`${styles.actionBtn} ${styles.editBtn}`} title="Edit">
+                    <div className={shared.actions}>
+                      <Link href={`/admin/categories/${cat.id}`} className={`${shared.actionBtn} ${shared.editBtn}`} title="Edit">
                         <FaEdit />
                       </Link>
-                      <button onClick={() => handleDelete(cat.id)} className={`${styles.actionBtn} ${styles.deleteBtn}`} title="Delete">
+                      <button onClick={() => handleDelete(cat.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
                         <FaTrash />
                       </button>
                     </div>
