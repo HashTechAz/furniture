@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.hashtech.az';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://furniture.elforduniversity.com';
 
 interface ApiOptions extends RequestInit {
   data?: any;
@@ -24,10 +24,10 @@ async function doRefresh(): Promise<string | null> {
     try {
       console.log('[api-client] /api/admin/refresh proksi çağırılır...');
       const currentToken = localStorage.getItem('accessToken');
-      
+
       const res = await fetch('/api/admin/refresh', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           ...(currentToken ? { 'Authorization': `Bearer ${currentToken}` } : {})
         },
@@ -107,7 +107,7 @@ export async function apiRequest<T>(
       if (retryCount >= 1) {
         // Artıq refresh edilib və yenə 401 gəlirsə -> Logout
         console.error('[api-client] Refresh sonrası yenə 401. Sessiya bitdi.');
-        
+
         // Error atırıq, lakin UI-da Catch edib çıxmaq da olar
         const err: any = new Error('Sessiya tamamilə bitdi. Yenidən daxil olun.');
         err.status = 401;
@@ -131,9 +131,9 @@ export async function apiRequest<T>(
 
     // 401 amma token heç vaxt olmayıbsa (məsələn public api)
     if (response.status === 401) {
-       const err: any = new Error('İcazəniz yoxdur.');
-       err.status = 401;
-       throw err;
+      const err: any = new Error('İcazəniz yoxdur.');
+      err.status = 401;
+      throw err;
     }
 
     // 3. Digər xətalar
@@ -150,7 +150,7 @@ export async function apiRequest<T>(
             errorMessage = rawText.slice(0, 200);
           }
         }
-      } catch {}
+      } catch { }
       const error: any = new Error(errorMessage);
       error.status = response.status;
       throw error;
@@ -168,7 +168,7 @@ export async function apiRequest<T>(
 
   } catch (error) {
     if (!(error instanceof Error) || !error.message.includes('Sessiya')) {
-       console.error(`[api-client] Request Failed (${endpoint}):`, error);
+      console.error(`[api-client] Request Failed (${endpoint}):`, error);
     }
     throw error;
   }
