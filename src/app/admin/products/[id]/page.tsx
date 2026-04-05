@@ -39,8 +39,8 @@ export default function EditProductPage() {
   const [rooms, setRooms] = useState<any[]>([]);
 
   const [formData, setFormData] = useState({
-    name: '', sku: '', description: '', shortDescription: '', price: 0,
-    isFeatured: false, width: 0, height: 0, depth: 0, weight: 0,
+    name: '', sku: '', description: '', shortDescription: '', price: '' as number | string,
+    isFeatured: false, width: '' as number | string, height: '' as number | string, depth: '' as number | string, weight: '' as number | string,
     categoryId: 0, designerId: 0, collectionId: 0,
     selectedColorIds: [] as number[],
     selectedMaterialIds: [] as number[],
@@ -100,12 +100,12 @@ export default function EditProductPage() {
                 sku: product.sku || '',
                 description: product.description || '',
                 shortDescription: product.shortDescription || '',
-                price: product.price || 0,
+                price: product.price || '',
                 isFeatured: product.isFeatured || false,
-                width: product.width || 0,
-                height: product.height || 0,
-                depth: product.depth || 0,
-                weight: product.weight || 0,
+                width: product.width || '',
+                height: product.height || '',
+                depth: product.depth || '',
+                weight: product.weight || '',
                 categoryId: catId,
                 designerId: desId,
                 collectionId: colId,
@@ -128,8 +128,7 @@ export default function EditProductPage() {
   // Input Handlers
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    if (type === 'number') setFormData(prev => ({ ...prev, [name]: parseFloat(value) || 0 }));
-    else setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
   const handleToggle = () => setFormData(prev => ({ ...prev, isFeatured: !prev.isFeatured }));
   const handleColorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -202,6 +201,11 @@ export default function EditProductPage() {
       const token = localStorage.getItem('accessToken') || '';
       const payload = {
         ...formData,
+        price: Number(formData.price) || 0,
+        width: Number(formData.width) || 0,
+        height: Number(formData.height) || 0,
+        depth: Number(formData.depth) || 0,
+        weight: Number(formData.weight) || 0,
         colorIds: formData.selectedColorIds,
         materialIds: formData.selectedMaterialIds,
         suitableRooms: formData.selectedRoomIds.map((id) => ({ id })),
@@ -311,11 +315,11 @@ export default function EditProductPage() {
           <div className={styles.card}>
              <div className={styles.cardTitle}><FaRulerCombined /> Dimensions</div>
              <div className={styles.dimensionsGrid}>
-                <div className={styles.formGroup}><label className={styles.label}>W</label><input type="number" name="width" className={styles.input} value={formData.width} onChange={handleChange} /></div>
-                <div className={styles.formGroup}><label className={styles.label}>H</label><input type="number" name="height" className={styles.input} value={formData.height} onChange={handleChange} /></div>
-                <div className={styles.formGroup}><label className={styles.label}>D</label><input type="number" name="depth" className={styles.input} value={formData.depth} onChange={handleChange} /></div>
+                <div className={styles.formGroup}><label className={styles.label}>W</label><input type="number" step="any" placeholder="0" name="width" className={styles.input} value={formData.width} onChange={handleChange} /></div>
+                <div className={styles.formGroup}><label className={styles.label}>H</label><input type="number" step="any" placeholder="0" name="height" className={styles.input} value={formData.height} onChange={handleChange} /></div>
+                <div className={styles.formGroup}><label className={styles.label}>D</label><input type="number" step="any" placeholder="0" name="depth" className={styles.input} value={formData.depth} onChange={handleChange} /></div>
              </div>
-             <div className={styles.formGroup}><label className={styles.label}>Weight</label><input type="number" name="weight" className={styles.input} value={formData.weight} onChange={handleChange} /></div>
+             <div className={styles.formGroup}><label className={styles.label}>Weight</label><input type="number" step="any" placeholder="0" name="weight" className={styles.input} value={formData.weight} onChange={handleChange} /></div>
           </div>
         </div>
 
@@ -324,7 +328,7 @@ export default function EditProductPage() {
           <div className={styles.card}>
             <div className={styles.cardTitle}>Status & Price</div>
             <div className={styles.formGroup}><div className={styles.toggleWrapper} onClick={handleToggle}><input type="checkbox" checked={formData.isFeatured} readOnly className={styles.checkbox}/><span>Featured</span></div></div>
-            <div className={styles.formGroup}><label className={styles.label}>Price</label><input type="number" name="price" className={styles.input} value={formData.price} onChange={handleChange} /></div>
+            <div className={styles.formGroup}><label className={styles.label}>Price</label><input type="number" step="any" placeholder="0" name="price" className={styles.input} value={formData.price} onChange={handleChange} /></div>
             <div className={styles.formGroup}><label className={styles.label}>SKU</label><input type="text" name="sku" className={styles.input} value={formData.sku} onChange={handleChange} /></div>
           </div>
 
