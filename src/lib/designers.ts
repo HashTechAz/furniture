@@ -11,13 +11,15 @@ export interface BackendDesigner {
 }
 
 // --- 1. GET ALL (Siyahı) ---
-export async function getDesigners(): Promise<BackendDesigner[]> {
-  return apiRequest<BackendDesigner[]>('/api/Designers', { next: { revalidate: 3600 } });
+export async function getDesigners(options?: { skipCache?: boolean }): Promise<BackendDesigner[]> {
+  const cacheConfig = options?.skipCache ? { cache: "no-store" as RequestCache } : { next: { tags: ["designers"] } };
+  return apiRequest<BackendDesigner[]>('/api/Designers', cacheConfig);
 }
 
 // --- 2. GET BY ID (Tək Dizayner) ---
-export async function getDesignerById(id: number | string, token?: string): Promise<BackendDesigner> {
-  return apiRequest<BackendDesigner>(`/api/Designers/${id}`, { token });
+export async function getDesignerById(id: number | string, token?: string, options?: { skipCache?: boolean }): Promise<BackendDesigner> {
+  const cacheConfig = options?.skipCache ? { cache: "no-store" as RequestCache } : { next: { tags: ["designers", `designer-${id}`] } };
+  return apiRequest<BackendDesigner>(`/api/Designers/${id}`, { token, ...cacheConfig });
 }
 
 // --- 3. CREATE (Yeni Dizayner + Şəkil) ---

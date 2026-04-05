@@ -23,13 +23,15 @@ export interface ColorPayload {
 }
 
 // --- 1. GET ALL (Siyahı) ---
-export async function getColors(): Promise<BackendColor[]> {
-  return apiRequest<BackendColor[]>('/api/Colors', { next: { revalidate: 3600 } });
+export async function getColors(options?: { skipCache?: boolean }): Promise<BackendColor[]> {
+  const cacheConfig = options?.skipCache ? { cache: "no-store" as RequestCache } : { next: { tags: ["colors"] } };
+  return apiRequest<BackendColor[]>('/api/Colors', cacheConfig);
 }
 
 // --- 2. GET BY ID (Tək rəng - Redaktə üçün) ---
-export async function getColorById(id: number | string, token?: string): Promise<BackendColor> {
-  return apiRequest<BackendColor>(`/api/Colors/${id}`, { token });
+export async function getColorById(id: number | string, token?: string, options?: { skipCache?: boolean }): Promise<BackendColor> {
+  const cacheConfig = options?.skipCache ? { cache: "no-store" as RequestCache } : { next: { tags: ["colors", `color-${id}`] } };
+  return apiRequest<BackendColor>(`/api/Colors/${id}`, { token, ...cacheConfig });
 }
 
 // --- 3. CREATE (Yeni rəng yarat) ---

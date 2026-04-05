@@ -12,12 +12,14 @@ export interface TagPayload {
   tagName: string;
 }
 
-export async function getTags(): Promise<Tag[]> {
-  return apiRequest<Tag[]>("/api/Tags", { cache: "no-store" });
+export async function getTags(options?: { skipCache?: boolean }): Promise<Tag[]> {
+  const cacheConfig = options?.skipCache ? { cache: "no-store" as RequestCache } : { next: { tags: ["tags"] } };
+  return apiRequest<Tag[]>("/api/Tags", cacheConfig);
 }
 
-export async function getTagById(id: number | string, token?: string): Promise<Tag> {
-  return apiRequest<Tag>(`/api/Tags/${id}`, { cache: "no-store", ...(token ? { token } : {}) });
+export async function getTagById(id: number | string, token?: string, options?: { skipCache?: boolean }): Promise<Tag> {
+  const cacheConfig = options?.skipCache ? { cache: "no-store" as RequestCache } : { next: { tags: ["tags", `tag-${id}`] } };
+  return apiRequest<Tag>(`/api/Tags/${id}`, { ...cacheConfig, ...(token ? { token } : {}) });
 }
 
 export async function createTag(data: TagPayload, token: string) {

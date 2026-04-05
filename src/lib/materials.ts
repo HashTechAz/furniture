@@ -15,13 +15,15 @@ export interface MaterialPayload {
 }
 
 // 1. Bütün materialları gətir
-export async function getMaterials(): Promise<Material[]> {
-  return apiRequest<Material[]>("/api/Materials", { next: { revalidate: 3600 } });
+export async function getMaterials(options?: { skipCache?: boolean }): Promise<Material[]> {
+  const cacheConfig = options?.skipCache ? { cache: "no-store" as RequestCache } : { next: { tags: ["materials"] } };
+  return apiRequest<Material[]>("/api/Materials", cacheConfig);
 }
 
 // 2. Tək materialı gətir (ID ilə)
-export async function getMaterialById(id: number | string, token?: string): Promise<Material> {
-  return apiRequest<Material>(`/api/Materials/${id}`, { cache: "no-store", ...(token ? { token } : {}) });
+export async function getMaterialById(id: number | string, token?: string, options?: { skipCache?: boolean }): Promise<Material> {
+  const cacheConfig = options?.skipCache ? { cache: "no-store" as RequestCache } : { next: { tags: ["materials", `material-${id}`] } };
+  return apiRequest<Material>(`/api/Materials/${id}`, { ...cacheConfig, ...(token ? { token } : {}) });
 }
 
 // 3. Yeni material yarat

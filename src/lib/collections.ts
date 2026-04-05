@@ -19,13 +19,15 @@ export interface BackendCollection {
 }
 
 // --- 1. GET ALL (Siyahı) ---
-export async function getCollections(): Promise<BackendCollection[]> {
-  return apiRequest<BackendCollection[]>('/api/Collections', { next: { revalidate: 3600 } });
+export async function getCollections(options?: { skipCache?: boolean }): Promise<BackendCollection[]> {
+  const cacheConfig = options?.skipCache ? { cache: "no-store" as RequestCache } : { next: { tags: ["collections"] } };
+  return apiRequest<BackendCollection[]>('/api/Collections', cacheConfig);
 }
 
 // --- 2. GET BY ID (Tək Kolleksiya) ---
-export async function getCollectionById(id: number | string, token?: string): Promise<BackendCollection> {
-  return apiRequest<BackendCollection>(`/api/Collections/${id}`, { token });
+export async function getCollectionById(id: number | string, token?: string, options?: { skipCache?: boolean }): Promise<BackendCollection> {
+  const cacheConfig = options?.skipCache ? { cache: "no-store" as RequestCache } : { next: { tags: ["collections", `collection-${id}`] } };
+  return apiRequest<BackendCollection>(`/api/Collections/${id}`, { token, ...cacheConfig });
 }
 
 // --- 3. CREATE (Yeni Kolleksiya) ---

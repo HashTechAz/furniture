@@ -25,17 +25,22 @@ export interface RoomInput {
 }
 
 // --- 1. GET ALL (Siyahı) ---
-export async function getRooms(token?: string): Promise<Room[]> {
+export async function getRooms(token?: string, options?: { skipCache?: boolean }): Promise<Room[]> {
+  const cacheConfig = options?.skipCache ? { cache: "no-store" as RequestCache } : { next: { tags: ["rooms"] } };
   const data = await apiRequest<RoomApiResponse[]>('/api/Rooms', {
-    next: { revalidate: 3600 },
+    ...cacheConfig,
     ...(token ? { token } : {})
   });
   return Array.isArray(data) ? data.map(normalizeRoom) : [];
 }
 
 // --- 2. GET BY ID (Tək Otaq) ---
-export async function getRoomById(id: number | string, token?: string): Promise<Room> {
-  const data = await apiRequest<RoomApiResponse>(`/api/Rooms/${id}`, token ? { token } : {});
+export async function getRoomById(id: number | string, token?: string, options?: { skipCache?: boolean }): Promise<Room> {
+  const cacheConfig = options?.skipCache ? { cache: "no-store" as RequestCache } : { next: { tags: ["rooms", `room-${id}`] } };
+  const data = await apiRequest<RoomApiResponse>(`/api/Rooms/${id}`, {
+    ...cacheConfig,
+    ...(token ? { token } : {})
+  });
   return normalizeRoom(data);
 }
 

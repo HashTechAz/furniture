@@ -32,14 +32,16 @@ export interface CategoryPayload {
 }
 
 // 1. READ
-export async function getCategories(): Promise<Category[]> {
-  const data = await apiRequest<CategoryApiResponse[]>('/api/Categories', { next: { revalidate: 3600 } });
+export async function getCategories(options?: { skipCache?: boolean }): Promise<Category[]> {
+  const cacheConfig = options?.skipCache ? { cache: "no-store" as RequestCache } : { next: { tags: ["categories"] } };
+  const data = await apiRequest<CategoryApiResponse[]>('/api/Categories', cacheConfig);
   return Array.isArray(data) ? data.map(normalizeCategory) : [];
 }
 
 // 2. READ ONE
-export async function getCategoryById(id: number | string, token?: string): Promise<Category> {
-  const data = await apiRequest<CategoryApiResponse>(`/api/Categories/${id}`, { token });
+export async function getCategoryById(id: number | string, token?: string, options?: { skipCache?: boolean }): Promise<Category> {
+  const cacheConfig = options?.skipCache ? { cache: "no-store" as RequestCache } : { next: { tags: ["categories", `category-${id}`] } };
+  const data = await apiRequest<CategoryApiResponse>(`/api/Categories/${id}`, { token, ...cacheConfig });
   return normalizeCategory(data);
 }
 
