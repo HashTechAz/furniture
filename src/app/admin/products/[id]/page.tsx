@@ -16,6 +16,7 @@ import { getRooms } from '@/lib/rooms';
 import { getCached } from '@/lib/admin-prefetch-cache';
 import { useAdminModal } from '@/context/admin-modal-context';
 import { getApiBaseUrl } from '@/lib/api-base';
+import { revalidateProducts } from "@/lib/revalidate";
 
 import { FaSave, FaTimes, FaCloudUploadAlt, FaCube, FaTag, FaPalette, FaRulerCombined, FaTrash, FaArrowLeft, FaStar, FaRegStar, FaDoorOpen } from 'react-icons/fa';
 
@@ -178,7 +179,9 @@ export default function EditProductPage() {
       onConfirm: async () => {
         const token = localStorage.getItem('accessToken') || '';
         await deleteProductImage(productId, imageId, token);
+        await revalidateProducts();
         setExistingImages(prev => prev.filter(img => img.id !== imageId));
+        router.refresh();
       }
     });
   };
@@ -220,6 +223,8 @@ export default function EditProductPage() {
         newFiles.forEach(file => fileList.items.add(file));
         await uploadProductImages(productId, fileList.files, token);
       }
+
+      await revalidateProducts();
 
       // UĞURLU MODAL
       openModal({

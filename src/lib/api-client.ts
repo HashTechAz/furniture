@@ -87,7 +87,14 @@ export async function apiRequest<T>(
     ...customConfig,
   };
 
-  if (data) config.body = JSON.stringify(data);
+  if (data) {
+    if (data instanceof FormData) {
+      config.body = data;
+      delete (config.headers as Record<string, string>)['Content-Type'];
+    } else {
+      config.body = JSON.stringify(data);
+    }
+  }
 
   const url = `${BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
 

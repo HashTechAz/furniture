@@ -253,52 +253,47 @@ const mapBackendToFrontend = (item: BackendProduct): FrontendProduct => {
   };
 };
 
+/**
+ * Obyekti dinamik şəkildə URLSearchParams-ə çevirən Utility funksiyası.
+ * Boş string, null və undefined dəyərləri avtomatik kənarlaşdırır.
+ */
+export function buildQueryParams<T extends Record<string, any>>(params?: T): URLSearchParams {
+  const queryParams = new URLSearchParams();
+
+  if (!params) return queryParams;
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      if (Array.isArray(value)) {
+        value.forEach((v) => queryParams.append(key, String(v)));
+      } else {
+        queryParams.append(key, String(value));
+      }
+    }
+  });
+
+  return queryParams;
+}
+
 // --- 3. API METODLARI ---
 
 export async function getProducts(
   params?: ProductQueryParams,
-  options?: { retryCount?: number; skipCache?: boolean },
+  options?: { retryCount?: number; skipCache?: boolean }
 ): Promise<FrontendProduct[]> {
-  // Query parametrlərini URL stringə çevirmək
-  const queryParams = new URLSearchParams();
-  if (params) {
-    if (params.searchTerm) queryParams.append("searchTerm", params.searchTerm);
-    if (params.categoryId != null)
-      queryParams.append("categoryId", params.categoryId.toString());
-    if (params.collectionId != null)
-      queryParams.append("collectionId", params.collectionId.toString());
-    if (params.productGroupId != null)
-      queryParams.append("productGroupId", params.productGroupId.toString());
-    if (params.roomId != null)
-      queryParams.append("roomId", params.roomId.toString());
-    if (params.pageNumber)
-      queryParams.append("pageNumber", params.pageNumber.toString());
-    if (params.pageSize)
-      queryParams.append("pageSize", params.pageSize.toString());
-    if (params.sortBy) queryParams.append("sortBy", params.sortBy);
-    if (params.colorIds && params.colorIds.length > 0)
-      params.colorIds.forEach(id => queryParams.append("colorIds", id.toString()));
-    if (params.materialIds && params.materialIds.length > 0)
-      params.materialIds.forEach(id => queryParams.append("materialIds", id.toString()));
-    if (params.minDepth != null) queryParams.append("minDepth", params.minDepth.toString());
-    if (params.maxDepth != null) queryParams.append("maxDepth", params.maxDepth.toString());
-  }
-
-  const endpoint = `/api/Products?${queryParams.toString()}`;
-
-  // API sorğusu
-  const data = await apiRequest<any>(endpoint, { cache: "no-store" });
-
-  // Backend paginated response qaytara bilər: { items: [], totalCount: 10 }
-  // Və ya birbaşa array: []
+  const queryParams = buildQueryParams(params); 
+  const queryString = queryParams.toString();
+  const endpoint = `/api/Products${queryString ? '?' + queryString : ''}`;
+  const cacheConfig = options?.skipCache 
+    ? { cache: "no-store" as RequestCache } 
+    : { next: { tags: ["products"] } };
+  const data = await apiRequest<any>(endpoint, cacheConfig);
   let items: BackendProduct[] = [];
-
   if (Array.isArray(data)) {
     items = data;
   } else if (data && Array.isArray(data.items)) {
     items = data.items;
   }
-
   return items.map(mapBackendToFrontend);
 }
 
@@ -308,7 +303,7 @@ export async function getProductById(
   try {
     const endpoint = `/api/Products/${id}`;
     const data = await apiRequest<BackendProduct>(endpoint, {
-      cache: "no-store",
+      next: { tags: ["products", `product-${id}`] },
     });
     if (!data || !data.id) return null;
     return mapBackendToFrontend(data);
@@ -395,13 +390,12 @@ export async function uploadProductImages(
   const tokenToUse = validToken ?? token;
   const formData = new FormData();
   for (let i = 0; i < files.length; i++) formData.append("files", files[i]);
-  const baseUrl = getApiBaseUrl();
-  const res = await fetch(`${baseUrl}/api/Products/${id}/images`, {
+  
+  await apiRequest(`/api/Products/${id}/images`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${tokenToUse}` },
-    body: formData,
+    data: formData,
+    token: tokenToUse,
   });
-  if (!res.ok) throw new Error("Şəkillər yüklənmədi.");
   return true;
 }
 

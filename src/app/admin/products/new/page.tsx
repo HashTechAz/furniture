@@ -14,8 +14,8 @@ import { getColors } from '@/lib/colors';
 import { getMaterials } from '@/lib/materials';
 import { getRooms } from '@/lib/rooms';
 
-// YENİ: Modal Hook
 import { useAdminModal } from '@/context/admin-modal-context';
+import { revalidateProducts } from "@/lib/revalidate";
 
 import { FaSave, FaTimes, FaCloudUploadAlt, FaCube, FaTag, FaPalette, FaRulerCombined, FaStar, FaRegStar, FaDoorOpen } from 'react-icons/fa';
 
@@ -151,6 +151,8 @@ export default function CreateProductPage() {
         });
         await uploadProductImages(createdProduct.id, fileList.files, token);
       }
+
+      await revalidateProducts();
 
       // UĞURLU MODAL
       openModal({
