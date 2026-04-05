@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './layout.module.css';
 
 import {
@@ -116,10 +117,26 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
 
         {/* LOGO */}
         <div className={styles.sidebarHeader}>
-          <div className={styles.logo}>
-            <div className={styles.logoBox}>S</div>
-            Sparro
-          </div>
+          <Link href="/admin" className={styles.logo} style={{ textDecoration: 'none' }}>
+            <div style={{
+              background: '#111',
+              padding: '6px 12px',
+              borderRadius: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginLeft: '-12px'
+            }}>
+              <Image
+                src="/images/logo/svlogosparro.svg"
+                alt="Sparro Logo"
+                width={100}
+                height={24}
+                style={{ objectFit: 'contain' }}
+                priority
+              />
+            </div>
+          </Link>
 
           <button
             className={styles.menuButton}
