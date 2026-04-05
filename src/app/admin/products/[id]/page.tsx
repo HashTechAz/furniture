@@ -179,9 +179,8 @@ export default function EditProductPage() {
       onConfirm: async () => {
         const token = localStorage.getItem('accessToken') || '';
         await deleteProductImage(productId, imageId, token);
-        await revalidateProducts();
         setExistingImages(prev => prev.filter(img => img.id !== imageId));
-        router.refresh();
+        revalidateProducts().then(() => router.refresh()).catch(console.error);
       }
     });
   };

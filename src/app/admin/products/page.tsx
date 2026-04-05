@@ -61,10 +61,9 @@ export default function AdminProducts() {
       onConfirm: async () => {
         const token = localStorage.getItem('accessToken') || '';
         await deleteProduct(id, token);
-        await revalidateProducts();
         setProducts(prev => prev.filter(p => p.id !== id));
         setSelectedIds(prev => prev.filter(selectedId => selectedId !== id));
-        router.refresh();
+        revalidateProducts().then(() => router.refresh()).catch(console.error);
       }
     });
   };
@@ -98,15 +97,13 @@ export default function AdminProducts() {
             selectedIds.map(id => deleteProduct(id, token))
           );
           
-          await revalidateProducts();
-          
           const successIds = results
             .map((r, idx) => r.status === 'fulfilled' ? selectedIds[idx] : null)
             .filter(Boolean) as number[];
             
           setProducts(prev => prev.filter(item => !successIds.includes(item.id)));
           setSelectedIds([]);
-          router.refresh();
+          revalidateProducts().then(() => router.refresh()).catch(console.error);
         } catch (error) {
           console.error("Toplu silinmə xətası", error);
         } finally {

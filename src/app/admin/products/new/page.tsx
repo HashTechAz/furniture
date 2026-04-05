@@ -152,7 +152,7 @@ export default function CreateProductPage() {
         await uploadProductImages(createdProduct.id, fileList.files, token);
       }
 
-      await revalidateProducts();
+      revalidateProducts().catch(console.error);
 
       // UĞURLU MODAL
       openModal({

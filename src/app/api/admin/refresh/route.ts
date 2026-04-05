@@ -51,6 +51,8 @@ export async function POST(request: NextRequest) {
         const data = await response.json();
         const newAccessToken = data.accessToken || data.AccessToken;
 
+        const newRefreshToken = data.refreshToken || data.RefreshToken;
+
         if (!newAccessToken) {
             return NextResponse.json(
                 { error: 'Backend yeni token qaytarmadı' },
@@ -71,6 +73,16 @@ export async function POST(request: NextRequest) {
             maxAge: 60 * 60 * 24, // 1 gün
             path: '/',
         });
+
+        if (newRefreshToken) {
+            res.cookies.set('refreshToken', newRefreshToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                maxAge: 60 * 60 * 24 * 7, // 7 gün
+                path: '/',
+            });
+        }
 
         return res;
 

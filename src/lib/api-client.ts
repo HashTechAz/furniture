@@ -111,6 +111,13 @@ export async function apiRequest<T>(
 
     // 2. Token Expired gələrsə (401)
     if (response.status === 401 && currentToken) {
+      if (endpoint.toLowerCase().includes('logout')) {
+        console.warn(`[api-client] 401 from ${endpoint}, skipping refresh logic to avoid infinite loops.`);
+        const err: any = new Error('Sessiya onsuz da bitmişdir.');
+        err.status = 401;
+        throw err;
+      }
+
       if (retryCount >= 1) {
         // Artıq refresh edilib və yenə 401 gəlirsə -> Logout
         console.error('[api-client] Refresh sonrası yenə 401. Sessiya bitdi.');
