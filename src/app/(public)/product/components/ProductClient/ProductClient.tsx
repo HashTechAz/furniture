@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useRef, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import React, { useState, useEffect, useRef, Suspense, useTransition } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import ProductHero from '../ProductHero/ProductHero';
 import CategoryFilters from '../CategoryFilters/CategoryFilters';
 import DropdownFilters from '../DropdownFilters/DropdownFilters';
@@ -64,82 +64,36 @@ const ProductPageContent = ({
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [sortBy, setSortBy] = useState<string>('newest');
 
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
+  const updateUrlParams = (updates: Record<string, string | null>) => {
+    startTransition(() => {
+      const url = new window.URL(window.location.href);
+      Object.entries(updates).forEach(([key, val]) => {
+        if (val === null || val === '') url.searchParams.delete(key);
+        else url.searchParams.set(key, val);
+      });
+      router.push(url.pathname + url.search, { scroll: false });
+    });
+  };
+
   // SSR-dən gələn datalarla initialize edirik (LOADING OLMUR)
   const [allProducts, setAllProducts] = useState<FrontendProduct[]>(initialProducts);
   const [displayedProducts, setDisplayedProducts] = useState<FrontendProduct[]>(initialProducts);
-  const [loading, setLoading] = useState(false); // Ilk açılışda false-dir, çünki data artıq var
   const [loadingMore, setLoadingMore] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   
   const productsPerPage = 12;
   const [hasMore, setHasMore] = useState(initialProducts.length >= productsPerPage);
 
-  const isFirstMount = useRef(true);
-
-  // URL dəyişdikcə state-ləri yeniləyirik (Back/Forward düymələri üçün)
+  // URL-dən yeni data gələndə (Server Component təzələnəndə) siyahını sıfırla
   useEffect(() => {
-    const v = searchParams.get('roomsId');
-    setSelectedRoomId(v ? parseInt(v, 10) || null : null);
-  }, [searchParams]);
-
-  useEffect(() => {
-    const v = searchParams.get('collectionId');
-    setSelectedCollectionId(v ? parseInt(v, 10) || null : null);
-  }, [searchParams]);
-
-  useEffect(() => {
-    const v = searchParams.get('CategoryId');
-    setSelectedCategoryId(v ? parseInt(v, 10) || null : null);
-  }, [searchParams]);
-
-  // Yeni məhsulları mütəmadi olaraq gətirmək üçün
-  useEffect(() => {
-    if (isFirstMount.current) {
-      isFirstMount.current = false;
-      return; // İlkin açılışda axtarış etmə, çünki SSR artıq edib
-    }
-
-    const fetchProductsData = async () => {
-      try {
-        setLoading(true);
-        setCurrentPage(1);
-
-        const selectedColorObj = initialColors.find(c => c.name === selectedColor);
-        const selectedColorId = selectedColorObj ? selectedColorObj.id : null;
-
-        const productsData = await getProducts({
-          pageNumber: 1,
-          pageSize: productsPerPage,
-          sortBy,
-          ...(searchFromUrl && { searchTerm: searchFromUrl }),
-          ...(selectedCategoryId != null && { categoryId: selectedCategoryId }),
-          ...(selectedRoomId != null && { roomId: selectedRoomId }),
-          ...(selectedMaterialId != null && { materialIds: [selectedMaterialId] }),
-          ...(selectedDepthRange != null && {
-            minDepth: selectedDepthRange.min,
-            ...(selectedDepthRange.max != null && { maxDepth: selectedDepthRange.max }),
-          }),
-          ...(selectedCollectionId != null && { collectionId: selectedCollectionId }),
-          ...(selectedColorId != null && { colorIds: [selectedColorId] }),
-        });
-
-        setAllProducts(productsData);
-        setDisplayedProducts(productsData);
-
-        if (productsData.length < productsPerPage) {
-          setHasMore(false);
-        } else {
-          setHasMore(true);
-        }
-
-      } catch (error) {
-        console.error('Məhsullar yüklənmədi:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProductsData();
-  }, [selectedCategoryId, sortBy, selectedRoomId, searchFromUrl, selectedMaterialId, selectedDepthRange, selectedCollectionId, selectedColor, initialColors]);
+    setAllProducts(initialProducts);
+    setDisplayedProducts(initialProducts);
+    setCurrentPage(1);
+    setHasMore(initialProducts.length >= productsPerPage);
+  }, [initialProducts]);
 
   // Daha çox məhsul yüklə
   const loadMoreProducts = async () => {
@@ -189,7 +143,43 @@ const ProductPageContent = ({
   };
 
   const handleColorSelect = (colorName: string) => {
-    setSelectedColor(prev => prev === colorName ? '' : colorName);
+    const newColor = selectedColor === colorName ? '' : colorName;
+    setSelectedColor(newColor);
+    const colorObj = initialColors.find(c => c.name === newColor);
+    updateUrlParams({ colorId: colorObj ? String(colorObj.id) : null });
+  };
+
+  const handleCategoryChange = (id: number | null) => {
+    setSelectedCategoryId(id);
+    updateUrlParams({ CategoryId: id ? String(id) : null });
+  };
+
+  const handleMaterialSelect = (id: number | null) => {
+    setSelectedMaterialId(id);
+    updateUrlParams({ materialId: id ? String(id) : null });
+  };
+
+  const handleCollectionSelect = (id: number | null) => {
+    setSelectedCollectionId(id);
+    updateUrlParams({ collectionId: id ? String(id) : null });
+  };
+
+  const handleRoomSelect = (id: number | null) => {
+    setSelectedRoomId(id);
+    updateUrlParams({ roomsId: id ? String(id) : null });
+  };
+
+  const handleDepthSelect = (range: {min: number, max?: number} | null) => {
+    setSelectedDepthRange(range);
+    updateUrlParams({ 
+        minDepth: range ? String(range.min) : null,
+        maxDepth: range?.max ? String(range.max) : null
+    });
+  };
+
+  const handleSortChange = (sort: string) => {
+    setSortBy(sort);
+    updateUrlParams({ sortBy: sort });
   };
 
   const heroTitle = selectedCategoryId == null
@@ -201,7 +191,7 @@ const ProductPageContent = ({
       <ProductHero title={heroTitle} />
       <CategoryFilters
         selectedCategoryId={selectedCategoryId}
-        onCategoryChange={setSelectedCategoryId}
+        onCategoryChange={handleCategoryChange}
       />
       <DropdownFilters
         onColorSelect={handleColorSelect}
@@ -209,19 +199,19 @@ const ProductPageContent = ({
         colors={initialColors}
         materials={initialMaterials}
         selectedMaterialId={selectedMaterialId}
-        onMaterialSelect={setSelectedMaterialId}
+        onMaterialSelect={handleMaterialSelect}
         selectedDepthRange={selectedDepthRange}
-        onDepthRangeSelect={setSelectedDepthRange}
+        onDepthRangeSelect={handleDepthSelect}
         collections={initialCollections}
         selectedCollectionId={selectedCollectionId}
-        onCollectionSelect={setSelectedCollectionId}
+        onCollectionSelect={handleCollectionSelect}
         rooms={initialRooms}
         selectedRoomId={selectedRoomId}
-        onRoomSelect={setSelectedRoomId}
+        onRoomSelect={handleRoomSelect}
         sortBy={sortBy}
-        onSortChange={setSortBy}
+        onSortChange={handleSortChange}
       />
-      {loading ? (
+      {isPending ? (
         <ProductGridSkeleton />
       ) : (
         <ProductGrid
