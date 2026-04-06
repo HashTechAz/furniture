@@ -2,7 +2,9 @@
 
 import React from 'react';
 import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
 import styles from './page.module.css';
+import { getApiBaseUrl } from '@/lib/api-base';
 
 import ProductHero from './components/ProductHero/ProductHero';
 import SystemAbout from '@/app/(public)/system/components/SystemAbout/SystemAbout';
@@ -10,13 +12,46 @@ import SystemPalette from '@/components/Palette/SystemPalette';
 import TrustBadges from '@/components/TrustBadges/TrustBadges';
 import ProductNewsSlider from '@/components/ProductNewsSlider/ProductNewsSlider';
 import ProductSlider from '@/components/ProductSlider/ProductSlider';
-import { getProductById, getProducts } from '@/lib/products'; 
+import { getProductById, getProducts } from '@/lib/products';
 
 interface ProductDetailsPageProps {
   params: Promise<{ id: string }>;
 }
 
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({ params }: ProductDetailsPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const product = await getProductById(id);
+
+  if (!product) {
+    return {
+      title: 'Elford Furniture',
+    };
+  }
+
+  const baseUrl = getApiBaseUrl();
+  let productImageUrl = '';
+  
+  if (product.mainImage) {
+    productImageUrl = product.mainImage.startsWith('http') ? product.mainImage : `${baseUrl}${product.mainImage}`;
+  } else if (product.imageSrc) {
+    productImageUrl = product.imageSrc.startsWith('http') ? product.imageSrc : `${baseUrl}${product.imageSrc}`;
+  }
+
+  return {
+    title: product.title || 'Elford Furniture',
+    description: product.shortDescription || product.description || 'Premium furniture by Elford.',
+    openGraph: {
+      title: product.title || 'Elford Furniture',
+      description: product.shortDescription || product.description || 'Premium furniture by Elford.',
+      images: productImageUrl ? [productImageUrl] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+    },
+  };
+}
 
 const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
   // Next.js 15-də params promise ola bilər, ona görə await edirik
@@ -30,23 +65,23 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
   }
 
   const latestProducts = await getProducts({ pageSize: 9 });
-  
+
   // Hazırkı məhsulu siyahıdan çıxarırıq ki, slider-də təkrarlanmasın
   const relatedProducts = latestProducts
     .filter(p => p.id !== parseInt(id))
-    .slice(0, 8); 
+    .slice(0, 8);
 
   return (
     <main>
       <ProductHero product={product} />
-      
+
       {/* 3. Slider-ə optimallaşdırılmış datanı ötürürük */}
-      <div className={styles.sliderSection}> 
-        <ProductNewsSlider products={relatedProducts} /> 
+      <div className={styles.sliderSection}>
+        <ProductNewsSlider products={relatedProducts} />
       </div>
-      
-      <ProductSlider 
-        variant="system" 
+
+      <ProductSlider
+        variant="system"
         titleTop="Bookcase and shelving inspiration"
         titleBottom=""
       />
@@ -57,7 +92,7 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
         description="The Montana range offers endless possibilities..."
         features={[
           "Montana retailers are trained in Montana products",
-          "They are experts in advising you on style, colours and interior design for the home or office environments", 
+          "They are experts in advising you on style, colours and interior design for the home or office environments",
           "They can help you draw up a Montana storage solution, so you can get exactly the design you want"
         ]}
         buttonText="Go to retailer map"
