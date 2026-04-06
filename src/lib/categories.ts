@@ -96,27 +96,17 @@ export async function uploadCategoryImage(categoryId: number | string, file: Fil
   const formData = new FormData();
   formData.append('file', file);
 
-  const response = await fetch(`${BASE_URL}/api/Categories/${categoryId}/image`, {
+  return apiRequest(`/api/Categories/${categoryId}/image`, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${token}` },
-    body: formData,
+    data: formData,
+    token: token
   });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Şəkil yüklənə bilmədi: ${response.status} - ${errorText || response.statusText}`);
-  }
 }
 
 // 7. DELETE /api/Categories/{categoryId}/image — Şəkli sil
 export async function deleteCategoryImage(categoryId: number | string, token: string): Promise<void> {
-  const response = await fetch(`${BASE_URL}/api/Categories/${categoryId}/image`, {
+  return apiRequest(`/api/Categories/${categoryId}/image`, {
     method: 'DELETE',
-    headers: { Authorization: `Bearer ${token}` },
+    token: token
   });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Şəkil silinə bilmədi: ${response.status} - ${errorText || response.statusText}`);
-  }
 }

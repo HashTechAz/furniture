@@ -1,6 +1,5 @@
 // src/lib/rooms.ts
 import { apiRequest } from '@/lib/api-client';
-import { getApiBaseUrl } from '@/lib/api-base';
 
 export interface Room {
   id: number;
@@ -70,7 +69,6 @@ export async function deleteRoom(id: number | string, token: string) {
   });
 }
 
-const BASE_URL = getApiBaseUrl();
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 
@@ -87,27 +85,17 @@ export async function uploadRoomImage(roomId: number | string, file: File, token
   const formData = new FormData();
   formData.append('file', file);
 
-  const response = await fetch(`${BASE_URL}/api/Rooms/${roomId}/image`, {
+  return apiRequest(`/api/Rooms/${roomId}/image`, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${token}` },
-    body: formData,
+    data: formData,
+    token: token
   });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Şəkil yüklənə bilmədi: ${response.status} - ${errorText || response.statusText}`);
-  }
 }
 
 // --- 7. DELETE /api/Rooms/{roomId}/image — Otağın şəklini sil ---
 export async function deleteRoomImage(roomId: number | string, token: string): Promise<void> {
-  const response = await fetch(`${BASE_URL}/api/Rooms/${roomId}/image`, {
+  return apiRequest(`/api/Rooms/${roomId}/image`, {
     method: 'DELETE',
-    headers: { Authorization: `Bearer ${token}` },
+    token: token
   });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Şəkil silinə bilmədi: ${response.status} - ${errorText || response.statusText}`);
-  }
 }

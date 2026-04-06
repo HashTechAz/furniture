@@ -1,5 +1,4 @@
 import { apiRequest } from '@/lib/api-client';
-import { getApiBaseUrl } from '@/lib/api-base';
 
 export interface CollectionProduct {
   id: number;
@@ -37,22 +36,11 @@ export async function createCollection(name: string, description: string, file: 
   formData.append('Description', description);
   formData.append('file', file);
 
-  const baseUrl = getApiBaseUrl();
-
-  const response = await fetch(`${baseUrl}/api/Collections`, {
+  return apiRequest('/api/Collections', {
     method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`
-    },
-    body: formData
+    data: formData,
+    token: token
   });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Xəta: ${response.status} - ${errorText}`);
-  }
-
-  return response.json();
 }
 
 // --- 4. UPDATE (Yenilə) ---
@@ -65,23 +53,11 @@ export async function updateCollection(id: number | string, name: string, descri
     formData.append('file', file);
   }
 
-  const baseUrl = getApiBaseUrl();
-
-  const response = await fetch(`${baseUrl}/api/Collections/${id}`, {
+  return apiRequest(`/api/Collections/${id}`, {
     method: 'PUT',
-    headers: {
-      'Authorization': `Bearer ${token}`
-    },
-    body: formData
+    data: formData,
+    token: token
   });
-
-  if (!response.ok) {
-    if (response.status === 204) return true;
-    const errorText = await response.text();
-    throw new Error(`Xəta: ${response.status} - ${errorText}`);
-  }
-
-  return true;
 }
 
 // --- 5. DELETE (Sil) ---
