@@ -1,3 +1,10 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Home | Sparro',
+  description: 'Explore Home at Sparro. Discover premium and sustainable designs.',
+};
+
 import React, { Suspense } from 'react';
 import HomeContent from "@/components/HomeContent/HomeContent";
 import { getProducts } from "@/lib/products";

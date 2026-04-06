@@ -1,5 +1,15 @@
 import React from "react";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const name = slug.charAt(0).toUpperCase() + slug.slice(1);
+  return {
+    title: `${name} | Sparro`,
+    description: `Inside the creative mind of ${name} at Sparro.`
+  };
+}
 import { componentMap, ComponentName } from "@/component-map";
 import pageStyles from "./page.module.css";
 import middleBannerData from "@/mock/middle-banner/creative-minds-middle/index.json";

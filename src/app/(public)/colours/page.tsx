@@ -1,3 +1,10 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Colours | Sparro',
+  description: 'Explore Colours at Sparro. Discover premium and sustainable designs.',
+};
+
 import React from "react";
 import Hero from "@/components/Hero/Hero";
 import ColoursAbout from "./components/ColoursAbout/ColoursAbout";

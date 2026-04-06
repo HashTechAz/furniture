@@ -25,7 +25,7 @@ export async function generateMetadata({ searchParams }: ProductPageProps): Prom
   const categoryIdStr = getParamStr('CategoryId');
   const categoryId = categoryIdStr ? parseInt(categoryIdStr, 10) || undefined : undefined;
 
-  let title = 'Məhsullar | Elford Furniture';
+  let title = 'Məhsullar | Sparro';
 
   if (categoryId) {
     try {
@@ -33,7 +33,7 @@ export async function generateMetadata({ searchParams }: ProductPageProps): Prom
       const categories = Array.isArray(categoriesData) ? categoriesData : [];
       const category = categories.find((c: typeof categoriesData[0]) => c.id === categoryId);
       if (category && category.name) {
-        title = `${category.name} - Məhsullar | Elford Furniture`;
+        title = `${category.name} - Məhsullar | Sparro`;
       }
     } catch (e) {
       // API fail olarsa normal title qalsın
@@ -42,10 +42,10 @@ export async function generateMetadata({ searchParams }: ProductPageProps): Prom
 
   return {
     title,
-    description: 'Elford Furniture mükəmməl keyfiyyətli mebellər kataloqu. İşıqlı məkanlar üçün premium dizaynlı İsveçrə dizaynlı mebellər.',
+    description: 'Sparro mükəmməl keyfiyyətli mebellər kataloqu. İşıqlı məkanlar üçün premium dizaynlı İsveçrə dizaynlı mebellər.',
     openGraph: {
       title,
-      description: 'Elford Furniture mükəmməl keyfiyyətli mebellər kataloqu.',
+      description: 'Sparro mükəmməl keyfiyyətli mebellər kataloqu.',
     }
   };
 }

@@ -1,3 +1,10 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Productseries | Sparro',
+  description: 'Explore Productseries at Sparro. Discover premium and sustainable designs.',
+};
+
 import React from "react";
 import HeroSection from "@/components/HeroSection/HeroSection";
 import SeriesText from "./components/SeriesText/SeriesText";

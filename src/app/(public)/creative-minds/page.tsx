@@ -1,3 +1,10 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Creative Minds | Sparro',
+  description: 'Explore Creative Minds at Sparro. Discover premium and sustainable designs.',
+};
+
 import React from 'react';
 import SeriesText from '../productseries/components/SeriesText/SeriesText';
 import NewsSection from '@/components/NewsSection/NewsSection';

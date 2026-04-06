@@ -1,3 +1,10 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Designers | Sparro',
+  description: 'Explore Designers at Sparro. Discover premium and sustainable designs.',
+};
+
 import React from "react";
 import Hero from "@/components/Hero/Hero";
 import MiddleBanner from "@/components/MiddleBanner/MiddleBanner";

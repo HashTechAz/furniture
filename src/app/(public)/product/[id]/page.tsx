@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: ProductDetailsPageProps): Pro
 
   if (!product) {
     return {
-      title: 'Elford Furniture',
+      title: 'Sparro',
     };
   }
 
@@ -40,11 +40,11 @@ export async function generateMetadata({ params }: ProductDetailsPageProps): Pro
   }
 
   return {
-    title: product.title || 'Elford Furniture',
-    description: product.shortDescription || product.description || 'Premium furniture by Elford.',
+    title: product.title || 'Sparro',
+    description: product.shortDescription || product.description || 'Premium furniture by Sparro.',
     openGraph: {
-      title: product.title || 'Elford Furniture',
-      description: product.shortDescription || product.description || 'Premium furniture by Elford.',
+      title: product.title || 'Sparro',
+      description: product.shortDescription || product.description || 'Premium furniture by Sparro.',
       images: productImageUrl ? [productImageUrl] : [],
     },
     twitter: {

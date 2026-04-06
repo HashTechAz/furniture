@@ -1,3 +1,10 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Professionals | Sparro',
+  description: 'Explore Professionals at Sparro. Discover premium and sustainable designs.',
+};
+
 import Link from 'next/link';
 import styles from './page.module.css';
 

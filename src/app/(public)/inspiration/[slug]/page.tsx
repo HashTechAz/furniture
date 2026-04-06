@@ -1,6 +1,16 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
 import PageBuilder from '@/components/PageBuilder/PageBuilder';
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const name = slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  return {
+    title: `${name} | Sparro`,
+    description: `Find inspiration for ${name} at Sparro.`
+  };
+}
 
 interface PageComponent {
   component: string;
