@@ -588,6 +588,11 @@
   color: #fff;
 }
 
+.headerAtTop.professionalsHeader {
+  background-color: #6a9ac9;
+  color: #000;
+}
+
 @media (min-width: 769px) and (max-width: 1024px) {
   .mobileActions .searchButton {
     display: none; 

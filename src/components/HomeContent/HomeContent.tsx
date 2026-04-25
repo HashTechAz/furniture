@@ -121,7 +121,7 @@ const HomeContent = ({ products, collections }: HomeContentProps) => {
       {mounted && homePalettes.find(p => p.id === 'homePaletteRight2') && renderPalette(homePalettes.find(p => p.id === 'homePaletteRight2')!)}
 
       {/* @ts-ignore */}
-      <MiddleBanner {...homeBannerData.homePage[1].props} />
+      {/* <MiddleBanner {...homeBannerData.homePage[1].props} /> */}
 
       {/* Palette Left 1 */}
       {mounted && homePalettes.find(p => p.id === 'homePaletteLeft1') && renderPalette(homePalettes.find(p => p.id === 'homePaletteLeft1')!)}

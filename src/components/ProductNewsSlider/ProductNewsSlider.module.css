@@ -67,9 +67,9 @@
 
 .categoryLink {
   text-decoration: none;
-  font-size: 12px;
+  font-size: 13px !important;
   color: #333;
-  font-weight: 500;
+  font-weight: 600 !important;
   position: relative;
   transition: color 0.3s ease;
 }
@@ -111,9 +111,20 @@
 
 .sliderNav {
   display: flex;
-  gap: 10px;
+  gap: 15px;
   align-self: flex-end;
+  align-items: center;
   margin-bottom: -5px;
+}
+
+.viewAllLink {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  margin-right: 20px;
+  white-space: nowrap;
 }
 
 .prevButton,
@@ -295,7 +306,7 @@
   }
 
   .categoryLink {
-    font-size: 11px;
+    font-size: 13px;
   }
 
   .embla {

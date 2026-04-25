@@ -1,0 +1,69 @@
+.toolboxSection {
+  width: 100%;
+  padding: 80px;
+  box-sizing: border-box;
+}
+
+.sectionTitle {
+  font-size: 28px;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 40px;
+}
+
+.toolboxGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.toolboxCard {
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+  box-sizing: border-box;
+}
+
+.cardTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: inherit;
+}
+
+.cardDescription {
+  font-size: 15px;
+  line-height: 1.5;
+  color: inherit;
+}
+
+/* Responsive styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .toolboxSection {
+    padding: 50px 40px;
+  }
+  .toolboxGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .toolboxSection {
+    padding: 40px 20px;
+  }
+
+  .sectionTitle {
+    font-size: 22px;
+    margin-bottom: 30px;
+  }
+
+  .toolboxGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .toolboxCard {
+    min-height: auto;
+    padding: 30px 20px;
+  }
+}

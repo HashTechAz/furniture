@@ -91,8 +91,6 @@ const ProductNewsSlider = ({ products = [] }: ProductNewsSliderProps) => {
     <section className={styles.sliderSection}>
       <div className={styles.sliderHeader}>
         <div className={styles.headerLeft}>
-          <h2 className={styles.sectionTitle}>Product News</h2>
-
           <div className={styles.categoryLinksWrapper} ref={categoryScrollRef}>
             <div className={styles.categoryLinks}>
               <button type="button" className={`${styles.categoryLink} ${selectedCollectionId === null ? styles.categoryLinkActive : ''}`} onClick={() => handleCategorySelect(null)}>
@@ -108,6 +106,9 @@ const ProductNewsSlider = ({ products = [] }: ProductNewsSliderProps) => {
         </div>
 
         <div className={styles.sliderNav}>
+          <Link href="/product" className={styles.viewAllLink}>
+            View all products
+          </Link>
           <button onClick={handlePrevClick} className={styles.prevButton}>
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="10" viewBox="0 0 30 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={styles.arrow}><path d="M25 5H5m0 0l4 4m-4-4l4-4" /></svg>
           </button>

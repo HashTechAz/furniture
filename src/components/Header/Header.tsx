@@ -172,6 +172,7 @@ const Header: React.FC = () => {
       "/creative-minds": styles.creativeMindsHeader,
       "/privacy-policy": styles.privacyPolicyHeader,
       "/contact": styles.lumikelloHeader,
+      "/professionals": styles.professionalsHeader,
     };
 
     if (styleMap[p]) return styleMap[p];
