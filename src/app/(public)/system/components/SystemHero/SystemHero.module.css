@@ -1,12 +1,21 @@
 
 
 .systemHero {
-    width: 100%;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
     background-color: #2C3587;
     color: #fff;
-    padding: 60px 80px 40px 80px;
+    padding: 60px 0 40px 0;
     padding-top: 120px;
-  }
+}
+
+.contentWrapper {
+    width: 100%;
+    max-width: 1536px;
+    margin: 0 auto;
+    padding: 0 80px;
+}
   
   .extraPaddingY {
     padding-top: 140px !important;
@@ -31,7 +40,11 @@
 /* --- RESPONSIVE STYLES --- */
 @media (min-width: 768px) and (max-width: 1024px) {
   .systemHero {
-    padding: 120px 40px 20px;
+    padding: 120px 0 20px;
+  }
+  
+  .contentWrapper {
+    padding: 0 40px;
   }
   
   .extraPaddingY {
@@ -53,8 +66,12 @@
 
 @media (max-width: 768px) {
   .systemHero {
-    padding: 40px 20px;
+    padding: 40px 0;
     padding-top: 120px;
+  }
+  
+  .contentWrapper {
+    padding: 0 20px;
   }
 
   .extraPaddingY {

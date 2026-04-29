@@ -1,12 +1,16 @@
 .hero {
-  width: 100%;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
   background-color: #EEECDD;
   color: #333;
-  padding: 40px 80px;
+  padding: 40px 0;
 }
 
 .content {
   width: 100%;
+  max-width: 1536px;
+  padding: 0 80px;
   margin: 50px auto;
   display: grid;
   grid-template-columns: 1fr 680px;
@@ -56,7 +60,7 @@
 /* === TABLET EKRANLARI ÜÇÜN (769px - 1024px) === */
 @media (min-width: 769px) and (max-width: 1024px) {
   .hero {
-    padding: 120px 40px 60px;
+    padding: 120px 0 60px;
     padding-bottom: 60px; 
   }
 
@@ -64,6 +68,7 @@
     grid-template-columns: 1fr;
     gap: 30px;
     margin: 0 auto;
+    padding: 0 40px;
   }
 
   .textContent {
@@ -109,6 +114,7 @@
     flex-direction: column;
     gap: 0;
     margin: 0;
+    padding: 0;
   }
 
   .textContent {

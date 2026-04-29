@@ -1,5 +1,4 @@
 .inspirationMain {
-  overflow: hidden;
   width: 100%;
   height: 100vh;
   display: flex;
@@ -9,11 +8,23 @@
 }
 
 .inspirationText {
-  width: 25%;
+  position: relative;
+  width: 30%;
   height: 100%;
   background-color: #F4F4F1;
   padding: 60px 0px 0px 80px;
   flex-shrink: 0;
+}
+
+.inspirationText::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -100vw;
+  right: 0;
+  background-color: inherit;
+  z-index: -1;
 }
 
 .inspirationText h5 {
@@ -86,7 +97,7 @@
 }
 
 .contentWrapper {
-  width: 75%;
+  flex: 1;
   padding-top: 60px;
   display: flex;
   justify-content: space-between;
@@ -94,17 +105,17 @@
 
 /* --- DEĞİŞİKLİK BURADA --- */
 .smallCardsGrid {
-    width: 60%; /* Boşluq yaratmaq üçün biraz kiçiltdim */
+    width: 70%; 
     display: grid; 
     grid-template-columns: repeat(3, 1fr); 
     align-content: start; 
-    column-gap: 20px; 
-    row-gap: 25px; 
+    column-gap: 30px; 
+    row-gap: 30px; 
 }
 
 .newsListWrapper {
-    width: 35%; 
-    padding-left: 40px; /* Sola boşluq əlavə etdim ki yapışmasın */
+    width: 25%; 
+    padding-left: 40px;
 }
 
 .newsListWrapper h5 {
@@ -157,7 +168,7 @@
 
 .smallCardImageWrapper {
     width: 100%; 
-    height: 160px;
+    height: 120px;
     overflow: hidden;
     flex-shrink: 0;
 }
@@ -165,8 +176,8 @@
 /* Adjusting for 18+ inch screens (roughly min-width 1600px) */
 @media screen and (min-width: 1600px) {
     .smallCardImageWrapper {
-        width: calc(100% - 100px);
-        height: 210px;
+        width: 100%;
+        height: 180px;
     }
 }
 

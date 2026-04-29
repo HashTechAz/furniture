@@ -534,107 +534,109 @@ const ProductHero = ({ product }: ProductHeroProps) => {
         />
       )}
 
-      <div className={styles.heroMain}>
-        <div className={styles.heroItem}>
-          <ul className={openMenu ? styles.menuIsOpen : ""}>
-            {menuItems.map((item) => (
-              <li key={item.key}>
-                <div
-                  className={styles.menuItemWrapper}
-                  onClick={() => handleMenuClick(item.key)}
-                >
-                  <div className={styles.heroItemIcons}>
-                    {openMenu === item.key ? <CloseIcon /> : item.icon}
+      <div className={styles.contentWrapper}>
+        <div className={styles.heroMain}>
+          <div className={styles.heroItem}>
+            <ul className={openMenu ? styles.menuIsOpen : ""}>
+              {menuItems.map((item) => (
+                <li key={item.key}>
+                  <div
+                    className={styles.menuItemWrapper}
+                    onClick={() => handleMenuClick(item.key)}
+                  >
+                    <div className={styles.heroItemIcons}>
+                      {openMenu === item.key ? <CloseIcon /> : item.icon}
+                    </div>
+                    <span className={styles.menuItemLabel}>
+                      {item.label}
+                      {item.value && (
+                        <span className={styles.menuItemValue}>: {item.value}</span>
+                      )}
+                    </span>
                   </div>
-                  <span className={styles.menuItemLabel}>
-                    {item.label}
-                    {item.value && (
-                      <span className={styles.menuItemValue}>: {item.value}</span>
-                    )}
-                  </span>
-                </div>
-              </li>
-            ))}
-          </ul>
-          {openMenu && (
-            <div className={styles.panelContainer}>
-              {menuItems.find((item) => item.key === openMenu)?.panel}
-            </div>
-          )}
-        </div>
-        <div className={styles.heroProductImage}>
-          <Image
-            fill
-            src={heroImage}
-            alt={product.title ?? ""}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            priority
-          />
-        </div>
-        <div className={styles.heroProductDescription}>
-          <h2>{product.title}</h2>
-          <div className={styles.tabList}>
-            <span
-              className={activeTab === "description" ? styles.activeTab : ""}
-              onClick={() => setActiveTab("description")}
-            >
-              Description
-            </span>
-            <span
-              className={activeTab === "specifications" ? styles.activeTab : ""}
-              onClick={() => setActiveTab("specifications")}
-            >
-              Specifications
-            </span>
+                </li>
+              ))}
+            </ul>
+            {openMenu && (
+              <div className={styles.panelContainer}>
+                {menuItems.find((item) => item.key === openMenu)?.panel}
+              </div>
+            )}
           </div>
-          {activeTab === "description" && (
-            <div className={styles.tabContent}>
-              <p>{product.description}</p>
-              <p>Designer: {product.designer}</p>
-            </div>
-          )}
-          {activeTab === "specifications" && (
-            <div className={styles.tabContent}>
-              <p>
-                <strong>Material:</strong> {product.specifications.material}
-              </p>
-              <p>
-                <strong>Dimensions:</strong> {product.specifications.dimensions}
-              </p>
-              <p>
-                <strong>Weight:</strong> {product.specifications.weight}
-              </p>
-              <p>
-                <strong>Category:</strong> {product.specifications.category}
-              </p>
-            </div>
-          )}
-          <div className={styles.tabMore}>
-            <span>Read More</span>
-            <span>See downloads</span>
+          <div className={styles.heroProductImage}>
+            <Image
+              fill
+              src={heroImage}
+              alt={product.title ?? ""}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              priority
+            />
           </div>
-          <p className={styles.heroPrice}>{product.price} ₼</p>
-          <div className={styles.heroButtons}>
-            <a href="#" className={styles.heroButton}>
-              Find store
-            </a>
-            <a
-              href={waHref}
-              className={styles.heroButtonWhatsApp}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <WhatsAppIcon />
-              <span>WhatsApp</span>
-            </a>
-          </div>
-          <div className={styles.productInfo}>
-            <div className={styles.infoRow}>
-              <span>10 year guarantee</span>
-              <span>EU Ecolabel certified</span>
+          <div className={styles.heroProductDescription}>
+            <h2>{product.title}</h2>
+            <div className={styles.tabList}>
+              <span
+                className={activeTab === "description" ? styles.activeTab : ""}
+                onClick={() => setActiveTab("description")}
+              >
+                Description
+              </span>
+              <span
+                className={activeTab === "specifications" ? styles.activeTab : ""}
+                onClick={() => setActiveTab("specifications")}
+              >
+                Specifications
+              </span>
             </div>
-            <div className={styles.infoRow}>
-              <span>Danish production</span>
+            {activeTab === "description" && (
+              <div className={styles.tabContent}>
+                <p>{product.description}</p>
+                <p>Designer: {product.designer}</p>
+              </div>
+            )}
+            {activeTab === "specifications" && (
+              <div className={styles.tabContent}>
+                <p>
+                  <strong>Material:</strong> {product.specifications.material}
+                </p>
+                <p>
+                  <strong>Dimensions:</strong> {product.specifications.dimensions}
+                </p>
+                <p>
+                  <strong>Weight:</strong> {product.specifications.weight}
+                </p>
+                <p>
+                  <strong>Category:</strong> {product.specifications.category}
+                </p>
+              </div>
+            )}
+            <div className={styles.tabMore}>
+              <span>Read More</span>
+              <span>See downloads</span>
+            </div>
+            <p className={styles.heroPrice}>{product.price} ₼</p>
+            <div className={styles.heroButtons}>
+              <a href="#" className={styles.heroButton}>
+                Find store
+              </a>
+              <a
+                href={waHref}
+                className={styles.heroButtonWhatsApp}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <WhatsAppIcon />
+                <span>WhatsApp</span>
+              </a>
+            </div>
+            <div className={styles.productInfo}>
+              <div className={styles.infoRow}>
+                <span>10 year guarantee</span>
+                <span>EU Ecolabel certified</span>
+              </div>
+              <div className={styles.infoRow}>
+                <span>Danish production</span>
+              </div>
             </div>
           </div>
         </div>

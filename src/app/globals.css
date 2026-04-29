@@ -4,18 +4,22 @@
   margin: 0;
 }
 
-html,
+html {
+  display: flex;
+  justify-content: center;
+}
+
 body {
-  max-width: 100vw;
+  width: 100%;
+  max-width: 1536px; /* 15.6 inç noutbukların standart məntiqi genişliyi */
+  margin: 0 auto;
+  position: relative;
   overflow-x: hidden;
   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-body {
   color: #333;
   background: #fff;
   line-height: 1.6;

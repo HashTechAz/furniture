@@ -3,9 +3,9 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   z-index: 1001;
-  padding: 30px 20px;
+  padding: 30px 0;
   box-sizing: border-box;
   transform: translateY(0);
   transition: transform 0.4s ease, background-color 0.4s ease, color 0.4s ease;
@@ -96,6 +96,9 @@
 
 .navbar {
   width: 100%;
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: 0 20px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
@@ -184,13 +187,20 @@
     position: fixed;
     top: 80px;
     left: 0;
-    right: 0;
+    width: 100vw;
     height: 0;
     background: white;
     z-index: 999;
     overflow: hidden;
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
     transition: height 0.35s ease;
+}
+
+.overlayInner {
+    width: 100%;
+    max-width: 1536px;
+    margin: 0 auto;
+    height: 100%;
 }
 .seriesOverlayOpen {
     height: calc(100vh - 80px);
@@ -277,7 +287,10 @@
 /* === Kiçik Desktop / MacBook (1025px - 1299px) === */
 @media (min-width: 1025px) and (max-width: 1299px) {
   .header {
-    padding: 30px 40px;
+    padding: 30px 0;
+  }
+  .navbar {
+    padding: 0 40px;
   }
   
   .navigationMenu ul {
@@ -293,7 +306,10 @@
 /* === Böyük Desktop (1300px+) === */
 @media (min-width: 1300px) {
   .header {
-    padding: 30px 80px;
+    padding: 30px 0;
+  }
+  .navbar {
+    padding: 0 80px;
   }
   
   .navigationMenu ul {
@@ -307,7 +323,10 @@
 
 @media (max-width: 1024px) {
   .header {
-    padding: 15px 20px;
+    padding: 15px 0;
+  }
+  .navbar {
+    padding: 0 20px;
   }
   .desktopOnly { display: none; }
   .mobileOnly { display: flex; }
@@ -598,7 +617,10 @@
     display: none; 
   }
   .header {
-    padding: 25px 30px;
+    padding: 25px 0;
+  }
+  .navbar {
+    padding: 0 30px;
   }
   .mobileActions {
     width: auto; 

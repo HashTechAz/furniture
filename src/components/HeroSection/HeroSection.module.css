@@ -1,11 +1,13 @@
 
 .hero {
-    width: 100%;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
     height: 80vh;
     position: relative; 
     display: flex;
     align-items: center;
-    padding: 30px 80px;
+    padding: 30px 0;
     color: white;
 }
 
@@ -37,7 +39,10 @@
     position: relative;
     z-index: 3;
     background-color: transparent;
-    padding: 0;
+    padding: 0 80px;
+    width: 100%;
+    max-width: 1536px;
+    margin: 0 auto;
 }
 
 .heroContent {

@@ -1,11 +1,16 @@
 .footer {
   background: #1d1915;
-  width: 100%;
-  padding: 40px 80px;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding: 40px 0;
 }
 
 .footer .footerMain {
   width: 100%;
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: 0 80px;
 }
 
 
@@ -96,8 +101,10 @@
 }
 
 .footerEnd {
-  margin-top: 40px; 
-  padding-top: 40px;
+  width: 100%;
+  max-width: 1536px;
+  margin: 40px auto 0; 
+  padding: 40px 80px 0;
   border-top: 1px solid #444;
 }
 
@@ -109,7 +116,11 @@
 
 @media (min-width: 768px) and (max-width: 1024px) {
   .footer {
-    padding: 40px 40px;
+    padding: 40px 0;
+  }
+  .footer .footerMain, .footerEnd {
+    padding-left: 40px;
+    padding-right: 40px;
   }
 
   .parent {
@@ -151,7 +162,11 @@
 
 @media (max-width: 768px) {
   .footer {
-    padding: 40px 20px;
+    padding: 40px 0;
+  }
+  .footer .footerMain, .footerEnd {
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .parent {

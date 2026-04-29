@@ -4,6 +4,7 @@
   top: 0;
   right: 0;
   width: 45%;
+  max-width: 691px; /* 1536px ekranın 45%-i */
   height: 100vh;
   background-color: white;
   z-index: 2000;
@@ -12,6 +13,12 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
+}
+
+@media (min-width: 1537px) {
+  .overlayContainer {
+    right: calc(50vw - 768px); /* Container-in sağ tərəfinə uyğunlaşır (1536 / 2 = 768) */
+  }
 }
 
 .overlayContainer.open {

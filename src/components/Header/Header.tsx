@@ -324,13 +324,19 @@ const Header: React.FC = () => {
       </div>
 
       <div className={`${styles.seriesOverlay} ${isInspirationOpen ? styles.seriesOverlayOpen : ""}`}>
-        <InspirationContent />
+        <div className={styles.overlayInner}>
+          <InspirationContent />
+        </div>
       </div>
       <div className={`${styles.seriesOverlay} ${isSeriesOpen ? styles.seriesOverlayOpen : ""}`}>
-        <SeriesContent />
+        <div className={styles.overlayInner}>
+          <SeriesContent />
+        </div>
       </div>
       <div className={`${styles.seriesOverlay} ${isProductsOpen ? styles.seriesOverlayOpen : ""}`}>
-        <ProductsContent />
+        <div className={styles.overlayInner}>
+          <ProductsContent />
+        </div>
       </div>
 
       <SearchOverlay isOpen={isSearchOpen} onClose={toggleSearch} />

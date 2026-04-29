@@ -8,10 +8,12 @@ interface ProductHeroProps {
 const ProductHero = ({ title = 'All Products' }: ProductHeroProps) => {
   return (
     <section className={styles.heroSection}>
-      <div className={styles.content}>
-        <h1 className={styles.title}>
-          {title}
-        </h1>
+      <div className={styles.contentWrapper}>
+        <div className={styles.content}>
+          <h1 className={styles.title}>
+            {title}
+          </h1>
+        </div>
       </div>
     </section>
   );

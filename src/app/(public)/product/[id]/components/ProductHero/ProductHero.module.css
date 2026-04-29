@@ -1,6 +1,16 @@
 .heroSection {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
   background-color: #f7f7f7;
-  padding: 120px 80px 60px 80px;
+  padding: 120px 0 60px 0;
+}
+
+.contentWrapper {
+  width: 100%;
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: 0 80px;
 }
 
 .heroMain {
@@ -220,7 +230,11 @@
 
 @media (min-width: 769px) and (max-width: 1024px) {
   .heroSection {
-    padding: 100px 40px 60px 40px;
+    padding: 100px 0 60px 0;
+  }
+  
+  .contentWrapper {
+    padding: 0 40px;
   }
 
   .heroMain {
@@ -578,7 +592,11 @@
 /* --- RESPONSIVE STYLES (MOBILE) --- */
 @media (max-width: 768px) {
   .heroSection {
-    padding: 100px 20px 40px 20px;
+    padding: 100px 0 40px 0;
+  }
+  
+  .contentWrapper {
+    padding: 0 20px;
   }
 
   .heroMain {

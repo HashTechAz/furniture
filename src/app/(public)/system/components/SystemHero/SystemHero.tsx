@@ -16,15 +16,17 @@ const SystemHero = ({ title, description, backgroundColor, color, increasePaddin
   return (
     <>
       <section className={`${styles.systemHero} ${increasePaddingY ? styles.extraPaddingY : ""}`} style={sectionStyle}>
-        <div className={styles.content}>
-          <h1 className={styles.title} style={titleStyle}>
-            {title}
-          </h1>
-          {description && (
-            <p className={styles.description} style={titleStyle}>
-              {description}
-            </p>
-          )}
+        <div className={styles.contentWrapper}>
+          <div className={styles.content}>
+            <h1 className={styles.title} style={titleStyle}>
+              {title}
+            </h1>
+            {description && (
+              <p className={styles.description} style={titleStyle}>
+                {description}
+              </p>
+            )}
+          </div>
         </div>
       </section>
     </>
