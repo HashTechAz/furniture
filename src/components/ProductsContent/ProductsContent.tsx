@@ -115,6 +115,7 @@ const ProductsContent = () => {
                     href={`/product/${promoProduct.id}`}
                     label={promoProduct.title}
                     imageUrl={promoProduct.mainImage}
+                    isNew={true}
                   />
                 )}
               </div>

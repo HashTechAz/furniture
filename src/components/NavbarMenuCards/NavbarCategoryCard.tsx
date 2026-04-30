@@ -8,13 +8,17 @@ interface NavbarCategoryCardProps {
   href: string;
   price?: string | number;
   description?: string;
+  isNew?: boolean;
 }
 
-const NavbarCategoryCard: React.FC<NavbarCategoryCardProps> = ({ imageUrl, label, href, price, description }) => {
+const NavbarCategoryCard: React.FC<NavbarCategoryCardProps> = ({ imageUrl, label, href, price, description, isNew }) => {
   return (
     <Link href={href} className={styles.cardLink}>
-      <div className={styles.imageWrapper}>
-        <Image fill src={imageUrl} alt={label ?? ''} className={styles.cardImage} sizes="(max-width: 768px) 100vw, 300px" />
+      <div className={styles.cardContainer}>
+        {isNew && <div className={styles.newsBadge}>NEWS</div>}
+        <div className={styles.imageWrapper}>
+          <Image fill src={imageUrl} alt={label ?? ''} className={styles.cardImage} sizes="(max-width: 768px) 100vw, 300px" />
+        </div>
       </div>
       <div className={styles.textWrapper}>
         <h3 className={styles.cardTitle}>{label}</h3>
