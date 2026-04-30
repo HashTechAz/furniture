@@ -21,8 +21,13 @@
 }
 
 @keyframes loaderSpin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .sliderHeader {
@@ -30,14 +35,15 @@
   justify-content: space-between;
   align-items: flex-end;
   margin-bottom: 30px;
-  padding: 0 80px;
+  padding: 0 0 0 80px;
 }
 
 .headerLeft {
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-width: 0; /* Ensures flex child can shrink smaller than its content */
+  min-width: 0;
+  /* Ensures flex child can shrink smaller than its content */
   margin-right: 40px;
 }
 
@@ -50,13 +56,16 @@
 .categoryLinksWrapper {
   margin-top: 35px;
   overflow-x: auto;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
   display: flex;
 }
 
 .categoryLinksWrapper::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
+  display: none;
+  /* Chrome, Safari */
 }
 
 .categoryLinks {
@@ -178,9 +187,10 @@
 
   .sliderHeader {
     padding: 0 20px;
-    margin-bottom: 20px; /* Boşluğu azaldırıq */
+    margin-bottom: 20px;
+    /* Boşluğu azaldırıq */
   }
-  
+
   .sectionTitle {
     font-size: 24px;
   }
@@ -197,13 +207,14 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
-    margin-top: -10px; /* Başlıqla arasını azaldır */
+    margin-top: -10px;
+    /* Başlıqla arasını azaldır */
   }
 
   .mobileCategoryDropdown {
     position: relative;
   }
-  
+
   .dropdownButton {
     display: flex;
     align-items: center;
@@ -211,11 +222,11 @@
     font-size: 14px;
     font-weight: 500;
   }
-  
+
   .arrowIcon {
     transition: transform 0.3s ease-out;
   }
-  
+
   .arrowIcon.arrowIconOpen {
     transform: rotate(180deg);
   }
@@ -227,7 +238,7 @@
     background-color: white;
     border: 1px solid #eee;
     border-radius: 4px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     z-index: 10;
     display: flex;
     flex-direction: column;
@@ -259,15 +270,15 @@
     text-decoration: underline;
     white-space: nowrap;
   }
-  
+
   .embla {
     padding-left: 20px;
   }
-  
+
   .embla__slide {
     flex: 0 0 260px;
   }
-  
+
   .progressBar {
     display: block;
     position: relative;
@@ -275,7 +286,7 @@
     background-color: #e0e0e0;
     margin: 30px 20px 0 20px;
   }
-  
+
   .progressBarFill {
     position: absolute;
     height: 100%;
@@ -295,7 +306,7 @@
     margin-bottom: 25px;
   }
 
- 
+
   .sectionTitle {
     font-size: 24px;
   }

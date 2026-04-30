@@ -61,7 +61,7 @@
   transform: scaleX(1);
 }
 
-/* Products sayfasında dropdown açıkken yazıları siyah yap */
+
 body:has(.headerOverlayOpen.productsMainHeader) .productsCategoryText h5,
 body:has(.headerOverlayOpen.productsMainHeader) .listsGrid h5 {
   color: #333333;
