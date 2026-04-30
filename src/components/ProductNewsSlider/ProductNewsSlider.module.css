@@ -329,3 +329,10 @@
     margin-right: 20px;
   }
 }
+
+/* === LAPTOP EKRANLARI ÜÇÜN (1025px - 1600px) === */
+@media (min-width: 1025px) and (max-width: 1600px) {
+  .sliderHeader {
+    padding-right: 80px;
+  }
+}
