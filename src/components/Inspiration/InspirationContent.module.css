@@ -1,6 +1,6 @@
 .inspirationMain {
   width: 100%;
-  height: 100vh;
+  min-height: 75vh;
   display: flex;
   padding: 0px 80px 0px 0px;
   gap: 40px;
@@ -10,9 +10,8 @@
 .inspirationText {
   position: relative;
   width: 30%;
-  height: 100%;
   background-color: #F4F4F1;
-  padding: 60px 0px 0px 80px;
+  padding: 120px 0px 80px 80px;
   flex-shrink: 0;
 }
 
@@ -98,7 +97,8 @@
 
 .contentWrapper {
   flex: 1;
-  padding-top: 60px;
+  padding-top: 120px;
+  padding-bottom: 80px;
   display: flex;
   justify-content: space-between;
 }

@@ -254,6 +254,16 @@ const Header: React.FC = () => {
         </nav>
       </header>
 
+      {/* Background Overlay when desktop menus are open */}
+      <div 
+        className={`${styles.pageOverlay} ${(isSeriesOpen || isProductsOpen || isInspirationOpen) ? styles.pageOverlayOpen : ""}`}
+        onClick={() => {
+          setIsSeriesOpen(false);
+          setIsProductsOpen(false);
+          setIsInspirationOpen(false);
+        }}
+      />
+
       <div className={`${styles.mobileMenuOverlay} ${isMobileMenuOpen ? styles.open : ""}`}>
         <div className={styles.mainNav}>
           <ul>

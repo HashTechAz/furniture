@@ -183,27 +183,46 @@
 }
 
 /* Desktop açılan menyular */
+.pageOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.pageOverlayOpen {
+    opacity: 1;
+    visibility: visible;
+}
+
 .seriesOverlay {
     position: fixed;
     top: 80px;
     left: 0;
     width: 100vw;
-    height: 0;
     background: white;
     z-index: 999;
     overflow: hidden;
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
-    transition: height 0.35s ease;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s ease;
 }
 
 .overlayInner {
     width: 100%;
     max-width: 1536px;
     margin: 0 auto;
-    height: 100%;
+    min-height: 0;
 }
 .seriesOverlayOpen {
-    height: calc(100vh - 80px);
+    grid-template-rows: 1fr;
 }
 
 /* --- DÜZƏLİŞ EDİLMİŞ MOBİL MENYU STİLLƏRİ --- */
