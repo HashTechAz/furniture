@@ -11,8 +11,10 @@ const PrivacyPolicyPage = () => {
   return (
     <main className={styles.pageWrapper}>
       <div className={styles.heroSection}>
-        <div className={styles.heroContent}>
-          <h1 className={styles.title}>Məxfilik Siyasəti</h1>
+        <div className={styles.contentWrapper}>
+          <div className={styles.heroContent}>
+            <h1 className={styles.title}>Məxfilik Siyasəti</h1>
+          </div>
         </div>
       </div>
 

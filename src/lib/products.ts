@@ -205,6 +205,9 @@ const mapBackendToFrontend = (item: BackendProduct): FrontendProduct => {
   const finalCategoryName =
     item.categoryName || item.category?.name || "Uncategorized";
 
+  // Backend-dən `createdAt` gəlirsə onu götürürük
+  const createdAtValue = (item as any).createdAt;
+
   const finalDesignerId = item.designerId || item.designer?.id || 0;
   const finalCollectionId = item.collectionId || item.collection?.id || 0;
   const productGroupId =
@@ -243,6 +246,7 @@ const mapBackendToFrontend = (item: BackendProduct): FrontendProduct => {
     galleryImages: gallery,
 
     designer: item.designerName || item.designer?.name || "Unknown Designer",
+    // createdAt: createdAtValue, ------------------------ backend
 
     specifications: {
       material: materialDisplay,

@@ -145,7 +145,7 @@ const ProductNewsSlider = ({ products = [] }: ProductNewsSliderProps) => {
       ) : (
         <div className={styles.embla} ref={emblaRef}>
           <div className={styles.embla__container}>
-            {displayProducts.map((product) => (
+            {displayProducts.map((product, index) => (
               <div className={styles.embla__slide} key={product.id}>
                 <ProductCard
                   id={product.id}
@@ -156,6 +156,9 @@ const ProductNewsSlider = ({ products = [] }: ProductNewsSliderProps) => {
                   measurements={product.measurements}
                   position={product.position}
                   price={product.price}
+                  createdAt={(product as any).createdAt}
+                  // Backend-dən tarix gələnə qədər vizual yoxlamaq üçün ilk 6 məhsula əl ilə verilir
+                  isNew={index < 6}
                 />
               </div>
             ))}

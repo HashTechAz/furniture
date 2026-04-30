@@ -33,8 +33,10 @@ export default async function Professionals() {
   return (
     <main>
       <div className={styles.pageHeader}>
-        <div className={styles.content}>
-          <h1>Professionals</h1>
+        <div className={styles.contentWrapper}>
+          <div className={styles.content}>
+            <h1>Professionals</h1>
+          </div>
         </div>
       </div>
 

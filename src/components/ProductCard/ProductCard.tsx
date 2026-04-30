@@ -15,6 +15,8 @@ interface ProductCardProps {
   position: string;
   price?: string;
   priority?: boolean;
+  createdAt?: string; // Admin paneldən gələn yaranma tarixi
+  isNew?: boolean; // Manual olaraq "yeni" olduğunu bildirmək üçün
 }
 
 const ProductCard = ({
@@ -27,8 +29,16 @@ const ProductCard = ({
   position,
   price,
   priority = false,
+  createdAt,
+  isNew = false,
 }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+
+  // Məhsulun yaranma tarixindən keçən günlərin sayını hesablayırıq
+  // 10 gündən az keçibsə, "yeni" hesab edirik
+  const isNewProduct = isNew || (createdAt 
+    ? (new Date().getTime() - new Date(createdAt).getTime()) / (1000 * 3600 * 24) <= 10
+    : false);
 
   if (!imageSrc) return null;
 
@@ -42,6 +52,9 @@ const ProductCard = ({
       <div className={styles.card}>
         {/* Şəkil Hissəsi */}
         <div className={styles.imageWrapper}>
+          {isNewProduct && (
+            <div className={styles.newsBadge}>NEWS</div>
+          )}
           <Image
             fill
             src={isHovered ? imageSrcHover : imageSrc}

@@ -48,6 +48,8 @@ const ProductGrid = ({
             imageSrc={product.imageSrc}
             imageSrcHover={product.imageSrcHover}
             priority={index < 8}
+            createdAt={(product as any).createdAt}
+            isNew={index < 6}
           />
         ))}
       </div>

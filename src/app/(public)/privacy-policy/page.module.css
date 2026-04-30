@@ -4,16 +4,25 @@
 }
 
 .heroSection {
-  width: 100%;
-  background-color: #f7f7f7;   /* Change this to match the navbar if needed, typically white or transparent */
-  padding: 130px 80px 40px 80px; /* Accounts for header height + matching inspiration 80px horizontal padding */
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  background-color: #f7f7f7;
+  padding: 130px 0 40px 0;
   display: flex;
   align-items: center;
 }
 
+.contentWrapper {
+  width: 100%;
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: 0 80px;
+}
+
 .heroContent {
-  width: 85%; /* Matching HeroSection.module.css width: 85% */
-  margin: 0;   /* Remove center align margin: 0 auto so it matches HeroSection */
+  width: 100%;
+  margin: 0;
 }
 
 .title {
@@ -25,9 +34,10 @@
 }
 
 .container {
-  width: 85%;
-  margin: 0;
-  padding: 60px 80px 100px 80px; /* Aligning left padding to match .heroSection and adding space top/bottom */
+  width: 100%;
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: 60px 80px 100px 80px;
 }
 
 .content {
@@ -100,7 +110,10 @@
 }
 
 @media (max-width: 1024px) {
-  .heroSection, .container {
+  .heroSection {
+    padding: 130px 0 40px 0;
+  }
+  .contentWrapper, .container {
     padding-left: 40px;
     padding-right: 40px;
   }
@@ -108,7 +121,12 @@
 
 @media (max-width: 768px) {
   .heroSection {
-    padding: 140px 20px 60px 20px;
+    padding: 140px 0 60px 0;
+  }
+  
+  .contentWrapper {
+    padding-left: 20px;
+    padding-right: 20px;
   }
   
   .container {
