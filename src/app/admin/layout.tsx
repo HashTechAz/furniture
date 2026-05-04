@@ -76,6 +76,16 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Admin body attribute - böyük ekranlarda ortalanmanı ləğv etmək üçün
+  useEffect(() => {
+    document.body.setAttribute('data-admin', 'true');
+    document.documentElement.setAttribute('data-admin', 'true');
+    return () => {
+      document.body.removeAttribute('data-admin');
+      document.documentElement.removeAttribute('data-admin');
+    };
+  }, []);
+
   // Resize Handler
   useEffect(() => {
     const handleResize = () => {

@@ -25,6 +25,16 @@ body {
   line-height: 1.6;
 }
 
+/* Admin panel - böyük ekranlarda max-width məhdudiyyəti yoxdur */
+html[data-admin='true'] {
+  display: block;
+}
+
+html[data-admin='true'] body {
+  max-width: 100% !important;
+  width: 100vw !important;
+}
+
 a {
   color: inherit;
   text-decoration: none;

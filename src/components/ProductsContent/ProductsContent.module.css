@@ -2,7 +2,7 @@
   width: 100%;
   min-height: 75vh;
   display: flex;
-  padding: 0px 80px 0px 0px; /* Sağdan boşluk kalabilir */
+  padding: 0px 80px 0px 0px; 
   gap: 40px;
   margin-top: 0px;
   box-sizing: border-box;
@@ -12,8 +12,8 @@
   position: relative;
   width: 25%;
   background-color: #F4F4F1;
-  padding: 120px 0px 80px 80px; /* Soldan 80px boşluk burada */
-  flex-shrink: 0; /* Küçülmesini engelle */
+  padding: 120px 0px 80px 80px;
+  flex-shrink: 0;
 }
 
 .productsCategoryText::before {
@@ -125,7 +125,8 @@ body:has(.headerOverlayOpen.productsMainHeader) .listsGrid ul li {
 }
 
 .gridContainer {
-  display: flex; /* Sadece tek bir ana item olacağı için flex yeterli */
+  display: flex;
+  /* Sadece tek bir ana item olacağı için flex yeterli */
 }
 
 .gridItemMain {

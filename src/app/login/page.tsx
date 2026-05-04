@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { setTokens } from '@/lib/auth';
 import styles from './page.module.css';
 import { FaEye, FaEyeSlash, FaExclamationCircle, FaArrowRight } from 'react-icons/fa';
@@ -11,6 +11,16 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Böyük ekranlarda ortalanmanı ləğv et (admin/login səhifəsi tam genişlikdə olsun)
+  useEffect(() => {
+    document.body.setAttribute('data-admin', 'true');
+    document.documentElement.setAttribute('data-admin', 'true');
+    return () => {
+      document.body.removeAttribute('data-admin');
+      document.documentElement.removeAttribute('data-admin');
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,11 +69,12 @@ export default function LoginPage() {
         <div className={styles.imageOverlay}></div>
         
         <div className={styles.brandContent}>
-          <h1 className={styles.brandTitle}>Sparro.</h1>
-          <p className={styles.brandSubtitle}>
-            Premium mebel idarəetmə sistemi. Sifarişləri, məhsulları və kolleksiyaları tək mərkəzdən idarə edin
-          </p>
-        </div>
+           
+            <h1 className={styles.brandTitle}>Sparro.</h1>
+            <p className={styles.brandSubtitle}>
+              Premium mebel idarəetmə sistemi. Sifarişləri, məhsulları və kolleksiyaları tək mərkəzdən idarə edin
+            </p>
+          </div>
       </div>
 
       {/* SAĞ TƏRƏF: FORM */}
