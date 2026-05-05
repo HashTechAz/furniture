@@ -9,12 +9,13 @@ import { getCached, setCached } from '@/lib/admin-prefetch-cache';
 import { useAdminModal } from '@/context/admin-modal-context';
 import shared from '../components/admin-shared.module.css';
 import styles from './page.module.css';
-import { FaPlus, FaEdit, FaTrash, FaCube } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaCube, FaSearch } from 'react-icons/fa';
 
 export default function MaterialsPage() {
   const cached = getCached<Material[]>('materials');
   const [materials, setMaterials] = useState<Material[]>(Array.isArray(cached) ? cached : []);
   const [loading, setLoading] = useState(!cached);
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const { openModal } = useAdminModal();
 
@@ -123,6 +124,19 @@ export default function MaterialsPage() {
         </div>
       </div>
 
+      <div className={shared.filtersBar}>
+        <div className={shared.searchWrapper}>
+          <FaSearch className={shared.searchIcon} />
+          <input
+            type="text"
+            placeholder="Search materials..."
+            className={shared.searchInput}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
+
       <div className={shared.tableCard}>
         {materials.length === 0 ? (
           <div className={shared.emptyState}>
@@ -130,70 +144,91 @@ export default function MaterialsPage() {
             <p>Heç bir material tapılmadı.</p>
           </div>
         ) : (
-          <table className={shared.table}>
-            <thead>
-              <tr>
-                <th>
-                  <AdminCheckbox
-                    checked={materials.length > 0 && selectedIds.length === materials.length}
-                    onChange={handleSelectAll}
-                    indeterminate={selectedIds.length > 0 && selectedIds.length < materials.length}
-                    aria-label="Hamısını seç"
-                  />
-                </th>
-                <th>Material</th>
-                <th>Description</th>
-                <th style={{ textAlign: 'right' }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {materials.map((mat) => (
-                <tr key={mat.id} className={selectedIds.includes(mat.id) ? shared.selected : ''}>
-                  <td>
-                    <AdminCheckbox
-                      checked={selectedIds.includes(mat.id)}
-                      onChange={() => handleSelectOne(mat.id)}
-                      aria-label={`Material ${mat.name} seç`}
-                    />
-                  </td>
-                  <td>
-                    <div className={styles.cellContent}>
-                      <div className={styles.nameInfo}>
-                        <span className={styles.name}>{mat.name}</span>
-                        <span className={styles.idBadge}>ID: #{mat.id}</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td style={{ color: '#666', maxWidth: 300 }}>
-                    {mat.description
-                      ? mat.description.length > 60
-                        ? mat.description.substring(0, 60) + '...'
-                        : mat.description
-                      : '—'}
-                  </td>
-                  <td>
-                    <div className={shared.actions}>
-                      <Link
-                        href={`/admin/materials/${mat.id}`}
-                        className={`${shared.actionBtn} ${shared.editBtn}`}
-                        title="Edit"
-                      >
-                        <FaEdit />
-                      </Link>
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(mat.id)}
-                        className={`${shared.actionBtn} ${shared.deleteBtn}`}
-                        title="Delete"
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          (() => {
+            const filtered = materials.filter(mat => 
+              mat.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+              mat.description?.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            if (filtered.length === 0 && searchTerm) {
+              return (
+                <div className={shared.emptyState}>
+                  <FaSearch size={48} className={shared.emptyStateIcon} />
+                  <p>No materials match your search "{searchTerm}".</p>
+                </div>
+              );
+            }
+
+            return (
+              <table className={shared.table}>
+                <thead>
+                  <tr>
+                    <th>
+                      <AdminCheckbox
+                        checked={filtered.length > 0 && selectedIds.length === filtered.length}
+                        onChange={(e) => {
+                          if (e.target.checked) setSelectedIds(filtered.map(c => c.id));
+                          else setSelectedIds([]);
+                        }}
+                        indeterminate={selectedIds.length > 0 && selectedIds.length < filtered.length}
+                        aria-label="Hamısını seç"
+                      />
+                    </th>
+                    <th>Material</th>
+                    <th>Description</th>
+                    <th style={{ textAlign: 'right' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((mat) => (
+                    <tr key={mat.id} className={selectedIds.includes(mat.id) ? shared.selected : ''}>
+                      <td>
+                        <AdminCheckbox
+                          checked={selectedIds.includes(mat.id)}
+                          onChange={() => handleSelectOne(mat.id)}
+                          aria-label={`Material ${mat.name} seç`}
+                        />
+                      </td>
+                      <td>
+                        <div className={styles.cellContent}>
+                          <div className={styles.nameInfo}>
+                            <span className={styles.name}>{mat.name}</span>
+                            <span className={styles.idBadge}>ID: #{mat.id}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style={{ color: '#666', maxWidth: 300 }}>
+                        {mat.description
+                          ? mat.description.length > 60
+                            ? mat.description.substring(0, 60) + '...'
+                            : mat.description
+                          : '—'}
+                      </td>
+                      <td>
+                        <div className={shared.actions}>
+                          <Link
+                            href={`/admin/materials/${mat.id}`}
+                            className={`${shared.actionBtn} ${shared.editBtn}`}
+                            title="Edit"
+                          >
+                            <FaEdit />
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => handleDelete(mat.id)}
+                            className={`${shared.actionBtn} ${shared.deleteBtn}`}
+                            title="Delete"
+                          >
+                            <FaTrash />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            );
+          })()
         )}
       </div>
     </div>

@@ -10,13 +10,14 @@ import { AdminCheckbox } from '../components/AdminCheckbox';
 import { useAdminModal } from '@/context/admin-modal-context';
 import shared from '../components/admin-shared.module.css';
 import styles from './designers.module.css';
-import { FaPlus, FaEdit, FaTrash, FaUserTie, FaUser } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaUserTie, FaUser, FaSearch } from 'react-icons/fa';
 import { getApiBaseUrl } from '@/lib/api-base';
 
 export default function DesignersPage() {
   const cached = getCached<BackendDesigner[]>('designers');
   const [designers, setDesigners] = useState<BackendDesigner[]>(Array.isArray(cached) ? cached : []);
   const [loading, setLoading] = useState(!cached);
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const { openModal } = useAdminModal();
 
@@ -116,6 +117,19 @@ export default function DesignersPage() {
         </div>
       </div>
 
+      <div className={shared.filtersBar}>
+        <div className={shared.searchWrapper}>
+          <FaSearch className={shared.searchIcon} />
+          <input
+            type="text"
+            placeholder="Search designers..."
+            className={shared.searchInput}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
+
       <div className={shared.tableCard}>
         {loading ? (
           <AdminTableSkeleton rows={8} />
@@ -125,69 +139,90 @@ export default function DesignersPage() {
             <p>No designers found.</p>
           </div>
         ) : (
-          <table className={shared.table}>
-            <thead>
-              <tr>
-                <th>
-                  <AdminCheckbox
-                    checked={designers.length > 0 && selectedIds.length === designers.length}
-                    onChange={handleSelectAll}
-                    indeterminate={selectedIds.length > 0 && selectedIds.length < designers.length}
-                    aria-label="Hamısını seç"
-                  />
-                </th>
-                <th>Designer</th>
-                <th>Biography</th>
-                <th style={{ textAlign: 'right' }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {designers.map((designer) => {
-                const imgUrl = getImageUrl(designer.imageUrl);
-                return (
-                  <tr key={designer.id} className={selectedIds.includes(designer.id) ? shared.selected : ''}>
-                    <td>
+          (() => {
+            const filtered = designers.filter(d => 
+              d.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+              d.biography?.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            if (filtered.length === 0 && searchTerm) {
+              return (
+                <div className={shared.emptyState}>
+                  <FaSearch size={48} className={shared.emptyStateIcon} />
+                  <p>No designers match your search "{searchTerm}".</p>
+                </div>
+              );
+            }
+
+            return (
+              <table className={shared.table}>
+                <thead>
+                  <tr>
+                    <th>
                       <AdminCheckbox
-                        checked={selectedIds.includes(designer.id)}
-                        onChange={() => handleSelectOne(designer.id)}
-                        aria-label={`Dizayner ${designer.name} seç`}
+                        checked={filtered.length > 0 && selectedIds.length === filtered.length}
+                        onChange={(e) => {
+                          if (e.target.checked) setSelectedIds(filtered.map(c => c.id));
+                          else setSelectedIds([]);
+                        }}
+                        indeterminate={selectedIds.length > 0 && selectedIds.length < filtered.length}
+                        aria-label="Hamısını seç"
                       />
-                    </td>
-                    <td>
-                      <div className={styles.cellContent}>
-                        <div className={styles.imageWrapper}>
-                          {imgUrl ? (
-                            <Image src={imgUrl} alt={designer.name} width={48} height={48} className={styles.image} loading="lazy" />
-                          ) : (
-                            <div style={{width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc'}}>
-                              <FaUser />
-                            </div>
-                          )}
-                        </div>
-                        <div className={styles.nameInfo}>
-                           <span className={styles.name}>{designer.name}</span>
-                           <span className={styles.idBadge}>ID: #{designer.id}</span>
-                        </div>
-                      </div>
-                    </td>
-                    <td style={{color: '#666', maxWidth: 300}}>
-                      {designer.biography ? designer.biography.substring(0, 60) + (designer.biography.length > 60 ? '...' : '') : '—'}
-                    </td>
-                    <td>
-                      <div className={shared.actions}>
-                        <Link href={`/admin/designers/${designer.id}`} className={`${shared.actionBtn} ${shared.editBtn}`} title="Edit">
-                          <FaEdit />
-                        </Link>
-                        <button onClick={() => handleDelete(designer.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
-                          <FaTrash />
-                        </button>
-                      </div>
-                    </td>
+                    </th>
+                    <th>Designer</th>
+                    <th>Biography</th>
+                    <th style={{ textAlign: 'right' }}>Actions</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {filtered.map((designer) => {
+                    const imgUrl = getImageUrl(designer.imageUrl);
+                    return (
+                      <tr key={designer.id} className={selectedIds.includes(designer.id) ? shared.selected : ''}>
+                        <td>
+                          <AdminCheckbox
+                            checked={selectedIds.includes(designer.id)}
+                            onChange={() => handleSelectOne(designer.id)}
+                            aria-label={`Dizayner ${designer.name} seç`}
+                          />
+                        </td>
+                        <td>
+                          <div className={styles.cellContent}>
+                            <div className={styles.imageWrapper}>
+                              {imgUrl ? (
+                                <Image src={imgUrl} alt={designer.name} width={48} height={48} className={styles.image} loading="lazy" />
+                              ) : (
+                                <div style={{width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc'}}>
+                                  <FaUser />
+                                </div>
+                              )}
+                            </div>
+                            <div className={styles.nameInfo}>
+                               <span className={styles.name}>{designer.name}</span>
+                               <span className={styles.idBadge}>ID: #{designer.id}</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td style={{color: '#666', maxWidth: 300}}>
+                          {designer.biography ? designer.biography.substring(0, 60) + (designer.biography.length > 60 ? '...' : '') : '—'}
+                        </td>
+                        <td>
+                          <div className={shared.actions}>
+                            <Link href={`/admin/designers/${designer.id}`} className={`${shared.actionBtn} ${shared.editBtn}`} title="Edit">
+                              <FaEdit />
+                            </Link>
+                            <button onClick={() => handleDelete(designer.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
+                              <FaTrash />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            );
+          })()
         )}
       </div>
     </div>

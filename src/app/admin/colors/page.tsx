@@ -9,12 +9,13 @@ import { getColors, deleteColor, BackendColor } from '@/lib/colors';
 import { useAdminModal } from '@/context/admin-modal-context';
 import shared from '../components/admin-shared.module.css';
 import styles from './colors.module.css';
-import { FaPlus, FaEdit, FaTrash, FaPalette } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaPalette, FaSearch } from 'react-icons/fa';
 
 export default function ColorsPage() {
   const cached = getCached<BackendColor[]>('colors');
   const [colors, setColors] = useState<BackendColor[]>(Array.isArray(cached) ? cached : []);
   const [loading, setLoading] = useState(!cached);
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const { openModal } = useAdminModal();
 
@@ -108,6 +109,19 @@ export default function ColorsPage() {
         </div>
       </div>
 
+      <div className={shared.filtersBar}>
+        <div className={shared.searchWrapper}>
+          <FaSearch className={shared.searchIcon} />
+          <input
+            type="text"
+            placeholder="Search colors..."
+            className={shared.searchInput}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
+
       <div className={shared.tableCard}>
         {loading ? (
           <AdminTableSkeleton rows={8} />
@@ -117,61 +131,82 @@ export default function ColorsPage() {
             <p>No colors found.</p>
           </div>
         ) : (
-          <table className={shared.table}>
-            <thead>
-              <tr>
-                <th>
-                  <AdminCheckbox
-                    checked={colors.length > 0 && selectedIds.length === colors.length}
-                    onChange={handleSelectAll}
-                    indeterminate={selectedIds.length > 0 && selectedIds.length < colors.length}
-                    aria-label="Hamısını seç"
-                  />
-                </th>
-                <th>Color Name</th>
-                <th>Hex Code</th>
-                <th style={{ textAlign: 'right' }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {colors.map((color) => (
-                <tr key={color.id} className={selectedIds.includes(color.id) ? shared.selected : ''}>
-                  <td>
-                    <AdminCheckbox
-                      checked={selectedIds.includes(color.id)}
-                      onChange={() => handleSelectOne(color.id)}
-                      aria-label={`Rəng ${color.name} seç`}
-                    />
-                  </td>
-                  <td>
-                    <div className={styles.cellContent}>
-                      <div 
-                        className={styles.colorCircle} 
-                        style={{ backgroundColor: color.hexCode }} 
+          (() => {
+            const filtered = colors.filter(color => 
+              color.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+              color.hexCode.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            if (filtered.length === 0 && searchTerm) {
+              return (
+                <div className={shared.emptyState}>
+                  <FaSearch size={48} className={shared.emptyStateIcon} />
+                  <p>No colors match your search "{searchTerm}".</p>
+                </div>
+              );
+            }
+
+            return (
+              <table className={shared.table}>
+                <thead>
+                  <tr>
+                    <th>
+                      <AdminCheckbox
+                        checked={filtered.length > 0 && selectedIds.length === filtered.length}
+                        onChange={(e) => {
+                          if (e.target.checked) setSelectedIds(filtered.map(c => c.id));
+                          else setSelectedIds([]);
+                        }}
+                        indeterminate={selectedIds.length > 0 && selectedIds.length < filtered.length}
+                        aria-label="Hamısını seç"
                       />
-                      <div className={styles.nameInfo}>
-                         <span className={styles.name}>{color.name}</span>
-                         <span className={styles.idBadge}>ID: #{color.id}</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <span className={styles.hexBadge}>{color.hexCode}</span>
-                  </td>
-                  <td>
-                    <div className={shared.actions}>
-                      <Link href={`/admin/colors/${color.id}`} className={`${shared.actionBtn} ${shared.editBtn}`} title="Edit">
-                        <FaEdit />
-                      </Link>
-                      <button onClick={() => handleDelete(color.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    </th>
+                    <th>Color Name</th>
+                    <th>Hex Code</th>
+                    <th style={{ textAlign: 'right' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((color) => (
+                    <tr key={color.id} className={selectedIds.includes(color.id) ? shared.selected : ''}>
+                      <td>
+                        <AdminCheckbox
+                          checked={selectedIds.includes(color.id)}
+                          onChange={() => handleSelectOne(color.id)}
+                          aria-label={`Rəng ${color.name} seç`}
+                        />
+                      </td>
+                      <td>
+                        <div className={styles.cellContent}>
+                          <div 
+                            className={styles.colorCircle} 
+                            style={{ backgroundColor: color.hexCode }} 
+                          />
+                          <div className={styles.nameInfo}>
+                             <span className={styles.name}>{color.name}</span>
+                             <span className={styles.idBadge}>ID: #{color.id}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <span className={styles.hexBadge}>{color.hexCode}</span>
+                      </td>
+                      <td>
+                        <div className={shared.actions}>
+                          <Link href={`/admin/colors/${color.id}`} className={`${shared.actionBtn} ${shared.editBtn}`} title="Edit">
+                            <FaEdit />
+                          </Link>
+                          <button onClick={() => handleDelete(color.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
+                            <FaTrash />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            );
+          })()
         )}
       </div>
     </div>

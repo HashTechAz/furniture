@@ -10,13 +10,14 @@ import { AdminCheckbox } from '../components/AdminCheckbox';
 import { useAdminModal } from '@/context/admin-modal-context';
 import shared from '../components/admin-shared.module.css';
 import styles from './collections.module.css';
-import { FaPlus, FaEdit, FaTrash, FaLayerGroup, FaImage } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaLayerGroup, FaImage, FaSearch } from 'react-icons/fa';
 import { getApiBaseUrl } from '@/lib/api-base';
 
 export default function CollectionsPage() {
   const cached = getCached<BackendCollection[]>('collections');
   const [collections, setCollections] = useState<BackendCollection[]>(Array.isArray(cached) ? cached : []);
   const [loading, setLoading] = useState(!cached);
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const { openModal } = useAdminModal();
 
@@ -116,6 +117,19 @@ export default function CollectionsPage() {
         </div>
       </div>
 
+      <div className={shared.filtersBar}>
+        <div className={shared.searchWrapper}>
+          <FaSearch className={shared.searchIcon} />
+          <input
+            type="text"
+            placeholder="Search collections..."
+            className={shared.searchInput}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
+
       <div className={shared.tableCard}>
         {loading ? (
           <AdminTableSkeleton rows={8} />
@@ -125,69 +139,90 @@ export default function CollectionsPage() {
             <p>No collections found.</p>
           </div>
         ) : (
-          <table className={shared.table}>
-            <thead>
-              <tr>
-                <th>
-                  <AdminCheckbox
-                    checked={collections.length > 0 && selectedIds.length === collections.length}
-                    onChange={handleSelectAll}
-                    indeterminate={selectedIds.length > 0 && selectedIds.length < collections.length}
-                    aria-label="Hamısını seç"
-                  />
-                </th>
-                <th>Collection</th>
-                <th>Description</th>
-                <th style={{ textAlign: 'right' }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {collections.map((col) => {
-                const imgUrl = getImageUrl(col.coverImageUrl);
-                return (
-                  <tr key={col.id} className={selectedIds.includes(col.id) ? shared.selected : ''}>
-                    <td>
+          (() => {
+            const filtered = collections.filter(col => 
+              col.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+              col.description?.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            if (filtered.length === 0 && searchTerm) {
+              return (
+                <div className={shared.emptyState}>
+                  <FaSearch size={48} className={shared.emptyStateIcon} />
+                  <p>No collections match your search "{searchTerm}".</p>
+                </div>
+              );
+            }
+
+            return (
+              <table className={shared.table}>
+                <thead>
+                  <tr>
+                    <th>
                       <AdminCheckbox
-                        checked={selectedIds.includes(col.id)}
-                        onChange={() => handleSelectOne(col.id)}
-                        aria-label={`Kolleksiya ${col.name} seç`}
+                        checked={filtered.length > 0 && selectedIds.length === filtered.length}
+                        onChange={(e) => {
+                          if (e.target.checked) setSelectedIds(filtered.map(c => c.id));
+                          else setSelectedIds([]);
+                        }}
+                        indeterminate={selectedIds.length > 0 && selectedIds.length < filtered.length}
+                        aria-label="Hamısını seç"
                       />
-                    </td>
-                    <td>
-                      <div className={styles.cellContent}>
-                        <div className={styles.imageWrapper}>
-                          {imgUrl ? (
-                            <Image src={imgUrl} alt={col.name} width={60} height={40} className={styles.image} loading="lazy" />
-                          ) : (
-                            <div style={{width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc'}}>
-                              <FaImage />
-                            </div>
-                          )}
-                        </div>
-                        <div className={styles.nameInfo}>
-                           <span className={styles.name}>{col.name}</span>
-                           <span className={styles.idBadge}>ID: #{col.id}</span>
-                        </div>
-                      </div>
-                    </td>
-                    <td style={{color: '#666', maxWidth: 300}}>
-                      {col.description ? col.description.substring(0, 60) + (col.description.length > 60 ? '...' : '') : '—'}
-                    </td>
-                    <td>
-                      <div className={shared.actions}>
-                        <Link href={`/admin/collections/${col.id}`} className={`${shared.actionBtn} ${shared.editBtn}`} title="Edit">
-                          <FaEdit />
-                        </Link>
-                        <button onClick={() => handleDelete(col.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
-                          <FaTrash />
-                        </button>
-                      </div>
-                    </td>
+                    </th>
+                    <th>Collection</th>
+                    <th>Description</th>
+                    <th style={{ textAlign: 'right' }}>Actions</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {filtered.map((col) => {
+                    const imgUrl = getImageUrl(col.coverImageUrl);
+                    return (
+                      <tr key={col.id} className={selectedIds.includes(col.id) ? shared.selected : ''}>
+                        <td>
+                          <AdminCheckbox
+                            checked={selectedIds.includes(col.id)}
+                            onChange={() => handleSelectOne(col.id)}
+                            aria-label={`Kolleksiya ${col.name} seç`}
+                          />
+                        </td>
+                        <td>
+                          <div className={styles.cellContent}>
+                            <div className={styles.imageWrapper}>
+                              {imgUrl ? (
+                                <Image src={imgUrl} alt={col.name} width={60} height={40} className={styles.image} loading="lazy" />
+                              ) : (
+                                <div style={{width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc'}}>
+                                  <FaImage />
+                                </div>
+                              )}
+                            </div>
+                            <div className={styles.nameInfo}>
+                               <span className={styles.name}>{col.name}</span>
+                               <span className={styles.idBadge}>ID: #{col.id}</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td style={{color: '#666', maxWidth: 300}}>
+                          {col.description ? col.description.substring(0, 60) + (col.description.length > 60 ? '...' : '') : '—'}
+                        </td>
+                        <td>
+                          <div className={shared.actions}>
+                            <Link href={`/admin/collections/${col.id}`} className={`${shared.actionBtn} ${shared.editBtn}`} title="Edit">
+                              <FaEdit />
+                            </Link>
+                            <button onClick={() => handleDelete(col.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
+                              <FaTrash />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            );
+          })()
         )}
       </div>
     </div>

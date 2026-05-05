@@ -10,12 +10,13 @@ import { AdminCheckbox } from '../components/AdminCheckbox';
 import { useAdminModal } from '@/context/admin-modal-context';
 import shared from '../components/admin-shared.module.css';
 import styles from './page.module.css';
-import { FaPlus, FaEdit, FaTrash, FaTags, FaBoxOpen } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaTags, FaBoxOpen, FaSearch } from 'react-icons/fa';
 
 export default function AdminCategories() {
   const cached = getCached<Category[]>('categories');
   const [categories, setCategories] = useState<Category[]>(Array.isArray(cached) ? cached : []);
   const [loading, setLoading] = useState(!cached);
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const { openModal } = useAdminModal();
 
@@ -109,6 +110,19 @@ export default function AdminCategories() {
         </div>
       </div>
 
+      <div className={shared.filtersBar}>
+        <div className={shared.searchWrapper}>
+          <FaSearch className={shared.searchIcon} />
+          <input
+            type="text"
+            placeholder="Search categories..."
+            className={shared.searchInput}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
+
       <div className={shared.tableCard}>
         {loading ? (
           <AdminTableSkeleton rows={8} />
@@ -118,66 +132,87 @@ export default function AdminCategories() {
             <p>No categories found.</p>
           </div>
         ) : (
-          <table className={shared.table}>
-            <thead>
-              <tr>
-                <th>
-                  <AdminCheckbox
-                    checked={categories.length > 0 && selectedIds.length === categories.length}
-                    onChange={handleSelectAll}
-                    indeterminate={selectedIds.length > 0 && selectedIds.length < categories.length}
-                    aria-label="Hamısını seç"
-                  />
-                </th>
-                <th>Category</th>
-                <th>Description</th>
-                <th style={{ textAlign: 'right' }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {categories.map((cat) => (
-                <tr key={cat.id} className={selectedIds.includes(cat.id) ? shared.selected : ''}>
-                  <td>
-                    <AdminCheckbox
-                      checked={selectedIds.includes(cat.id)}
-                      onChange={() => handleSelectOne(cat.id)}
-                      aria-label={`Kateqoriya ${cat.name} seç`}
-                    />
-                  </td>
-                  <td>
-                    <div className={styles.cellContent}>
-                      <div className={styles.imageWrapper}>
-                        {cat.imageUrl ? (
-                          <Image src={cat.imageUrl} alt={cat.name} width={48} height={48} className={styles.image} loading="lazy" />
-                        ) : (
-                          <div style={{width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc'}}>
-                            <FaTags />
+          (() => {
+            const filtered = categories.filter(cat => 
+              cat.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+              cat.description?.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            
+            if (filtered.length === 0 && searchTerm) {
+              return (
+                <div className={shared.emptyState}>
+                  <FaSearch size={48} className={shared.emptyStateIcon} />
+                  <p>No categories match your search "{searchTerm}".</p>
+                </div>
+              );
+            }
+
+            return (
+              <table className={shared.table}>
+                <thead>
+                  <tr>
+                    <th>
+                      <AdminCheckbox
+                        checked={filtered.length > 0 && selectedIds.length === filtered.length}
+                        onChange={(e) => {
+                          if (e.target.checked) setSelectedIds(filtered.map(c => c.id));
+                          else setSelectedIds([]);
+                        }}
+                        indeterminate={selectedIds.length > 0 && selectedIds.length < filtered.length}
+                        aria-label="Hamısını seç"
+                      />
+                    </th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th style={{ textAlign: 'right' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((cat) => (
+                    <tr key={cat.id} className={selectedIds.includes(cat.id) ? shared.selected : ''}>
+                      <td>
+                        <AdminCheckbox
+                          checked={selectedIds.includes(cat.id)}
+                          onChange={() => handleSelectOne(cat.id)}
+                          aria-label={`Kateqoriya ${cat.name} seç`}
+                        />
+                      </td>
+                      <td>
+                        <div className={styles.cellContent}>
+                          <div className={styles.imageWrapper}>
+                            {cat.imageUrl ? (
+                              <Image src={cat.imageUrl} alt={cat.name} width={48} height={48} className={styles.image} loading="lazy" />
+                            ) : (
+                              <div style={{width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc'}}>
+                                <FaTags />
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
-                      <div className={styles.nameInfo}>
-                         <span className={styles.name}>{cat.name}</span>
-                         <span className={styles.idBadge}>ID: #{cat.id}</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td style={{color: '#666', maxWidth: 300}}>
-                    {cat.description || '—'}
-                  </td>
-                  <td>
-                    <div className={shared.actions}>
-                      <Link href={`/admin/categories/${cat.id}`} className={`${shared.actionBtn} ${shared.editBtn}`} title="Edit">
-                        <FaEdit />
-                      </Link>
-                      <button onClick={() => handleDelete(cat.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                          <div className={styles.nameInfo}>
+                             <span className={styles.name}>{cat.name}</span>
+                             <span className={styles.idBadge}>ID: #{cat.id}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style={{color: '#666', maxWidth: 300}}>
+                        {cat.description || '—'}
+                      </td>
+                      <td>
+                        <div className={shared.actions}>
+                          <Link href={`/admin/categories/${cat.id}`} className={`${shared.actionBtn} ${shared.editBtn}`} title="Edit">
+                            <FaEdit />
+                          </Link>
+                          <button onClick={() => handleDelete(cat.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
+                            <FaTrash />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            );
+          })()
         )}
       </div>
     </div>

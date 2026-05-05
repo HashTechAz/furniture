@@ -10,7 +10,7 @@ import { AdminCheckbox } from '../components/AdminCheckbox';
 import { useAdminModal } from '@/context/admin-modal-context';
 import shared from '../components/admin-shared.module.css';
 import styles from './page.module.css';
-import { FaPlus, FaEdit, FaTrash, FaDoorOpen } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaDoorOpen, FaSearch } from 'react-icons/fa';
 import { getApiBaseUrl } from '@/lib/api-base';
 
 const API_BASE = getApiBaseUrl();
@@ -26,6 +26,7 @@ export default function RoomsPage() {
   const cached = getCached<Room[]>('rooms');
   const [rooms, setRooms] = useState<Room[]>(Array.isArray(cached) ? cached : []);
   const [loading, setLoading] = useState(!cached);
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const { openModal } = useAdminModal();
 
@@ -142,6 +143,19 @@ export default function RoomsPage() {
         </div>
       </div>
 
+      <div className={shared.filtersBar}>
+        <div className={shared.searchWrapper}>
+          <FaSearch className={shared.searchIcon} />
+          <input
+            type="text"
+            placeholder="Search rooms..."
+            className={shared.searchInput}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
+
       <div className={shared.tableCard}>
         {rooms.length === 0 ? (
           <div className={shared.emptyState}>
@@ -149,77 +163,98 @@ export default function RoomsPage() {
             <p>Heç bir otaq tapılmadı.</p>
           </div>
         ) : (
-          <table className={shared.table}>
-            <thead>
-              <tr>
-                <th>
-                  <AdminCheckbox
-                    checked={rooms.length > 0 && selectedIds.length === rooms.length}
-                    onChange={handleSelectAll}
-                    indeterminate={selectedIds.length > 0 && selectedIds.length < rooms.length}
-                    aria-label="Hamısını seç"
-                  />
-                </th>
-                <th>Room</th>
-                <th>Description</th>
-                <th style={{ textAlign: 'right' }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rooms.map((room) => (
-                <tr key={room.id} className={selectedIds.includes(room.id) ? shared.selected : ''}>
-                  <td>
-                    <AdminCheckbox
-                      checked={selectedIds.includes(room.id)}
-                      onChange={() => handleSelectOne(room.id)}
-                      aria-label={`Otaq ${room.name} seç`}
-                    />
-                  </td>
-                  <td>
-                    <div className={styles.cellContent}>
-                      <div className={styles.imageWrapper}>
-                        {room.imageUrl ? (
-                          <Image src={roomImageSrc(room)} alt={room.name} width={48} height={48} className={styles.image} loading="lazy" />
-                        ) : (
-                          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc', fontSize: 20 }}>⌂</div>
-                        )}
-                      </div>
-                      <div className={styles.nameInfo}>
-                        <span className={styles.name}>{room.name}</span>
-                        <span className={styles.idBadge}>ID: #{room.id}</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td style={{ color: '#666', maxWidth: 300 }}>
-                    {room.description
-                      ? room.description.length > 60
-                        ? room.description.substring(0, 60) + '...'
-                        : room.description
-                      : '—'}
-                  </td>
-                  <td>
-                    <div className={shared.actions}>
-                      <Link
-                        href={`/admin/rooms/${room.id}`}
-                        className={`${shared.actionBtn} ${shared.editBtn}`}
-                        title="Edit"
-                      >
-                        <FaEdit />
-                      </Link>
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(room.id)}
-                        className={`${shared.actionBtn} ${shared.deleteBtn}`}
-                        title="Delete"
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          (() => {
+            const filtered = rooms.filter(room => 
+              room.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+              room.description?.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            if (filtered.length === 0 && searchTerm) {
+              return (
+                <div className={shared.emptyState}>
+                  <FaSearch size={48} className={shared.emptyStateIcon} />
+                  <p>No rooms match your search "{searchTerm}".</p>
+                </div>
+              );
+            }
+
+            return (
+              <table className={shared.table}>
+                <thead>
+                  <tr>
+                    <th>
+                      <AdminCheckbox
+                        checked={filtered.length > 0 && selectedIds.length === filtered.length}
+                        onChange={(e) => {
+                          if (e.target.checked) setSelectedIds(filtered.map(c => c.id));
+                          else setSelectedIds([]);
+                        }}
+                        indeterminate={selectedIds.length > 0 && selectedIds.length < filtered.length}
+                        aria-label="Hamısını seç"
+                      />
+                    </th>
+                    <th>Room</th>
+                    <th>Description</th>
+                    <th style={{ textAlign: 'right' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((room) => (
+                    <tr key={room.id} className={selectedIds.includes(room.id) ? shared.selected : ''}>
+                      <td>
+                        <AdminCheckbox
+                          checked={selectedIds.includes(room.id)}
+                          onChange={() => handleSelectOne(room.id)}
+                          aria-label={`Otaq ${room.name} seç`}
+                        />
+                      </td>
+                      <td>
+                        <div className={styles.cellContent}>
+                          <div className={styles.imageWrapper}>
+                            {room.imageUrl ? (
+                              <Image src={roomImageSrc(room)} alt={room.name} width={48} height={48} className={styles.image} loading="lazy" />
+                            ) : (
+                              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc', fontSize: 20 }}>⌂</div>
+                            )}
+                          </div>
+                          <div className={styles.nameInfo}>
+                            <span className={styles.name}>{room.name}</span>
+                            <span className={styles.idBadge}>ID: #{room.id}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style={{ color: '#666', maxWidth: 300 }}>
+                        {room.description
+                          ? room.description.length > 60
+                            ? room.description.substring(0, 60) + '...'
+                            : room.description
+                          : '—'}
+                      </td>
+                      <td>
+                        <div className={shared.actions}>
+                          <Link
+                            href={`/admin/rooms/${room.id}`}
+                            className={`${shared.actionBtn} ${shared.editBtn}`}
+                            title="Edit"
+                          >
+                            <FaEdit />
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => handleDelete(room.id)}
+                            className={`${shared.actionBtn} ${shared.deleteBtn}`}
+                            title="Delete"
+                          >
+                            <FaTrash />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            );
+          })()
         )}
       </div>
     </div>

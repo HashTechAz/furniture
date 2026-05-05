@@ -9,7 +9,7 @@ import { getCached, setCached } from '@/lib/admin-prefetch-cache';
 import { useAdminModal } from '@/context/admin-modal-context';
 import shared from '../components/admin-shared.module.css';
 import styles from './contact.module.css';
-import { FaTrash, FaEye, FaInbox } from 'react-icons/fa';
+import { FaTrash, FaEye, FaInbox, FaSearch } from 'react-icons/fa';
 
 function parseMessages(data: ContactMessage[] | ContactResponse): ContactMessage[] {
   if (Array.isArray(data)) return data;
@@ -22,6 +22,7 @@ export default function ContactListPage() {
   const cached = getCached<ContactMessage[]>('contact');
   const [messages, setMessages] = useState<ContactMessage[]>(Array.isArray(cached) ? cached : []);
   const [loading, setLoading] = useState(!cached);
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const { openModal } = useAdminModal();
 
@@ -124,6 +125,19 @@ export default function ContactListPage() {
         )}
       </div>
 
+      <div className={shared.filtersBar}>
+        <div className={shared.searchWrapper}>
+          <FaSearch className={shared.searchIcon} />
+          <input
+            type="text"
+            placeholder="Search messages by name, email or subject..."
+            className={shared.searchInput}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
+
       <div className={shared.tableCard}>
         {loading ? (
           <AdminTableSkeleton rows={6} />
@@ -133,81 +147,103 @@ export default function ContactListPage() {
             <p>No messages found.</p>
           </div>
         ) : (
-          <>
-            <table className={shared.table}>
-              <thead>
-                <tr>
-                  <th>
-                    <AdminCheckbox
-                      checked={messages.length > 0 && selectedIds.length === messages.length}
-                      onChange={handleSelectAll}
-                      indeterminate={selectedIds.length > 0 && selectedIds.length < messages.length}
-                      aria-label="Hamısını seç"
-                    />
-                  </th>
-                  <th>Status</th>
-                  <th>Date</th>
-                  <th>Sender</th>
-                  <th>Subject</th>
-                  <th>Email</th>
-                  <th style={{ textAlign: 'right' }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {messages.map((msg) => (
-                  <tr
-                    key={msg.id}
-                    className={`${selectedIds.includes(msg.id) ? shared.selected : ''} ${!msg.isRead ? styles.unreadRow : ''}`}
-                  >
-                    <td>
-                      <AdminCheckbox
-                        checked={selectedIds.includes(msg.id)}
-                        onChange={() => handleSelectOne(msg.id)}
-                        aria-label={`Mesaj ${msg.subject} seç`}
-                      />
-                    </td>
-                    <td>
-                        <span className={`${styles.statusBadge} ${!msg.isRead ? styles.statusNew : styles.statusRead}`}>
-                        {!msg.isRead ? 'New' : 'Read'}
-                        </span>
-                    </td>
-                    <td style={{color: '#666', fontSize: 13}}>{formatDate(msg.createdAt)}</td>
-                    <td style={{fontWeight: 500}}>{msg.fullName}</td>
-                    <td>{msg.subject}</td>
-                    <td style={{color: '#666'}}>{msg.email}</td>
-                    <td>
-                      <div className={shared.actions}>
-                        <Link href={`/admin/contact/${msg.id}`} className={`${shared.actionBtn} ${shared.viewBtn}`} title="View">
-                          <FaEye />
-                        </Link>
-                        <button onClick={() => handleDelete(msg.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
-                          <FaTrash />
-                        </button>
-                      </div>
-                    </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+          (() => {
+            const filtered = messages.filter(msg => 
+              msg.fullName.toLowerCase().includes(searchTerm.toLowerCase()) || 
+              msg.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              msg.subject.toLowerCase().includes(searchTerm.toLowerCase())
+            );
 
-            <div className={shared.pagination}>
-              <button
-                className={shared.pageBtn}
-                disabled={page === 1}
-                onClick={() => setPage(p => p - 1)}
-              >
-                &larr; Previous
-              </button>
-              <span style={{ fontSize: 14, color: '#6b7280', fontWeight: 600 }}>Page {page}</span>
-              <button
-                className={shared.pageBtn}
-                disabled={messages.length < 10}
-                onClick={() => setPage(p => p + 1)}
-              >
-                Next &rarr;
-              </button>
-            </div>
-          </>
+            if (filtered.length === 0 && searchTerm) {
+              return (
+                <div className={shared.emptyState}>
+                  <FaSearch size={48} className={shared.emptyStateIcon} />
+                  <p>No messages match your search "{searchTerm}".</p>
+                </div>
+              );
+            }
+
+            return (
+              <>
+                <table className={shared.table}>
+                  <thead>
+                    <tr>
+                      <th>
+                        <AdminCheckbox
+                          checked={filtered.length > 0 && selectedIds.length === filtered.length}
+                          onChange={(e) => {
+                            if (e.target.checked) setSelectedIds(filtered.map(m => m.id));
+                            else setSelectedIds([]);
+                          }}
+                          indeterminate={selectedIds.length > 0 && selectedIds.length < filtered.length}
+                          aria-label="Hamısını seç"
+                        />
+                      </th>
+                      <th>Status</th>
+                      <th>Date</th>
+                      <th>Sender</th>
+                      <th>Subject</th>
+                      <th>Email</th>
+                      <th style={{ textAlign: 'right' }}>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filtered.map((msg) => (
+                      <tr
+                        key={msg.id}
+                        className={`${selectedIds.includes(msg.id) ? shared.selected : ''} ${!msg.isRead ? styles.unreadRow : ''}`}
+                      >
+                        <td>
+                          <AdminCheckbox
+                            checked={selectedIds.includes(msg.id)}
+                            onChange={() => handleSelectOne(msg.id)}
+                            aria-label={`Mesaj ${msg.subject} seç`}
+                          />
+                        </td>
+                        <td>
+                            <span className={`${styles.statusBadge} ${!msg.isRead ? styles.statusNew : styles.statusRead}`}>
+                            {!msg.isRead ? 'New' : 'Read'}
+                            </span>
+                        </td>
+                        <td style={{color: '#666', fontSize: 13}}>{formatDate(msg.createdAt)}</td>
+                        <td style={{fontWeight: 500}}>{msg.fullName}</td>
+                        <td>{msg.subject}</td>
+                        <td style={{color: '#666'}}>{msg.email}</td>
+                        <td>
+                          <div className={shared.actions}>
+                            <Link href={`/admin/contact/${msg.id}`} className={`${shared.actionBtn} ${shared.viewBtn}`} title="View">
+                              <FaEye />
+                            </Link>
+                            <button onClick={() => handleDelete(msg.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
+                              <FaTrash />
+                            </button>
+                          </div>
+                        </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+
+                <div className={shared.pagination}>
+                  <button
+                    className={shared.pageBtn}
+                    disabled={page === 1}
+                    onClick={() => setPage(p => p - 1)}
+                  >
+                    &larr; Previous
+                  </button>
+                  <span style={{ fontSize: 14, color: '#6b7280', fontWeight: 600 }}>Page {page}</span>
+                  <button
+                    className={shared.pageBtn}
+                    disabled={messages.length < 10}
+                    onClick={() => setPage(p => p + 1)}
+                  >
+                    Next &rarr;
+                  </button>
+                </div>
+              </>
+            );
+          })()
         )}
       </div>
     </div>
