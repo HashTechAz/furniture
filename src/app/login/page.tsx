@@ -61,27 +61,31 @@ export default function LoginPage() {
 
   return (
     <div className={styles.container}>
-      
+
       {/* SOL TƏRƏF: ŞƏKİL VƏ BRANDING */}
       <div className={styles.imageSection}>
         {/* Şəkil ayrıca div-dədir ki, animasiya yazıları tərpətməsin */}
-        <div className={styles.animatedBg}></div> 
+        <div className={styles.animatedBg}></div>
         <div className={styles.imageOverlay}></div>
-        
+
         <div className={styles.brandContent}>
-           
-            <h1 className={styles.brandTitle}>Sparro.</h1>
-            <p className={styles.brandSubtitle}>
-              Premium mebel idarəetmə sistemi. Sifarişləri, məhsulları və kolleksiyaları tək mərkəzdən idarə edin
-            </p>
-          </div>
+
+          <h1 className={styles.brandTitle}>Sparro.</h1>
+          <p className={styles.brandSubtitle}>
+            Premium mebel idarəetmə sistemi. Sifarişləri, məhsulları və kolleksiyaları tək mərkəzdən idarə edin
+          </p>
+        </div>
       </div>
 
       {/* SAĞ TƏRƏF: FORM */}
       <div className={styles.formSection}>
         <div className={styles.formWrapper}>
-          
+
           <div className={styles.header}>
+            <div className={styles.loginBadge}>
+              <span className={styles.loginBadgeDot}></span>
+              Admin Panel
+            </div>
             <h2 className={styles.title}>Xoş Gəldiniz</h2>
             <p className={styles.subtitle}>Hesabınıza daxil olmaq üçün məlumatlarınızı daxil edin</p>
           </div>
@@ -93,7 +97,7 @@ export default function LoginPage() {
           )}
 
           <form onSubmit={handleSubmit} className={styles.form}>
-            
+
             <div className={styles.inputGroup}>
               <label className={styles.label}>Email / Username</label>
               <input
@@ -117,8 +121,8 @@ export default function LoginPage() {
                   className={styles.input}
                   required
                 />
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className={styles.eyeButton}
                   onClick={() => setShowPassword(!showPassword)}
                 >
@@ -127,8 +131,8 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={loading}
               className={styles.button}
             >

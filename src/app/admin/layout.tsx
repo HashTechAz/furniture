@@ -196,7 +196,13 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
           {user && (
             <div className={styles.userProfile}>
               <div className={styles.userAvatar}>
-                {user.email.charAt(0).toUpperCase()}
+                <Image
+                  src="/images/admin/admin-profile.png"
+                  alt="Admin"
+                  width={38}
+                  height={38}
+                  style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                />
               </div>
               <div className={styles.userInfo}>
                 <span className={styles.userName}>Admin</span>
@@ -224,7 +230,14 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
           </div>
           <div className={styles.headerRight}>
             <div className={styles.adminAvatar}>
-              {user?.email?.charAt(0).toUpperCase() ?? 'A'}
+              <Image
+                src="/images/admin/admin-profile.png"
+                alt="Admin"
+                width={40}
+                height={40}
+                style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                priority
+              />
             </div>
             <span className={styles.adminLabel}>Admin</span>
           </div>
