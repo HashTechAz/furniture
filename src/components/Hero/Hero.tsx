@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Hero.module.css";
-import Image from 'next/image'  
+import Image from "next/image";
 interface HeroProps {
   title: string;
   titleSpan: string;
@@ -11,40 +11,43 @@ interface HeroProps {
   textColor?: string;
   imageClassName?: string;
   heroClassName?: string;
-  layout?: 'default' | 'stacked';
+  layout?: "default" | "stacked";
 }
 
-const Hero = ({ 
-  title, 
-  titleSpan, 
-  description, 
-  imageUrl, 
+const Hero = ({
+  title,
+  titleSpan,
+  description,
+  imageUrl,
   imageAlt,
   backgroundColor = "#2c3587",
   textColor = "#333",
   imageClassName,
   heroClassName,
-  layout = 'default'
+  layout = "default",
 }: HeroProps) => {
   return (
     <>
-      <section 
-        className={`${styles.hero} ${heroClassName || ''}`} 
+      <section
+        className={`${styles.hero} ${heroClassName || ""}`}
         style={{ backgroundColor, color: textColor }}
       >
-        <div className={`${styles.content} ${layout === 'stacked' ? styles.stackedContent : ''}`}>
+        <div
+          className={`${styles.content} ${layout === "stacked" ? styles.stackedContent : ""}`}
+        >
           <div className={styles.textContent}>
             <h1 className={styles.title}>
               {title} — <span>{titleSpan}</span>
             </h1>
-            <p className={styles.description}>
-              {description}
-            </p>
+            <p className={styles.description}>{description}</p>
           </div>
           <div className={styles.imageContent}>
-          <div className={`${styles.heroImage} ${imageClassName || ''}`} style={{position:"relative"}} >
+            <div
+              className={`${styles.heroImage} ${imageClassName || ""}`}
+              style={{ position: "relative" }}
+            >
               <Image
-                 fill
+                fill
                 src={imageUrl}
                 alt={imageAlt ?? ""}
                 className={styles.heroImageImg}

@@ -48,15 +48,15 @@ const PaletteRightImage = ({
                   imageSize === "large"
                     ? styles.paletteJpgLarge
                     : imageSize === "custom"
-                    ? styles.paletteJpgCustom
-                    : styles.paletteJpg
+                      ? styles.paletteJpgCustom
+                      : styles.paletteJpg
                 }
               >
                 <Image
                   fill
                   src={imageUrl}
-                  alt=''
-                  sizes='(max-width: 1024px) 100vw, 50vw'
+                  alt=""
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               </div>
             </div>

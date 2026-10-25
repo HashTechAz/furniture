@@ -1,41 +1,30 @@
-import React from 'react';
-import styles from './HeroSection.module.css';
+import React from "react";
+import styles from "./HeroSection.module.css";
 
 interface HeroSectionProps {
-  title?: string;
-  titleSpan?: string;
-  buttonText?: string;
-  buttonLink?: string;
-  backgroundImage?: string;
-  variant?: 'default' | 'productseries' | 'inspiration';
+  variant?: "default" | "productseries" | "inspiration";
 }
 
-const HeroSection = ({ 
-  title = "Paradigm", 
-  titleSpan = "The new language of lounge",
-  buttonText = "Explore now",
-  buttonLink = "#",
-  backgroundImage,
-  variant = 'default'
-}: HeroSectionProps) => {
-    return (
-        <section className={`${styles.hero} ${variant === 'productseries' ? styles.productseriesVariant : ''} ${variant === 'inspiration' ? styles.inspirationVariant : ''}`}>
-            <div className={styles.heroTop}>
-                <div className={styles.heroContent}>
-                    <h1 className={styles.heroTitle}>
-                        {title} <span>{titleSpan}</span>
-                    </h1>
-                    <a href={buttonLink} className={styles.heroButton}>
-                        {buttonText}
-                    </a>
-                </div>
-            </div>
-            <div 
-              className={styles.heroBottom}
-              style={backgroundImage ? { backgroundImage: `url(${backgroundImage})` } : {}}
-            ></div>
-        </section>
-    );
+const HeroSection = ({ variant = "default" }: HeroSectionProps) => {
+  return (
+    <section
+      className={`${styles.hero} ${
+        variant === "productseries" ? styles.productseriesVariant : ""
+      } ${variant === "inspiration" ? styles.inspirationVariant : ""}`}
+    >
+      <div className={styles.heroBottom}>
+        <iframe
+          className={styles.heroVideo}
+          src="https://player.vimeo.com/video/1239316939?background=1&autoplay=1&autopause=0&loop=1&muted=1&controls=0&title=0&byline=0&portrait=0&badge=0"
+          title="Sparro Hero Video"
+          allow="autoplay; fullscreen; picture-in-picture"
+          referrerPolicy="strict-origin-when-cross-origin"
+          loading="eager"
+          tabIndex={-1}
+        />
+      </div>
+    </section>
+  );
 };
 
 export default HeroSection;
