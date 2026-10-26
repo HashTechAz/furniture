@@ -22,15 +22,15 @@ const DesignersPage = () => {
         title="The Designers"
         titleSpan="Meet the creative minds behind Montana"
         description="Discover the talented designers who have shaped Montana's iconic furniture collection. From the visionary founder Peter J. Lassen to contemporary collaborators like Margrethe Odgaard, each designer brings their unique perspective to create furniture that stands the test of time."
-        imageUrl="https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-home/2020/montana_home20_21_hilowtable_pantonone_hokkaido_monarch_whiteoak_vanilla_balsamic_02_w.jpg?mode=crop&width=1080&height=776"
+        imageUrl="/images/palette/montana_home20_21_black_white.webp"
         imageAlt="Montana Designers"
         backgroundColor="#275138"
         textColor="#ffffff"
       />
       <PaletteLeftImage
-        title="Peter Anvar Aliyev"
+        title="Peter"
         description="Back in 1982, Peter J. Lassen founded the family company, Montana Furniture. Montana is based on Lassen’s philosophy; that every one of us has a need for freedom to create our own personal spaces. Hence, the now well-known “Making room for personality” became the natural slogan for the new box of freedom."
-        buttonText="Read more about Amvar Aliyev"
+        buttonText="Read more about Peter"
         buttonLink="/collections/summer"
         imageUrl="https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/designer-portraits/peter_joakim_lassen_montana_2018_2bw.jpg?mode=crop&width=540&height=720"
         backgroundColor="#2C3587"

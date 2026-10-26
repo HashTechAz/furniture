@@ -8,7 +8,7 @@
         "description": "Do you feel like something new? Change a shelf, get a new back panel, switch the castors, revamp your modules with striking handles in a complementary colour or add a brand new set of colourful legs.\n\n",
         "buttonText": "Discover Colour Classes here",
         "buttonLink": "/collections/summer",
-        "imageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/creative-minds/celine-hallas/celinehallasxmontana_color_05.jpg?mode=crop&width=580&height=400",
+        "imageUrl": "/images/palette/Minimalist Monoxrom İnteryer və Səliqəli Şkaflar.png",
         "backgroundColor": "#B48451",
         "imageSize": "large"
       }
@@ -27,11 +27,11 @@
         ],
         "buttonText": "Discover accessories",
         "buttonLink": "#",
-        "imageUrl": "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/studio/montana_home_23_24_a05_kevilounge_ara_azure_read_acacia_detail_h.jpg?mode=crop&width=828&height=1104",
+        "imageUrl": "/images/palette/Monoxrom interyerdə minimalist kreslo.png",
         "backgroundColor": "#E6E8EF",
         "layout": "textLeft",
         "variant": "default",
-        "imagePosition": { 
+        "imagePosition": {
           "width": "370px",
           "height": "500px",
           "top": "40px",
@@ -39,7 +39,7 @@
         }
       }
     },
-     {
+    {
       "id": "systemPaletteLeft2",
       "componentType": "PaletteLeftImage",
       "props": {

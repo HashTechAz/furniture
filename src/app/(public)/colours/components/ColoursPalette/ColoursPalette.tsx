@@ -8,7 +8,9 @@ interface ColoursPaletteProps {
 
 const ColoursPalette = ({ reversed = false }: ColoursPaletteProps) => {
   return (
-    <section className={`${styles.paletteMain} ${reversed ? styles.reversed : ''}`}>
+    <section
+      className={`${styles.paletteMain} ${reversed ? styles.reversed : ""}`}
+    >
       <div className={styles.paletteTextBox}>
         <h2 className={styles.paletteTextBoxTitle}>
           <span>Margrethe Odgaard</span>
@@ -25,7 +27,7 @@ const ColoursPalette = ({ reversed = false }: ColoursPaletteProps) => {
           </p>
         </div>
         <div>
-          <Link href='/product' className={styles.heroButton}>
+          <Link href="/product" className={styles.heroButton}>
             View all colours
           </Link>
         </div>
@@ -39,7 +41,7 @@ const ColoursPalette = ({ reversed = false }: ColoursPaletteProps) => {
         <div
           className={styles.paletteJpg}
           style={{
-            backgroundImage: `url("https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/margrethe-collab/montana_3newcolours_2023_margretheodgaard_08_h.jpg?mode=crop&width=640&height=640")`,
+            backgroundImage: `url("/images/palette/montana_3newcolours_2023_margretheodgaard_08_h_black_white.webp")`,
             width: "550px",
             height: "450px",
             top: "60px",

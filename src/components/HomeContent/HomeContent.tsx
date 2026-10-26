@@ -1,45 +1,83 @@
 // src/components/HomeContent/HomeContent.tsx
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
+import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import HeroSection from "@/components/HeroSection/HeroSection";
 import NewsSection from "@/components/NewsSection/NewsSection";
 import { FrontendProduct } from "@/lib/products";
 
 // Aşağıda qalan / ağır komponentlər – lazy yüklənir, ilk çəkim yüngülləşir
-const ProductSlider = dynamic(() => import('@/components/ProductSlider/ProductSlider'), {
-  loading: () => <div className="min-h-[280px] flex items-center justify-center text-gray-400">...</div>,
-  ssr: true,
-});
-const ProductNewsSlider = dynamic(() => import('@/components/ProductNewsSlider/ProductNewsSlider'), {
-  loading: () => <div className="min-h-[320px] flex items-center justify-center text-gray-400">...</div>,
+const ProductSlider = dynamic(
+  () => import("@/components/ProductSlider/ProductSlider"),
+  {
+    loading: () => (
+      <div className="min-h-[280px] flex items-center justify-center text-gray-400">
+        ...
+      </div>
+    ),
+    ssr: true,
+  },
+);
+const ProductNewsSlider = dynamic(
+  () => import("@/components/ProductNewsSlider/ProductNewsSlider"),
+  {
+    loading: () => (
+      <div className="min-h-[320px] flex items-center justify-center text-gray-400">
+        ...
+      </div>
+    ),
+    ssr: false,
+  },
+);
+const MiddleBanner = dynamic(
+  () => import("@/components/MiddleBanner/MiddleBanner"),
+  {
+    loading: () => (
+      <div className="min-h-[200px] bg-gray-100/50 animate-pulse rounded" />
+    ),
+    ssr: true,
+  },
+);
+const TrustBadges = dynamic(
+  () => import("@/components/TrustBadges/TrustBadges"),
+  {
+    loading: () => (
+      <div className="min-h-[120px] bg-gray-100/50 animate-pulse rounded" />
+    ),
+    ssr: true,
+  },
+);
+const HomeVideo = dynamic(() => import("@/components/HomeVideo/HomeVideo"), {
+  loading: () => (
+    <div className="min-h-[300px] bg-gray-100/50 animate-pulse rounded" />
+  ),
   ssr: false,
 });
-const MiddleBanner = dynamic(() => import('@/components/MiddleBanner/MiddleBanner'), {
-  loading: () => <div className="min-h-[200px] bg-gray-100/50 animate-pulse rounded" />,
-  ssr: true,
-});
-const TrustBadges = dynamic(() => import('@/components/TrustBadges/TrustBadges'), {
-  loading: () => <div className="min-h-[120px] bg-gray-100/50 animate-pulse rounded" />,
-  ssr: true,
-});
-const HomeVideo = dynamic(() => import('@/components/HomeVideo/HomeVideo'), {
-  loading: () => <div className="min-h-[300px] bg-gray-100/50 animate-pulse rounded" />,
+const Form = dynamic(() => import("@/components/Form/Form"), {
+  loading: () => (
+    <div className="min-h-[200px] bg-gray-100/50 animate-pulse rounded" />
+  ),
   ssr: false,
 });
-const Form = dynamic(() => import('@/components/Form/Form'), {
-  loading: () => <div className="min-h-[200px] bg-gray-100/50 animate-pulse rounded" />,
-  ssr: false,
-});
-const PaletteRightImage = dynamic(() => import('@/components/Palette/PaletteRightImage/PaletteRightImage'), {
-  loading: () => <div className="min-h-[320px] bg-gray-100/50 animate-pulse rounded" />,
-  ssr: true,
-});
-const PaletteLeftImage = dynamic(() => import('@/components/Palette/PaletteLeftImage/PaletteLeftImage'), {
-  loading: () => <div className="min-h-[320px] bg-gray-100/50 animate-pulse rounded" />,
-  ssr: true,
-});
+const PaletteRightImage = dynamic(
+  () => import("@/components/Palette/PaletteRightImage/PaletteRightImage"),
+  {
+    loading: () => (
+      <div className="min-h-[320px] bg-gray-100/50 animate-pulse rounded" />
+    ),
+    ssr: true,
+  },
+);
+const PaletteLeftImage = dynamic(
+  () => import("@/components/Palette/PaletteLeftImage/PaletteLeftImage"),
+  {
+    loading: () => (
+      <div className="min-h-[320px] bg-gray-100/50 animate-pulse rounded" />
+    ),
+    ssr: true,
+  },
+);
 
 // --- PROPS INTERFACE ---
 interface HomeContentProps {
@@ -62,12 +100,12 @@ interface PaletteProps {
   buttonLink: string;
   imageUrl: string;
   backgroundColor: string;
-  imageSize?: 'normal' | 'large' | 'custom';
+  imageSize?: "normal" | "large" | "custom";
 }
 
 interface PaletteData {
   id: string;
-  componentType: 'PaletteRightImage' | 'PaletteLeftImage';
+  componentType: "PaletteRightImage" | "PaletteLeftImage";
   props: PaletteProps;
 }
 
@@ -82,9 +120,9 @@ const HomeContent = ({ products, collections }: HomeContentProps) => {
   const homePalettes = paletteData.homePage as PaletteData[];
 
   const renderPalette = (palette: PaletteData) => {
-    if (palette.componentType === 'PaletteRightImage') {
+    if (palette.componentType === "PaletteRightImage") {
       return <PaletteRightImage key={palette.id} {...palette.props} />;
-    } else if (palette.componentType === 'PaletteLeftImage') {
+    } else if (palette.componentType === "PaletteLeftImage") {
       return <PaletteLeftImage key={palette.id} {...palette.props} />;
     }
     return null;
@@ -99,7 +137,9 @@ const HomeContent = ({ products, collections }: HomeContentProps) => {
       <ProductSlider />
 
       {/* Palette 1 */}
-      {mounted && homePalettes.find(p => p.id === 'homePaletteRight1') && renderPalette(homePalettes.find(p => p.id === 'homePaletteRight1')!)}
+      {mounted &&
+        homePalettes.find((p) => p.id === "homePaletteRight1") &&
+        renderPalette(homePalettes.find((p) => p.id === "homePaletteRight1")!)}
 
       <NewsSection limit={4} collections={collections} />
 
@@ -112,30 +152,39 @@ const HomeContent = ({ products, collections }: HomeContentProps) => {
         <MiddleBanner {...homeBannerData.homePage[0].props} />
       </div>
       <div className="showOnlyOnMobile">
-        <HomeVideo variant="mobile" imageUrl={homeVideoData.homePage.mobileVideo.imageUrl} />
+        <HomeVideo
+          variant="mobile"
+          imageUrl={homeVideoData.homePage.mobileVideo.imageUrl}
+        />
       </div>
 
       <TrustBadges />
 
       {/* Palette 2 */}
-      {mounted && homePalettes.find(p => p.id === 'homePaletteRight2') && renderPalette(homePalettes.find(p => p.id === 'homePaletteRight2')!)}
+      {mounted &&
+        homePalettes.find((p) => p.id === "homePaletteRight2") &&
+        renderPalette(homePalettes.find((p) => p.id === "homePaletteRight2")!)}
 
       {/* @ts-ignore */}
       {/* <MiddleBanner {...homeBannerData.homePage[1].props} /> */}
 
       {/* Palette Left 1 */}
-      {mounted && homePalettes.find(p => p.id === 'homePaletteLeft1') && renderPalette(homePalettes.find(p => p.id === 'homePaletteLeft1')!)}
+      {mounted &&
+        homePalettes.find((p) => p.id === "homePaletteLeft1") &&
+        renderPalette(homePalettes.find((p) => p.id === "homePaletteLeft1")!)}
 
       <div className="hideOnMobile">
         <HomeVideo imageUrl={homeVideoData.homePage.defaultVideo.imageUrl} />
       </div>
 
       {/* Palette 3 */}
-      {mounted && homePalettes.find(p => p.id === 'homePaletteRight3') && renderPalette(homePalettes.find(p => p.id === 'homePaletteRight3')!)}
+      {mounted &&
+        homePalettes.find((p) => p.id === "homePaletteRight3") &&
+        renderPalette(homePalettes.find((p) => p.id === "homePaletteRight3")!)}
 
       <Form />
     </>
   );
-}
+};
 
 export default HomeContent;
