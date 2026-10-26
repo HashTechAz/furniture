@@ -4,8 +4,8 @@
       "id": "homeMiddleBannerDefault",
       "componentType": "MiddleBanner",
       "props": {
-        "largeImageUrl": "/images/middle-banner/home/home-middle-1.jpg",
-        "smallImageUrl": "/images/middle-banner/home/home-middle-small.jpg",
+        "largeImageUrl": "/images/middle-banner/home/Monoxrom yemək otağı elegansı.png",
+        "smallImageUrl": "/images/middle-banner/home/Asset 45.png",
         "title": "Təbiətə Qayğı və Yüksək Keyfiyyət",
         "description": "Sparro olaraq bizim üçün təkcə estetik məkanlar yaratmaq yox, həm də gələcəyimizi düşünmək önəmlidir. Biz hər mərhələsində təbiətə zərər verməməyə ciddi yanaşırıq. Təbiətdən ilhamlanır, onu qoruyaraq yaradırıq.",
         "buttonText": "Daha ətraflı oxu",
@@ -17,7 +17,7 @@
       "componentType": "MiddleBanner",
       "props": {
         "largeImageUrl": "/images/middle-banner/home/home-middle-2.jpg",
-        "smallImageUrl": "/images/middle-banner/home/home-middle-2-small.jpg",
+        "smallImageUrl": "/images/middle-banner/home/Asset 43.png",
         "title": "Ekologiya və Keyfiyyət",
         "description": "Sparro olaraq, ətraf mühit qarşısında məsuliyyətimizi dərindən dərk edirik. İstehsalın hər mərhələsində həm yüksək keyfiyyəti, həm də təbiətin qorunmasını eyni dərəcədə ciddiyə alırıq...",
         "buttonText": "Daha ətraflı oxu",
