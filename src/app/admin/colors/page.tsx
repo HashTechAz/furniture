@@ -1,21 +1,23 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { getCached, setCached } from '@/lib/admin-prefetch-cache';
-import AdminTableSkeleton from '../components/AdminTableSkeleton';
-import { AdminCheckbox } from '../components/AdminCheckbox';
-import Link from 'next/link';
-import { getColors, deleteColor, BackendColor } from '@/lib/colors';
-import { useAdminModal } from '@/context/admin-modal-context';
-import shared from '../components/admin-shared.module.css';
-import styles from './colors.module.css';
-import { FaPlus, FaEdit, FaTrash, FaPalette, FaSearch } from 'react-icons/fa';
+import React, { useEffect, useState } from "react";
+import { getCached, setCached } from "@/lib/admin-prefetch-cache";
+import AdminTableSkeleton from "../components/AdminTableSkeleton";
+import { AdminCheckbox } from "../components/AdminCheckbox";
+import Link from "next/link";
+import { getColors, deleteColor, BackendColor } from "@/lib/colors";
+import { useAdminModal } from "@/context/admin-modal-context";
+import shared from "../components/admin-shared.module.css";
+import styles from "./colors.module.css";
+import { FaPlus, FaEdit, FaTrash, FaPalette, FaSearch } from "react-icons/fa";
 
 export default function ColorsPage() {
-  const cached = getCached<BackendColor[]>('colors');
-  const [colors, setColors] = useState<BackendColor[]>(Array.isArray(cached) ? cached : []);
+  const cached = getCached<BackendColor[]>("colors");
+  const [colors, setColors] = useState<BackendColor[]>(
+    Array.isArray(cached) ? cached : [],
+  );
   const [loading, setLoading] = useState(!cached);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const { openModal } = useAdminModal();
 
@@ -25,9 +27,9 @@ export default function ColorsPage() {
       const data = await getColors();
       const list = Array.isArray(data) ? data : [];
       setColors(list);
-      setCached('colors', list);
+      setCached("colors", list);
     } catch (error) {
-      console.error('Failed to fetch colors', error);
+      console.error("Failed to fetch colors", error);
     } finally {
       setLoading(false);
     }
@@ -40,56 +42,63 @@ export default function ColorsPage() {
   // DELETE MODAL
   const handleDelete = (id: number) => {
     openModal({
-      type: 'warning',
-      title: 'Delete Color?',
-      message: 'Are you sure you want to delete this color? Products using this color will be affected.',
-      confirmText: 'Yes, Delete',
-      cancelText: 'Cancel',
+      type: "warning",
+      title: "Delete Color?",
+      message:
+        "Are you sure you want to delete this color? Products using this color will be affected.",
+      confirmText: "Yes, Delete",
+      cancelText: "Cancel",
       onConfirm: async () => {
-        const token = localStorage.getItem('accessToken') || '';
+        const token = localStorage.getItem("accessToken") || "";
         await deleteColor(id, token);
-        setColors(prev => prev.filter(c => c.id !== id));
-        setSelectedIds(prev => prev.filter(selectedId => selectedId !== id));
-      }
+        setColors((prev) => prev.filter((c) => c.id !== id));
+        setSelectedIds((prev) =>
+          prev.filter((selectedId) => selectedId !== id),
+        );
+      },
     });
   };
 
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) setSelectedIds(colors.map(c => c.id));
+    if (e.target.checked) setSelectedIds(colors.map((c) => c.id));
     else setSelectedIds([]);
   };
 
   const handleSelectOne = (id: number) => {
-    setSelectedIds(prev =>
-      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
   const handleBulkDelete = () => {
     openModal({
-      type: 'warning',
-      title: 'Toplu Silinmə',
+      type: "warning",
+      title: "Toplu Silinmə",
       message: `Seçilmiş ${selectedIds.length} rəngi silmək istədiyinizə əminsiniz? Bu geriyə alına bilməz.`,
-      confirmText: 'Bəli, Sil',
-      cancelText: 'Ləğv et',
+      confirmText: "Bəli, Sil",
+      cancelText: "Ləğv et",
       onConfirm: async () => {
-        const token = localStorage.getItem('accessToken') || '';
+        const token = localStorage.getItem("accessToken") || "";
         setLoading(true);
         try {
           const results = await Promise.allSettled(
-            selectedIds.map(id => deleteColor(id, token))
+            selectedIds.map((id) => deleteColor(id, token)),
           );
           const successIds = results
-            .map((r, idx) => r.status === 'fulfilled' ? selectedIds[idx] : null)
+            .map((r, idx) =>
+              r.status === "fulfilled" ? selectedIds[idx] : null,
+            )
             .filter(Boolean) as number[];
-          setColors(prev => prev.filter(item => !successIds.includes(item.id)));
+          setColors((prev) =>
+            prev.filter((item) => !successIds.includes(item.id)),
+          );
           setSelectedIds([]);
         } catch (error) {
           console.error("Toplu silinmə xətası", error);
         } finally {
           setLoading(false);
         }
-      }
+      },
     });
   };
 
@@ -99,7 +108,10 @@ export default function ColorsPage() {
         <h1 className={shared.title}>Colors</h1>
         <div className={shared.headerActions}>
           {selectedIds.length > 0 && (
-            <button onClick={handleBulkDelete} className={`${shared.addButton} ${shared.bulkDeleteBtn}`}>
+            <button
+              onClick={handleBulkDelete}
+              className={`${shared.addButton} ${shared.bulkDeleteBtn}`}
+            >
               <FaTrash /> Seçilmişləri Sil ({selectedIds.length})
             </button>
           )}
@@ -132,9 +144,12 @@ export default function ColorsPage() {
           </div>
         ) : (
           (() => {
-            const filtered = colors.filter(color => 
-              color.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-              color.hexCode.toLowerCase().includes(searchTerm.toLowerCase())
+            const filtered = colors.filter(
+              (color) =>
+                color.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (color.hexCode ?? "")
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase()),
             );
 
             if (filtered.length === 0 && searchTerm) {
@@ -152,23 +167,35 @@ export default function ColorsPage() {
                   <tr>
                     <th>
                       <AdminCheckbox
-                        checked={filtered.length > 0 && selectedIds.length === filtered.length}
+                        checked={
+                          filtered.length > 0 &&
+                          selectedIds.length === filtered.length
+                        }
                         onChange={(e) => {
-                          if (e.target.checked) setSelectedIds(filtered.map(c => c.id));
+                          if (e.target.checked)
+                            setSelectedIds(filtered.map((c) => c.id));
                           else setSelectedIds([]);
                         }}
-                        indeterminate={selectedIds.length > 0 && selectedIds.length < filtered.length}
+                        indeterminate={
+                          selectedIds.length > 0 &&
+                          selectedIds.length < filtered.length
+                        }
                         aria-label="Hamısını seç"
                       />
                     </th>
                     <th>Color Name</th>
                     <th>Hex Code</th>
-                    <th style={{ textAlign: 'right' }}>Actions</th>
+                    <th style={{ textAlign: "right" }}>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.map((color) => (
-                    <tr key={color.id} className={selectedIds.includes(color.id) ? shared.selected : ''}>
+                    <tr
+                      key={color.id}
+                      className={
+                        selectedIds.includes(color.id) ? shared.selected : ""
+                      }
+                    >
                       <td>
                         <AdminCheckbox
                           checked={selectedIds.includes(color.id)}
@@ -178,13 +205,15 @@ export default function ColorsPage() {
                       </td>
                       <td>
                         <div className={styles.cellContent}>
-                          <div 
-                            className={styles.colorCircle} 
-                            style={{ backgroundColor: color.hexCode }} 
+                          <div
+                            className={styles.colorCircle}
+                            style={{ backgroundColor: color.hexCode }}
                           />
                           <div className={styles.nameInfo}>
-                             <span className={styles.name}>{color.name}</span>
-                             <span className={styles.idBadge}>ID: #{color.id}</span>
+                            <span className={styles.name}>{color.name}</span>
+                            <span className={styles.idBadge}>
+                              ID: #{color.id}
+                            </span>
                           </div>
                         </div>
                       </td>
@@ -193,10 +222,18 @@ export default function ColorsPage() {
                       </td>
                       <td>
                         <div className={shared.actions}>
-                          <Link href={`/admin/colors/${color.id}`} className={`${shared.actionBtn} ${shared.editBtn}`} title="Edit">
+                          <Link
+                            href={`/admin/colors/${color.id}`}
+                            className={`${shared.actionBtn} ${shared.editBtn}`}
+                            title="Edit"
+                          >
                             <FaEdit />
                           </Link>
-                          <button onClick={() => handleDelete(color.id)} className={`${shared.actionBtn} ${shared.deleteBtn}`} title="Delete">
+                          <button
+                            onClick={() => handleDelete(color.id)}
+                            className={`${shared.actionBtn} ${shared.deleteBtn}`}
+                            title="Delete"
+                          >
                             <FaTrash />
                           </button>
                         </div>
