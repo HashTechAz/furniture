@@ -1,74 +1,31 @@
 .hero {
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-
-  height: 85vh;
-  height: 85dvh;
-
   position: relative;
-  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
 
+  margin: 0;
   padding: 0;
+  overflow: hidden;
   background-color: #000;
 }
 
-/* Video container */
 .heroBottom {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
 
+.heroVideo {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
 
-  overflow: hidden;
-  z-index: 1;
-
-  container-type: size;
-}
-
-/* Vimeo responsive background video */
-.heroVideo {
-  position: absolute;
-
-  top: 50%;
-  left: 50%;
-
-  width: max(100cqw, 177.7778cqh);
-  height: max(100cqh, 56.25cqw);
-
-  transform: translate(-50%, -50%);
-
   border: 0;
   display: block;
-
   pointer-events: none;
-}
-
-/* Mobile */
-
-/* Mobile */
-@media (max-width: 768px) {
-  .hero {
-    height: 600px;
-    min-height: 500px;
-  }
-
-  .heroVideo {
-    width: 100cqw;
-    height: 56.25cqw;
-
-    top: 50%;
-    left: 50%;
-
-    transform: translate(-50%, -50%);
-  }
-}
-
-/* Tablet */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .hero {
-    height: 55vh;
-    min-height: 450px;
-  }
 }
