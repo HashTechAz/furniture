@@ -1,43 +1,47 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { FiMail, FiPhone, FiMapPin, FiSend } from 'react-icons/fi';
-import styles from './page.module.css';
-import { getApiBaseUrl } from '@/lib/api-base';
+import React, { useState } from "react";
+import { FiMail, FiPhone, FiMapPin, FiSend } from "react-icons/fi";
+import styles from "./page.module.css";
+import { getApiBaseUrl } from "@/lib/api-base";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phoneNumber: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    phoneNumber: "",
+    subject: "",
+    message: "",
   });
 
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus('loading');
-    const delay = new Promise(resolve => setTimeout(resolve, 1500));
+    setStatus("loading");
+    const delay = new Promise((resolve) => setTimeout(resolve, 1500));
 
     const payload = {
       fullName: formData.name,
       email: formData.email,
       phoneNumber: formData.phoneNumber || "",
       subject: formData.subject,
-      message: formData.message
+      message: formData.message,
     };
 
     const baseUrl = getApiBaseUrl();
 
     const fetchPromise = fetch(`${baseUrl}/api/Contact`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
 
@@ -45,18 +49,24 @@ export default function Contact() {
       const [response] = await Promise.all([fetchPromise, delay]);
 
       if (response.ok) {
-        setStatus('success');
-        setFormData({ name: '', email: '', phoneNumber: '', subject: '', message: '' });
+        setStatus("success");
+        setFormData({
+          name: "",
+          email: "",
+          phoneNumber: "",
+          subject: "",
+          message: "",
+        });
 
-        setTimeout(() => setStatus('idle'), 5000);
+        setTimeout(() => setStatus("idle"), 5000);
       } else {
         const errorText = await response.text();
         console.error("API Xətası:", errorText);
-        setStatus('error');
+        setStatus("error");
       }
     } catch (error) {
       console.error("Şəbəkə xətası:", error);
-      setStatus('error');
+      setStatus("error");
     }
   };
 
@@ -71,30 +81,35 @@ export default function Contact() {
 
       <div className={styles.container}>
         <div className={styles.contactGrid}>
-
           <div className={styles.contactInfo}>
             <h2>Get in Touch</h2>
             <p>
-              We are here to help you find the perfect furniture solutions.
-              Fill out the form and we will be in touch shortly.
+              We are here to help you find the perfect furniture solutions. Fill
+              out the form and we will be in touch shortly.
             </p>
 
             <div className={styles.contactMethod}>
-              <div className={styles.iconWrapper}><FiMail /></div>
+              <div className={styles.iconWrapper}>
+                <FiMail />
+              </div>
               <div>
                 <h3>Email</h3>
-                <p>info@montanafurniture.com</p>
+                <p>info@Sparrofurniture.com</p>
               </div>
             </div>
             <div className={styles.contactMethod}>
-              <div className={styles.iconWrapper}><FiPhone /></div>
+              <div className={styles.iconWrapper}>
+                <FiPhone />
+              </div>
               <div>
                 <h3>Phone</h3>
                 <p>+994 (55) 123-4567</p>
               </div>
             </div>
             <div className={styles.contactMethod}>
-              <div className={styles.iconWrapper}><FiMapPin /></div>
+              <div className={styles.iconWrapper}>
+                <FiMapPin />
+              </div>
               <div>
                 <h3>Showroom</h3>
                 <p>Baku, Narimanov, Ahmad Rajabli 15</p>
@@ -103,14 +118,14 @@ export default function Contact() {
           </div>
 
           <div className={styles.contactForm}>
-
-            {status === 'success' && (
+            {status === "success" && (
               <div className={styles.successMessage}>
-                ✅ Mesajınız uğurla göndərildi! Sizinlə tezliklə əlaqə saxlayacağıq.
+                ✅ Mesajınız uğurla göndərildi! Sizinlə tezliklə əlaqə
+                saxlayacağıq.
               </div>
             )}
 
-            {status === 'error' && (
+            {status === "error" && (
               <div className={styles.errorMessage}>
                 ❌ Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.
               </div>
@@ -122,10 +137,14 @@ export default function Contact() {
                   <label htmlFor="name">Full Name *</label>
                   <input
                     className={styles.input}
-                    type="text" id="name" name="name" required
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
                     placeholder="John Doe"
-                    value={formData.name} onChange={handleChange}
-                    disabled={status === 'loading'}
+                    value={formData.name}
+                    onChange={handleChange}
+                    disabled={status === "loading"}
                   />
                 </div>
 
@@ -133,10 +152,14 @@ export default function Contact() {
                   <label htmlFor="email">Email Address *</label>
                   <input
                     className={styles.input}
-                    type="email" id="email" name="email" required
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
                     placeholder="john@example.com"
-                    value={formData.email} onChange={handleChange}
-                    disabled={status === 'loading'}
+                    value={formData.email}
+                    onChange={handleChange}
+                    disabled={status === "loading"}
                   />
                 </div>
               </div>
@@ -146,10 +169,13 @@ export default function Contact() {
                   <label htmlFor="phoneNumber">Phone Number</label>
                   <input
                     className={styles.input}
-                    type="text" id="phoneNumber" name="phoneNumber"
+                    type="text"
+                    id="phoneNumber"
+                    name="phoneNumber"
                     placeholder="+994 50 000 00 00"
-                    value={formData.phoneNumber} onChange={handleChange}
-                    disabled={status === 'loading'}
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    disabled={status === "loading"}
                   />
                 </div>
 
@@ -157,10 +183,14 @@ export default function Contact() {
                   <label htmlFor="subject">Subject *</label>
                   <input
                     className={styles.input}
-                    type="text" id="subject" name="subject" required
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    required
                     placeholder="Product Inquiry"
-                    value={formData.subject} onChange={handleChange}
-                    disabled={status === 'loading'}
+                    value={formData.subject}
+                    onChange={handleChange}
+                    disabled={status === "loading"}
                   />
                 </div>
               </div>
@@ -169,19 +199,23 @@ export default function Contact() {
                 <label htmlFor="message">Message *</label>
                 <textarea
                   className={styles.textarea}
-                  id="message" name="message" rows={5} required
+                  id="message"
+                  name="message"
+                  rows={5}
+                  required
                   placeholder="How can we help you?"
-                  value={formData.message} onChange={handleChange}
-                  disabled={status === 'loading'}
+                  value={formData.message}
+                  onChange={handleChange}
+                  disabled={status === "loading"}
                 ></textarea>
               </div>
 
               <button
                 type="submit"
                 className={styles.submitButton}
-                disabled={status === 'loading'}
+                disabled={status === "loading"}
               >
-                {status === 'loading' ? (
+                {status === "loading" ? (
                   <>
                     <span className={styles.spinner}></span> Sending...
                   </>

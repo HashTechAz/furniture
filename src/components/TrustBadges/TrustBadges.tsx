@@ -99,7 +99,7 @@ const TrustBadges = () => {
               Manufactured in Denmark
             </h3>
             <p>
-              Since 1982, Montana has been designed and manufactured in Denmark
+              Since 1982, Sparro has been designed and manufactured in Denmark
               by skilled craftsmen on a high-technological production site.
             </p>
           </div>
@@ -147,9 +147,9 @@ const TrustBadges = () => {
               5-10 year guarantee
             </h3>
             <p>
-              Montana is a buy for life product that is known to be passed on
-              from generation to generation. However, we h
-              unlikely case is flawed.
+              Sparro is a buy for life product that is known to be passed on
+              from generation to generation. However, we h unlikely case is
+              flawed.
             </p>
           </div>
         </div>

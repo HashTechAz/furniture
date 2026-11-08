@@ -13,8 +13,6 @@
   padding: 0 80px;
 }
 
-
-
 .footerTitle {
   width: 140px;
   height: 56px;
@@ -58,8 +56,8 @@
 }
 
 .footerItem ul {
-   list-style-type: none;
-   margin-top: 14px;
+  list-style-type: none;
+  margin-top: 14px;
 }
 
 .footerItem ul li {
@@ -94,16 +92,16 @@
 }
 
 .footerItem .footerSocial ul li a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
 }
 
 .footerEnd {
   width: 100%;
   max-width: 1536px;
-  margin: 40px auto 0; 
+  margin: 40px auto 0;
   padding: 40px 80px 0;
   border-top: 1px solid #444;
 }
@@ -118,7 +116,8 @@
   .footer {
     padding: 40px 0;
   }
-  .footer .footerMain, .footerEnd {
+  .footer .footerMain,
+  .footerEnd {
     padding-left: 40px;
     padding-right: 40px;
   }
@@ -126,7 +125,7 @@
   .parent {
     display: grid;
     grid-template-areas:
-      "montana ressources service"
+      "Sparro ressources service"
       "logo logo logo"
       "address address address"
       "cvr cvr cvr"
@@ -137,14 +136,30 @@
     margin-top: 30px;
   }
 
-  .montanaLinks { grid-area: montana; }
-  .ressourcesLinks { grid-area: ressources; }
-  .serviceLinks { grid-area: service; }
-  .logo { grid-area: logo; }
-  .address { grid-area: address; }
-  .cvr { grid-area: cvr; }
-  .social { grid-area: social; }
-  .rights { grid-area: rights; }
+  .SparroLinks {
+    grid-area: Sparro;
+  }
+  .ressourcesLinks {
+    grid-area: ressources;
+  }
+  .serviceLinks {
+    grid-area: service;
+  }
+  .logo {
+    grid-area: logo;
+  }
+  .address {
+    grid-area: address;
+  }
+  .cvr {
+    grid-area: cvr;
+  }
+  .social {
+    grid-area: social;
+  }
+  .rights {
+    grid-area: rights;
+  }
 
   .parent > .info {
     width: auto;
@@ -164,7 +179,8 @@
   .footer {
     padding: 40px 0;
   }
-  .footer .footerMain, .footerEnd {
+  .footer .footerMain,
+  .footerEnd {
     padding-left: 20px;
     padding-right: 20px;
   }
@@ -172,19 +188,29 @@
   .parent {
     display: grid;
     grid-template-areas:
-      "montana ressources"
+      "Sparro ressources"
       "service service"
       "info info"
       "social social";
     grid-template-columns: 1fr 1fr;
-    gap: 40px 20px; 
+    gap: 40px 20px;
   }
 
-  .info { grid-area: info; }
-  .montanaLinks { grid-area: montana; }
-  .ressourcesLinks { grid-area: ressources; }
-  .serviceLinks { grid-area: service; }
-  .social { grid-area: social; }
+  .info {
+    grid-area: info;
+  }
+  .SparroLinks {
+    grid-area: Sparro;
+  }
+  .ressourcesLinks {
+    grid-area: ressources;
+  }
+  .serviceLinks {
+    grid-area: service;
+  }
+  .social {
+    grid-area: social;
+  }
 
   .parent > .info {
     width: auto;

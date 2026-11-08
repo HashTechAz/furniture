@@ -1,11 +1,13 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { notFound, useParams } from "next/navigation";
 import { componentMap, ComponentName } from "@/component-map";
 import pageStyles from "./page.module.css";
-import SystemHero, { SystemHeroProps } from "../../system/components/SystemHero/SystemHero";
-import PageBuilder from '@/components/PageBuilder/PageBuilder';
+import SystemHero, {
+  SystemHeroProps,
+} from "../../system/components/SystemHero/SystemHero";
+import PageBuilder from "@/components/PageBuilder/PageBuilder";
 import seriesGuaranteesData from "@/mock/series-guarantees/index.json";
 
 interface PageComponent {
@@ -25,12 +27,12 @@ interface PaletteProps {
   buttonLink: string;
   imageUrl: string;
   backgroundColor: string;
-  imageSize?: 'normal' | 'large' | 'custom';
+  imageSize?: "normal" | "large" | "custom";
   category?: string;
   description2?: string;
   features?: string[];
-  layout?: 'textLeft' | 'textRight';
-  variant?: 'default' | 'third';
+  layout?: "textLeft" | "textRight";
+  variant?: "default" | "third";
   imagePosition?: {
     width: string;
     height: string;
@@ -42,58 +44,63 @@ interface PaletteProps {
 
 interface PaletteData {
   id: string;
-  componentType: 'PaletteRightImage' | 'PaletteLeftImage' | 'SystemPalette';
+  componentType: "PaletteRightImage" | "PaletteLeftImage" | "SystemPalette";
   props: PaletteProps;
 }
 
 const seriesPageData: Record<string, SeriesPageData> = {
   "learn-more-about": {
     heroProps: {
-      title: "Customer support — We are ready to help private and professional customers",
+      title:
+        "Customer support — We are ready to help private and professional customers",
       backgroundColor: "#2D303B",
-      color: "#fff"
+      color: "#fff",
     },
     components: [
       {
         component: "SeriesAbout",
-        props: {}
+        props: {},
       },
       {
         component: "TrustBadges",
-        props: {}
+        props: {},
       },
-    ]
+    ],
   },
-  "guarantees": {
+  guarantees: {
     heroProps: {
       title: "Guarantees",
-      description: "Our design requirements and quality control ensure that your Montana products, when used correctly last for a lifetime. At Montana, we take the environment and quality seriously. Over 25 years ago, we introduced our own set of environmental account in consultation with the Danish Environmental Protection Agency.",
+      description:
+        "Our design requirements and quality control ensure that your Sparro products, when used correctly last for a lifetime. At Sparro, we take the environment and quality seriously. Over 25 years ago, we introduced our own set of environmental account in consultation with the Danish Environmental Protection Agency.",
       backgroundColor: "#3B7840",
       color: "#fff",
-      increasePaddingY: true
+      increasePaddingY: true,
     },
     components: [
       {
         component: "CenterInfoText",
         props: {
           title: "Quality Guarantee - Built to Last a Lifetime",
-          description: "Every Montana piece is crafted with the highest quality materials and attention to detail. Our furniture is designed to withstand daily use while maintaining its beauty and functionality for generations. We stand behind our products with comprehensive warranties and exceptional customer service.",
-          secondParagraph: "Our 10-year structural warranty covers all frame components, ensuring your Montana furniture maintains its integrity and stability for a decade of daily use. The 5-year finish warranty protects against manufacturing defects in paint, lacquer, and surface treatments, keeping your furniture looking beautiful year after year. We offer lifetime warranty on all hardware and moving parts, including hinges, drawer slides, and mounting systems, guaranteeing smooth operation throughout the furniture's life. Our customer service team provides free consultation and support for assembly, maintenance, and any questions about your Montana furniture, ensuring you get the most out of your investment."
-        }
+          description:
+            "Every Sparro piece is crafted with the highest quality materials and attention to detail. Our furniture is designed to withstand daily use while maintaining its beauty and functionality for generations. We stand behind our products with comprehensive warranties and exceptional customer service.",
+          secondParagraph:
+            "Our 10-year structural warranty covers all frame components, ensuring your Sparro furniture maintains its integrity and stability for a decade of daily use. The 5-year finish warranty protects against manufacturing defects in paint, lacquer, and surface treatments, keeping your furniture looking beautiful year after year. We offer lifetime warranty on all hardware and moving parts, including hinges, drawer slides, and mounting systems, guaranteeing smooth operation throughout the furniture's life. Our customer service team provides free consultation and support for assembly, maintenance, and any questions about your Sparro furniture, ensuring you get the most out of your investment.",
+        },
       },
       {
         component: "Related",
-        props: {}
-      }
-    ]
+        props: {},
+      },
+    ],
   },
-  "assembly": {
+  assembly: {
     heroProps: {
       title: "Assembly guides — PDFs and video tutorials",
-      description: "Find step-by-step assembly guides and technical specifications. If you need further assistance or have questions regarding assembly, please get in touch with your nearest Montana retailer.",
+      description:
+        "Find step-by-step assembly guides and technical specifications. If you need further assistance or have questions regarding assembly, please get in touch with your nearest Sparro retailer.",
       backgroundColor: "#F4F4F1",
       color: "#000",
-      increasePaddingY: true
+      increasePaddingY: true,
     },
     components: [
       {
@@ -102,15 +109,15 @@ const seriesPageData: Record<string, SeriesPageData> = {
           title: "Assembly Guides",
           lists: [
             // ... (assembly list data olduğu kimi qalır)
-          ]
-        }
+          ],
+        },
       },
       {
         component: "Related",
-        props: {}
-      }
-    ]
-  }
+        props: {},
+      },
+    ],
+  },
 };
 
 const getPageData = (slug: string) => {
@@ -133,8 +140,10 @@ const SeriesDetailPage = () => {
   useEffect(() => {
     if (!mounted) return;
 
-    if (slug === 'guarantees') {
-      setPagePalettes(seriesGuaranteesData.seriesGuaranteesPage as PaletteData[]);
+    if (slug === "guarantees") {
+      setPagePalettes(
+        seriesGuaranteesData.seriesGuaranteesPage as PaletteData[],
+      );
     } else {
       setPagePalettes([]);
     }
@@ -169,10 +178,10 @@ const SeriesDetailPage = () => {
       <PageBuilder components={pageData.components} />
       {/* --------------------------- */}
 
-      {slug === 'guarantees' && mounted && (
+      {slug === "guarantees" && mounted && (
         <div className={pageStyles.bannerWrapper}>
           {pagePalettes.length > 0 ? (
-            pagePalettes.map(palette => renderPalette(palette))
+            pagePalettes.map((palette) => renderPalette(palette))
           ) : (
             <p>Palette data not found for guarantees.</p>
           )}

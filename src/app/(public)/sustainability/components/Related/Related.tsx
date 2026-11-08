@@ -7,10 +7,13 @@ import Link from "next/link";
 import { getRooms } from "@/lib/rooms";
 import { getApiBaseUrl } from "@/lib/api-base";
 
-const PLACEHOLDER_IMAGE = 'https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/colours/montana_colourps_amber_camomile_rhubarb_flint_oat.jpg?mode=crop&width=1520&height=2027';
+const PLACEHOLDER_IMAGE =
+  "https://b2c.Sparro-episerver.com/globalassets/ambient-images/portrait-images/colours/Sparro_colourps_amber_camomile_rhubarb_flint_oat.jpg?mode=crop&width=1520&height=2027";
 
 const Related = () => {
-  const [rooms, setRooms] = useState<{ id: number; name: string; imageUrl?: string; description?: string }[]>([]);
+  const [rooms, setRooms] = useState<
+    { id: number; name: string; imageUrl?: string; description?: string }[]
+  >([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -44,17 +47,31 @@ const Related = () => {
         ) : (
           rooms.map((room) => {
             const imageUrl = room.imageUrl
-              ? (room.imageUrl.startsWith('http') ? room.imageUrl : `${baseUrl}${room.imageUrl.startsWith('/') ? '' : '/'}${room.imageUrl}`)
+              ? room.imageUrl.startsWith("http")
+                ? room.imageUrl
+                : `${baseUrl}${room.imageUrl.startsWith("/") ? "" : "/"}${room.imageUrl}`
               : PLACEHOLDER_IMAGE;
 
             return (
               <div className={styles.relatedItems} key={room.id}>
-                <Link href={`/product?roomId=${room.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Link
+                  href={`/product?roomId=${room.id}`}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
                   <div className={styles.imageContainer}>
-                    <Image fill src={imageUrl} alt={room.name ?? ""} className={styles.relatedImage} sizes="(max-width: 768px) 100vw, 33vw" />
+                    <Image
+                      fill
+                      src={imageUrl}
+                      alt={room.name ?? ""}
+                      className={styles.relatedImage}
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
                   </div>
                   <h3>{room.name}</h3>
-                  <p>{room.description || `Explore our elegant ${room.name} designs and find inspiration for your own space.`}</p>
+                  <p>
+                    {room.description ||
+                      `Explore our elegant ${room.name} designs and find inspiration for your own space.`}
+                  </p>
                 </Link>
               </div>
             );

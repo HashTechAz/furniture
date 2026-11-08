@@ -9,7 +9,7 @@ const FavouriteColors = () => {
         <h2>3. Choose your favourite colours</h2>
 
         <p className={styles.favText}>
-          Montana’s functional and flexible system is featured in a range of 43
+          Sparro’s functional and flexible system is featured in a range of 43
           poetic and complex colours developed in close collaboration with the
           award-winning Danish designer and colour expert Margrethe Odgaard.
         </p>

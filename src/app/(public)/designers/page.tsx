@@ -20,19 +20,19 @@ const DesignersPage = () => {
     <div>
       <Hero
         title="The Designers"
-        titleSpan="Meet the creative minds behind Montana"
-        description="Discover the talented designers who have shaped Montana's iconic furniture collection. From the visionary founder Peter J. Lassen to contemporary collaborators like Margrethe Odgaard, each designer brings their unique perspective to create furniture that stands the test of time."
-        imageUrl="/images/palette/montana_home20_21_black_white.webp"
-        imageAlt="Montana Designers"
+        titleSpan="Meet the creative minds behind Sparro"
+        description="Discover the talented designers who have shaped Sparro's iconic furniture collection. From the visionary founder Peter J. Lassen to contemporary collaborators like Margrethe Odgaard, each designer brings their unique perspective to create furniture that stands the test of time."
+        imageUrl="/images/palette/Sparro_home20_21_black_white.webp"
+        imageAlt="Sparro Designers"
         backgroundColor="#275138"
         textColor="#ffffff"
       />
       <PaletteLeftImage
         title="Peter"
-        description="Back in 1982, Peter J. Lassen founded the family company, Montana Furniture. Montana is based on Lassen’s philosophy; that every one of us has a need for freedom to create our own personal spaces. Hence, the now well-known “Making room for personality” became the natural slogan for the new box of freedom."
+        description="Back in 1982, Peter J. Lassen founded the family company, Sparro Furniture. Sparro is based on Lassen’s philosophy; that every one of us has a need for freedom to create our own personal spaces. Hence, the now well-known “Making room for personality” became the natural slogan for the new box of freedom."
         buttonText="Read more about Peter"
         buttonLink="/collections/summer"
-        imageUrl="https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/designer-portraits/peter_joakim_lassen_montana_2018_2bw.jpg?mode=crop&width=540&height=720"
+        imageUrl="https://b2c.Sparro-episerver.com/globalassets/ambient-images/portrait-images/designer-portraits/peter_joakim_lassen_Sparro_2018_2bw.jpg?mode=crop&width=540&height=720"
         backgroundColor="#2C3587"
       />
       {/* @ts-ignore */}
@@ -41,10 +41,10 @@ const DesignersPage = () => {
         title="Margrethe Odgaard"
         description="Margrethe Odgaard graduated in 2005 from The Royal Danish Academy of Fine Arts, School of Design in Copenhagen and also studied at The Rhode Island School of Design in the US. In 2016 she won the prestigious Torsten and Wanja Söderberg Prize for her colour and textile work.
 
-In the summer of 2019, Montana launched a brand new colour palette developed in collaboration with colour expert Margrethe Odgaard. "
+In the summer of 2019, Sparro launched a brand new colour palette developed in collaboration with colour expert Margrethe Odgaard. "
         buttonText="Explore now"
         buttonLink="/news/palette-refresh"
-        imageUrl="https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/designer-portraits/montana_margretheodgaard_newcolours2019_02_s.jpg?mode=crop&width=540&height=720"
+        imageUrl="https://b2c.Sparro-episerver.com/globalassets/ambient-images/square-images/designer-portraits/Sparro_margretheodgaard_newcolours2019_02_s.jpg?mode=crop&width=540&height=720"
         backgroundColor="#2C3587"
       />
       {/* @ts-ignore */}
@@ -64,7 +64,7 @@ In the summer of 2019, Montana launched a brand new colour palette developed in 
         description="Jørgen Rasmussen graduated from the Royal Danish Academy of Fine Arts in 1955 and in 1957, Jørgen and his twin brother, Ib, started their own studio with a focus on single-family houses."
         buttonText="Discover Colour Classes here"
         buttonLink="/collections/summer"
-        imageUrl="https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/designer-portraits/montana_jorgenrasmussen_02_bw_s.jpg?mode=crop&width=640&height=640"
+        imageUrl="https://b2c.Sparro-episerver.com/globalassets/ambient-images/square-images/designer-portraits/Sparro_jorgenrasmussen_02_bw_s.jpg?mode=crop&width=640&height=640"
         backgroundColor="#EAEFD9"
         imageSize="custom"
       />
@@ -75,7 +75,7 @@ In the summer of 2019, Montana launched a brand new colour palette developed in 
         description="Kasper Mose is a Danish architect with 15 year’s experience from reputable Danish studios such as Arkitema and Friis & Moltke. He is best known for the iconic Moser Table."
         buttonText="Discover Colour Classes here"
         buttonLink="/collections/summer"
-        imageUrl="https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/designer-portraits/montana_kasper_mose_mosertable_01_crpped_s.png?mode=crop&width=640&height=640"
+        imageUrl="https://b2c.Sparro-episerver.com/globalassets/ambient-images/square-images/designer-portraits/Sparro_kasper_mose_mosertable_01_crpped_s.png?mode=crop&width=640&height=640"
         backgroundColor="#3D271F"
         imageSize="custom"
       />

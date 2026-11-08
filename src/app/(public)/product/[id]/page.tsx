@@ -1,54 +1,66 @@
 // src/app/(public)/product/[id]/page.tsx
 
-import React from 'react';
-import { notFound } from 'next/navigation';
-import { Metadata } from 'next';
-import styles from './page.module.css';
-import { getApiBaseUrl } from '@/lib/api-base';
+import React from "react";
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
+import styles from "./page.module.css";
+import { getApiBaseUrl } from "@/lib/api-base";
 
-import ProductHero from './components/ProductHero/ProductHero';
-import SystemAbout from '@/app/(public)/system/components/SystemAbout/SystemAbout';
-import SystemPalette from '@/components/Palette/SystemPalette';
-import TrustBadges from '@/components/TrustBadges/TrustBadges';
-import ProductNewsSlider from '@/components/ProductNewsSlider/ProductNewsSlider';
-import ProductSlider from '@/components/ProductSlider/ProductSlider';
-import { getProductById, getProducts } from '@/lib/products';
+import ProductHero from "./components/ProductHero/ProductHero";
+import SystemAbout from "@/app/(public)/system/components/SystemAbout/SystemAbout";
+import SystemPalette from "@/components/Palette/SystemPalette";
+import TrustBadges from "@/components/TrustBadges/TrustBadges";
+import ProductNewsSlider from "@/components/ProductNewsSlider/ProductNewsSlider";
+import ProductSlider from "@/components/ProductSlider/ProductSlider";
+import { getProductById, getProducts } from "@/lib/products";
 
 interface ProductDetailsPageProps {
   params: Promise<{ id: string }>;
 }
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-export async function generateMetadata({ params }: ProductDetailsPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: ProductDetailsPageProps): Promise<Metadata> {
   const { id } = await params;
   const product = await getProductById(id);
 
   if (!product) {
     return {
-      title: 'Sparro',
+      title: "Sparro",
     };
   }
 
   const baseUrl = getApiBaseUrl();
-  let productImageUrl = '';
-  
+  let productImageUrl = "";
+
   if (product.mainImage) {
-    productImageUrl = product.mainImage.startsWith('http') ? product.mainImage : `${baseUrl}${product.mainImage}`;
+    productImageUrl = product.mainImage.startsWith("http")
+      ? product.mainImage
+      : `${baseUrl}${product.mainImage}`;
   } else if (product.imageSrc) {
-    productImageUrl = product.imageSrc.startsWith('http') ? product.imageSrc : `${baseUrl}${product.imageSrc}`;
+    productImageUrl = product.imageSrc.startsWith("http")
+      ? product.imageSrc
+      : `${baseUrl}${product.imageSrc}`;
   }
 
   return {
-    title: product.title || 'Sparro',
-    description: product.shortDescription || product.description || 'Premium furniture by Sparro.',
+    title: product.title || "Sparro",
+    description:
+      product.shortDescription ||
+      product.description ||
+      "Premium furniture by Sparro.",
     openGraph: {
-      title: product.title || 'Sparro',
-      description: product.shortDescription || product.description || 'Premium furniture by Sparro.',
+      title: product.title || "Sparro",
+      description:
+        product.shortDescription ||
+        product.description ||
+        "Premium furniture by Sparro.",
       images: productImageUrl ? [productImageUrl] : [],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
     },
   };
 }
@@ -68,7 +80,7 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
 
   // Hazırkı məhsulu siyahıdan çıxarırıq ki, slider-də təkrarlanmasın
   const relatedProducts = latestProducts
-    .filter(p => p.id !== parseInt(id))
+    .filter((p) => p.id !== parseInt(id))
     .slice(0, 8);
 
   return (
@@ -88,16 +100,16 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
       <SystemAbout />
       <SystemPalette
         category=""
-        title="Find a Montana retailer near you"
-        description="The Montana range offers endless possibilities..."
+        title="Find a Sparro retailer near you"
+        description="The Sparro range offers endless possibilities..."
         features={[
-          "Montana retailers are trained in Montana products",
+          "Sparro retailers are trained in Sparro products",
           "They are experts in advising you on style, colours and interior design for the home or office environments",
-          "They can help you draw up a Montana storage solution, so you can get exactly the design you want"
+          "They can help you draw up a Sparro storage solution, so you can get exactly the design you want",
         ]}
         buttonText="Go to retailer map"
         buttonLink="/contact"
-        imageUrl="https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/montana-home/2023/studio/montana_home_23_24_r03_shadow_monarch_amber_ruby_colourbox_i_noticeboard_hokkaido_monterey_kevi_h.jpg?mode=crop&width=640&height=640"
+        imageUrl="https://b2c.Sparro-episerver.com/globalassets/ambient-images/portrait-images/Sparro-home/2023/studio/Sparro_home_23_24_r03_shadow_monarch_amber_ruby_colourbox_i_noticeboard_hokkaido_monterey_kevi_h.jpg?mode=crop&width=640&height=640"
         backgroundColor="#EFC7C7"
         layout="textLeft"
       />

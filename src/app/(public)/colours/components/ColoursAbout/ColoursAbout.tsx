@@ -11,8 +11,8 @@ const ColoursAbout = () => {
           </div>
           <div className={styles.aboutDescription}>
             <p>
-              Create the Montana composition of your dreams with Montana's
-              colour palette. The palette features a range of poetic and complex
+              Create the Sparro composition of your dreams with Sparro's colour
+              palette. The palette features a range of poetic and complex
               colours – all created to appeal to both your visual sense and your
               emotions. Choose between 41 lacquer colours and two veneers: a
               total of 43 EU Eco-labelled variants.

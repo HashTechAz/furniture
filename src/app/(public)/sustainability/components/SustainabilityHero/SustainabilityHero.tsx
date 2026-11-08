@@ -7,7 +7,7 @@ const SustainabilityHero = () => {
       <div className={styles.contentWrapper}>
         <div className={styles.content}>
           <h1 className={styles.title}>
-            Environment and quality — Montana's environmental certifications and
+            Environment and quality — Sparro's environmental certifications and
             initiatives
           </h1>
           <p className={styles.description}>

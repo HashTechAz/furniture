@@ -1,11 +1,13 @@
-import type { Metadata } from 'next';
-import { Suspense } from 'react';
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import Header from "@/components/Header/Header";
+import Footer from "@/components/Footer/Footer";
 export const metadata: Metadata = {
-  title: 'Montana Furniture - Modern Design Solutions',
-  description: 'Discover Montana Furniture\'s innovative design solutions for modern living and working spaces.',
-  keywords: 'furniture, modern design, Montana, storage solutions, tables, chairs',
+  title: "Sparro Furniture - Modern Design Solutions",
+  description:
+    "Discover Sparro Furniture's innovative design solutions for modern living and working spaces.",
+  keywords:
+    "furniture, modern design, Sparro, storage solutions, tables, chairs",
 };
 export default async function RootLayout({
   children,
@@ -14,7 +16,7 @@ export default async function RootLayout({
 }) {
   return (
     <>
-      <Suspense fallback={<div style={{ height: '80px' }}></div>}>
+      <Suspense fallback={<div style={{ height: "80px" }}></div>}>
         <Header />
       </Suspense>
       <main>{children}</main>

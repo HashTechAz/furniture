@@ -13,13 +13,13 @@ const Footer = () => {
     <footer className={styles.footer}>
       <div className={styles.footerMain}>
         <div>
-          <Link href='/' className={styles.footerTitle}>
+          <Link href="/" className={styles.footerTitle}>
             <Image
               fill
-              src='/images/logo/svlogosparro-01.png'
-              alt='Sparro Logo'
+              src="/images/logo/svlogosparro-01.png"
+              alt="Sparro Logo"
               className={styles.footerLogo}
-              sizes='100px'
+              sizes="100px"
             />
           </Link>
         </div>
@@ -27,12 +27,16 @@ const Footer = () => {
         <div className={styles.parent}>
           <div className={`${styles.footerItem} ${styles.info}`}>
             <p>
-              Akkerupvej 16 <br /> 5683 Haarby <br /> Danmark
+              Belvedere Residence <br /> Baku <br /> Azerbaijan
             </p>
-            <p className={styles.cvrNumber}>CVR: 66652912</p>
+            <p className={styles.cvrNumber}>
+              <a href="tel:+994504993439" className={styles.cvrNumber}>
+                (+994) 50-499-34-39
+              </a>
+            </p>
           </div>
 
-          <div className={`${styles.footerItem} ${styles.montanaLinks}`}>
+          <div className={`${styles.footerItem} ${styles.SparroLinks}`}>
             <h3>Products</h3>
             <ul>
               <li>
@@ -67,17 +71,26 @@ const Footer = () => {
             <h3>Inspiration</h3>
             <ul>
               <li>
-                <Link className={styles.footerLink} href={"/creative-minds/swantje"}>
+                <Link
+                  className={styles.footerLink}
+                  href={"/creative-minds/swantje"}
+                >
                   Swantje Hinrichsen
                 </Link>
               </li>
               <li>
-                <Link className={styles.footerLink} href={"/creative-minds/cathrine"}>
+                <Link
+                  className={styles.footerLink}
+                  href={"/creative-minds/cathrine"}
+                >
                   Cathrine De Lichtenberg
                 </Link>
               </li>
               <li>
-                <Link className={styles.footerLink} href={"/creative-minds/tekla"}>
+                <Link
+                  className={styles.footerLink}
+                  href={"/creative-minds/tekla"}
+                >
                   Tekla Evelina Severin
                 </Link>
               </li>
@@ -129,28 +142,38 @@ const Footer = () => {
             <h3>Select Market</h3>
             <div className={styles.footerSocial}>
               <ul>
-                <li>
-                  <Link href={"/"} aria-label='Facebook'>
+                {/* <li>
+                  <Link href={"/"} aria-label="Facebook">
                     <FaFacebookF />
                   </Link>
-                </li>
+                </li> */}
                 <li>
-                  <Link href={"/"} aria-label='Instagram'>
+                  <Link
+                    href={
+                      "https://www.instagram.com/sparrohome?vrfl=cGNxM3o0Z3Z6eGVs"
+                    }
+                    aria-label="Instagram"
+                    target="_blank"
+                  >
                     <FaInstagram />
                   </Link>
                 </li>
-                <li>
-                  <Link href={"/"} aria-label='YouTube'>
+                {/* <li>
+                  <Link href={"/"} aria-label="YouTube">
                     <FaYoutube />
                   </Link>
-                </li>
-                <li>
-                  <Link href={"/"} aria-label='Pinterest'>
+                </li> */}
+                {/* <li>
+                  <Link href={"/"} aria-label="Pinterest">
                     <FaPinterestP />
                   </Link>
-                </li>
+                </li> */}
                 <li>
-                  <Link href={"/"} aria-label='LinkedIn'>
+                  <Link
+                    href={"https://www.linkedin.com/company/sparrohome/"}
+                    aria-label="LinkedIn"
+                    target="_blank"
+                  >
                     <FaLinkedinIn />
                   </Link>
                 </li>
@@ -160,7 +183,10 @@ const Footer = () => {
         </div>
       </div>
       <div className={styles.footerEnd}>
-        <h3>© {new Date().getFullYear()} Montana Furniture A/S. All rights reserved.</h3>
+        <h3>
+          © {new Date().getFullYear()} Sparro Furniture A/S. All rights
+          reserved.
+        </h3>
       </div>
     </footer>
   );

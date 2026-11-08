@@ -11,7 +11,9 @@ import { getProducts, FrontendProduct } from "@/lib/products";
 
 const ProductsContent = () => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [promoProduct, setPromoProduct] = useState<FrontendProduct | null>(null);
+  const [promoProduct, setPromoProduct] = useState<FrontendProduct | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   // 🔥 QIFIL (Strict Mode Double Fetch-i əngəlləmək üçün)
@@ -27,7 +29,7 @@ const ProductsContent = () => {
       try {
         const [catData, prodData] = await Promise.all([
           getCategories(),
-          getProducts({ pageSize: 1 }) // Get at least 1 product
+          getProducts({ pageSize: 1 }), // Get at least 1 product
         ]);
         setCategories(catData);
         if (prodData && prodData.length > 0) {
@@ -49,33 +51,53 @@ const ProductsContent = () => {
     <>
       <section className={styles.productsCategoryMain}>
         <div className={styles.productsCategoryText}>
-          <h5><Link href="/about">About Montana</Link></h5>
+          <h5>
+            <Link href="/about">About Sparro</Link>
+          </h5>
           <ul>
-            <li><Link href="/system">Customize your solution</Link></li>
-            <li><Link href="/colours">41 colors & 2 veneers</Link></li>
-            <li><Link href="/sustainability">Sustainability</Link></li>
-            <li><Link href="/designers">Designers</Link></li>
+            <li>
+              <Link href="/system">Customize your solution</Link>
+            </li>
+            <li>
+              <Link href="/colours">41 colors & 2 veneers</Link>
+            </li>
+            <li>
+              <Link href="/sustainability">Sustainability</Link>
+            </li>
+            <li>
+              <Link href="/designers">Designers</Link>
+            </li>
           </ul>
 
-          <h5><Link href="/productseries">Product Series</Link></h5>
+          <h5>
+            <Link href="/productseries">Product Series</Link>
+          </h5>
           <ul>
-            <li><Link href="/product">Montana Selection</Link></li>
-            <li><Link href="/product">Montana Mini</Link></li>
-            <li><Link href="/product">Montana Mega</Link></li>
-            <li><Link href="/product">Kevi Chairs</Link></li>
-            <li><Link href="/product">All product series</Link></li>
+            <li>
+              <Link href="/product">Sparro Selection</Link>
+            </li>
+            <li>
+              <Link href="/product">Sparro Mini</Link>
+            </li>
+            <li>
+              <Link href="/product">Sparro Mega</Link>
+            </li>
+            <li>
+              <Link href="/product">Kevi Chairs</Link>
+            </li>
+            <li>
+              <Link href="/product">All product series</Link>
+            </li>
           </ul>
         </div>
 
         <div className={styles.contentWrapper}>
           <div className={styles.gridContainer}>
             <div className={styles.gridItemMain}>
-
               <div className={styles.gridItemMainText}>
                 <div className={styles.listsGrid}>
-
                   {isLoading ? (
-                    <p style={{ color: '#999' }}>Loading categories...</p>
+                    <p style={{ color: "#999" }}>Loading categories...</p>
                   ) : categories.length > 0 ? (
                     categories.map((category) => (
                       <ul key={category.id}>
@@ -85,7 +107,8 @@ const ProductsContent = () => {
                           </Link>
                         </h5>
 
-                        {category.subCategories && category.subCategories.length > 0 ? (
+                        {category.subCategories &&
+                        category.subCategories.length > 0 ? (
                           category.subCategories.map((sub) => (
                             <li key={sub.id}>
                               <Link href={`/product?CategoryId=${sub.id}`}>
@@ -105,7 +128,6 @@ const ProductsContent = () => {
                   ) : (
                     <p>No categories found.</p>
                   )}
-
                 </div>
               </div>
 
@@ -119,7 +141,6 @@ const ProductsContent = () => {
                   />
                 )}
               </div>
-
             </div>
           </div>
         </div>

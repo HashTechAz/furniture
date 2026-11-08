@@ -1,12 +1,36 @@
-import Link from 'next/link';
-import styles from './page.module.css';
+import Link from "next/link";
+import styles from "./page.module.css";
 
 export default function SeriesPage() {
   const series = [
-    { id: 1, name: 'Montana System', description: 'Modular storage solutions', productCount: 45, status: 'Active' },
-    { id: 2, name: 'Montana Mini', description: 'Compact furniture for small spaces', productCount: 32, status: 'Active' },
-    { id: 3, name: 'Panton Wire', description: 'Elegant wire furniture', productCount: 28, status: 'Active' },
-    { id: 4, name: 'Montana Free', description: 'Innovative design solutions', productCount: 15, status: 'Draft' },
+    {
+      id: 1,
+      name: "Sparro System",
+      description: "Modular storage solutions",
+      productCount: 45,
+      status: "Active",
+    },
+    {
+      id: 2,
+      name: "Sparro Mini",
+      description: "Compact furniture for small spaces",
+      productCount: 32,
+      status: "Active",
+    },
+    {
+      id: 3,
+      name: "Panton Wire",
+      description: "Elegant wire furniture",
+      productCount: 28,
+      status: "Active",
+    },
+    {
+      id: 4,
+      name: "Sparro Free",
+      description: "Innovative design solutions",
+      productCount: 15,
+      status: "Draft",
+    },
   ];
 
   return (
@@ -29,24 +53,29 @@ export default function SeriesPage() {
           <div>Status</div>
           <div>Actions</div>
         </div>
-        
+
         {series.map((item) => (
           <div key={item.id} className={styles.tableRow}>
             <div className={styles.seriesName}>{item.name}</div>
             <div className={styles.seriesDescription}>{item.description}</div>
-            <div className={styles.productCount}>{item.productCount} products</div>
+            <div className={styles.productCount}>
+              {item.productCount} products
+            </div>
             <div>
-              <span className={`${styles.status} ${styles[item.status.toLowerCase()]}`}>
+              <span
+                className={`${styles.status} ${styles[item.status.toLowerCase()]}`}
+              >
                 {item.status}
               </span>
             </div>
             <div className={styles.actions}>
-              <Link href={`/admin/series/${item.id}/edit`} className={styles.editButton}>
+              <Link
+                href={`/admin/series/${item.id}/edit`}
+                className={styles.editButton}
+              >
                 Edit
               </Link>
-              <button className={styles.deleteButton}>
-                Delete
-              </button>
+              <button className={styles.deleteButton}>Delete</button>
             </div>
           </div>
         ))}

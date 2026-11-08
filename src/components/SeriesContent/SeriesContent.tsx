@@ -1,16 +1,19 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import styles from './SeriesContent.module.css';
-import NavbarCategoryCard from '../NavbarMenuCards/NavbarCategoryCard';
-import { getCollections } from '@/lib/collections';
-import { getApiBaseUrl } from '@/lib/api-base';
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import styles from "./SeriesContent.module.css";
+import NavbarCategoryCard from "../NavbarMenuCards/NavbarCategoryCard";
+import { getCollections } from "@/lib/collections";
+import { getApiBaseUrl } from "@/lib/api-base";
 
-const PLACEHOLDER_IMAGE = 'https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/colours/montana_colourps_amber_camomile_rhubarb_flint_oat.jpg?mode=crop&width=1520&height=2027';
+const PLACEHOLDER_IMAGE =
+  "https://b2c.Sparro-episerver.com/globalassets/ambient-images/portrait-images/colours/Sparro_colourps_amber_camomile_rhubarb_flint_oat.jpg?mode=crop&width=1520&height=2027";
 
 const SeriesContent = () => {
-  const [collections, setCollections] = useState<{ id: number; name: string; coverImageUrl?: string }[]>([]);
+  const [collections, setCollections] = useState<
+    { id: number; name: string; coverImageUrl?: string }[]
+  >([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,7 +29,9 @@ const SeriesContent = () => {
     <>
       <section className={styles.seriesCategoryMain}>
         <div className={styles.seriesCategoryText}>
-          <h5><Link href="/series/learn-more-about">Learn more about</Link></h5>
+          <h5>
+            <Link href="/series/learn-more-about">Learn more about</Link>
+          </h5>
           <ul>
             <li>
               <Link href="/series/guarantees">Guarantees</Link>
@@ -51,7 +56,9 @@ const SeriesContent = () => {
             ) : (
               collections.map((collection) => {
                 const imageUrl = collection.coverImageUrl
-                  ? (collection.coverImageUrl.startsWith('http') ? collection.coverImageUrl : `${baseUrl}${collection.coverImageUrl.startsWith('/') ? '' : '/'}${collection.coverImageUrl}`)
+                  ? collection.coverImageUrl.startsWith("http")
+                    ? collection.coverImageUrl
+                    : `${baseUrl}${collection.coverImageUrl.startsWith("/") ? "" : "/"}${collection.coverImageUrl}`
                   : PLACEHOLDER_IMAGE;
                 return (
                   <NavbarCategoryCard

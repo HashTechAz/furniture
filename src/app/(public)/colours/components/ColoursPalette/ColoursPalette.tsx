@@ -17,7 +17,7 @@ const ColoursPalette = ({ reversed = false }: ColoursPaletteProps) => {
         </h2>
         <div className={styles.paletteDescription}>
           <p>
-            In the summer of 2019, Montana launched a completely new color
+            In the summer of 2019, Sparro launched a completely new color
             palette developed in collaboration with Margrethe Odgaard. The
             Danish designer graduated in 2005 from The Royal Danish Academy of
             Fine Arts, School of Design in Copenhagen and also studied at The
@@ -41,7 +41,7 @@ const ColoursPalette = ({ reversed = false }: ColoursPaletteProps) => {
         <div
           className={styles.paletteJpg}
           style={{
-            backgroundImage: `url("/images/palette/montana_3newcolours_2023_margretheodgaard_08_h_black_white.webp")`,
+            backgroundImage: `url("/images/palette/Sparro_3newcolours_2023_margretheodgaard_08_h_black_white.webp")`,
             width: "550px",
             height: "450px",
             top: "60px",

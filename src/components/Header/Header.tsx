@@ -13,7 +13,11 @@ import ProductsContent from "../ProductsContent/ProductsContent";
 import InspirationContent from "../Inspiration/InspirationContent";
 
 // Data & API
-import { INSPIRATION_LINKS, SERIES_LINKS, STATIC_PRODUCT_LINKS } from "@/constants/navigation";
+import {
+  INSPIRATION_LINKS,
+  SERIES_LINKS,
+  STATIC_PRODUCT_LINKS,
+} from "@/constants/navigation";
 import { getCategories, Category } from "@/lib/categories";
 
 const Header: React.FC = () => {
@@ -25,7 +29,9 @@ const Header: React.FC = () => {
 
   // Mobile States
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeMobileSubMenu, setActiveMobileSubMenu] = useState<"inspiration" | "products" | "series" | null>(null);
+  const [activeMobileSubMenu, setActiveMobileSubMenu] = useState<
+    "inspiration" | "products" | "series" | null
+  >(null);
 
   // Scroll & UI States
   const [isVisible, setIsVisible] = useState(true);
@@ -88,7 +94,11 @@ const Header: React.FC = () => {
       if (isMobile) {
         setIsVisible(true);
       } else {
-        if (!isAtTop && currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        if (
+          !isAtTop &&
+          currentScrollY > lastScrollY.current &&
+          currentScrollY > 100
+        ) {
           setIsVisible(false);
         } else if (currentScrollY < lastScrollY.current) {
           setIsVisible(true);
@@ -112,10 +122,21 @@ const Header: React.FC = () => {
 
   // --- NO SCROLL ON BODY WHEN MENU OPEN ---
   useEffect(() => {
-    const isAnyMenuOpen = isSeriesOpen || isProductsOpen || isInspirationOpen || isMobileMenuOpen || isSearchOpen;
+    const isAnyMenuOpen =
+      isSeriesOpen ||
+      isProductsOpen ||
+      isInspirationOpen ||
+      isMobileMenuOpen ||
+      isSearchOpen;
     document.body.classList.toggle("no-scroll", isAnyMenuOpen);
     return () => document.body.classList.remove("no-scroll");
-  }, [isSeriesOpen, isProductsOpen, isInspirationOpen, isMobileMenuOpen, isSearchOpen]);
+  }, [
+    isSeriesOpen,
+    isProductsOpen,
+    isInspirationOpen,
+    isMobileMenuOpen,
+    isSearchOpen,
+  ]);
 
   // --- RESIZE HANDLING ---
   useEffect(() => {
@@ -139,7 +160,7 @@ const Header: React.FC = () => {
   const handleDesktopMenuClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
     setter: React.Dispatch<React.SetStateAction<boolean>>,
-    isOpen: boolean
+    isOpen: boolean,
   ) => {
     e.preventDefault();
     setIsInspirationOpen(false);
@@ -176,14 +197,22 @@ const Header: React.FC = () => {
     };
 
     if (styleMap[p]) return styleMap[p];
-    if (p.startsWith("/product/") && p !== "/product") return styles.productDetailsHeader;
-    if (p.startsWith("/series") && !p.includes("guarantees") && !p.includes("assembly")) return styles.seriesHeader;
+    if (p.startsWith("/product/") && p !== "/product")
+      return styles.productDetailsHeader;
+    if (
+      p.startsWith("/series") &&
+      !p.includes("guarantees") &&
+      !p.includes("assembly")
+    )
+      return styles.seriesHeader;
     if (p.includes("/series/guarantees")) return styles.guaranteesHeader;
     if (p.includes("/series/assembly")) return styles.assemblyHeader;
 
     // Specific colour-inspiration header colors
-    if (p.includes("colour-inspiration/colour-class")) return styles.colourClassHeader;
-    if (p.includes("colour-inspiration/colours-of-comfort")) return styles.coloursOfComfortHeader;
+    if (p.includes("colour-inspiration/colour-class"))
+      return styles.colourClassHeader;
+    if (p.includes("colour-inspiration/colours-of-comfort"))
+      return styles.coloursOfComfortHeader;
 
     // Generic fallback for any other colour-inspiration page
     if (p.includes("colour-inspiration")) return styles.inspiringStylesHeader;
@@ -212,41 +241,140 @@ const Header: React.FC = () => {
           ${isAtTop ? styles.headerAtTop : ""}
           ${isVisible && !isAtTop ? styles.headerVisibleOnScroll : ""}
           ${isExiting ? styles.headerExiting : ""}
-          ${(isSeriesOpen || isProductsOpen || isInspirationOpen || isMobileMenuOpen || isSearchOpen) ? styles.headerOverlayOpen : ""}
-          ${(isSeriesOpen || isProductsOpen || isInspirationOpen) ? styles.headerMenuContentOpen : ""}
+          ${isSeriesOpen || isProductsOpen || isInspirationOpen || isMobileMenuOpen || isSearchOpen ? styles.headerOverlayOpen : ""}
+          ${isSeriesOpen || isProductsOpen || isInspirationOpen ? styles.headerMenuContentOpen : ""}
           ${getHeaderClass()}
         `}
       >
         <nav className={styles.navbar}>
           <div className={`${styles.navigationMenu} ${styles.desktopOnly}`}>
             <ul>
-              <li><Link href="#" className={styles.navLinks} onClick={(e) => handleDesktopMenuClick(e, setIsInspirationOpen, isInspirationOpen)}>Inspiration</Link></li>
-              <li><Link href="#" className={styles.navLinks} onClick={(e) => handleDesktopMenuClick(e, setIsProductsOpen, isProductsOpen)}>Products</Link></li>
-              <li><Link href="#" className={styles.navLinks} onClick={(e) => handleDesktopMenuClick(e, setIsSeriesOpen, isSeriesOpen)}>Series</Link></li>
-              <li><Link href="/system" className={styles.navLinks}>Montana System</Link></li>
-              <li><Link href="/sustainability" className={styles.navLinks}>Sustainability</Link></li>
+              <li>
+                <Link
+                  href="#"
+                  className={styles.navLinks}
+                  onClick={(e) =>
+                    handleDesktopMenuClick(
+                      e,
+                      setIsInspirationOpen,
+                      isInspirationOpen,
+                    )
+                  }
+                >
+                  Inspiration
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="#"
+                  className={styles.navLinks}
+                  onClick={(e) =>
+                    handleDesktopMenuClick(e, setIsProductsOpen, isProductsOpen)
+                  }
+                >
+                  Products
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="#"
+                  className={styles.navLinks}
+                  onClick={(e) =>
+                    handleDesktopMenuClick(e, setIsSeriesOpen, isSeriesOpen)
+                  }
+                >
+                  Series
+                </Link>
+              </li>
+              <li>
+                <Link href="/system" className={styles.navLinks}>
+                  Sparro System
+                </Link>
+              </li>
+              <li>
+                <Link href="/sustainability" className={styles.navLinks}>
+                  Sustainability
+                </Link>
+              </li>
             </ul>
           </div>
 
           <div className={`${styles.mobileActions} ${styles.mobileOnly}`}>
-            <button type="button" className={styles.hamburgerButton} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Toggle menu">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                {isMobileMenuOpen ? <path d="M18 6L6 18M6 6l12 12" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
+            <button
+              type="button"
+              className={styles.hamburgerButton}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                {isMobileMenuOpen ? (
+                  <path d="M18 6L6 18M6 6l12 12" />
+                ) : (
+                  <path d="M4 6h16M4 12h16M4 18h16" />
+                )}
               </svg>
             </button>
-            <button type="button" className={styles.searchButton} onClick={toggleSearch}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <button
+              type="button"
+              className={styles.searchButton}
+              onClick={toggleSearch}
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
             </button>
           </div>
 
           <Link href="/" className={styles.logo}>
-            <Image src="/images/logo/svlogosparro-01.png" alt="Sparro Logo" className={styles.logoImage} width={100} height={40} priority />
+            <Image
+              src="/images/logo/svlogosparro-01.png"
+              alt="Sparro Logo"
+              className={styles.logoImage}
+              width={100}
+              height={40}
+              priority
+            />
           </Link>
 
           <div className={styles.navSearch}>
             <div className={styles.desktopOnly}>
-              <button type="button" className={`${styles.searchButton} ${isSearchOpen ? styles.searchButtonActive : ""}`} onClick={toggleSearch}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <button
+                type="button"
+                className={`${styles.searchButton} ${isSearchOpen ? styles.searchButtonActive : ""}`}
+                onClick={toggleSearch}
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
               </button>
             </div>
             <div className={styles.mobileOnly} style={{ width: "85px" }}></div>
@@ -255,8 +383,8 @@ const Header: React.FC = () => {
       </header>
 
       {/* Background Overlay when desktop menus are open */}
-      <div 
-        className={`${styles.pageOverlay} ${(isSeriesOpen || isProductsOpen || isInspirationOpen) ? styles.pageOverlayOpen : ""}`}
+      <div
+        className={`${styles.pageOverlay} ${isSeriesOpen || isProductsOpen || isInspirationOpen ? styles.pageOverlayOpen : ""}`}
         onClick={() => {
           setIsSeriesOpen(false);
           setIsProductsOpen(false);
@@ -264,86 +392,177 @@ const Header: React.FC = () => {
         }}
       />
 
-      <div className={`${styles.mobileMenuOverlay} ${isMobileMenuOpen ? styles.open : ""}`}>
+      <div
+        className={`${styles.mobileMenuOverlay} ${isMobileMenuOpen ? styles.open : ""}`}
+      >
         <div className={styles.mainNav}>
           <ul>
             <li>
-              <div className={styles.mobileNavItem} onClick={() => toggleMobileSubMenu("inspiration")}>
+              <div
+                className={styles.mobileNavItem}
+                onClick={() => toggleMobileSubMenu("inspiration")}
+              >
                 <span>Inspiration</span>
                 <ChevronIcon isOpen={activeMobileSubMenu === "inspiration"} />
               </div>
-              <div className={`${styles.mobileSubMenu} ${activeMobileSubMenu === "inspiration" ? styles.subMenuOpen : ""}`}>
+              <div
+                className={`${styles.mobileSubMenu} ${activeMobileSubMenu === "inspiration" ? styles.subMenuOpen : ""}`}
+              >
                 <ul>
                   {INSPIRATION_LINKS.map((link) => (
-                    <li key={link.label}><Link href={link.href} onClick={() => setIsMobileMenuOpen(false)}>{link.label}</Link></li>
+                    <li key={link.label}>
+                      <Link
+                        href={link.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
                   ))}
                 </ul>
               </div>
             </li>
 
             <li>
-              <div className={styles.mobileNavItem} onClick={() => toggleMobileSubMenu("products")}>
+              <div
+                className={styles.mobileNavItem}
+                onClick={() => toggleMobileSubMenu("products")}
+              >
                 <span>Products</span>
                 <ChevronIcon isOpen={activeMobileSubMenu === "products"} />
               </div>
-              <div className={`${styles.mobileSubMenu} ${activeMobileSubMenu === "products" ? styles.subMenuOpen : ""}`}>
+              <div
+                className={`${styles.mobileSubMenu} ${activeMobileSubMenu === "products" ? styles.subMenuOpen : ""}`}
+              >
                 <ul>
                   {STATIC_PRODUCT_LINKS.map((link) => (
-                    <li key={link.label}><Link href={link.href} onClick={() => setIsMobileMenuOpen(false)} style={{ fontWeight: 'bold' }}>{link.label}</Link></li>
-                  ))}
-                  <li className={styles.divider} style={{ margin: '10px 0', borderTop: '1px solid #eee' }}></li>
-                  {categories.length > 0 ? categories.map((cat) => (
-                    <li key={cat.id}>
-                      <Link href={`/product?CategoryId=${cat.id}`} onClick={() => setIsMobileMenuOpen(false)}>
-                        {cat.name}
+                    <li key={link.label}>
+                      <Link
+                        href={link.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        style={{ fontWeight: "bold" }}
+                      >
+                        {link.label}
                       </Link>
                     </li>
-                  )) : (
-                    <li style={{ color: '#999', fontSize: '12px', paddingLeft: '20px' }}>Yüklənir...</li>
+                  ))}
+                  <li
+                    className={styles.divider}
+                    style={{ margin: "10px 0", borderTop: "1px solid #eee" }}
+                  ></li>
+                  {categories.length > 0 ? (
+                    categories.map((cat) => (
+                      <li key={cat.id}>
+                        <Link
+                          href={`/product?CategoryId=${cat.id}`}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          {cat.name}
+                        </Link>
+                      </li>
+                    ))
+                  ) : (
+                    <li
+                      style={{
+                        color: "#999",
+                        fontSize: "12px",
+                        paddingLeft: "20px",
+                      }}
+                    >
+                      Yüklənir...
+                    </li>
                   )}
                 </ul>
               </div>
             </li>
 
             <li>
-              <div className={styles.mobileNavItem} onClick={() => toggleMobileSubMenu("series")}>
+              <div
+                className={styles.mobileNavItem}
+                onClick={() => toggleMobileSubMenu("series")}
+              >
                 <span>Series</span>
                 <ChevronIcon isOpen={activeMobileSubMenu === "series"} />
               </div>
-              <div className={`${styles.mobileSubMenu} ${activeMobileSubMenu === "series" ? styles.subMenuOpen : ""}`}>
+              <div
+                className={`${styles.mobileSubMenu} ${activeMobileSubMenu === "series" ? styles.subMenuOpen : ""}`}
+              >
                 <ul>
                   {SERIES_LINKS.map((link) => (
-                    <li key={link.label}><Link href={link.href} onClick={() => setIsMobileMenuOpen(false)}>{link.label}</Link></li>
+                    <li key={link.label}>
+                      <Link
+                        href={link.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
                   ))}
                 </ul>
               </div>
             </li>
 
-            <li><Link href="/system" onClick={() => setIsMobileMenuOpen(false)}>Montana System</Link></li>
-            <li><Link href="/sustainability" onClick={() => setIsMobileMenuOpen(false)}>Sustainability</Link></li>
-            <li><Link href="/professionals" onClick={() => setIsMobileMenuOpen(false)} className={styles.professionalsLink}>Professionals</Link></li>
+            <li>
+              <Link href="/system" onClick={() => setIsMobileMenuOpen(false)}>
+                Sparro System
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/sustainability"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Sustainability
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/professionals"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={styles.professionalsLink}
+              >
+                Professionals
+              </Link>
+            </li>
           </ul>
         </div>
 
         <div className={styles.bottomNavWrapper}>
           <ul className={styles.supportNav}>
-            <li><Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Sparro</Link></li>
-            <li><Link href="/privacy-policy" onClick={() => setIsMobileMenuOpen(false)}>Privacy Policies</Link></li>
+            <li>
+              <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
+                Contact Sparro
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/privacy-policy"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Privacy Policies
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
 
-      <div className={`${styles.seriesOverlay} ${isInspirationOpen ? styles.seriesOverlayOpen : ""}`}>
+      <div
+        className={`${styles.seriesOverlay} ${isInspirationOpen ? styles.seriesOverlayOpen : ""}`}
+      >
         <div className={styles.overlayInner}>
           <InspirationContent />
         </div>
       </div>
-      <div className={`${styles.seriesOverlay} ${isSeriesOpen ? styles.seriesOverlayOpen : ""}`}>
+      <div
+        className={`${styles.seriesOverlay} ${isSeriesOpen ? styles.seriesOverlayOpen : ""}`}
+      >
         <div className={styles.overlayInner}>
           <SeriesContent />
         </div>
       </div>
-      <div className={`${styles.seriesOverlay} ${isProductsOpen ? styles.seriesOverlayOpen : ""}`}>
+      <div
+        className={`${styles.seriesOverlay} ${isProductsOpen ? styles.seriesOverlayOpen : ""}`}
+      >
         <div className={styles.overlayInner}>
           <ProductsContent />
         </div>
@@ -355,7 +574,17 @@ const Header: React.FC = () => {
 };
 
 const ChevronIcon = ({ isOpen }: { isOpen: boolean }) => (
-  <svg className={`${styles.arrowIcon} ${isOpen ? styles.arrowIconOpen : ""}`} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    className={`${styles.arrowIcon} ${isOpen ? styles.arrowIconOpen : ""}`}
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <polyline points="6 9 12 15 18 9"></polyline>
   </svg>
 );

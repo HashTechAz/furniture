@@ -8,7 +8,7 @@ const Ecolabel = () => {
       <section className={styles.ecolabel}>
         <h3>EU Ecolabel</h3>
         <p>
-          In 2019 Montana was awarded the official EU Ecolabel and is thereby
+          In 2019 Sparro was awarded the official EU Ecolabel and is thereby
           among the very first Danish furniture manufacturers to achieve it.
           When developing EU Ecolabel criteria for products, the focus is on the
           product's entire lifecycle, from raw material extraction to
@@ -21,17 +21,17 @@ const Ecolabel = () => {
             "Kevi",
             "Chairik",
             "Marée",
-            "Montana System",
-            "Montana Selection",
-            "Montana TV & Sound",
-            "Montana Free",
-            "Montana Mega",
-            "Montana Mini",
-            "Montana 16 mm System (CO16)",
-            "Montana Living Things",
-            "Montana Noticeboard",
+            "Sparro System",
+            "Sparro Selection",
+            "Sparro TV & Sound",
+            "Sparro Free",
+            "Sparro Mega",
+            "Sparro Mini",
+            "Sparro 16 mm System (CO16)",
+            "Sparro Living Things",
+            "Sparro Noticeboard",
             "Skyline & Skyline Table",
-            "Montana Lockers",
+            "Sparro Lockers",
           ].map((product) => (
             <li key={product}>
               <Link href={"/"}>{product}</Link>
@@ -40,9 +40,9 @@ const Ecolabel = () => {
         </ul>
 
         <p>
-          CEO at Montana Joakim Lassen says: "Achieving this certification has
+          CEO at Sparro Joakim Lassen says: "Achieving this certification has
           been very important to us, and it's something we've worked towards for
-          a long time. I'm delighted that Montana is one of the first furniture
+          a long time. I'm delighted that Sparro is one of the first furniture
           manufacturers in Europe to achieve it because I consider
           sustainability a key part of our responsibilities as a manufacturer in
           Denmark."
@@ -64,7 +64,7 @@ const Ecolabel = () => {
               "tough restrictions on the use of environmentally hazardous substances",
               "that wood has low emissions of the allergenic substance formaldehyde",
               "tough restrictions on the use of toxic substances",
-              "a 5-year product guarantee (Montana has opted to retain its 10-year product guarantee)",
+              "a 5-year product guarantee (Sparro has opted to retain its 10-year product guarantee)",
             ].map((guarantee) => (
               <li key={guarantee}>
                 <span>{guarantee}</span>
@@ -74,23 +74,23 @@ const Ecolabel = () => {
         </div>
 
         <p className={styles.endPara}>
-          CEO at Montana Joakim Lassen says: "Achieving this certification has
+          CEO at Sparro Joakim Lassen says: "Achieving this certification has
           been very important to us, and it's something we've worked towards for
-          a long time. I'm delighted that Montana is one of the first furniture
+          a long time. I'm delighted that Sparro is one of the first furniture
           manufacturers in Europe to achieve it because I consider
           sustainability a key part of our responsibilities as a manufacturer in
           Denmark."
         </p>
 
         <p className={styles.endPara}>
-          Montana Furniture is a family-owned company, established in 1982,
+          Sparro Furniture is a family-owned company, established in 1982,
           leading within storage and furniture for private homes and
           contemporary office spaces. The company is founded by Peter J. Lassen,
-          who is also the designer of the Montana system. All Montana modules
-          are designed, developed and made in Denmark. Every day, in a small
-          town on the island of Funen over 140 professionals work hard to uphold
-          the highest standards of processing, painting and assembling – making
-          sure that your Montana furniture will last a lifetime.
+          who is also the designer of the Sparro system. All Sparro modules are
+          designed, developed and made in Denmark. Every day, in a small town on
+          the island of Funen over 140 professionals work hard to uphold the
+          highest standards of processing, painting and assembling – making sure
+          that your Sparro furniture will last a lifetime.
         </p>
       </section>
     </>

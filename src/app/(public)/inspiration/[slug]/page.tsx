@@ -1,14 +1,21 @@
-import React from 'react';
-import { notFound } from 'next/navigation';
-import { Metadata } from 'next';
-import PageBuilder from '@/components/PageBuilder/PageBuilder';
+import React from "react";
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
+import PageBuilder from "@/components/PageBuilder/PageBuilder";
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
-  const name = slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  const name = slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
   return {
     title: `${name} | Sparro`,
-    description: `Find inspiration for ${name} at Sparro.`
+    description: `Find inspiration for ${name} at Sparro.`,
   };
 }
 
@@ -22,47 +29,53 @@ interface InspirationPageData {
 }
 
 const inspirationPageData: Record<string, InspirationPageData> = {
-  'find-more-inspiration': {
+  "find-more-inspiration": {
     components: [
       {
-        component: 'HeroSection',
+        component: "HeroSection",
         props: {
           title: "Inspiration ",
           titleSpan: "Creative colour styles and furniture for your home",
           buttonText: "Explore Series",
           buttonLink: "/product",
-          backgroundImage: "https://cdn.pixabay.com/video/2023/11/25/190661-888327729_tiny.jpg",
-          variant: "inspiration"
-        }
+          backgroundImage:
+            "https://cdn.pixabay.com/video/2023/11/25/190661-888327729_tiny.jpg",
+          variant: "inspiration",
+        },
       },
-      { component: 'SeriesText', props: {} },
-      { component: 'InspiringCard', props: {} }
-    ]
+      { component: "SeriesText", props: {} },
+      { component: "InspiringCard", props: {} },
+    ],
   },
-  'catalogues': {
+  catalogues: {
     components: [
       {
-        component: 'Hero', 
+        component: "Hero",
         props: {
           title: "Catalogues ",
-          titleSpan: "Find inspiration for the home and modern office environments",
-          imageUrl: "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-home/2023/location---radiohuset/montana_home_23_24_masala_amber_acacia_camomile_w.jpg?mode=crop&width=1080&height=776",
+          titleSpan:
+            "Find inspiration for the home and modern office environments",
+          imageUrl:
+            "https://b2c.Sparro-episerver.com/globalassets/ambient-images/landscape-images/Sparro-home/2023/location---radiohuset/Sparro_home_23_24_masala_amber_acacia_camomile_w.jpg?mode=crop&width=1080&height=776",
           imageAlt: "Catalogues",
           backgroundColor: "#3A3126",
           textColor: "#fff",
-        }
+        },
       },
-      { component: 'Catalogues', props: {} }
-    ]
-  }
+      { component: "Catalogues", props: {} },
+    ],
+  },
 };
 
 const getPageData = (slug: string) => {
   return inspirationPageData[slug];
-}
+};
 
-
-const InspirationDynamicPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
+const InspirationDynamicPage = async ({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) => {
   const { slug } = await params;
   const pageData = getPageData(slug);
 

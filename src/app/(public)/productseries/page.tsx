@@ -30,11 +30,11 @@ const ProductSeriesPage = () => {
       <NewsSection showTitle={false} />
       <ProductNewsSlider />
       <PaletteLeftImage
-        title="Unique Montana creations in your favourite colours"
-        description="Design the home of your dreams with classic Montana. 36 basic modules, 4 depths, and 41 colours let you create storage solutions with character. Make your composition with our many modules. Customise it with your choice of components. And finish it all off with your favourite colours. Very simple – and with plenty of room for personality."
+        title="Unique Sparro creations in your favourite colours"
+        description="Design the home of your dreams with classic Sparro. 36 basic modules, 4 depths, and 41 colours let you create storage solutions with character. Make your composition with our many modules. Customise it with your choice of components. And finish it all off with your favourite colours. Very simple – and with plenty of room for personality."
         buttonText="Discover Colour Classes here"
         buttonLink="/collections/summer"
-        imageUrl="https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/montana-home/2019/montana_home_19_diningroom_rhubarb_cumin_jwtable_w.jpg?mode=crop&width=828&height=595"
+        imageUrl="https://b2c.Sparro-episerver.com/globalassets/ambient-images/landscape-images/Sparro-home/2019/Sparro_home_19_diningroom_rhubarb_cumin_jwtable_w.jpg?mode=crop&width=828&height=595"
         backgroundColor="#FEF4BD"
         imageSize="large"
       />

@@ -6,7 +6,7 @@ import pageStyles from "./page.module.css";
 const cathrinePaletteRightImageProps = {
   title: "Colour as therapy",
   description:
-    "Colours to Cathrine are both a sort of therapy and sanctuary. Whenever she throws herself at a new decoration project in her home, she works with emotions and energies, and hardly ever have a plan to begin with. Go about it as Cathrine and build your own Montana composition in our vibrant colour palette.",
+    "Colours to Cathrine are both a sort of therapy and sanctuary. Whenever she throws herself at a new decoration project in her home, she works with emotions and energies, and hardly ever have a plan to begin with. Go about it as Cathrine and build your own Sparro composition in our vibrant colour palette.",
   buttonText: "Explore now",
   buttonLink: "/news/palette-refresh",
   imageUrl: "/images/palette/home-palette-1.png",
@@ -16,11 +16,11 @@ const cathrinePaletteRightImageProps = {
 const cathrinePalette2RightImageProps = {
   title: "Céline Hallas",
   description:
-    "Photographer and Montana colour ambassador @celinehallas has a lifelong passion for colours. Her deep knowledge of colours and how to use them enables her to offer the best advice and inspiration through her pictures. In our digital concept, Colour Class, we've partnered with Color Connaisseur by Céline Hallas to empower you to confidently embrace and transform your interior spaces with the vibrant world of colours.",
+    "Photographer and Sparro colour ambassador @celinehallas has a lifelong passion for colours. Her deep knowledge of colours and how to use them enables her to offer the best advice and inspiration through her pictures. In our digital concept, Colour Class, we've partnered with Color Connaisseur by Céline Hallas to empower you to confidently embrace and transform your interior spaces with the vibrant world of colours.",
   buttonText: "Explore Color Cannaisseur",
   buttonLink: "/news/palette-refresh",
   imageUrl:
-    "https://b2c.montana-episerver.com/globalassets/ambient-images/square-images/creative-minds/celine-hallas/celine-hallas.jpg?mode=crop&width=540&height=720",
+    "https://b2c.Sparro-episerver.com/globalassets/ambient-images/square-images/creative-minds/celine-hallas/celine-hallas.jpg?mode=crop&width=540&height=720",
   backgroundColor: "#EFC7C7",
 };
 
@@ -44,7 +44,7 @@ const inspirationPageData: Record<string, PageData> = {
           description:
             "Designer Sarah Gottlieb lives in a city apartment in the vibrant Nørrebro neighborhood of Copenhagen, together with her husband and their three children. Read along for a sneak peek inside the creative mind of Sarah Gottlieb. Designer Sarah Gottlieb lives in a city apartment in the vibrant Nørrebro neighborhood of Copenhagen, together with her husband and",
           imageUrl:
-            "https://b2c.montana-episerver.com/globalassets/ambient-images/portrait-images/colours/colour-class/Colour_Class_header.jpg?mode=crop&width=1080&height=776",
+            "https://b2c.Sparro-episerver.com/globalassets/ambient-images/portrait-images/colours/colour-class/Colour_Class_header.jpg?mode=crop&width=1080&height=776",
           imageAlt: "Colour Class",
           backgroundColor: "#BDD2DA",
           textColor: "#000",
@@ -58,7 +58,7 @@ const inspirationPageData: Record<string, PageData> = {
         props: {
           title: "🎨 Master the Art of Color 🎨",
           description:
-            "Welcome to Montana's exclusive Colour Class, where we transform your understanding of color from basic knowledge to professional expertise. This comprehensive program is designed for anyone who wants to create stunning, harmonious spaces that reflect their personal style and enhance their daily life.",
+            "Welcome to Sparro's exclusive Colour Class, where we transform your understanding of color from basic knowledge to professional expertise. This comprehensive program is designed for anyone who wants to create stunning, harmonious spaces that reflect their personal style and enhance their daily life.",
           secondParagraph:
             "Through our partnership with Color Connaisseur by Céline Hallas, you'll learn the psychology of color, discover how different hues affect mood and behavior, and master the techniques used by professional interior designers. From understanding color theory to creating mood boards, you'll gain the confidence to make bold color choices that truly transform your space.",
         },
@@ -97,7 +97,7 @@ const inspirationPageData: Record<string, PageData> = {
         component: "HomeVideo",
         props: {
           imageUrl:
-            "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/creative-minds/ceciline-hallas/celinehallasxmontana_color_03.jpg?mode=crop&width=1520&height=10933",
+            "https://b2c.Sparro-episerver.com/globalassets/ambient-images/landscape-images/creative-minds/ceciline-hallas/celinehallasxSparro_color_03.jpg?mode=crop&width=1520&height=10933",
         },
       },
       {
@@ -125,7 +125,7 @@ const inspirationPageData: Record<string, PageData> = {
           description:
             "Designer Sarah Gottlieb lives in a city apartment in the vibrant Nørrebro neighborhood of Copenhagen, together with her husband and their three children. Read along for a sneak peek inside the creative mind of Sarah Gottlieb. Designer Sarah Gottlieb lives in a city apartment in the vibrant Nørrebro neighborhood of Copenhagen, together with her husband and",
           imageUrl:
-            "https://b2c.montana-episerver.com/globalassets/ambient-images/landscape-images/colours/montana_colourps_amber_camomile_rhubarb_flint_oat_w.jpg?mode=crop&width=1080&height=776",
+            "https://b2c.Sparro-episerver.com/globalassets/ambient-images/landscape-images/colours/Sparro_colourps_amber_camomile_rhubarb_flint_oat_w.jpg?mode=crop&width=1080&height=776",
           imageAlt: "Colour Class",
           backgroundColor: "#EAEFD9",
           textColor: "#000",

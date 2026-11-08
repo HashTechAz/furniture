@@ -1,4 +1,4 @@
-# Montana Furniture Website
+# Sparro Furniture Website
 
 A modern furniture e-commerce website built with Next.js 15, TypeScript, and CSS Modules.
 
@@ -6,7 +6,7 @@ A modern furniture e-commerce website built with Next.js 15, TypeScript, and CSS
 
 ### Public Website
 - **Home Page**: Hero section, featured products, news, and call-to-action
-- **Series Page**: Product series overview (Montana System, Montana Mini, Panton Wire, Montana Free)
+- **Series Page**: Product series overview (Sparro System, Sparro Mini, Panton Wire, Sparro Free)
 - **Products Page**: Product categories and featured products
 - **Professionals Page**: Resources for architects and designers
 - **About Page**: Company information and values
@@ -70,7 +70,7 @@ npm run dev
 ## Admin Access
 
 ### Default Admin Credentials
-- **Email**: admin@montanafurniture.com
+- **Email**: admin@Sparrofurniture.com
 - **Password**: password
 
 ### Admin Routes
@@ -143,4 +143,4 @@ npm start
 
 ## License
 
-This project is proprietary software for Montana Furniture.
+This project is proprietary software for Sparro Furniture.

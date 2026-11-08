@@ -1,4 +1,4 @@
-'use client'; // Client komponenti
+"use client"; // Client komponenti
 
 import React, { useState, useEffect } from "react";
 import SystemHero from "./components/SystemHero/SystemHero";
@@ -16,12 +16,12 @@ interface PaletteProps {
   buttonLink: string;
   imageUrl: string;
   backgroundColor: string;
-  imageSize?: 'normal' | 'large' | 'custom';
+  imageSize?: "normal" | "large" | "custom";
   category?: string;
   description2?: string;
   features?: string[];
-  layout?: 'textLeft' | 'textRight';
-  variant?: 'default' | 'third';
+  layout?: "textLeft" | "textRight";
+  variant?: "default" | "third";
   imagePosition?: {
     width: string;
     height: string;
@@ -33,10 +33,9 @@ interface PaletteProps {
 
 interface PaletteData {
   id: string;
-  componentType: 'PaletteRightImage' | 'PaletteLeftImage' | 'SystemPalette';
+  componentType: "PaletteRightImage" | "PaletteLeftImage" | "SystemPalette";
   props: PaletteProps;
 }
-
 
 const SystemPage = () => {
   const [mounted, setMounted] = useState(false);
@@ -49,10 +48,11 @@ const SystemPage = () => {
   const systemPalettes = systemPaletteData.systemPage as PaletteData[];
 
   const renderPalette = (palette: PaletteData) => {
-    if (palette.componentType === 'PaletteLeftImage') {
-      const props: React.ComponentProps<typeof PaletteLeftImage> = palette.props;
+    if (palette.componentType === "PaletteLeftImage") {
+      const props: React.ComponentProps<typeof PaletteLeftImage> =
+        palette.props;
       return <PaletteLeftImage key={palette.id} {...props} />;
-    } else if (palette.componentType === 'SystemPalette') {
+    } else if (palette.componentType === "SystemPalette") {
       const props: React.ComponentProps<typeof SystemPalette> = palette.props;
       return <SystemPalette key={palette.id} {...props} />;
     }
@@ -62,36 +62,44 @@ const SystemPage = () => {
   return (
     <>
       <div
-        id='header-trigger'
+        id="header-trigger"
         style={{ height: 1, backgroundColor: "#2C3587" }}
       />
-      <SystemHero title="Environment and quality — Montana's environmental certifications and initiatives" />
+      <SystemHero title="Environment and quality — Sparro's environmental certifications and initiatives" />
       <SystemAbout />
       <Size />
       <ProductSlider
-        variant='system'
-        titleTop='Montana System inspiration'
-        titleBottom=''
+        variant="system"
+        titleTop="Sparro System inspiration"
+        titleBottom=""
       />
 
       {/* PaletteLeftImage 1 */}
-      {mounted && systemPalettes.find(p => p.id === 'systemPaletteLeft1') && renderPalette(systemPalettes.find(p => p.id === 'systemPaletteLeft1')!)}
+      {mounted &&
+        systemPalettes.find((p) => p.id === "systemPaletteLeft1") &&
+        renderPalette(
+          systemPalettes.find((p) => p.id === "systemPaletteLeft1")!,
+        )}
 
       {/* SystemPalette */}
-      {mounted && systemPalettes.find(p => p.id === 'systemPaletteSystem1') && renderPalette(systemPalettes.find(p => p.id === 'systemPaletteSystem1')!)}
+      {mounted &&
+        systemPalettes.find((p) => p.id === "systemPaletteSystem1") &&
+        renderPalette(
+          systemPalettes.find((p) => p.id === "systemPaletteSystem1")!,
+        )}
 
       {/* PaletteLeftImage 2 */}
-      {mounted && systemPalettes.find(p => p.id === 'systemPaletteLeft2') && renderPalette(systemPalettes.find(p => p.id === 'systemPaletteLeft2')!)}
+      {mounted &&
+        systemPalettes.find((p) => p.id === "systemPaletteLeft2") &&
+        renderPalette(
+          systemPalettes.find((p) => p.id === "systemPaletteLeft2")!,
+        )}
 
-
-      <div style={{ marginBottom: '40px' }}>
-        <ProductSlider
-          titleTop='Montana System inspiration'
-          titleBottom=''
-        />
+      <div style={{ marginBottom: "40px" }}>
+        <ProductSlider titleTop="Sparro System inspiration" titleBottom="" />
       </div>
     </>
   );
 };
 
-export default SystemPage; 
+export default SystemPage;
